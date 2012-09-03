@@ -1,6 +1,10 @@
-#################  Backup Script ###############################
-# Run this Scripts as administrator to register the event souce in the event log
-#  
+#==============================================================================
+# Author: Gunther Pippèrr ( http://www.pipperr.de )
+# Desc:   Run this Scripts as administrator to register the event souce in the event log
+# Date:   01.September 2012
+# Site:   http://orapowershell.codeplex.com
+#==============================================================================
+ 
 # Enviroment
 
 # Script path
@@ -10,7 +14,7 @@ $config_xml="$scriptpath\backup_config.xml"
 # read Helper Functions
 .  $scriptpath\backuplib.ps1
 
-################################################################
+#==============================================================================
 
 #check on Administator
 $wid=[System.Security.Principal.WindowsIdentity]::GetCurrent()

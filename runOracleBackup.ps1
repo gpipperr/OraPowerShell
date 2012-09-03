@@ -1,28 +1,41 @@
-################## Oracle generic Backup Script ###############################
+#==============================================================================
+# Author: Gunther Pippèrr ( http://www.pipperr.de )
+# Desc:    Oracle generic Backup Script
+# Date:   01.September 2012
+# Site:   http://orapowershell.codeplex.com
+#==============================================================================
+
 <#
 
-  Security:
-  (see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_script_aufrufen )
-  To switch it off (as administrator)
-  get-Executionpolicy -list
-  set-ExecutionPolicy -scope CurrentUser RemoteSigned
   
 	.NOTES
-		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de				
+		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de		
+
+		Security:
+		(see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_script_aufrufen )
+		To switch it off (as administrator)
+		get-Executionpolicy -list
+		set-ExecutionPolicy -scope CurrentUser RemoteSigned
+  
 	.SYNOPSIS
 		Generic Backup Script for the Oracle Database 
+		
 	.DESCRIPTION
 		Backup script read backup_config.xml and execute a full backup of the databae
+		
 	.PARAMETER argumet 1
 		DB backups the DB / Archivelogs / Metadata/ Export the user
 		ARCHIVE backup only the archivelogs ( if you like to backup for example every hour the archivelog to a other destination) 
+		
 	.COMPONENT
 		Oracle Backup Script
+		
 	.EXAMPLE
 		Backup the Database
 		.\runBackup.ps1 DB
 		Backup only the archivelogs
 		.\runBackup.ps1 ARCHIVE
+
 #>
 
 # Enviroment
@@ -36,21 +49,23 @@ write-host "Info -- start the Script in the path $scriptpath"  -ForegroundColor 
 cd  $scriptpath
 
 # Script path
+# FIX?
 $scriptpath=get-location
 
-################################################################################
+#==============================================================================
 
 $config_xml="$scriptpath\conf\backup_config.xml"
 
 # read Configuration
 $backupconfig= [xml] ( get-content $config_xml)
 
-################################################################################
+#==============================================================================
 # read Helper Functions
 .  $scriptpath\lib\backuplib.ps1
 #
 .  $scriptpath\lib\oraclebackuplib.ps1
-
+#
+.  $scriptpath\lib\oracle_dotnet_connect.ps1
 
 ################ Semaphore Handling ########################################### 
 # Only one script can run at one time
@@ -61,7 +76,7 @@ $backupconfig= [xml] ( get-content $config_xml)
 $sem = New-Object System.Threading.Semaphore(1, 1, "ORALCE_BACKUP")
 
 
-################################################################################
+#==============================================================================
 
 # move old logfile to .0 
 # if log is older then today, if not append
@@ -71,13 +86,13 @@ $starttime=get-date
 # Numeric Day of the week
 $day_of_week=[int]$starttime.DayofWeek 
 $logfile_name=$scriptpath.path+"\log\DB_BACKUP_"+$day_of_week+".log"
-	
-local-print  -Text "Info -- Use Logfile Name::",	$logfile_name
+	 
+write-host "Info -- Use Logfile Name :: $logfile_name"  -ForegroundColor "green"	
 
 # Log
 local-clear-logfile -log_file $logfile_name
 
-###############################################################################
+#==============================================================================
 # Check for unencrypted passwords
 local-print  -Text "Info -- Check for unencrypted passwords"
 
@@ -94,11 +109,11 @@ else {
 }
 
 #
-###############################################################################
+#==============================================================================
 
 ################## Backup the Database ########################################
 
-###############################################################################
+#==============================================================================
 # start the Backup
 # Parameter: [DB|ARCHIVE]
 # DB 		=> Backup Database
@@ -300,7 +315,7 @@ catch {
 	local-log-event -logtype "Error" -logText "Error- -- Failed to create backup: The error was: $_."				
 }
 finally {
-			###############################################################################
+			#==============================================================================
 			# Exit the semaphore
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 			local-print  -Text "Info -- relase the Semaphore ORALCE_BACKUP"
@@ -311,8 +326,8 @@ finally {
 				local-print -Text "Error -- Faild to relase the emaphore ORALCE_BACKUP - not set or Backup not started?"	 -ForegroundColor "red"			
 			}
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
-			###############################################################################
+			#==============================================================================
 }
 
-#######################################################################################
+#==============================================================================#######
 

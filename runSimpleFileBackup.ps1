@@ -1,6 +1,9 @@
-##################  generic Backup Script for file backups ###############################
-# 
-#########################################################################################################
+#==============================================================================
+# Author: Gunther Pippèrr ( http://www.pipperr.de )
+# Desc:   generic Backup Script for file backups
+# Date:   01.September 2012
+# Site:   http://orapowershell.codeplex.com
+#==============================================================================
 <#
 
   Security:
@@ -25,7 +28,7 @@
 #>
 
 
-##########
+#==============================================================================
 # Enviroment
 
 $Invocation = (Get-Variable MyInvocation -Scope 0).Value
@@ -54,7 +57,7 @@ $day_of_week=[int]$starttime.DayofWeek
 	
 $logfile_name=$scriptpath.path+"\log\FILE_BACKUP_"+$day_of_week+".log"
 	
-local-print  -Text "Info -- Use Logfile Name::",	$logfile_name
+write-host "Info -- Use Logfile Name :: $logfile_name"  -ForegroundColor "green"
 
 # Log
 local-clear-logfile -log_file $logfile_name
@@ -71,18 +74,18 @@ $sem = New-Object System.Threading.Semaphore(1, 1, "FILE_BACKUP")
 ###############################################################################
 
 
-################################################################################
+#==============================================================================
 
 # read Configuration
 $backupconfig= [xml] ( get-content $config_xml)
 
-################################################################################
+#==============================================================================
 
 $starttime=get-date
 # Numeric Day of the week
 $day_of_week=[int]$starttime.DayofWeek 
 
-#############
+#==============================================================================
 #Prepare the backup
 ##
 function prepareBackup {
@@ -102,7 +105,7 @@ Process {
 End {}
 }
 
-#############
+#==============================================================================
 #Do the backuo
 ##
 function doBackup{
@@ -158,7 +161,7 @@ function doBackup{
 	local-print  -Text "Info -- finish backup of the files from $vss_vol_drive_letter"
 }
 
-#############
+#==============================================================================
 #end the backup
 ##
 function endBackup {
@@ -218,7 +221,7 @@ catch {
 	local-log-event -logtype "Error" -logText "Error -- Failed to create backup: The error was: $_."				
 }
 finally {
-			###############################################################################
+			#==============================================================================
 			# Exit the semaphore
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 			local-print  -Text "Info -- relase the Semaphore FILE_BACKUP"
@@ -229,7 +232,7 @@ finally {
 				local-print -Text "Error -- Faild to relase the emaphore FILE_BACKUP - not set or Backup not started?"	-ForegroundColor "red"			
 			}
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
-			###############################################################################
+			#==============================================================================
 }
 
 

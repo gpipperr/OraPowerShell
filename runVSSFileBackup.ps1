@@ -1,6 +1,13 @@
-##################  generic Backup Script to use VSS to backup open files ###############################
+#==============================================================================
+# Author: Gunther Pippèrr ( http://www.pipperr.de )
+# Desc:   generic Backup Script to use VSS to backup open files
+# Date:   01.September 2012
+# Site:   http://orapowershell.codeplex.com
+#==============================================================================
+
+#===================generic Backup Script to use VSS to backup open files =====
 # see http://msdn.microsoft.com/en-us/library/aa384589(v=vs.85)
-#########################################################################################################
+#==============================================================================
 <#
 
   Security:
@@ -24,9 +31,9 @@
 		
 #>
 
-################################################################################
+#==============================================================================
 # Enviroment
-################################################################################
+#==============================================================================
 
 # Path
 
@@ -44,7 +51,7 @@ $config_xml="$scriptpath\conf\backup_file_config.xml"
 # read Helper Functions
 .  $scriptpath\lib\backuplib.ps1
 
-################################################################################
+#==============================================================================
 # move old logfile to .0 
 # if log is older then today, if not append
 # we have per day one logfile from this week and from the last week the .0 logs
@@ -55,7 +62,7 @@ $day_of_week=[int]$starttime.DayofWeek
 
 $logfile_name=$scriptpath.path+"\log\VSSFILE_BACKUP_"+$day_of_week+".log"
 	
-local-print  -Text "Info -- Use Logfile Name::",	$logfile_name
+write-host "Info -- Use Logfile Name :: $logfile_name"  -ForegroundColor "green"	
 
 # Log
 local-clear-logfile -log_file $logfile_name
@@ -68,20 +75,18 @@ local-clear-logfile -log_file $logfile_name
 # Only on script can run at one time, 1 Resouce possilbe from 1 with the Name ORALCE_BACKUP
 $sem = New-Object System.Threading.Semaphore(1, 1, "VSS_BACKUP")
 
-################################################################################
-
-################################################################################
+#==============================================================================
 
 # read Configuration
 $backupconfig= [xml] ( get-content $config_xml)
 
-################################################################################
+#==============================================================================
 
 local-print  -Text "Info -- Check if other instance of a Backup script is running (over Semaphore VSS_BACKUP)"
 # Wait till the semaphore if free
 $sem.WaitOne() | out-null
 
-################################################################################
+#==============================================================================
 		
 $starttime=get-date
 # Numeric Day of the week
@@ -128,7 +133,7 @@ Process {
 End {}
 }
 
-#############
+#==============================================================================
 #Do the backuo
 ##
 function doBackup{
@@ -184,7 +189,7 @@ function doBackup{
 	local-print  -Text "Info -- finish backup of the files from $vss_vol_drive_letter"
 }
 
-#############
+#==============================================================================
 #end the backup
 ##
 function endBackup {

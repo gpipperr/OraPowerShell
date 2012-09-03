@@ -1,7 +1,16 @@
-###############################################################
+#==============================================================================
+# Author: Gunther Pippèrr ( http://www.pipperr.de )
+# Desc:   Profile for the Oracle Powershell enviroment
+# Date:   01.September 2012
+# Site:   http://orapowershell.codeplex.com
+#==============================================================================
+
+
+
+#==============================================================================
 # Set-AuthenticodeSignature $profile @(Get-ChildItem cert:\CurrentUser\My -codesigning)[0]
 #
-###############################################################
+#==============================================================================
 & {
  
   $wid=[System.Security.Principal.WindowsIdentity]::GetCurrent()
@@ -30,9 +39,13 @@ $Invocation = (Get-Variable MyInvocation -Scope 0).Value
 $scriptpath=Split-Path $Invocation.MyCommand.Path
 
 ###### Alias section
-set-alias setdb "$scriptpath\setdb.ps1"
+#set-alias setdb "$scriptpath\setdb.ps1" -Description "Set the Oracle Enviroment alias"
+####
+Import-Module "$scriptpath\setdb.psm1"
 ####
 
 cd $scriptpath
 
+
+ 
 ####
