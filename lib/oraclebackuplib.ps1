@@ -279,11 +279,11 @@ quit
 	$rman_script +=$CLF 
 	
 	# save the generated rman script to disk
-	Set-Content -Path "$scriptpath\generated.rman" -value $rman_script
+	Set-Content -Path "$scriptpath\generated\generated_rman.rman" -value $rman_script
 	
 	#start the backup script for this day
 	local-print  -Text "Info -- Start RMAN to start DB Backup"
-	& $ORACLE_HOME/bin/rman target "$rman_connect_string" nocatalog "@$scriptpath\generated.rman" 2>&1 | foreach-object { local-print -text "RMAN OUT::",$_.ToString() }
+	& $ORACLE_HOME/bin/rman target "$rman_connect_string" nocatalog "@$scriptpath\generated\generated_rman.rman" 2>&1 | foreach-object { local-print -text "RMAN OUT::",$_.ToString() }
 
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
@@ -311,11 +311,11 @@ quit
 		$rman_script +="backup spfile tag `"spfile_backup_disk`" format '"+$check_path+"\spfile_%U';"+ $CLF 
 		$rman_script +="CONFIGURE BACKUP OPTIMIZATION OFF;"+ $CLF 
 		# save the file
-		Set-Content -Path "$scriptpath\generated_backup_flash.rman" -value $rman_script
+		Set-Content -Path "$scriptpath\generated\generated_backup_flash.rman" -value $rman_script
 		#
 		# Start RMAN to store the content of the flash_recovery_area to a local disk 
 		local-print  -Text "Info -- Start RMAN to export Flash Recovery Area to Disk"
-		& $ORACLE_HOME/bin/rman target "$rman_connect_string" nocatalog "@$scriptpath\generated_backup_flash.rman" 2>&1 | foreach-object { local-print -text "RMAN OUT::",$_.ToString() }
+		& $ORACLE_HOME/bin/rman target "$rman_connect_string" nocatalog "@$scriptpath\generated\generated_backup_flash.rman" 2>&1 | foreach-object { local-print -text "RMAN OUT::",$_.ToString() }
 		#
 		$endtime=get-date
 		$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
@@ -357,7 +357,7 @@ function local-backup-db-metainfo {
 	$sql_script+="exit;"+ $CLF
 	
 	# save the file
-	Set-Content -Path "$scriptpath\generated_create_control_spfile.sql" -value $sql_script
+	Set-Content -Path "$scriptpath\generated\generated_create_control_spfile.sql" -value $sql_script
 	
 	# Call the script 
 	local-print  -Text "Info -- Start SQL*Plus to create TXT trace of control and TXT init.ora from spfile"
@@ -371,7 +371,7 @@ function local-backup-db-metainfo {
 		$sql_connect_string_sysdba=$sql_connect_string+" as sysdba"
 	}
 	
-	& "$ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string_sysdba" "@$scriptpath\generated_create_control_spfile.sql" 2>&1 | foreach-object { local-print -text "SQLPLUS OUT::",$_.ToString() }
+	& "$ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string_sysdba" "@$scriptpath\generated\generated_create_control_spfile.sql" 2>&1 | foreach-object { local-print -text "SQLPLUS OUT::",$_.ToString() }
 
 	#PatchLevel of the database
 	$software_inventory_backup=$backup_path+"\software_lsinventory_"+$dbname+"_"+$day_of_week+".log"
@@ -523,7 +523,7 @@ function local-backup-db-metainfo {
 		# use sqlplus
 		$metainfo_backup=$backup_path+"\db_meta_information_"+$dbname+"_"+$day_of_week+".log"
 		local-print  -Text "Info -- write the meta information as SQL*Plus Spool of DB into::",$metainfo_backup
-		& $ORACLE_HOME/bin/sqlplus "$sql_connect_string" "@$scriptpath\info.sql" "$metainfo_backup"  | out-null
+		& $ORACLE_HOME/bin/sqlplus "$sql_connect_string" "@$scriptpath\sql\info.sql" "$metainfo_backup"  | out-null
 	}
 	
 	$endtime=get-date
@@ -558,14 +558,20 @@ function local-backup-db-archive {
 	
 	##check Version of Database
 	# Must be on the first line!!
+	# fix if user is sys ...
 $isenterprise=@'
 set pagesize 0 
 set feedback off
-select count(*) from v_$version where banner like '%Enterprise%';
+select count(*) from v$version where banner like '%Enterprise%';
 quit
 '@| & "$ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string"
 	
-	$isenterprise=$isenterprise.Trim()
+	try {
+		$isenterprise=$isenterprise.Trim()
+	}
+	catch {
+		local-print  -ErrorText "Error - Connection Problem::" ,$isenterprise
+	}
 
 	local-print  -Text "Info -- check DB Version - Get 1 for EE and 0 for SE - Result is ::" ,$isenterprise
 
@@ -607,13 +613,11 @@ quit
 	$rman_script +=$CLF 
 	
 	# save the generated rman script to disk
-	Set-Content -Path "$scriptpath\generated_archive.rman" -value $rman_script
+	Set-Content -Path "$scriptpath\generated\generated_archive.rman" -value $rman_script
 	
 	#start the backup script for this day
-	& $ORACLE_HOME/bin/rman target "$rman_connect_string" nocatalog "@$scriptpath\generated_archive.rman" 2>&1 | foreach-object { local-print -text "RMAN OUT::",$_.ToString() }
+	& $ORACLE_HOME/bin/rman target "$rman_connect_string" nocatalog "@$scriptpath\generated\generated_archive.rman" 2>&1 | foreach-object { local-print -text "RMAN OUT::",$_.ToString() }
 	
-	# Generate RMAN Script
-	# Start RMAN Backup
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	local-print  -Text "Info -- Finish Backup Archivelogs of DB::" ,$DB.dbname ,"at::", $endtime, " - Duration::"  ,$duration  ,"Minutes"  -ForegroundColor "yellow"
@@ -700,11 +704,11 @@ function local-backup-db-user {
 			$sql_script+="exit;"+ $CLF
 			
 			# save the file
-			Set-Content -Path "$scriptpath\generated_check_export_dir.sql" -value $sql_script
+			Set-Content -Path "$scriptpath\generated\generated_check_export_dir.sql" -value $sql_script
 			
 			# Call the script 
 			local-print  -Text "Info -- Start SQL*Plus to check the export directory"
-			& "$ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string" "@$scriptpath\generated_check_export_dir.sql" 2>&1 | foreach-object { local-print -text "SQLPLUS OUT::",$_.ToString() }
+			& "$ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string" "@$scriptpath\generated\generated_check_export_dir.sql" 2>&1 | foreach-object { local-print -text "SQLPLUS OUT::",$_.ToString() }
 			
 			#which user should do the export, if attribute use_sys_account is true use / as sysdba
 			$connect_string="'$sql_connect_string'"
@@ -794,11 +798,11 @@ function local-backup-db-user {
 			$dp_script+="FILESIZE="+(1024*1024*1024*10)+$CLF
 			
 			# save the generated rman script to disk
-			Set-Content -Path "$scriptpath\generated_export.dp" -value $dp_script
+			Set-Content -Path "$scriptpath\generated\generated_export.dp" -value $dp_script
 						
 			#start the export of the data
 			if ( $user_can_connect -eq "true" ) {	
-				& "$ORACLE_HOME/bin/expdp" "$connect_string" "parfile=$scriptpath\generated_export.dp" 2>&1 | foreach-object { local-print -text "EXPDP OUT::",$_.ToString().replace($CLF," ") }
+				& "$ORACLE_HOME/bin/expdp" "$connect_string" "parfile=$scriptpath\generated\generated_export.dp" 2>&1 | foreach-object { local-print -text "EXPDP OUT::",$_.ToString().replace($CLF," ") }
 				
 				# zip the result 
 				$compress_export=$dB.db_user_export.compress_export.ToString()
