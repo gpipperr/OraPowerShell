@@ -1,7 +1,48 @@
-########################################
-# Set-AuthenticodeSignature .\setdb.ps1 @(Get-ChildItem cert:\CurrentUser\My -codesigning)[0]
-########## Enviroment      ##############
+################## set Oracle Enviroment  ###############################
+<#
 
+	Security:  (see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_script_aufrufen )
+  
+	To switch it off (as administrator)
+  
+	get-Executionpolicy -list
+	set-ExecutionPolicy -scope CurrentUser RemoteSigned
+  
+	or sign code! 
+  
+	Set-AuthenticodeSignature .\setdb.ps1 @(Get-ChildItem cert:\CurrentUser\My -codesigning)[0]
+
+	to use as cmd-let set-alias setdb D:\OraPowerShellCodePlex\setdb.ps1 
+ 
+	.NOTES
+		Created: 09.2012 : Gunther Pippèrr (c) http://www.pipperr.de				
+	.SYNOPSIS
+		Set the enviroment foOracle Database 
+	.DESCRIPTION
+		Set the enviroment in the powershell to ot the right DB enviroment
+	.PARAMETER argumet 1
+		Number of the Oracle Home to have a quick select
+	.COMPONENT
+		Oracle Backup Script
+	.EXAMPLE
+		set the enviroment
+		setdb 
+		set the enviroment to the first db 
+		setdb 1
+#>
+
+###### Read the configuration file 
+
+$Invocation = (Get-Variable MyInvocation -Scope 0).Value
+$scriptpath=Split-Path $Invocation.MyCommand.Path
+
+$config_xml="$scriptpath\conf\oracle_homes.xml"
+
+# read Configuration
+$oraconfig= [xml] ( get-content $config_xml)
+
+
+###### Store the old Path in the Backkground
 try {
 	set-item -path ENV:OLD_PATH -value $ENV:PATH
 }
@@ -9,12 +50,14 @@ catch {
 	"Old path is still set"
 }
 
+# set the SQLPath Variable
 try {
-	set-item -path env:SQLPATH -value "D:\scripts"
+	set-item -path env:SQLPATH -value "$scriptpath\sql"
 }
 catch {
-	new-item -path env: -name SQLPATH -value "D:\scripts"
+	new-item -path env: -name SQLPATH -value "$scriptpath\sql"
 }
+
 
 ########## The Oracle Homes #############
 # Array handling http://ss64.com/ps/syntax-arrays.html
@@ -23,14 +66,10 @@ catch {
 $ORACLE_HOME =@()
 $ORACLE_HOME_NAME =@()
 
-$ORACLE_HOME +="D:\oracle\product\11.2.0.3\client_32bit"
-$ORACLE_HOME_NAME +="Client 32Bit"
-
-$ORACLE_HOME +="D:\oracle\product\11.2.0.3\client_64bit"
-$ORACLE_HOME_NAME +="Client 64Bit"
-
-$ORACLE_HOME +="D:\oracle\product\11.2.0.3\dbhome_1"
-$ORACLE_HOME_NAME +="DB Home"
+foreach ($orahome in  $oraconfig.oracle_homes.oracle_home ){
+	$ORACLE_HOME +=$orahome.path.ToString()
+	$ORACLE_HOME_NAME +=$orahome.oraname.ToString()
+}
 
 #######################################
 
@@ -49,7 +88,7 @@ foreach ($H in $ORACLE_HOME_NAME ) {
 
 write-host "-------------------------------------" -ForegroundColor "yellow"
 
-$title   = "Set the Oracle Enviroment"
+$title   = "Set the Oracle Enviroment V1.1"
 $message = "Please choose the Oracle Enviromen you like to use"
 
 $result = $host.ui.PromptForChoice($title, $message, [System.Management.Automation.Host.ChoiceDescription[]] $options, 0) 

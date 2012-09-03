@@ -26,6 +26,13 @@
 $d = get-Date -f dd.M.yyy
 "Welcome the the Power Shell started :: " + $d
 
+$Invocation = (Get-Variable MyInvocation -Scope 0).Value
+$scriptpath=Split-Path $Invocation.MyCommand.Path
+
 ###### Alias section
-set-alias setdb D:\powershell\setdb.ps1
+set-alias setdb "$scriptpath\setdb.ps1"
+####
+
+cd $scriptpath
+
 ####
