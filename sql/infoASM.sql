@@ -1,3 +1,10 @@
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   spool metainfos from the database (backup!)
+-- Date:   01.September 2012
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
+
 spool &1
 
 spool 

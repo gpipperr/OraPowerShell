@@ -1,3 +1,11 @@
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   Status all Instances
+-- Date:   01.September 2012
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
+
+
 ttitle left  "Status all Instances" skip 2
 column inst_id format 9
 column status  format A8
