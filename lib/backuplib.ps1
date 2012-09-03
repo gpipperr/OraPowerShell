@@ -1,14 +1,21 @@
-######### Library for the backup scripts ##########
+#==============================================================================
+# Author: Gunther Pippèrr ( http://www.pipperr.de )
+# Desc:   Library for the backup scripts
+# Date:   01.September 2012
+# Site:   http://orapowershell.codeplex.com
+#==============================================================================
+
 <#
 
-  Security:
-  (see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_script_aufrufen )
-  To switch it off (as administrator)
-  get-Executionpolicy -list
-  set-ExecutionPolicy -scope CurrentUser RemoteSigned
+  
   
 	.NOTES
-		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de				
+		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de			
+		Security:
+			(see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_script_aufrufen )
+			To switch it off (as administrator)
+			get-Executionpolicy -list
+			set-ExecutionPolicy -scope CurrentUser RemoteSigned		
 	.SYNOPSIS
 		Generic functions for backup
 	.DESCRIPTION
@@ -24,7 +31,7 @@ Set-Variable CLF "`r`n" -option constant
 # create with the option AllScpe to hava a global variable!
 Set-Variable backup_logfile "DB_BACKUP" -option AllScope
 
-#################################################
+#==============================================================================
 # get the location of the logfile
 ##
 
@@ -38,21 +45,21 @@ function local-set-logfile {
     $backup_logfile=$logfile
 }
 
-#################################################
+#==============================================================================
 # get the name of the eventlog
 # possible envent logs Get-EventLog -list
 ##
 function local-get-eventlog-name {
 	return "Application"
 }
-#################################################
+#==============================================================================
 # get the name of log source for the event log
 ##
 function local-get-eventlog-source {
 	return "ORA_BACKUP"
 }
 
-###################################################
+#==============================================================================
 # clear logfile
 ##
 function local-clear-logfile {
@@ -83,7 +90,7 @@ param (
 	}
 }
 
-###################################################
+#==============================================================================
 # Helper Funktion to write logfile and display message
 ##
 function local-print{
@@ -125,7 +132,7 @@ function local-print{
 }
 
 
-###################################################
+#==============================================================================
 # if you like to log to the eventlog you have to register the event id
 # This must be done as Administrator!
 # http://msdn.microsoft.com/de-de/library/system.diagnostics.eventlog.aspx
@@ -146,7 +153,7 @@ function local-register-eventlog {
 	 local-print -text "Info --Event Source::",$log_source,"Event log::",$event_log,"still registered"
 	}	
 }
-###################################################
+#==============================================================================
 # deregister the eventlog Source
 #  to delete a custom event log use  [system.Diagnostics.EventLog]::Delete("Anwendung")
 ####
@@ -166,7 +173,7 @@ function local-deregister-eventlog {
 	}
 }
 
-###################################################
+#==============================================================================
 # write to the eventlog
 #  to register the event source !!
 # all types with [Enum]::GetValues([System.Diagnostics.EventLogEntryType])
@@ -220,7 +227,7 @@ function local-log-event {
 } 
 
 
-###################################################
+#==============================================================================
 # source: http://msdn.microsoft.com/en-us/library/system.runtime.interopservices.marshal.securestringtocotaskmemunicode.aspx
 ##
 function local-read-secureString {
@@ -237,7 +244,7 @@ function local-read-secureString {
 }
 
 
-#################################################
+#==============================================================================
 # check if a path exists, if not create the path
 ##
 
@@ -268,7 +275,7 @@ function local-check-dir {
 }	
 	
 
-###################################################
+#==============================================================================
 # search in XML the password and decrypt the password
 # for this local maschine
 # return 0 if nothing has changed
@@ -307,7 +314,7 @@ function local-encryptXMLPassword {
 }
 
 
-#####################
+#==============================================================================
 # Wrapper to call robocopy
 ##
 
@@ -338,7 +345,7 @@ param ( $files )
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 }
 
-#############
+#==============================================================================
 #Save data over robocopy 
 ##
 
@@ -393,6 +400,6 @@ function rcopydata{
 	
 	local-print  -Text "Info -- finish backup of the files"
 }
-###############################################################################
+#==============================================================================
 
 
