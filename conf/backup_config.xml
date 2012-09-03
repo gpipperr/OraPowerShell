@@ -34,7 +34,7 @@
       <use_direct_connnect_for_sys>false</use_direct_connnect_for_sys>
       <!-- if false use the following nls and user settings ot connect to the database -->
       <tns_alias>gpi</tns_alias>
-      <username password="01000000d08c9ddf0115d1118c7a00c04fc297eb0100000058f977ee2b4df048b7579e226b356a3200000000020000000000106600000001000020000000f455557ec1eb4390d19a931ff4165470cac312a1309ffe4a80df3af12c763ea1000000000e8000000002000020000000346a5e41e0959468e05e1bf392ad329d40d67de0856baec32de7bc240b67d2d910000000da0a20cd166f0a90a7b89d3f3f64e79340000000630333fdb07c208c7e53041336830a66b8c656ba672c078b33ce6d356b79bb9ac0b281712df775e83bf4fbd1b9b9775149495a5b8265bb49bf23beb19cf50128" encrypt="true" zertifikat="false">backupuser</username>
+      <username password="01000000d08c9ddf0115d1118c7a00c04fc297eb0100000058f977ee2b4df048b7579e226b356a3200000000020000000000106600000001000020000000f455557ec1eb4390d19a931ff4165470cac312a1309ffe4a80df3af12c763ea1000000000e8000000002000020000000346a5e41e0959468e05e1bf392ad329d40d67de0856baec32de7bc240b67d2d910000000da0a20cd166f0a90a7b89d3f3f64e79340000000630333fdb07c208c7e53041336830a66b8c656ba672c078b33ce6d356b79bb9ac0b281712df775e83bf4fbd1b9b9775149495a5b8265bb49bf23beb19cf50128" encrypt="true" certificate="false">backupuser</username>
       <!-- Language of messages - charset -->
       <nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
     </nls_settings>
@@ -89,7 +89,7 @@
         <!-- if use_sys_account = false we will use the useracount to export the data, if true wie use the nls_settings of the DB section -->
         <!-- filter not jet implemented - expdump filter to include/exclude objects -->
         <!-- tns_alias TNSnames.ora entry to connect to the database if use_sys_account = false -->
-        <username filter="*" password="01000000d08c9ddf0115d1118c7a00c04fc297eb0100000058f977ee2b4df048b7579e226b356a3200000000020000000000106600000001000020000000ebd2dae1252288d0fca9addb9301897a3c08796e6e2fa67668e613be7f7f0a04000000000e8000000002000020000000780e637676f4dcfbb6da920a52d3a9f2c5c53911128e4db57b2fab2478037c6c1000000065cd9e41bb885d6a497f21d160e2ffe740000000d8efda7438e094c0bd06704e6aaae4c49b63b10f9c6ea153f4c77c5189ec2c6c0b731ac659b47d7b89ca5ea190a1e8af86cec8dca86b0d36fd4765af4865486f" encrypt="true" use_sys_account="true" tns_alias="gpi" zertifikat="false">scott</username>
+        <username filter="*" password="01000000d08c9ddf0115d1118c7a00c04fc297eb0100000058f977ee2b4df048b7579e226b356a3200000000020000000000106600000001000020000000ebd2dae1252288d0fca9addb9301897a3c08796e6e2fa67668e613be7f7f0a04000000000e8000000002000020000000780e637676f4dcfbb6da920a52d3a9f2c5c53911128e4db57b2fab2478037c6c1000000065cd9e41bb885d6a497f21d160e2ffe740000000d8efda7438e094c0bd06704e6aaae4c49b63b10f9c6ea153f4c77c5189ec2c6c0b731ac659b47d7b89ca5ea190a1e8af86cec8dca86b0d36fd4765af4865486f" encrypt="true" use_sys_account="true" tns_alias="gpi" certificate="false">scott</username>
       </user>
     </db_user_export>
   </db>

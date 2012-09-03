@@ -34,7 +34,7 @@
       <use_direct_connnect_for_sys>true</use_direct_connnect_for_sys>
       <!-- if false use the following nls and user settings ot connect to the database -->
       <tns_alias>gpi</tns_alias>
-      <username password="system" encrypt="false" zertifikat="false">backupuser</username>
+      <username password="system" encrypt="false" certificate="false">backupuser</username>
 	  <!-- Language of messages - charset -->
 	  <nls_lang>GERMAN_GERMANY.UTF8</nls_lang>
     </nls_settings>
@@ -89,7 +89,7 @@
 		<!-- if use_sys_account = false we will use the useracount to export the data, if true wie use the nls_settings of the DB section -->
 		<!-- filter not jet implemented - expdump filter to include/exclude objects -->
 		<!-- tns_alias TNSnames.ora entry to connect to the database if use_sys_account = false -->
-        <username filter="*" password="tiger"   encrypt="false" use_sys_account="true" tns_alias="gpi" zertifikat="false" >scott</username>        
+        <username filter="*" password="tiger"   encrypt="false" use_sys_account="true" tns_alias="gpi" certificate="false" >scott</username>        
 	</user>
     </db_user_export>
   </db>
