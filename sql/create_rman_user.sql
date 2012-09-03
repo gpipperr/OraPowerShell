@@ -1,25 +1,25 @@
-CREATE USER backupuser IDENTIFIED BY system DEFAULT TABLESPACE users TEMPORARY TABLESPACE TEMP;
-GRANT CONNECT, RESOURCE, RECOVERY_CATALOG_OWNER TO backupuser;
-grant select on v_$instance TO backupuser;
-grant select on v_$version TO backupuser;
-grant select on DBA_DIRECTORIES to backupuser;
-grant create any DIRECTORY to backupuser;
-grant EXP_FULL_DATABASE  to backupuser;
-grant ALTER DATABASE to backupuser;
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   create the user to do Oracle Backup wiht an other user then sys
+-- Date:   01.September 2012
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
 
+--- Create user
+create user backupuser identified by system default tablespace users temporary tablespace temp;
 
--- FIX 
---SQLPLUS OUT:: CREATE pfile='d:\oracle\flash_recovery_area\g
---SQLPLUS OUT:: *
---SQLPLUS OUT:: FEHLER in Zeile 1:
---SQLPLUS OUT:: ORA-01031: Nicht ausreichende Berechtigungen
-
+--- grant roles  
+grant connect, resource, recovery_catalog_owner to backupuser;
+grant create any directory to backupuser;
+grant exp_full_database to backupuser;
+grant alter database to backupuser;
 grant sysdba to backupuser;
 
----
-
+--- objects
 grant select on sys.registry$history to backupuser
-
+grant select on v_$instance to backupuser;
+grant select on v_$version to backupuser;
+grant select on dba_directories to backupuser;
 ---
 
 

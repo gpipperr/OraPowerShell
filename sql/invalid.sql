@@ -1,3 +1,10 @@
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   show invaild objects in the database
+-- Date:   01.September 2012
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
+
 ttitle center "Invaild Objects in the database" SKIP 2
  
 column owner format a10
