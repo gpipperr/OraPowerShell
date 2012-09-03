@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<oracle_homes>
+	<!-- Language Settings -->
+	<nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
+	<!-- Path for SQL*Plus to sql Scripts -->
+	<sqlpath>D:\OraPowerShellCodePlex\sql</sqlpath>	
+	<!-- Oracle Hombe -->
+	<oracle_home>
+		<!-- Path to the Oracle Home -->
+		<path>D:\oracle\11.2.0.3\grid</path>
+		<!-- Name of the Oracle Home -->
+		<oraname>ASM</oraname>
+		<!-- add to selection list -->
+		<enabled>false</enabled>
+		<!-- Default selection -->
+		<default>false</default>
+	</oracle_home>	
+	<oracle_home>
+		<path>D:\oracle\product\11.2.0.3\client_32bit</path>
+		<oraname>Client 32bit</oraname>
+		<enabled>true</enabled>
+		<default>false</default>
+	</oracle_home>
+	<oracle_home>
+		<path>D:\oracle\product\11.2.0.3\client_64bit</path>
+		<oraname>Client 63bit</oraname>
+		<enabled>true</enabled>
+		<default>false</default>		
+	</oracle_home>
+	<oracle_home>
+		<path>D:\oracle\product\11.2.0.3\dbhome_1</path>
+		<oraname>Local DB Home</oraname>
+		<enabled>true</enabled>
+		<default>false</default>
+	</oracle_home>
+</oracle_homes>	
+
