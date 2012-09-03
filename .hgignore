@@ -1,0 +1,15 @@
+syntax: glob
+
+# no old logfiles
+*.log
+
+# no auto generated files
+generated_*
+
+
+# no zip lib
+*.dll
+PowershellZip.dll-help.xml
+
+
+

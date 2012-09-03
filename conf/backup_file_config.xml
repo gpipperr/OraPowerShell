@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- File backup configuration Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de -->
+<backup>
+   <!-- Name of the drive --> 
+	<volume>
+		<!-- Name of the volume -->
+		<name>DDATA</name>
+		<!-- Drive letter -->
+		<driveletter>d:</driveletter>
+		<!-- Drive letter to use for the shadow copy -->
+		<vss_driveletter>y:</vss_driveletter>
+		<!-- use VSS feature -->
+		<use_vss>false</use_vss>
+		<!-- Definitions of the folder structure -->
+	    <folder>
+			<source>D:\Daten\martina</source>
+			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\pluto\d\daten\martina</target>
+			<!-- if the share needs to be connected! -->
+			<target_share>\\Fritz!nas\fritz.nas</target_share>
+			<robocopy_feature></robocopy_feature>
+		</folder>
+		<folder>
+			<source>D:\Daten\gunther\DigiCamBilder</source>
+			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\pluto\d\daten\gunther\DigiCamBilder</target>
+			<!-- if the share needs to be connected! -->
+			<target_share >\\Fritz!nas\fritz.nas</target_share>
+			<robocopy_feature></robocopy_feature>
+		</folder>			
+	</volume>
+	<volume>
+		<!-- Name of the volume -->
+		<name>CDATA</name>
+		<!-- Drive letter -->
+		<driveletter>C:</driveletter>
+		<!-- Drive letter to use for the shadow copy -->
+		<vss_driveletter>x:</vss_driveletter>
+		<!-- use VSS feature -->
+		<use_vss>false</use_vss>
+		<!-- Definitions of the folder structure -->
+	    <folder>
+			<source>C:\Users\mpipperr\Desktop</source>
+			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\pluto\C\Users\mpipperr\Desktop</target>
+			<!-- if the share needs to be connected! -->
+			<target_share>\\Fritz!nas\fritz.nas</target_share>
+			<robocopy_feature></robocopy_feature>
+		</folder>		
+	</volume>	
+</backup>

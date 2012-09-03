@@ -1,0 +1,38 @@
+ttitle center "Invaild Objects in the database" SKIP 2
+ 
+column owner format a10
+column object_type format a14
+ 
+select owner
+      ,object_type
+          ,count(*)  as anzahl
+from all_objects 
+where status!='VALID' 
+group by rollup (owner,object_type)
+/
+ttitle off
+
+prompt "List of invalid indexes"
+
+select index_name,status
+  from all_indexes 
+where status not in ('VALID', 'N/A')
+/
+
+ttitle off
+prompt "List of invalid Objects"
+select 'desc '||decode (owner,'PUBLIC','',owner||'.')||object_name as TOUCH_ME
+  from all_objects 
+where status!='VALID' 
+/
+ 
+prompt "delete Script for invalid synonym - synonym points on an not existing object"
+SELECT 'drop '||decode (s.owner,'PUBLIC','PUBLIC SYNONYM ','SYNONYM '||s.owner||'.')||s.synonym_name||';'  as DELETE_ME
+FROM dba_synonyms  s
+WHERE table_owner NOT IN('SYSTEM','SYS')
+  AND( db_link IS NULL or db_link ='PUBLIC')
+  AND NOT EXISTS
+     (SELECT  1
+      FROM dba_objects o
+      WHERE decode (s.table_owner,'PUBLIC',o.owner,s.table_owner)=o.owner
+      AND s.table_name=o.object_name);
