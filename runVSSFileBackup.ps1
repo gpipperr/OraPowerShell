@@ -126,9 +126,9 @@ Process {
 		$vss_script+="LIST shadows all"+$CLF
 		
 		# save the generated script to disk
-		Set-Content -Path "$scriptpath\vss_generated_prepare.vss" -value $vss_script
+		Set-Content -Path "$scriptpath\generated\vss_generated_prepare.vss" -value $vss_script
 		# create  copy
-		& 	"$env:SystemRoot\system32\diskshadow.exe" -s "$scriptpath\vss_generated_prepare.vss"  2>&1 | foreach-object { local-print -text "VSS OUT::",$_.ToString() }
+		& 	"$env:SystemRoot\system32\diskshadow.exe" -s "$scriptpath\generated\vss_generated_prepare.vss"  2>&1 | foreach-object { local-print -text "VSS OUT::",$_.ToString() }
 	}
 End {}
 }
@@ -206,9 +206,9 @@ function endBackup {
 	$vss_script+="LIST shadows all"+$CLF
 
 	# save the generated script to disk
-	Set-Content -Path "$scriptpath\vss_generated_finish.vss" -value $vss_script
+	Set-Content -Path "$scriptpath\generated\vss_generated_finish.vss" -value $vss_script
     # start the script
-    & 	"$env:SystemRoot\system32\diskshadow.exe" -s "$scriptpath\vss_generated_finish.vss"  2>&1 | foreach-object { local-print -text "VSS OUT::",$_.ToString() }
+    & 	"$env:SystemRoot\system32\diskshadow.exe" -s "$scriptpath\generated\vss_generated_finish.vss"  2>&1 | foreach-object { local-print -text "VSS OUT::",$_.ToString() }
 	
 	# check if for this volume a other snapshot exits
 	#http://msdn.microsoft.com/en-us/library/windows/desktop/aa389391(v=vs.85).aspx
@@ -227,10 +227,10 @@ function endBackup {
 		#http://technet.microsoft.com/de-de/library/cc754915(v=ws.10).aspx
 		$vss_script="delete shadows volume "+$volume_drive_letter+""+$CLF		
 		# save the generated script to disk
-		Set-Content -Path "$scriptpath\vss_generated_clean.vss" -value $vss_script
+		Set-Content -Path "$scriptpath\generated\vss_generated_clean.vss" -value $vss_script
 		# start the script
 		local-print  -Text "Error -- delete all copy for volumen::",$volume_drive_letter -ForegroundColor "red"	
-		& 	"$env:SystemRoot\system32\diskshadow.exe" -s "$scriptpath\vss_generated_clean.vss"  2>&1 | foreach-object { local-print -text "VSS OUT::",$_.ToString() }
+		& 	"$env:SystemRoot\system32\diskshadow.exe" -s "$scriptpath\generated\vss_generated_clean.vss"  2>&1 | foreach-object { local-print -text "VSS OUT::",$_.ToString() }
 	}
 	else {
 		local-print  -Text "Info -- All shadow copies are cleaned"

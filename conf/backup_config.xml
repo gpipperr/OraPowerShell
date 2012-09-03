@@ -45,7 +45,7 @@
     <!-- copy the complete flash recovery Areas to the location of the parameter db_backup_dest -->
     <backup_flash_to_disk>false</backup_flash_to_disk>
     <!-- Backup Database and Archivelogs -->
-    <db_backup>false</db_backup>
+    <db_backup>true</db_backup>
     <!-- Backup Policy - how many backups to store on disk -->
     <db_backup_count_of>1</db_backup_count_of>
     <!--IF EE Edition you can use the pattern to define the leveles for each day (Day 1 = Monday, Day 7 = Sunday) -->
@@ -75,7 +75,7 @@
     <!-- Export the following users -->
     <db_user_export>
       <!-- if true do some exports  -->
-      <export>false</export>
+      <export>true</export>
 	  <!-- if true the export will be zipped -->
 	  <compress_export>false</compress_export>
       <!-- datapump Export Directory -->
