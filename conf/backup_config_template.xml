@@ -35,8 +35,8 @@
       <!-- if false use the following nls and user settings ot connect to the database -->
       <tns_alias>gpi</tns_alias>
       <username password="system" encrypt="false" certificate="false">backupuser</username>
-	  <!-- Language of messages - charset -->
-	  <nls_lang>GERMAN_GERMANY.UTF8</nls_lang>
+	  <!-- Language of messages - charset like GERMAN_GERMANY.UTF8 -->
+	  <nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
     </nls_settings>
     <!-- if db_backup_use_flash = true store only meta information and export in this location -->
     <db_backup_dest>d:\oracle\flash_recovery_area</db_backup_dest>
@@ -54,17 +54,15 @@
     <db_backup_incremental_policy>0,0,0,0,0,0,0</db_backup_incremental_policy>
 	<!-- if EE Edition parallel can be used 1-4 -->
 	<db_backup_channels>1</db_backup_channels>
-	<!-- if EE and BIG Tablespace portions if data for multiple channels -->
+	<!-- if EE and BIG Tablespace portions if data for multiple channels parameter can be false or a value like 5000M  -->
 	<db_backup_section_size>false</db_backup_section_size>
 	<!-- if EE using Backup Compressoin -->
 	<db_backup_compress>true</db_backup_compress>
-
    	<!-- Backup the Metainformation like the controlfile trace etc. -->
 	<!-- attribute use_dot_net= false => use sqlplus and sql spool , true => use .net Dll to create csv file -->
 	<!-- Oracle home for the DLL -->
 	<!-- only possilbe if the tns Alias in the nls_setting / user / password Section is valid -->
     <db_meta_info use_dot_net="true" dot_net_orcle_home="d:\oracle\product\11.2.0.3\client_64bit" >true</db_meta_info>
-
     <!-- Parameter for the archive only backup -->
 	<!-- if backup script is started wiht the parameter ARCHIVE - save only archivelogs if true-->
     <db_archive>true</db_archive>
@@ -93,11 +91,11 @@
 	</user>
     </db_user_export>
   </db>
-  <!-- next database -->
+  <!-- add the same DB section for the next database -->
   
   <!-- Extra File you like to copy to an other destination -->
   <files>
-	<copyfiles>true</copyfiles>
+	<copyfiles>false</copyfiles>
     <!-- Pair of directories to copy with robocopy -->
 	<pair>
 		<source_dir>d:\oracle\flash_recovery_area</source_dir>

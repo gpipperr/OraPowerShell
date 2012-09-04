@@ -38,49 +38,177 @@ function setdb {
 	param(
 		[int] $dbnr
 	)
-
+    #======== Helper
+	$liner= "---------------------------------------------------------"
  
-	###### Read the configuration file 
+	#======== Read the configuration file 
 
 	$Invocation = (Get-Variable MyInvocation -Scope 0).Value
 	$scriptpath=$Invocation.MyCommand.Module.ModuleBase
 	$config_xml="$scriptpath\conf\oracle_homes.xml"
-
-	# read Configuration
 	$oraconfig= [xml] ( get-content $config_xml)
 
 
-	###### Store the old Path in the Backkground
+	#======== Store the old Path in the Backkground
 	try {
-		set-item -path ENV:OLD_PATH -value $ENV:PATH
+		if ($ENV:OLD_PATH) {
+			# if exists do nothing
+		}
+		else {
+			set-item -path ENV:OLD_PATH -value $ENV:PATH
+		}
 	}
 	catch {
 		"Old path is still set"
 	}
 
-	# set the SQLPath Variable
+	#======== the SQLPath Variable
+	# if the path is not found use the default scriptpath/sql!
+	#
+	
+	$sqlpath=$oraconfig.oracle_homes.sqlpath.toString()
+	
+	if ( Test-Path  $sqlpath) { 
+	 # null
+	}
+	else {
+		$sqlpath="$scriptpath\sql"
+		write-host  -ForegroundColor "red" "Error -- Configuration of the SQLPATH is wrong - directory not extis :: using $scriptpath\sql as default"
+	}
+		
 	try {
-		set-item -path env:SQLPATH -value "$scriptpath\sql"
+		set-item -path env:SQLPATH -value $sqlpath
 	}
 	catch {
-		new-item -path env: -name SQLPATH -value "$scriptpath\sql"
+		new-item -path env: -name SQLPATH -value $sqlpath
 	}
 
+	
+	#========= TNSAdmin
+	
+	$tns_admin=$oraconfig.oracle_homes.tns_admin.toString()
+	
+	if ( Test-Path  $tns_admin) { 
+		try {
+			set-item -path env:TNS_ADMIN -value $sqlpath
+		}
+		catch {
+			new-item -path env: -name TNS_ADMIN -value $sqlpath
+		}
+	}
+	else {
+		write-host  -ForegroundColor "red" "Error -- Configuration of the tns_admin is wrong - directory not extis :: $tns_admin"
+	}		
+	
 
-	########## The Oracle Homes #############
+	#======== The Oracle Homes 
+	
 	# Array handling http://ss64.com/ps/syntax-arrays.html
 	# 
-
-	$ORACLE_HOME =@()
-	$ORACLE_HOME_NAME =@()
+	
+	$ORACLE_HOME_LIST =@()
+	$ORACLE_SID_LIST =@()
+	
+	$home_count=0
+	$home_selector_default=0
 
 	foreach ($orahome in  $oraconfig.oracle_homes.oracle_home ){
-		$ORACLE_HOME +=$orahome.path.ToString()
-		$ORACLE_HOME_NAME +=$orahome.oraname.ToString()
+		
+		$ignoreHome=$orahome.enabled.toString()
+		# show the home only if enabled!
+		if ($ignoreHome.equals("true")) {
+			
+			Write-host -ForegroundColor "green" $liner
+			
+			$oracle_home =$orahome.path.ToString()
+			$oracle_home_name =$orahome.oraname.ToString()
+					
+			Write-host -ForegroundColor "green"   "Oracle Home :: $oracle_home_name"
+			Write-host -ForegroundColor "green"   "Oracle Path :: $oracle_home"
+	
+			foreach ($dbsid in  $orahome.db.sid ){
+				$ORACLE_HOME_LIST +=$oracle_home
+				
+				$orasid=$dbsid.toString()								
+				if ($orasid.equals("false")) {
+					$orasid="set no SID"
+					$ORACLE_SID_LIST  +=""
+				}
+				else {
+					$ORACLE_SID_LIST  +=$orasid
+				}
+				$home_count+=1
+				Write-host -ForegroundColor "yellow"  "  + [$home_count]  $orasid " 				
+			}
+			Write-host -ForegroundColor "green" $liner
+		}
 	}
+	    
 
-	#######################################
+	#======== read the answer
+	$valid_answer="false"
+	do {
+		$home_selector=Read-Host "Please enter the number of the Oracle Home:"
+		$valid_answer="false"
+		
+		# check if the answer is in the range of the $home_count
+		try {
+			#$home_selector -match "^[\d\]+$"
+			if ($home_selector -match "^[0123456789]+$" ) {
+			    if ($home_selector -gt 0 ) {
+					if ($home_selector -lt $home_count+1 ){
+						$valid_answer="true"	
+					}
+				}					
+			}			
+		}
+		catch {
+			$valid_answer="false"			
+		}
+		if ($valid_answer.equals("false")) {
+			Write-host -ForegroundColor "red" "Please enter a vaild choise between 1 and $home_count !"
+		}
+	}
+	until ($valid_answer.equals("true"))
+	
+	$home_count=$home_selector-1
 
+	#======== set the enviroment
+	# Oracle Home
+	try {
+		set-item -path env:ORACLE_HOME -value $ORACLE_HOME_LIST[$home_count]
+	}
+	catch {
+		new-item -path env: -name ORACLE_HOME -value $ORACLE_HOME_LIST[$home_count]
+	}
+	# Oracle SID	
+	try {
+		set-item -path env:ORACLE_SID -value $ORACLE_SID_LIST[$home_count]
+	}
+	catch {
+		new-item -path env: -name ORACLE_SID -value $ORACLE_SID_LIST[$home_count]
+	}
+    # Path Variable
+	set-item -path ENV:PATH -value $ENV:OLD_PATH
+	$ora_bin=$ENV:ORACLE_HOME+"\bin;"
+	$ENV:PATH = $ora_bin+$ENV:PATH
+
+    #======== show the resut
+	write-host -ForegroundColor "green" $liner
+	write-host -ForegroundColor "green" "set the ORACLE_HOME to ::" $ENV:ORACLE_HOME 
+	write-host -ForegroundColor "green" "set the ORALCE_SID  to ::" $ENV:ORACLE_SID
+	write-host -ForegroundColor "green" $liner
+		
+
+	
+	Remove-Item variable:ORACLE_HOME_LIST
+	Remove-Item variable:ORACLE_SID_LIST
+	
+	#======== only for information
+	
+	<# 
+	Solution with System.Management.Automation.Host.ChoiceDescription
+	
 	$options = [System.Management.Automation.Host.ChoiceDescription[]]@()
 	$C=0
 	# Create the option Array
@@ -102,24 +230,8 @@ function setdb {
 	$result = $host.ui.PromptForChoice($title, $message, [System.Management.Automation.Host.ChoiceDescription[]] $options, 0) 
 
 	write-host "-------------------------------------" -ForegroundColor "yellow"
+	#>
 
-	try {
-		set-item -path env:ORACLE_HOME -value $ORACLE_HOME[$result]
-	}
-	catch {
-		new-item -path env: -name ORACLE_HOME -value $ORACLE_HOME[$result]
-	}
 
-	set-item -path ENV:PATH -value $ENV:OLD_PATH
-	$ora_bin=$ENV:ORACLE_HOME+"\bin;"
-	$ENV:PATH = $ora_bin+$ENV:PATH
-
-	write-host "set the ORACLE_HOME to ::"  $ENV:ORACLE_HOME
-
-	
-	Remove-Item variable:options
-	Remove-Item variable:c
-	Remove-Item variable:ORACLE_HOME
-	Remove-Item variable:ORACLE_HOME_NAME
 }
 

@@ -17,6 +17,8 @@
 			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\pluto\d\daten\martina</target>
 			<!-- if the share needs to be connected! -->
 			<target_share>\\Fritz!nas\fritz.nas</target_share>
+			<!-- Robocopy feature -->
+			<robocopy_feature><![CDATA[/S /W:0 /R:0 /B]]></robocopy_feature>
 			<robocopy_feature></robocopy_feature>
 		</folder>
 		<folder>
@@ -42,7 +44,8 @@
 			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\pluto\C\Users\mpipperr\Desktop</target>
 			<!-- if the share needs to be connected! -->
 			<target_share>\\Fritz!nas\fritz.nas</target_share>
-			<robocopy_feature></robocopy_feature>
+			<!-- Robocopy feature -->
+			<robocopy_feature><![CDATA[/S /W:0 /R:0 /B]]></robocopy_feature>
 		</folder>		
 	</volume>	
 </backup>

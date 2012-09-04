@@ -17,7 +17,7 @@
 			<target>\\srvbackup01\daten</target>
 			<!-- if the share needs to be connected! -->
 			<target_share>\\srvbackup01</target_share>
-			<!-- Robocopy feature -->
+			<!-- Robocopy feature not in use!-->
 			<robocopy_feature><![CDATA[/S /W:0 /R:0 /B]]></robocopy_feature>
 		</folder>
 		<folder>
@@ -47,6 +47,7 @@
 			<target_share>\\srvbackup02</target_share>
 			<!-- Robocopy feature -->
 			<robocopy_feature><![CDATA[/S /W:0 /R:0 /B]]></robocopy_feature>
+
 		</folder>			
 	</volume>	
 </backup>
