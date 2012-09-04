@@ -11,5 +11,7 @@ generated_*
 *.dll
 PowershellZip.dll-help.xml
 
-
-
+# not my local test configuration
+oracle_homes.xml
+backup_config.xml
+backup_file_config.xml
