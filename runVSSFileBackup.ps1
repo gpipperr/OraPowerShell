@@ -138,54 +138,16 @@ End {}
 ##
 function doBackup{
 		param (
-			$vss_vol_drive_letter = "X:"
+			 [String]   $vss_vol_drive_letter = "X:"
 			,[String[]] $soure_directories
 			,[String]   $target_directory
+			,[String]   $roptions
 		)
 	local-print  -Text "Info -- try to start the backup of the files from $vss_vol_drive_letter"
 	
-	# try to find robo copy
-	if (test-path((gc env:systemroot)+"\system32\RoboCopy.exe")) { 
-		$robocopy = (gc env:systemroot)+"\system32\RoboCopy.exe" 
-	}     
-	else { 
-        local-print   "Error -- Download a copy of RoboCopy and put in $env:systemroot\system32\" 
-		throw "Download a copy of RoboCopy and put in $env:systemroot\system32\" 
-	}    
-	#
-	$what = " /COPYALL /B /SEC /S" 
-	# /COPYALL :: COPY ALL file info 	
-	# /B :: copy files in Backup mode.  
-	# /SEC :: copy files with SECurity 
-	# /MIR :: MIRror a directory tree  
-	# /S :: subdirs 
- 
-	$options  =" /R:0 /W:0 "
-	#$options +=" /LOG:" +$scriptpath+"\ROBOCOPY_LOG_" +$day_of_week+ ".log "
-	#$options +=" /NFL /NDL /XF ROBOCOPY_LOG_" +$day_of_week+ ".log "
-	#$options +=" /XD 'Recycled' 'System Volume Information' " 
-	# /R:n :: number of Retries 
-	# /W:n :: Wait time between retries 
-	# /LOG :: Output log file 
-	# /NFL :: No file logging 
-	# /NDL :: No dir logging 
-	# /XF file [file]... :: eXclude Files matching given names/paths/wildcards. 
-	# /XD dirs [dirs]... :: eXclude Directories matching given names/paths. 
-	# /NP :: No percentage
-	
-    foreach ($s in $soure_directories) {
-	
-		$cmdline = $s+" "+$target_directory+" "+ $what + $options  
-
-		local-print  -Text "Info -- start robocopy with this options::",$cmdline 
+	# start the copy process
+	rcopydata -soure_directories $soure_directories -target_directory $target_directory -options $roptions
 		
-		# start robocopy to transfer the data
-		# Bug to use the $cmdline  - not working - escaped by the shell???
-		#
-		& $robocopy "$s" "$target_directory" /COPYALL /B /SEC /R:0 /W:0 /S /NP 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() }
-	
-	}
-	
 	local-print  -Text "Info -- finish backup of the files from $vss_vol_drive_letter"
 }
 
@@ -275,8 +237,11 @@ try{
 			
 			local-print -Text "Info -- Copy from VSS::",$source," to ::",$target
 			
+			# Options for the robocopy prozess
+			$roptions=$folder.robocopy_parameter.toString()
+			
 			# start the backup 
-			doBackup 		-vss_vol_drive_letter $vss_vol_drive_letter -soure_directories $source  -target_directory $target
+			doBackup 		-vss_vol_drive_letter $vss_vol_drive_letter -soure_directories $source  -target_directory $target -roptions $roptions
 		}
 	 	endBackup 		-vss_vol_drive_letter $vss_vol_drive_letter -volume_drive_letter $volume_drive_letter
 	}
