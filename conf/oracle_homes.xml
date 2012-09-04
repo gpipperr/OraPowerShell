@@ -52,7 +52,7 @@
 		<!-- SID List of databases in this home -->
 		<db>
 			<sid>GPI</sid>
-			<sid>GPI</sid>
+			<sid>false</sid>
 		</db>		
 	</oracle_home>
 	

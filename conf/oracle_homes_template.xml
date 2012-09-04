@@ -28,9 +28,10 @@
 		<!-- add to selection list -->
 		<enabled>true</enabled>
 		<!-- SID List of databases in this home -->
+		<!-- if no db in this home set one to the value false -->
 		<db>
-			<sid></sid>
-			<sid></sid>
+			<sid>false</sid>
+			<sid>ORCL</sid>
 		</db>		
 	</oracle_home>
 	<!-- next Oracle Home -->

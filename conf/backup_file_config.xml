@@ -13,20 +13,12 @@
 		<use_vss>false</use_vss>
 		<!-- Definitions of the folder structure -->
 	    <folder>
-			<source>D:\Daten\martina</source>
-			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\pluto\d\daten\martina</target>
+			<source>D:\OraPowerShellCodePlex</source>
+			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\jupiter\OraPowerShellCodePlex</target>
 			<!-- if the share needs to be connected! -->
 			<target_share>\\Fritz!nas\fritz.nas</target_share>
 			<!-- Robocopy feature -->
 			<robocopy_feature><![CDATA[/S /W:0 /R:0 /B]]></robocopy_feature>
-			<robocopy_feature></robocopy_feature>
-		</folder>
-		<folder>
-			<source>D:\Daten\gunther\DigiCamBilder</source>
-			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\pluto\d\daten\gunther\DigiCamBilder</target>
-			<!-- if the share needs to be connected! -->
-			<target_share >\\Fritz!nas\fritz.nas</target_share>
-			<robocopy_feature></robocopy_feature>
 		</folder>			
 	</volume>
 	<volume>
@@ -40,8 +32,8 @@
 		<use_vss>false</use_vss>
 		<!-- Definitions of the folder structure -->
 	    <folder>
-			<source>C:\Users\mpipperr\Desktop</source>
-			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\pluto\C\Users\mpipperr\Desktop</target>
+			<source>C:\Intel</source>
+			<target>\\Fritz!nas\fritz.nas\JetFlash-Transcend64GB-01\jupiter\C\Intel</target>
 			<!-- if the share needs to be connected! -->
 			<target_share>\\Fritz!nas\fritz.nas</target_share>
 			<!-- Robocopy feature -->
