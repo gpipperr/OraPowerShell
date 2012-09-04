@@ -331,8 +331,8 @@ param ( $files )
 	foreach ($pair in $files.pair) {
 		$soure_directory=$pair.source_dir.toString().trim();
 		$target_directory=$pair.target_dir.toString().trim();
-		
-		rcopydata -soure_directories  $soure_directory -target_directory $target_directory
+		$roptions=$pair.robocopy_parameter.toString()
+		rcopydata -soure_directories  $soure_directory -target_directory $target_directory -roptions $roptions
 	
 	}	
 	
@@ -353,7 +353,9 @@ function rcopydata{
 		param (
 			 [String[]] $soure_directories
 			,[String]   $target_directory
+			,[String]   $roptions
 		)
+		
 	local-print  -Text "Info -- try to start the backup of the files ot the backup Disk"
 	
 	# try to find robo copy
@@ -364,37 +366,51 @@ function rcopydata{
         local-print   "Error -- Download a copy of RoboCopy and put in $env:systemroot\system32\" 
 		throw "Download a copy of RoboCopy and put in $env:systemroot\system32\" 
 	}    
-	# /B
-	$what = " /S" 
-	# /COPYALL :: COPY ALL file info 	
-	# /B :: copy files in Backup mode.  
-	# /SEC :: copy files with SECurity 
-	# /MIR :: MIRror a directory tree  
-	# /S :: subdirs 
- 
-	$options  =" /R:0 /W:0 "
-	#$options +=" /LOG:" +$scriptpath+"\ROBOCOPY_LOG_" +$day_of_week+ ".log "
-	#$options +=" /NFL /NDL /XF ROBOCOPY_LOG_" +$day_of_week+ ".log "
-	#$options +=" /XD 'Recycled' 'System Volume Information' " 
-	# /R:n :: number of Retries 
-	# /W:n :: Wait time between retries 
-	# /LOG :: Output log file 
-	# /NFL :: No file logging 
-	# /NDL :: No dir logging 
-	# /XF file [file]... :: eXclude Files matching given names/paths/wildcards. 
-	# /XD dirs [dirs]... :: eXclude Directories matching given names/paths. 
-	# /NP :: No percentage
+	
+	if ($roptions) {
+		local-print  -Text "Info -- start robocopy with this options::",$roptions 
+		$options=$roptions 
+	}
+	else {
+	    # Parameter examples
+		# /B  		:: Backup mode
+		# /S 		:: rekuursive 
+		# /COPYALL 	:: COPY ALL file info 	
+		# /SEC 		:: copy files with SECurity 
+		# /MIR 		:: MIRror a directory tree  
+		# /LOG:" +$scriptpath+"\ROBOCOPY_LOG_" +$day_of_week+ ".log "
+		# /NFL /NDL /XF ROBOCOPY_LOG_" +$day_of_week+ ".log "
+		# /XD 'Recycled' 'System Volume Information' " 
+		# /R:n 		:: number of Retries 
+		# /W:n 		:: Wait time between retries 
+		# /LOG 		:: Output log file 
+		# /NFL 		:: No file logging 
+		# /NDL 		:: No dir logging 
+		# /XF file [file]... :: eXclude Files matching given names/paths/wildcards. 
+		# /XD dirs [dirs]... :: eXclude Directories matching given names/paths. 
+		# /NP 		:: No percentage
+		# FIX
+		#/COPYALL  /SEC is not working!
+		# FIX
+		# use /FFT if you copy on a nas to fix timestamp issues
+		
+		#default
+		$options  ="/R:0 /W:0 /S /NP /FFT"
+	}
 	
     foreach ($s in $soure_directories) {
 	
-		$cmdline = $s+" "+$target_directory+" "+ $what + $options  
+		$cmdline = $s+" "+$target_directory+" "+ $options  
 
-		local-print  -Text "Info -- start robocopy with this options::",$cmdline 
+		local-print  -Text "Info -- start robocopy with this command line::",$cmdline 
 		
 		# start robocopy to transfer the data
 		# Bug to use the $cmdline  - not working - escaped by the shell???
-		# /B
-		& $robocopy "$s" "$target_directory"  /R:0 /W:0 /S /NP 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() }
+		#
+		# & $robocopy "$s" "$target_directory"  $options 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() } 
+		
+		# FIX to use the paramters
+		& $robocopy "$s" "$target_directory"  /R:0 /W:0 /S /NP /FFT 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() }
 	
 	}
 	
