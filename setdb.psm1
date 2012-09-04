@@ -148,7 +148,15 @@ function setdb {
 	#======== read the answer
 	$valid_answer="false"
 	do {
-		$home_selector=Read-Host "Please enter the number of the Oracle Home:"
+		# check if the script is called with a parameter, if in use test the parameter if wrong show question
+		if ($dbnr) {
+			$home_selector=$dbnr
+			$dbnr=""
+		}
+		else {
+			$home_selector=Read-Host "Please enter the number of the Oracle Home:"
+		}
+		
 		$valid_answer="false"
 		
 		# check if the answer is in the range of the $home_count

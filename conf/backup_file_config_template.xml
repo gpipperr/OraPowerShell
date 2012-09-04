@@ -47,7 +47,6 @@
 			<target_share>\\srvbackup02</target_share>
 			<!-- Robocopy feature -->
 			<robocopy_feature><![CDATA[/S /W:0 /R:0 /B]]></robocopy_feature>
-
 		</folder>			
 	</volume>	
 </backup>
