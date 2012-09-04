@@ -4,6 +4,8 @@
 	<nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
 	<!-- Path for SQL*Plus to sql Scripts -->
 	<sqlpath>D:\OraPowerShellCodePlex\sql</sqlpath>	
+	<!-- use this global tns_admin -->
+	<tns_admin>D:\oracle\product\11.2.0.3\dbhome_1\network\admin</tns_admin>
 	<!-- first Oracle Hombe -->
 	<oracle_home>
 		<!-- Path to the Oracle Home -->
@@ -12,8 +14,6 @@
 		<oraname>ASM</oraname>
 		<!-- add to selection list -->
 		<enabled>false</enabled>
-		<!-- Default selection -->
-		<default>false</default>
 		<!-- SID List of databases in this home -->
 		<db>
 			<sid>+ASM</sid>		 
@@ -27,14 +27,15 @@
 		<oraname>Local DB Home</oraname>
 		<!-- add to selection list -->
 		<enabled>true</enabled>
-		<!-- Default selection -->
-		<default>true</default>
 		<!-- SID List of databases in this home -->
 		<db>
 			<sid></sid>
 			<sid></sid>
-			<sid></sid>
 		</db>		
 	</oracle_home>
+	<!-- next Oracle Home -->
+	
+	<!-- copy section above -->
+	
 </oracle_homes>	
 
