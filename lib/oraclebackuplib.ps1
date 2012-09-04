@@ -807,7 +807,7 @@ function local-backup-db-user {
 				# zip the result 
 				$compress_export=$dB.db_user_export.compress_export.ToString()
 				if ($compress_export.equals("true"))  {
-					$ziplib_path="$scriptpath\zip\ICSharpCode.SharpZipLib.dll"
+					$ziplib_path="$scriptpath\lib\zip\ICSharpCode.SharpZipLib.dll"
 					local-print  -Text "Info -- try to load zip lib for compression the export from::",$ziplib_path
 					try {
 						# see
