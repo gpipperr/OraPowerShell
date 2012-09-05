@@ -146,7 +146,7 @@ function doBackup{
 	local-print  -Text "Info -- try to start the backup of the files from $vss_vol_drive_letter"
 	
 	# start the copy process
-	rcopydata -soure_directories $soure_directories -target_directory $target_directory -options $roptions
+	rcopydata -soure_directories $soure_directories -target_directory $target_directory -roptions $roptions
 		
 	local-print  -Text "Info -- finish backup of the files from $vss_vol_drive_letter"
 }
@@ -169,8 +169,8 @@ function endBackup {
 
 	# save the generated script to disk
 	Set-Content -Path "$scriptpath\generated\vss_generated_finish.vss" -value $vss_script
-    # start the script
-    & 	"$env:SystemRoot\system32\diskshadow.exe" -s "$scriptpath\generated\vss_generated_finish.vss"  2>&1 | foreach-object { local-print -text "VSS OUT::",$_.ToString() }
+	# start the script
+	& "$env:SystemRoot\system32\diskshadow.exe" -s "$scriptpath\generated\vss_generated_finish.vss"  2>&1 | foreach-object { local-print -text "VSS OUT::",$_.ToString() }
 	
 	# check if for this volume a other snapshot exits
 	#http://msdn.microsoft.com/en-us/library/windows/desktop/aa389391(v=vs.85).aspx
@@ -195,7 +195,7 @@ function endBackup {
 		& 	"$env:SystemRoot\system32\diskshadow.exe" -s "$scriptpath\generated\vss_generated_clean.vss"  2>&1 | foreach-object { local-print -text "VSS OUT::",$_.ToString() }
 	}
 	else {
-		local-print  -Text "Info -- All shadow copies are cleaned"
+		local-print -Text "Info -- All shadow copies are cleaned"
 	}
 
 	$endtime=get-date
@@ -206,7 +206,7 @@ function endBackup {
 }
 
 ################  start ##################
-
+    
 
 ############################### start Backup ##########################################
 try{
@@ -238,15 +238,15 @@ try{
 			local-print -Text "Info -- Copy from VSS::",$source," to ::",$target
 			
 			# Options for the robocopy prozess
-			$roptions=$folder.robocopy_parameter.toString()
+			$roptions=$folder.robocopy_parameter.InnerText
 			
 			# start the backup 
-			doBackup 		-vss_vol_drive_letter $vss_vol_drive_letter -soure_directories $source  -target_directory $target -roptions $roptions
+			doBackup -vss_vol_drive_letter $vss_vol_drive_letter -soure_directories $source  -target_directory $target -roptions $roptions
 		}
-	 	endBackup 		-vss_vol_drive_letter $vss_vol_drive_letter -volume_drive_letter $volume_drive_letter
+	 	endBackup -vss_vol_drive_letter $vss_vol_drive_letter -volume_drive_letter $volume_drive_letter
 	}
 	
-} 
+}   
 catch {
 	local-print -Text "Error -- Failed to create backup: The error was: $_."	 -ForegroundColor "red"			
 	local-log-event -logtype "Error" -logText "Error -- Failed to create backup: The error was: $_."				

@@ -13,7 +13,7 @@
   set-ExecutionPolicy -scope CurrentUser RemoteSigned
   
 	.NOTES
-		Created: 09.2012 : Gunther Pippèrr (c) http://www.pipperr.de				
+		Created: 09.2012 : Gunther Pippèrr (c) http://www.pipperr.de
 	.SYNOPSIS
 		Generic Backup Script for File Backup
 	.DESCRIPTION
@@ -34,7 +34,7 @@
 $Invocation = (Get-Variable MyInvocation -Scope 0).Value
 $scriptpath=Split-Path $Invocation.MyCommand.Path
 
-write-host "Info -- start the Script in the path $scriptpath"  -ForegroundColor "green"	
+write-host "Info -- start the Script in the path $scriptpath"  -ForegroundColor "green"
 
 cd  $scriptpath
 
@@ -110,17 +110,17 @@ End {}
 ##
 function doBackup{
 		param (
-			 [String]    $vol_drive_letter = "D:"
+			 [String]   $vol_drive_letter = "D:"
 			,[String[]] $soure_directories
 			,[String]   $target_directory
 			,[String]   $roptions
 		)
-	local-print  -Text "Info -- try to start the backup of the files from $vss_vol_drive_letter"
+	local-print  -Text "Info -- try to start the backup of the files from $vol_drive_letter"
 	
 	# start the copy process
-	rcopydata -soure_directories $soure_directories -target_directory $target_directory -options $roptions
+	rcopydata -soure_directories $soure_directories -target_directory $target_directory -roptions $roptions
 	
-	local-print  -Text "Info -- finish backup of the files from $vss_vol_drive_letter"
+	local-print  -Text "Info -- finish backup of the files from $vol_drive_letter"
 }
 
 #==============================================================================
@@ -171,7 +171,7 @@ try{
 			local-print -Text "Info -- Copy::",$source," to ::",$target
 			
 			# Options for the robocopy prozess
-			$roptions=$folder.robocopy_parameter.toString()
+			$roptions=$folder.robocopy_parameter.InnerText
 			
 			# Do the Backup
 			doBackup 	-vol_drive_letter $vol_drive_letter -soure_directories $source  -target_directory $target -roptions $roptions
