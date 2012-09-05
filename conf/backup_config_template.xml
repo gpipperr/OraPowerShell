@@ -6,7 +6,8 @@
   <asm>
 	<!-- set to true if ASM Option of the Database is in use -->
     <asm_in_use>false</asm_in_use>
-    <backup_asm>true</backup_asm>
+    <asm_meta_info>true</asm_meta_info>
+	<asm_backup_dest>d:\oracle\flash_recovery_area</asm_backup_dest>
 	<!-- ASM instance SID - if RAC check for the NODE ID like +ASM1! -->
 	<asm_instancesid>+ASM</asm_instancesid>
 	<!-- if default - try to get from the oralce installation repository the locatoin -->
@@ -18,6 +19,7 @@
 	<!-- set to true if RAC Option of the Database is in use -->
     <grid_in_use>false</grid_in_use>
     <backup_grid>true</backup_grid>
+	<grid_backup_dest>d:\oracle\flash_recovery_area</grid_backup_dest>
     <!-- if default - try to get from the oralce installation repository the locatoin -->
 	<grid_oracle_home>default</grid_oracle_home>
   </grid>

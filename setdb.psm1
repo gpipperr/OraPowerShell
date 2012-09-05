@@ -90,10 +90,10 @@ function setdb {
 	
 	if ( Test-Path  $tns_admin) { 
 		try {
-			set-item -path env:TNS_ADMIN -value $sqlpath
+			set-item -path env:TNS_ADMIN -value $tns_admin
 		}
 		catch {
-			new-item -path env: -name TNS_ADMIN -value $sqlpath
+			new-item -path env: -name TNS_ADMIN -value $tns_admin
 		}
 	}
 	else {
