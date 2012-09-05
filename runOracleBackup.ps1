@@ -138,16 +138,72 @@ Process {
 	#ASM
 	foreach ($asm in $backupconfig.backup.asm) {
 		if ($asm.asm_in_use.Equals("true")) {
-			local-print  -Text "Info -- start backup configuration of the ASM instance"
-			local-backup-asm-metainfo -asm $asm
+			if ($asm.asm_meta_info.Equals("true")) {
+				local-print  -Text "Info -- start backup configuration of the ASM instance"
+				
+				#Oracle ASM SID
+				$ORACLE_SID=$asm.asm_instancesid.ToString()
+				try {
+					set-item -path env:ORACLE_SID -value $ORACLE_SID
+				}
+				catch {
+					new-item -path env: -name ORACLE_SID -value $ORACLE_SID
+				}
+				local-print  -Text "Info -- set Oracle SID to::" , $env:ORACLE_SID
+							
+				#ASM ORACLE_HOME
+				$ORACLE_HOME=$asm.asm_oracle_home.ToString()
+				
+				# check if the directory exits
+				$check_result=local-check-dir -lcheck_path $ORACLE_HOME -dir_name "ORACLE_HOME" -create_dir "false"
+				
+				# if Oracle Home not exits - exit
+				if ($check_result.equals("false")) {
+						throw "ORACLE_HOME::$ORACLE_HOME not extis for ASM Instance::$ORACLE_SID"					
+				}
+					
+				try {
+					set-item -path env:ORACLE_HOME -value $ORACLE_HOME
+				}
+				catch {
+					new-item -path env: -name ORACLE_HOME -value $ORACLE_HOME
+				}
+				local-print  -Text "Info -- set Oracle Home to::" , $env:ORACLE_HOME
+					
+				local-backup-asm-metainfo -asm $asm
+			}
 		}		
 	}
 	
 	#GRID
 	foreach ($grid in $backupconfig.backup.grid) {
 		if ($grid.grid_in_use.Equals("true")) {
-			local-print  -Text "Info -- start backup configuration of the GRID instance"
-			local-backup-grid-metainfo -grid $grid
+			if ($grid.backup_grid.Equals("true")) {
+				
+				#GRID ORACLE_HOME
+				$ORACLE_HOME=$grid.grid_oracle_home.ToString()
+				
+				# check if the directory exits
+				$check_result=local-check-dir -lcheck_path $ORACLE_HOME -dir_name "ORACLE_HOME" -create_dir "false"
+					
+				# if Oracle Home not exits - exit
+				if ($check_result.equals("false")) {
+						throw "ORACLE_HOME::$ORACLE_HOME not extis for GRID"					
+				}
+						
+				try {
+					set-item -path env:ORACLE_HOME -value $ORACLE_HOME
+				}
+				catch {
+					new-item -path env: -name ORACLE_HOME -value $ORACLE_HOME
+				}
+				
+				local-print  -Text "Info -- set Oracle Home to::" , $env:ORACLE_HOME
+									
+				local-print  -Text "Info -- start backup configuration of the GRID instance"
+				
+				local-backup-grid-metainfo -grid $grid
+			}
 		}
 	}
 

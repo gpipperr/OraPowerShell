@@ -861,67 +861,62 @@ Param ( $asm )
 	# Numeric Day of the week
 	$day_of_week=[int]$starttime.DayofWeek 
 	
-	local-print  -Text "Info -- not yet implemented"
-	<# Bash version ---------------------------------------------
-		# Run Script to generate Trace of Controlfile
-		# Run Script to generate Copy of pfile
-		#
-		${ORACLE_HOME}/bin/sqlplus / as sysasm << EOScipt
-		CREATE pfile='${BACKUP_DEST}/${ORACLE_DBNAME}/init_${ORACLE_DBNAME}_${DAY_OF_WEEK}.ora' FROM spfile;
-		exit;
-		EOScipt
 
-		#Run Script to get DB Metadata Information
-		#
-		${ORACLE_HOME}/bin/sqlplus / as sysasm @${SCRIPTS}/infoASM.sql
+	$ORACLE_HOME = $asm.asm_oracle_home.ToString()
+	$ORACLE_SID  = $asm.asm_instancesid.ToString()
+		
+		
+	$backup_path=$asm.asm_backup_dest.ToString()+"\"+$asm.asm_instancesid.ToString()
+	# Check if the backup directories exits
+	local-check-dir -lcheck_path $backup_path -dir_name "ASM Meta Infos"
+	
+	$dbname=$asm.asm_instancesid.ToString()
+	$spfile_backup=$backup_path + "\init"+$dbname+"_"+$day_of_week+".ora"
+	$controlfile_backup=$backup_path+"\controlfile_trace"+$day_of_week+".trc"
+	
+	
+	# Save init.ora
+	$sql_script ="CREATE pfile='"+$spfile_backup+"' FROM spfile;"+ $CLF
+	$sql_script+="exit;"+ $CLF
+	
+	# save the file
+	Set-Content -Path "$scriptpath\generated\generated_create_control_spfile_asm.sql" -value $sql_script
+	
+	# Call the script 
+	local-print  -Text "Info -- Start SQL*Plus to create TXT init.ora from spfile"
 
-		#PatchLevel of the database
-		#
-		$ORACLE_HOME/OPatch/opatch lsinventory > ${BACKUP_DEST}/${ORACLE_DBNAME}/software_lsinventory_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
-
-		#Save Password File
-		#
-		cp ${ORACLE_HOME}/dbs/orapw${ORACLE_SID} ${BACKUP_DEST}/${ORACLE_DBNAME}/orapw${ORACLE_DBNAME}_${DAY_OF_WEEK}
-
-		#Save Disk and Directroy Configuration
-		#
-		rm  ${BACKUP_DEST}/${ORACLE_DBNAME}/asm_configuration${ORACLE_SID}_${DAY_OF_WEEK}.trc
-
-		${ORACLE_HOME}/bin/asmcmd md_backup -b ${BACKUP_DEST}/${ORACLE_DBNAME}/asm_configuration${ORACLE_SID}_${DAY_OF_WEEK}.trc
-		# save the lun configuration of the node1
-		#
-		echo "----=== Layout of ASM to physikal disks ===---"  >  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
-		echo " "  >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log 
-
-		ls -la /dev/oracleasm/disks/* >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
-
-		echo "---=== ASM to OS Disk Layout ===---" >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
-
-		# Get the Oracle ASM to os disk mapping
-		for DISK in `ls -m1 /dev/oracleasm/disks/`
-		do
-		 majorminor=`sudo /usr/sbin/oracleasm querydisk -d $DISK | awk '{print $10 $11}' | tr -d '[]' | tr ',' ' ' `
-		 major=`echo $majorminor | awk '{print $1}'`
-		 minor=`echo $majorminor | awk '{print $2}'`
-		 device=`ls -l /dev | awk '{print $5 " "  $6 "- "  $10}' |  grep "$major, $minor-" | awk '{print $3}'`
-		 echo "Oracle ASM Disk Device: $DISK	=>  OS device: /dev/$device     with id $majorminor"  >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log 
-		done
-
-		echo " " >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
-		echo "---=== LUN Mapping ===---" >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
-
-
-		#edit this line to your tool of your storage 
-		#for netapp
-
-		if [ ! -f "/usr/sbin/sanlun" ]; then
-		  echo "Netapp Tools not exist"
-		  echo " "   
-		else
-		  sudo /usr/sbin/sanlun lun show -p >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log	 
-		fi
-
-	#>
+	& "$ORACLE_HOME/bin/sqlplus" -s "/ as sysdba" "@$scriptpath\generated\generated_create_control_spfile_asm.sql" 2>&1 | foreach-object { local-print -text "SQLPLUS OUT::",$_.ToString() }
+	
+	
+	#PatchLevel of the database
+	$software_inventory_backup=$backup_path+"\software_lsinventory_"+$dbname+"_"+$day_of_week+".log"
+	## if Error with no set Oracle Home check this code!
+	& cmd /c "set ORACLE_HOME=$ORACLE_HOME&&$ORACLE_HOME/OPatch/opatch lsinventory > $software_inventory_backup"
+   
+	#Save Password File
+	$pwd_backup=$backup_path+"\PWD"+$ORACLE_SID+"_"+$DAY_OF_WEEK+".ora"
+	cp "$ORACLE_HOME\database\PWD$ORACLE_SID.ora" "$pwd_backup"
+	
+	
+	#Save Disk and Directroy Configuration
+	#
+	$disk_config_backup=$backup_path+"\asm_configuration_disk_conf_"+$ORACLE_SID+"_"+$DAY_OF_WEEK+".trc"
+	
+	if (get-item  $disk_config_backup -ErrorAction silentlycontinue ) {
+		rm  $disk_config_backup
+	}
+	
+	try {
+		& "$ORACLE_HOME\bin\asmcmd.bat" md_backup -b $disk_config_backup 2>&1 | foreach-object { local-print -text "ASMCMD OUT::",$_.ToString() }
+	}
+	catch {
+		local-print -errorText "Error -- Failed to get ASM Disk Config with asmcmd :: The error was: $_."	 	
+	}
+	
+	# Fix
+	# store the disk configuration of this node in a text file
+	#
+	
 	
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
@@ -935,24 +930,42 @@ Param ( $asm )
 ##
 function local-backup-grid-metainfo {
 Param ( $grid )
-	local-print  -Text "Info -- not yet implemented"
+	local-print  -Text "Info -- not yet fully tested and implemented"
+	
+	$starttime=get-date
+	# Numeric Day of the week
+	$day_of_week=[int]$starttime.DayofWeek 
+	
+    # Get Oracle Home
+	$ORACLE_HOME = $grid.grid_oracle_home.ToString()
+
+	# get the cluster name
+	$clustername=@( & "$ORACLE_HOME\bin\cemutlo" -n)
+	
+	# the backup path
+	$backup_path=$grid.grid_backup_dest.ToString()+"\"+$clustername
+	
+	# Check if the backup directories exits
+	local-check-dir -lcheck_path $backup_path -dir_name "Grid Meta Infos"
+	
+	#PatchLevel of the database
+	$software_inventory_backup=$backup_path+"\software_lsinventory_grid_"+$day_of_week+".log"
+	## if Error with no set Oracle Home check this code!
+	& cmd /c "set ORACLE_HOME=$ORACLE_HOME&&$ORACLE_HOME/OPatch/opatch lsinventory > $software_inventory_backup"
+	
+	#Save ocr
+	local-print  -Text "Info -- Make a backup of the ocr and Voting Disk"
+	& "$ORACLE_HOME\bin\ocrconfig" -manualbackup 2>&1 | foreach-object { local-print -text "OCR OUT::",$_.ToString() }
+	
+	#Save the ocr backup of the local node
+	local-print  -Text "Warning -- !!! in this version only the local ocr backup will be saved !!!" -ForegroundColor "yellow"
+	
+	$hostname=@( hostname )
+	local-check-dir -lcheck_path "$backup_path\$hostname" -dir_name "Grid Note OCR Files"
+	cp "$ORACLE_HOME\cdata\$cluster_name\*.ocr"  "$backup_path\$hostname" 2>&1 | foreach-object { local-print -text "copy OUT::",$_.ToString() }
+	
+	
 	<#  Bash version ---------------------------------------------
-		CLUSTER_NAME=`${ORACLE_HOME}/bin/cemutlo -n`
-		export CLUSTER_NAME
-
-		if [ ! -d ${BACKUP_DEST}/${CLUSTER_NAME} ]; then
-		   echo "Backup Directory ${BACKUP_DEST}/${CLUSTER_NAME} not exist"
-		   echo ".. creating directory "
-		   mkdir ${BACKUP_DEST}/${CLUSTER_NAME}
-		fi
-
-		#PatchLevel of the grid
-		${ORACLE_HOME}/OPatch/opatch lsinventory > ${BACKUP_DEST}/${CLUSTER_NAME}/software_lsinventory_${CLUSTER_NAME}_${DAY_OF_WEEK}.log
-
-		#Save ocr
-		echo "Make a backup of the ocr and Voting Disk"
-		sudo ${ORACLE_HOME}/bin/ocrconfig -manualbackup
-
 		#Save OCR AutoBackups
 		#get all nodes
 		NODES=`${ORACLE_HOME}/bin/srvctl status nodeapps | grep 'VIP' | grep 'on node' | awk '{ print $7 }'`
@@ -967,16 +980,43 @@ Param ( $grid )
 			fi
 			sudo scp -p root@${NODE}:${ORACLE_HOME}/cdata/${CLUSTER_NAME}/*.ocr  ${BACKUP_DEST}/${CLUSTER_NAME}/${NODE}
 		done
-
-		#Save OCR Regitry Infos
-		$ORACLE_HOME/bin/ocrdump -stdout > ${BACKUP_DEST}/${CLUSTER_NAME}/ocr_${CLUSTER_NAME}_${DAY_OF_WEEK}.dump
-
-		#Where is the voting Disk?
-		$ORACLE_HOME/bin/crsctl query css votedisk > ${BACKUP_DEST}/${CLUSTER_NAME}/location_of_ocr_${CLUSTER_NAME}_${DAY_OF_WEEK}.log
-
 		#Save Backup of Voting Disk not longer necessary in 11g 
 	#>
+	
+	#Save OCR Regitry Infos
+	$ocr_info_file=$backup_path+"\ocr_"+$clustername+"_"+$day_of_week+".dump"
+	$ocr_info=@()
+	try {
+	    # no logging local-print -text "OCRDUMP OUT::",$_.ToString();
+		& "$ORACLE_HOME\bin\ocrdump" -stdout 2>&1 | foreach-object {  $ocr_info+=$_.ToString() }
+		set-content $ocr_info_file $ocr_info
+	}
+	catch {
+		local-print -errorText "Error -- Failed to get ASM Disk Config with asmcmd :: The error was: $_."	 	
+	}
+
+	#Where is the voting Disk?
+	$vot_info_file=$backup_path+"\vot_"+$clustername+"_"+$day_of_week+".log"
+	$vot_info=@()	
+	try {
+	    # no logging local-print -text "CRSCTL OUT::",$_.ToString();
+		& "$ORACLE_HOME\bin\crsctl" query css votedisk 2>&1 | foreach-object { $vot_info+=$_.ToString() }
+		set-content $vot_info_file $vot_info
+	}
+	catch {
+		local-print -errorText "Error -- Failed to get GRID Disk Config with asmcmd :: The error was: $_."	 	
+	}
+
+
+	$endtime=get-date
+	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
+	
+	local-print  -Text "Info -- Finish Backup of GRID Meta information at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
+	local-log-event -logText "Info -- Finish Backup of GRID Meta information at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
+	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 }
+
+
 #==============================================================================
 # Wrapper to call robocopy
 ##
