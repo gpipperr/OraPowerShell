@@ -315,64 +315,9 @@ function local-encryptXMLPassword {
 
 
 #==============================================================================
-# Wrapper to call robocopy
-##
-
-function backupFiles {
-param ( $files )
-	
-	$starttime=get-date
-	# Numeric Day of the week
-	$day_of_week=[int]$starttime.DayofWeek 
-	
-	local-print     -Text     "Info -- Start Backup Files","at::" ,$starttime -ForegroundColor "yellow"
-	local-log-event -logText  "Info -- Start Backup Files","at::" ,$starttime
-	
-	foreach ($pair in $files.pair) {
-		$soure_directory=$pair.source_dir.toString().trim();
-		$target_directory=$pair.target_dir.toString().trim();
-		$roptions=$pair.robocopy_parameter.toString()
-		rcopydata -soure_directories  $soure_directory -target_directory $target_directory -roptions $roptions
-	
-	}	
-	
-	$endtime=get-date
-	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
-	
-	local-print  -Text "Info -- Finish Backup Files::",      "at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
-	local-log-event -logText "Info -- Finish Backup Files::","at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
-	
-	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
-}
-
-#==============================================================================
 #Save data over robocopy 
-##
 
-function rcopydata{
-		param (
-			 [String[]] $soure_directories
-			,[String]   $target_directory
-			,[String]   $roptions
-		)
-		
-	local-print  -Text "Info -- try to start the backup of the files ot the backup Disk"
-	
-	# try to find robo copy
-	if (test-path((gc env:systemroot)+"\system32\RoboCopy.exe")) { 
-		$robocopy = (gc env:systemroot)+"\system32\RoboCopy.exe" 
-	}     
-	else { 
-        local-print   "Error -- Download a copy of RoboCopy and put in $env:systemroot\system32\" 
-		throw "Download a copy of RoboCopy and put in $env:systemroot\system32\" 
-	}    
-	
-	if ($roptions) {
-		local-print  -Text "Info -- start robocopy with this options::",$roptions 
-		$options=$roptions 
-	}
-	else {
-	    # Parameter examples
+		# Parameter examples
 		# /B  		:: Backup mode
 		# /S 		:: rekuursive 
 		# /COPYALL 	:: COPY ALL file info 	
@@ -395,26 +340,54 @@ function rcopydata{
 		# use /FFT if you copy on a nas to fix timestamp issues
 		
 		#default
-		$options  ="/R:0 /W:0 /S /NP /FFT"
-	}
-	
-    foreach ($s in $soure_directories) {
-	
-		$cmdline = $s+" "+$target_directory+" "+ $options  
+##
 
-		local-print  -Text "Info -- start robocopy with this command line::",$cmdline 
+function rcopydata{
+		param (
+			 [String] $soure_directories
+			,[String] $target_directory
+			,[String] $roptions
+		)
 		
-		# start robocopy to transfer the data
-		# Bug to use the $cmdline  - not working - escaped by the shell???
-		#
-		# & $robocopy "$s" "$target_directory"  $options 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() } 
-		
-		# FIX to use the paramters
-		& $robocopy "$s" "$target_directory"  /R:0 /W:0 /S /NP /FFT 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() }
+	# try to find robo copy
+	if (test-path((gc env:systemroot)+"\system32\RoboCopy.exe")) { 
+		$robocopy = (gc env:systemroot)+"\system32\RoboCopy.exe" 
+	}     
+	else { 
+        local-print   "Error -- Download a copy of RoboCopy and put in $env:systemroot\system32\" 
+		throw "Download a copy of RoboCopy and put in $env:systemroot\system32\" 
+	}    
 	
+	$options=@()
+	$options  +="/SD:$soure_directories" + $CRF
+	$options  +="/DD:$target_directory"  + $CRF
+	
+	if ($roptions) {
+		# transform to arry
+		$options+=$roptions.Split(" ")		
+	}
+	else {
+		
+		local-print  -Text "Warning -- parameter roptions missing,using defaults" -ForegroundColor "yellow"
+		
+		$options  +="/R:0" + $CRF
+		$options  +="/W:0" + $CRF
+		$options  +="/S"   + $CRF
+		$options  +="/NP"  + $CRF
+		$options  +="/FFT" + $CRF
 	}
 	
-	local-print  -Text "Info -- finish backup of the files"
+	# write the options to a command file
+	set-content "$scriptpath/generated/generated_robocopy.RCJ" $options
+	
+    local-print  -Text "Info -- start robocopy with the following command line"
+	local-print  -Text "Info --",$options
+		
+	# start robocopy to transfer the data
+	
+		
+	& $robocopy "/JOB:$scriptpath/generated/generated_robocopy" 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() }
+	
 }
 #==============================================================================
 

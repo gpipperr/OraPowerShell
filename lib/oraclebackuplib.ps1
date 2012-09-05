@@ -977,5 +977,34 @@ Param ( $grid )
 		#Save Backup of Voting Disk not longer necessary in 11g 
 	#>
 }
+#==============================================================================
+# Wrapper to call robocopy
+##
 
+function backupFiles {
+param ( $files )
+	
+	$starttime=get-date
+	# Numeric Day of the week
+	$day_of_week=[int]$starttime.DayofWeek 
+	
+	local-print     -Text     "Info -- Start Backup Files","at::" ,$starttime -ForegroundColor "yellow"
+	local-log-event -logText  "Info -- Start Backup Files","at::" ,$starttime
+	
+	foreach ($pair in $files.pair) {
+		$soure_directory=$pair.source_dir.toString().trim();
+		$target_directory=$pair.target_dir.toString().trim();
+		$roptions=$pair.robocopy_parameter.InnerText
+		rcopydata -soure_directories  $soure_directory -target_directory $target_directory -roptions $roptions
+	
+	}	
+	
+	$endtime=get-date
+	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
+	
+	local-print  -Text "Info -- Finish Backup Files::",      "at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
+	local-log-event -logText "Info -- Finish Backup Files::","at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
+	
+	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
+}
 #============================= End of File ====================================

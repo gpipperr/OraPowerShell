@@ -113,13 +113,13 @@
 		<source_dir>d:\oracle\flash_recovery_area</source_dir>
 		<target_dir>c:\backup\flash_recovery_area</target_dir>
 		<!-- Parameter for robocopy -->
-		<robocopy_parameter><![CDATA[/S /W:0 /R:0 /B]]></robocopy_parameter>		
+		<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>		
 	</pair>
 	<!-- Pair of directories to copy with robocopy -->
 	<pair>
 		<source_dir>d:\scripts</source_dir>
 		<target_dir>c:\backup\scripts</target_dir>
-		<robocopy_parameter><![CDATA[/S /W:0 /R:0 /B]]></robocopy_parameter>
+		<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
 	</pair>
   </files>  
 

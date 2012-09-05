@@ -18,7 +18,7 @@
 			<!-- if the share needs to be connected! -->
 			<target_share>\\srvbackup01</target_share>
 			<!-- Robocopy feature not in use!-->
-			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /B]]></robocopy_parameter>
+			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
 		</folder>
 		<folder>
 			<source>D:\Daten2</source>
@@ -26,7 +26,7 @@
 			<!-- if the share needs to be connected! -->
 			<target_share>\\srvbackup01</target_share>
 			<!-- Robocopy feature -->
-			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /B]]></robocopy_parameter>
+			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
 		</folder>		
 	</volume>
 	<!-- next volumen -->
@@ -46,7 +46,7 @@
 			<!-- if the share needs to be connected! -->
 			<target_share>\\srvbackup02</target_share>
 			<!-- Robocopy feature -->
-			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /B]]></robocopy_parameter>
+			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
 		</folder>			
 	</volume>	
 </backup>
