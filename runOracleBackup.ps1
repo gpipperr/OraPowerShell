@@ -62,10 +62,12 @@ $backupconfig= [xml] ( get-content $config_xml)
 #==============================================================================
 # read Helper Functions
 .  $scriptpath\lib\backuplib.ps1
-#
+# Oracle Backup main scripts
 .  $scriptpath\lib\oraclebackuplib.ps1
-#
+# .Net Helper
 .  $scriptpath\lib\oracle_dotnet_connect.ps1
+# load monitoring library
+. $scriptpath\lib\monitoring.ps1
 
 ################ Semaphore Handling ########################################### 
 # Only one script can run at one time
@@ -130,6 +132,7 @@ Begin {
 	local-print  -Text "Info -- Check if other instance of a backup script is running (over Semaphore ORALCE_BACKUP)"
 	# Wait till the semaphore if free
 	$sem.WaitOne()
+
 }
 
 # Main
@@ -363,7 +366,7 @@ try{
 	
 	startBackup -scope $argument1
 	
-	#FIX Copy aditional Direcotoirre
+	local-freeSpace 
 
 } 
 catch {

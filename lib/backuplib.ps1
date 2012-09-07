@@ -31,6 +31,7 @@ Set-Variable CLF "`r`n" -option constant
 # create with the option AllScpe to hava a global variable!
 Set-Variable backup_logfile "DB_BACKUP" -option AllScope
 
+
 #==============================================================================
 # get the location of the logfile
 ##
@@ -389,6 +390,7 @@ function rcopydata{
 	& $robocopy "/JOB:$scriptpath/generated/generated_robocopy" 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() }
 	
 }
-#==============================================================================
+
+
 
 
