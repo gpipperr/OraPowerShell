@@ -50,6 +50,8 @@ $config_xml="$scriptpath\conf\backup_file_config.xml"
 
 # read Helper Functions
 .  $scriptpath\lib\backuplib.ps1
+# load monitoring library
+. $scriptpath\lib\monitoring.ps1
 
 #==============================================================================
 # move old logfile to .0 
@@ -202,6 +204,7 @@ function endBackup {
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	local-print  -Text "Info -- Finish VSS Backup::"        ,"at::", $endtime, " - Duration::"  ,$duration  ,"Minutes"  -ForegroundColor "yellow"
 	local-log-event -logText  "Info -- Finish VSS Backup::" ,"at::", $endtime, " - Duration::"  ,$duration  ,"Minutes"
+	local-freeSpace 
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 }
 

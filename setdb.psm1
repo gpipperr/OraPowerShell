@@ -138,7 +138,8 @@ function setdb {
 					$ORACLE_SID_LIST  +=$orasid
 				}
 				$home_count+=1
-				Write-host -ForegroundColor "yellow"  "  + [$home_count]  $orasid " 				
+				
+				Write-host -ForegroundColor "yellow"  ( "  + [{0,2}]   {1}"  -f $home_count,$orasid) 				
 			}
 			Write-host -ForegroundColor "green" $liner
 		}
