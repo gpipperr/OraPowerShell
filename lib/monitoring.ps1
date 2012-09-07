@@ -37,11 +37,9 @@ function local-freeSpace {
 
 	foreach ($free in $freespace ) {
 	
-		$used_space=$free.Size-$free.FreeSpace
 		$per_free=$free.FreeSpace/($free.Size/100)
-	
-
-		if ( $per_free -lt 10) {
+			
+		if ( $per_free -lt 10 ) {
 			local-print  -ErrorText	($bline -f $free.DeviceID,($free.FreeSpace/1GB),($free.Size/1GB),$per_free)
 		}
 		else {
