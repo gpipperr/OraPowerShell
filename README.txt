@@ -16,9 +16,9 @@ Security:  (see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_sc
 
 OR
   Sign your code!
-  
-  Set-AuthenticodeSignature <my_filename> @(Get-ChildItem cert:\CurrentUser\My -codesigning)[0]
-  
+
+ Set-AuthenticodeSignature <my_filename> @(Get-ChildItem cert:\CurrentUser\My -codesigning)[0]
+
 ***** Script Overview *****
 
 Configuration:
