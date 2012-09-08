@@ -48,5 +48,78 @@ function local-freeSpace {
 	}
 }
 
+#==============================================================================
+#local-get-file_from_postion
+# read a file from a byte position
+##
+
+function local-get-file_from_postion{
+	param (
+		  [String] $filename
+		, [int]    $byte_pos 
+	)
+	
+	if (Get-ChildItem $filename -ErrorAction silentlycontinue) {
+	
+		try {
+			
+			$filesize= (Get-ChildItem $filename).length
+			
+			if ( $filesize -lt $byte_pos) {
+				throw "Filessize :: $filesize is smaller then position in byte :: $byte_pos from file  $filename"
+			}
+	
+			# Open Streamreader to read the file
+			# see http://msdn.microsoft.com/de-de/library/system.io.streamreader%28v=vs.80%29.aspx
+			#
+			$sreader= New-Object System.IO.StreamReader($filename)
+			local-print  -Text "Info - read file", $filename, "size byte::",$filesize
+		
+			#$filesize - 
+			# read all
+			#$sreader.BaseStream.Position = ($byte_pos)
+			
+			# read in array
+			$aline=@()
+			[String] $fline="-"
+			[int] $counter=0;
+			do {
+				# read one line
+				$fline=$sreader.ReadLine()
+				# check if the line is empty (reader not at the end of the file!)
+				if ( -not $fline) {
+					# the on end of file
+					if ( -not ( $sreader.EndOfStream) ){
+						$fline=" "
+					}
+				}				
+				local-print  -Text ( "Info -- read line {0,3}  : {1}" -f ($counter++),$fline )
+				$aline+=$fline				
+			}
+			until ((-not ($fline)) )		
+			
+		}
+		catch {	
+			
+			local-print  -ErrorText "Error -- Error ::",$_
+		}
+		finally {
+			if ($sreader) {
+				$sreader.close();
+			}
+		}
+		
+	
+	}
+	else {
+		local-print  -ErrorText "Error -- File $filename not found"
+	
+	}	
+	<#
+		.EXAMPLE
+		local-get-file_from_postion -filename "D:\OraPowerShellCodePlex\README.txt" 10
+	#>
+}
+
 
 #==============================================================================
