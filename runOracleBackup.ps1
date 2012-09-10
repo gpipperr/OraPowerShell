@@ -290,6 +290,9 @@ Process {
 					if ($db.db_meta_info.InnerText.Equals("true")) {
 						local-backup-db-metainfo -db $db -sql_connect_string $sql_connect_string
 					} 
+					if ($db.db_check_alert_log.InnerText.Equals("true")) {
+						local-check-db-alertlog -db $db -sql_connect_string $sql_connect_string
+					} 
 					if ($db.db_user_export.export.Equals("true")) {
 						local-backup-db-user  -db $db -sql_connect_string $sql_connect_string
 					} 	
@@ -374,6 +377,7 @@ catch {
 	local-log-event -logtype "Error" -logText "Error- -- Failed to create backup: The error was: $_."				
 }
 finally {
+			
 			#==============================================================================
 			# Exit the semaphore
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
@@ -386,6 +390,15 @@ finally {
 			}
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 			#==============================================================================
+			
+			#==============================================================================
+			# Check the logfiles and create summary text for check mail
+			
+			local-get-file_from_postion -filename (local-get-logfile) -byte_pos 1 -search_pattern (local-get-oracle-error-pattern) -log_file "$scriptpath\log\status_mail.log"
+			
+			#==============================================================================
+			
+			
 }
 
 #==============================================================================#######

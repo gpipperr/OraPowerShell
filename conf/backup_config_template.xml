@@ -74,6 +74,10 @@
 	<!-- only possilbe if the tns Alias in the nls_setting / user / password Section is valid -->
     <db_meta_info use_dot_net="true" dot_net_orcle_home="d:\oracle\product\11.2.0.3\client_64bit" >true</db_meta_info>
     
+	<!-- check the Alert log for errors -->
+	<!-- if listener_summary = true you get a list of connection to the database -->
+	<!-- to clean the log file use the runCleanLogfile.ps1 Script weekly 		 -->
+	<db_check_alert_log listner_summary="false">true</db_check_alert_log>
 	
 	<!-- Parameter for the archive only backup -->
 	<!-- if backup script is started wiht the parameter ARCHIVE - save only archivelogs if true-->
