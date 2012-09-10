@@ -15,3 +15,5 @@ PowershellZip.dll-help.xml
 oracle_homes.xml
 backup_config.xml
 backup_file_config.xml
+last_config_status.xml
+
