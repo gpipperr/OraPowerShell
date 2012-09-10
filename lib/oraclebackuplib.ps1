@@ -1047,4 +1047,108 @@ param ( $files )
 	
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 }
+
+#==============================================================================
+# local-check-db-alertlog
+# check the alert log of the database
+##
+function local-check-db-alertlog{
+
+param (   $db 
+		, $sql_connect_string)
+		
+
+	local-print  -Text "Info -- Check Alert.log for errros not yet fully tested and implemented"
+	
+	$starttime=get-date
+	# Numeric Day of the week
+	$day_of_week=[int]$starttime.DayofWeek 
+	
+	## check the alert log	
+	
+	# check if adrci is accessible
+		# if yes use adrci
+		# get all incident information with adrci
+	##
+	# if not geht the alert_log position
+		# get parameter bdump from sqlplus
+$alert_log=@'
+set pagesize 0 
+set feedback off
+select value from v$parameter where name ='background_dump_dest';
+quit
+'@| & "$ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string"
+		
+		local-print  -Text "Info -- read the alert log destination from the database::",$alert_log
+		
+		try {
+			
+			$alert_log=$alert_log.trim()
+				
+			# check if size << 500MB => if bigger warning => 1GB error!
+			$alert_log_file=(get-ChildItem "$alert_log\alert_$env:ORACLE_SID.log")  #| out-null
+						
+			$alert_log_size=($alert_log_file.length/1MB)
+			
+		     
+			if ( $alert_log_size -gt  1000 ) {
+				local-print  -ErrorText ("Error -- Alertlog of the instance::{0} -> size::{1:n} MB to big!" -f $env:ORACLE_SID,$alert_log_size)
+			}
+			elseif ( $alert_log_size -gt  500 ) {
+				local-print  -Text ("Warning -- Alertlog of the instance::{0} -> size ::{1:n} MB" -f $env:ORACLE_SID,$alert_log_size)  -ForegroundColor "yellow"
+			}
+			else {
+				local-print  -Text ("Info -- Alertlog of the instance::{0} -> size::{1:n} MB" -f $env:ORACLE_SID,$alert_log_size)
+			}
+		
+	 
+			# make copy with the ocopy utilty
+			$alert_check_log = "$alert_log\alert_$env:ORACLE_SID.check_log"
+			$alert_log_full_name=$alert_log_file.toString()
+
+			local-print  -Text "Info -- Copy the open file ::",$alert_log_full_name, " to::" , $alert_check_log
+		
+			#copy
+			& "$env:ORACLE_home\bin\ocopy"  "$alert_log_full_name" "$alert_check_log" 2>&1 | foreach-object { local-print -text "OCOPY OUT::",$_.ToString() }
+					
+			# read the last byte postion from conf.file
+			$log_status_xml="$scriptpath\conf\last_config_status.xml"
+			if (get-ChildItem $log_status_xml -ErrorAction silentlycontinue ) {
+				#read 
+				$log_last_status= [xml] ( get-content $log_status_xml)				
+			}
+			else {	
+				$log_last_status= [xml] "<alert_log><last_byte_position>0</last_byte_position></alert_log>"
+			}
+			#
+			$byte_pos=$log_last_status.alert_log.last_byte_position.toString()
+					
+			# check the file 
+			# return the byte postion of the last read in this file
+			$byte_pos=local-get-file_from_postion -filename $alert_check_log -byte_pos $byte_pos -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match 5
+		    						
+			$log_last_status.alert_log.last_byte_position="$byte_pos"
+			# save the status file again on disk 
+			$log_last_status.save($log_status_xml)
+		
+		} 
+		catch {
+			local-print -ErrorText "Error--",$_
+			throw "Error check the alert.log :: $_"
+		}
+	##	
+
+	
+	##
+	local-print  -Text "Info -- Finish Check Alert Logs::",      "at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
+	local-log-event -logText "Info -- Finish Check Alert Logs::","at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
+	
+	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
+	
+ }
+
+
 #============================= End of File ====================================
+
+
+

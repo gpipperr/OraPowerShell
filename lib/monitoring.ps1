@@ -65,6 +65,7 @@ function local-get-file_from_postion{
 		, [int]      $byte_pos 
 		, [String[]] $search_pattern
 		, [String]   $log_file 
+		, [int]      $print_lines_after_match = 0 
 	)
 	
 	$filename_only=split-path -Leaf $filename
@@ -76,25 +77,31 @@ function local-get-file_from_postion{
 			$filesize= (Get-ChildItem $filename).length
 			
 			if ( $filesize -lt $byte_pos) {
-				throw "Filessize :: $filesize is smaller then position in byte :: $byte_pos from file  $filename"
+				local-print  -Text  "Filessize :: $filesize is smaller then position in byte :: $byte_pos from file  $filename - start form the 1. byte of the file"
+				$byte_pos=0;
 			}
 	
 			# Open Streamreader to read the file
 			# see http://msdn.microsoft.com/de-de/library/system.io.streamreader%28v=vs.80%29.aspx
 			#
 			$sreader= New-Object System.IO.StreamReader($filename)
-			local-print  -Text "Info - read file", $filename, "size byte::",$filesize
+			local-print  -Text "Info -- read file", $filename, "size byte::",$filesize,"from postion::",$byte_pos,"writing",$print_lines_after_match," lines after finding"
 		
-			#$filesize - 
-			# read all
-			#$sreader.BaseStream.Position = ($byte_pos)
+	
+			# set the file pointer to the last postion
+			$last_byte_pos = $byte_pos
+			$sreader.BaseStream.Position = $byte_pos
 			
 			# read in array
 			$aline=@()
 			[String] $fline="-"
 			[int] $counter=0;
 			
-			local-print  -Text "Info -- check logfile::",$filename_only," for pattern::",$search_pattern
+			#Debug
+			#local-print  -Text "Info -- check logfile::",$filename_only," for pattern::",$search_pattern
+			
+			# print also lines after a match 
+			$after_match=0;
 			
 			do {
 				# read one line
@@ -108,33 +115,65 @@ function local-get-file_from_postion{
 						$fline=" "
 					}
 				}				
+				# fix byte to char !!! 
+				# $sreader.BaseStream.Position ?? shows only x*1024 ??
+				#[System.Text.Encoding]::Unicode.GetByteCount($s)   ??
+				$last_byte_pos=$last_byte_pos+$fline.length
+				 	
 				
 				# only debug
-				#local-print  -Text ( "Info -- read line {0,3}  : {1}" -f ($counter++),$fline )
+				# local-print  -Text ( "Info -- read line {0,3}  : {1}" -f $counter,$fline )
 				
 				## search in the line
+				# if Match is one line before
 				
-				foreach ($spat in $search_pattern){
-					
-					if ($fline	-imatch $spat ) {
-					    $log_line=("{0,20}:: Line {1,6} : {2}" -f $filename_only,$counter,$fline )
-						$aline+=$log_line		
+				if ($after_match -gt 0 ) {
+					# debug 
+					# local-print  -Text "Info -- after_match feature postion::",$after_match
+					$log_line=("                -> {0} " -f $fline )
+					$aline+=$log_line
+					$after_match--;					
+				}
+				else {
+					foreach ($spat in $search_pattern){
+						if ($fline	-imatch $spat ) {
+							# if byte pos is 0 - read from start of file - we can use the line nummber
+							if ($byte_pos -eq 0) {
+								$log_line=("{0,20}:: Line {1,6} - Match [{2,15}]  : {3}" -f $filename_only,$counter,$spat,$fline )
+							}
+							# if byte pos is > 0 - read from a byte pos inside the file - output byte position
+							else {
+								$log_line=("{0,20}:: Byte {1,12} - Match [{2,15}] : {3}" -f $filename_only,$last_byte_pos,$spat,$fline )
+							}
+							$aline+=$log_line		
+							
+							# set the the defiend default:
+							$after_match=$print_lines_after_match
+							# debug 
+							# local-print -text "Info -- set after match to::",$after_match
+														
+						}
 					}
 				}
 			}
 			until ((-not ($fline)) )		
 			
 			# write to log file
-			if ($aline) {
+			if ( (-not $aline) -or ( $aline.length -eq 0) ) {
+				$aline+=("{0,20}:: Byte Position {1,12} : {2} Nothing from interest found - last check {3:d}" -f $filename_only,$last_byte_pos,$fline,(get-date))
+			}			
 				
-				if ($aline.length -eq 0) {
-					$aline+=$filename_only+"::"+"Nothing from interest found"
-				}
+			# write the result to the summary log
+			local-print  -Text "Info -- add check summery to the satus logfile:",$log_file
+			if ($log_file) {
+				add-content $log_file $aline
+			}
+			else {
+				local-print  -ErrorText "Error -- No status file defined"
+			}
+			#
 				
 			
-				
-				set-Content  $log_file $aline
-			}
 		}
 		catch {	
 			
@@ -146,16 +185,18 @@ function local-get-file_from_postion{
 			}
 		}
 		
-	
+		return $last_byte_pos
 	}
 	else {
 		local-print  -ErrorText "Error -- File $filename not found"
+		return 0
 	
 	}	
 	<#
 		.EXAMPLE
 		local-get-file_from_postion -filename "D:\OraPowerShellCodePlex\log\DB_BACKUP_5.log" 10 ("Warning","RMAN-0") "D:\OraPowerShellCodePlex\log\status_mail.log"
-		local-get-file_from_postion -filename "D:\OraPowerShellCodePlex\log\DB_BACKUP_5.log" 10 (local-get-oracle-error-pattern) "D:\OraPowerShellCodePlex\log\status_mail.log"
+		local-get-file_from_postion -filename "D:\OraPowerShellCodePlex\test\test_pattern_match.txt" 0 (local-get-oracle-error-pattern) "D:\OraPowerShellCodePlex\test\pattern_match.log" -print_lines_after_match 5
+		
 	#>
 }
 #==============================================================================
@@ -167,12 +208,11 @@ function local-get-oracle-error-pattern{
 	
 	[String[]] $error_pattern=@()
 	
-	#General
-	$error_pattern+="Error"
-	$error_pattern+="idle instance"
+
 	
 	#NLS Errors
-	$error_pattern+="ORA-12154"
+	$error_pattern+="TNS-121[0-9][0-9]"
+	$error_pattern+="TNS-12545"
 	
 	# Oracle internal Errors (idea of list from nagios oracle.cfg, but list fixed with oracle documentation
 	# see  http://docs.oracle.com/cd/E18283_01/server.112/e17766/toc.htm
@@ -186,7 +226,10 @@ function local-get-oracle-error-pattern{
 
 	$error_pattern+="ORA-004[4-7][0-9]" # ORA-0440 - ORA-0485 background process failure
 	$error_pattern+="ORA-048[0-5]" 
+	
 	$error_pattern+="ORA-06[0-3][0-9]" 	# ORA-6000 - ORA-0639 internal errors
+	$error_pattern+="ORA-6[0-3][0-9]" 	# ORA-6000 - ORA-0639 internal errors
+	
 	$error_pattern+="ORA-006[0-3][0-9]" # ORA-6000 - ORA-0639 internal errors
 	$error_pattern+="ORA-1114" 			# datafile I/O write error
 
@@ -209,6 +252,11 @@ function local-get-oracle-error-pattern{
 	#RMAN errors
 	#http://docs.oracle.com/cd/E18283_01/server.112/e17766/rmanus.htm
 	$error_pattern+="RMAN-[0-2]"   # RMAN-00550 to RMAN-20507 
+	
+	#global
+	#General
+	$error_pattern+="Error"
+	$error_pattern+="idle instance"
 	
 	return $error_pattern
 }

@@ -29,7 +29,9 @@
 Set-Variable CLF "`r`n" -option constant
 
 # create with the option AllScpe to hava a global variable!
-Set-Variable backup_logfile "DB_BACKUP" -option AllScope
+
+Set-Variable backup_logfile 	"DB_BACKUP" -option AllScope
+Set-Variable backup_statusfile 	"STATUS.TXT" -option AllScope
 
 
 #==============================================================================
@@ -43,7 +45,25 @@ function local-set-logfile {
 	param(
 		$logfile
 	)
-    $backup_logfile=$logfile
+	$backup_logfile=$logfile
+	write-host ("Info -- Use Logfile Name ::{0}" -f (local-get-logfile) )  -ForegroundColor "green"	 
+}
+
+#==============================================================================
+# get the location of the status logfile
+##
+
+function local-get-statusfile {
+	return $backup_statusfile
+}
+
+function local-set-statusfile {
+	param(
+		$statusfile
+	)
+	
+    $backup_statusfile=$statusfile
+	write-host ("Info -- Use Status summary log ::{0}" -f (local-get-statusfile) )  -ForegroundColor "green"	 
 }
 
 #==============================================================================
@@ -67,9 +87,6 @@ function local-clear-logfile {
 param (
 	$log_file
 )
-	# set the global logfile
-	local-set-logfile -logfile $log_file
-	
 	$today=(get-date).date
 	
 	# check if file exists
@@ -122,7 +139,7 @@ function local-print{
 				$log_message  | Out-File -FilePath "$backup_log" -Append
 			 }
 			 catch {
-			    write-host -ForegroundColor "red" "Error-- Logfile not accessible"
+			    write-host -ForegroundColor "red" "Error -- Logfile not accessible"
 			 }
 		} 
 		catch {

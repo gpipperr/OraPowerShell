@@ -63,11 +63,19 @@ $starttime=get-date
 $day_of_week=[int]$starttime.DayofWeek 
 
 $logfile_name=$scriptpath.path+"\log\VSSFILE_BACKUP_"+$day_of_week+".log"
-	
 write-host "Info -- Use Logfile Name :: $logfile_name"  -ForegroundColor "green"	
 
 # Log
+# set the global logfile
+local-set-logfile    -logfile $logfile_name
 local-clear-logfile -log_file $logfile_name
+
+# Status Mail
+$logstatusfile_name=$scriptpath.path+"\log\STATUS.txt"
+write-host "Info -- Use Status summary log :: $logstatusfile_name"  -ForegroundColor "green"	
+
+local-set-statusfile -log_file $logstatusfile_name
+local-clear-logfile  -log_file $logstatusfile_name
 
 ################ Semaphore Handling ########################################### 
 # Only one script can run at one time
