@@ -62,12 +62,12 @@ $backupconfig= [xml] ( get-content $config_xml)
 #==============================================================================
 # read Helper Functions
 .  $scriptpath\lib\backuplib.ps1
+# load monitoring library
+. $scriptpath\lib\monitoring.ps1
 # Oracle Backup main scripts
 .  $scriptpath\lib\oraclebackuplib.ps1
 # .Net Helper
 .  $scriptpath\lib\oracle_dotnet_connect.ps1
-# load monitoring library
-. $scriptpath\lib\monitoring.ps1
 
 ################ Semaphore Handling ########################################### 
 # Only one script can run at one time
@@ -79,7 +79,8 @@ $sem = New-Object System.Threading.Semaphore(1, 1, "ORALCE_BACKUP")
 
 
 #==============================================================================
-
+# log and status file handling
+#
 # move old logfile to .0 
 # if log is older then today, if not append
 # we have per day one logfile from this week and from the last week the .0 logs
@@ -87,12 +88,17 @@ $sem = New-Object System.Threading.Semaphore(1, 1, "ORALCE_BACKUP")
 $starttime=get-date
 # Numeric Day of the week
 $day_of_week=[int]$starttime.DayofWeek 
-$logfile_name=$scriptpath.path+"\log\DB_BACKUP_"+$day_of_week+".log"
-	 
-write-host "Info -- Use Logfile Name :: $logfile_name"  -ForegroundColor "green"	
 
-# Log
+
+# Default log files for each day of the week
+$logfile_name=$scriptpath.path+"\log\DB_BACKUP_"+$day_of_week+".log"
+local-set-logfile    -logfile $logfile_name
 local-clear-logfile -log_file $logfile_name
+
+# Status Logfile
+$logstatusfile_name=$scriptpath.path+"\log\STATUS.txt"
+local-set-statusfile -statusfile $logstatusfile_name
+local-clear-logfile  -log_file  (local-get-statusfile)
 
 #==============================================================================
 # Check for unencrypted passwords
@@ -284,15 +290,23 @@ Process {
 			try {
 				#Only if the connect to the DB is possible
 				if ($can_connect.equals("true")) {
+					
+					# Backup the database
 					if ($db.db_backup.Equals("true")) {
 						local-backup-database -db $db -sql_connect_string $sql_connect_string -rman_connect_string $rman_connect_string
 					} 
+					
+					# get the meta information like controlfile trace
 					if ($db.db_meta_info.InnerText.Equals("true")) {
 						local-backup-db-metainfo -db $db -sql_connect_string $sql_connect_string
 					} 
+					
+					# check alert Log
 					if ($db.db_check_alert_log.InnerText.Equals("true")) {
 						local-check-db-alertlog -db $db -sql_connect_string $sql_connect_string
 					} 
+					
+					# User export
 					if ($db.db_user_export.export.Equals("true")) {
 						local-backup-db-user  -db $db -sql_connect_string $sql_connect_string
 					} 	
@@ -394,7 +408,7 @@ finally {
 			#==============================================================================
 			# Check the logfiles and create summary text for check mail
 			
-			local-get-file_from_postion -filename (local-get-logfile) -byte_pos 1 -search_pattern (local-get-oracle-error-pattern) -log_file "$scriptpath\log\status_mail.log"
+			local-get-file_from_postion -filename (local-get-logfile) -byte_pos 0 -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile)
 			
 			#==============================================================================
 			
