@@ -2,10 +2,11 @@ syntax: glob
 
 # no old logfiles
 *.log
+STATUS.txt
 
 # no auto generated files
 generated_*
-
+vss_generated_*
 
 # no zip lib
 *.dll

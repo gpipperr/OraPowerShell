@@ -47,10 +47,12 @@
 
       <!-- Language of messages - charset -->
       <nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
+	  
+	  <!-- TNS_ADMIN -->
+	  <!-- if the value is "default" the Oracle Home Path is used, else the path -->
+	  <tns_admin>D:\oracle\TNS_ADMIN</tns_admin>
+	  
     </nls_settings>
-
-
-
 
     <!-- if db_backup_use_flash = true store only meta information and export in this location -->
     <db_backup_dest>d:\oracle\flash_recovery_area</db_backup_dest>
