@@ -214,58 +214,30 @@ function local-get-oracle-error-pattern{
 	
 	[String[]] $error_pattern=@()
 	
+	# read pattern definition
+	try {
+		$pattern_path="$scriptpath\conf\oracle_search_pattern.xml"
+		$pattern_list= [xml] ( get-content $pattern_path)			
+		
+		# read the pattern into the array
+		foreach ($pat in $pattern_list.search_pattern.error_pattern ) {
+			$error_pattern+=$pat.toString()
+		}	
+	} 
+	catch {
+		local-print  -ErrorText "Error -- Pattern definition $pattern_path hast errors",$_
+		
+		$error_pattern+="error"
+		$error_pattern+="fehler"
+		$error_pattern+="ORA-"
+		$error_pattern+="RMAN-"
+		$error_pattern+="TNS-"
+		$error_pattern+="idle instance"
+		
+		local-print  -ErrorText "Error -- Using default list ",$error_pattern
+		 
+	}
 
-	
-	#NLS Errors
-	$error_pattern+="TNS-121[0-9][0-9]"
-	$error_pattern+="TNS-12545"
-	
-	# Oracle internal Errors (idea of list from nagios oracle.cfg, but list fixed with oracle documentation
-	# see  http://docs.oracle.com/cd/E18283_01/server.112/e17766/toc.htm
-
-	$error_pattern+="ORA-0020[0-9]" 	# controlfile Errors
-	$error_pattern+="ORA-00210" 		# cannot open control file
-
-	$error_pattern+="ORA-00257" 		# archiver is stuck
-	$error_pattern+="ORA-00333" 		# redo log read error
-	$error_pattern+="ORA-00345" 		# redo log write error
-
-	$error_pattern+="ORA-004[4-7][0-9]" # ORA-0440 - ORA-0485 background process failure
-	$error_pattern+="ORA-048[0-5]" 
-	
-	$error_pattern+="ORA-06[0-3][0-9]" 	# ORA-6000 - ORA-0639 internal errors
-	$error_pattern+="ORA-6[0-3][0-9]" 	# ORA-6000 - ORA-0639 internal errors
-	
-	$error_pattern+="ORA-006[0-3][0-9]" # ORA-6000 - ORA-0639 internal errors
-	$error_pattern+="ORA-1114" 			# datafile I/O write error
-
-	$error_pattern+="ORA-01115" 	 	# datafile I/O read error
-	$error_pattern+="ORA-01116" 	 	# cannot open datafile
-	$error_pattern+="ORA-01118" 	 	# cannot add a data file
-	$error_pattern+="ORA-01578" 	 	# data block corruption
-	$error_pattern+="ORA-01135" 	 	# file accessed for query is offline
-	$error_pattern+="ORA-01547" 	 	# tablespace is full
-	$error_pattern+="ORA-01555" 		# snapshot too old
-	$error_pattern+="ORA-01562"  		# failed to extend rollback segment
-	$error_pattern+="ORA-0162[89]"  	# ORA-1628 - ORA-1632 maximum extents exceeded
-	$error_pattern+="ORA-0163[0-2]" 
-	$error_pattern+="ORA-0165[0-6]"  	# ORA-1650 - ORA-1656 tablespace is full
-	$error_pattern+="ORA-04031"			# out of shared memory.
-                  
-	$error_pattern+="ORA-03113"  		# end of file on communication channel
-	$error_pattern+="ORA-06501" 		# PL/SQL internal error 
-	
-	#RMAN errors
-	#http://docs.oracle.com/cd/E18283_01/server.112/e17766/rmanus.htm
-	$error_pattern+="RMAN-[0-2]"   # RMAN-00550 to RMAN-20507 
-	
-	#global
-	#General
-	$error_pattern+="Error"
-	$error_pattern+="idle instance"
-	$error_pattern+="fehler"
-	$error_pattern+="0x0000"
-	
 	return $error_pattern
 }
 

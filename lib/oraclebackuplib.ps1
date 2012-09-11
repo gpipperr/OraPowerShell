@@ -1142,6 +1142,9 @@ quit
 
 	
 	##
+	$endtime=get-date
+	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
+	
 	local-print  -Text "Info -- Finish Check Alert Logs::",      "at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
 	local-log-event -logText "Info -- Finish Check Alert Logs::","at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
 	
