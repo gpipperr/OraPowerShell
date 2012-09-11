@@ -80,12 +80,14 @@ function local-get-file_from_postion{
 				local-print  -Text  "Filessize :: $filesize is smaller then position in byte :: $byte_pos from file  $filename - start form the 1. byte of the file"
 				$byte_pos=0;
 			}
+			
 	
 			# Open Streamreader to read the file
 			# see http://msdn.microsoft.com/de-de/library/system.io.streamreader%28v=vs.80%29.aspx
 			#
-			$sreader= New-Object System.IO.StreamReader($filename)
 			local-print  -Text "Info -- read file", $filename, "size byte::",$filesize,"from postion::",$byte_pos,"writing",$print_lines_after_match," lines after finding"
+			$sreader= New-Object System.IO.StreamReader($filename)
+			
 		
 	
 			# set the file pointer to the last postion
@@ -166,7 +168,7 @@ function local-get-file_from_postion{
 			$aline+="============================================================================="			
 			
 			# write the result to the summary log
-			local-print  -Text "Info -- add check summery to the satus logfile:",$log_file
+			
 			if ($log_file) {
 				add-content $log_file ("============================{0,20}==============================="	-f $filename_only) 
 				add-content $log_file $aline
@@ -185,6 +187,7 @@ function local-get-file_from_postion{
 		finally {
 			if ($sreader) {
 				$sreader.close();
+				local-print  -Text "Info -- add check summery to the satus logfile:",$log_file
 			}
 		}
 		
