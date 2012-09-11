@@ -162,10 +162,13 @@ function local-get-file_from_postion{
 			if ( (-not $aline) -or ( $aline.length -eq 0) ) {
 				$aline+=("{0,20}:: Byte Position {1,12} : {2} Nothing from interest found - last check {3:d}" -f $filename_only,$last_byte_pos,$fline,(get-date))
 			}			
-				
+			
+			$aline+="============================================================================="			
+			
 			# write the result to the summary log
 			local-print  -Text "Info -- add check summery to the satus logfile:",$log_file
 			if ($log_file) {
+				add-content $log_file ("============================{0}==============================="	-f $filename_only) 
 				add-content $log_file $aline
 			}
 			else {
@@ -257,6 +260,8 @@ function local-get-oracle-error-pattern{
 	#General
 	$error_pattern+="Error"
 	$error_pattern+="idle instance"
+	$error_pattern+="fehler"
+	$error_pattern+="0x0000"
 	
 	return $error_pattern
 }
