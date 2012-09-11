@@ -48,7 +48,8 @@ $config_xml="$scriptpath\conf\backup_file_config.xml"
 . $scriptpath\lib\monitoring.ps1
 
 ###############################################################################
-
+# log and status file handling
+#
 # move old logfile to .0 
 # if log is older then today, if not append
 # we have per day one logfile from this week and from the last week the .0 logs
@@ -56,20 +57,16 @@ $config_xml="$scriptpath\conf\backup_file_config.xml"
 $starttime=get-date
 # Numeric Day of the week
 $day_of_week=[int]$starttime.DayofWeek 
-	
-$logfile_name=$scriptpath.path+"\log\FILE_BACKUP_"+$day_of_week+".log"
-	
-write-host "Info -- Use Logfile Name :: $logfile_name"  -ForegroundColor "green"
 
 # Log
 # set the global logfile
-local-set-logfile    -logfile $logfile_name
-local-clear-logfile -log_file $logfile_name
+$logfile_name=$scriptpath.path+"\log\FILE_BACKUP_"+$day_of_week+".log"
+local-set-logfile    -logfile  $logfile_name
+local-clear-logfile  -log_file $logfile_name
 
 # Status Mail
 $logstatusfile_name=$scriptpath.path+"\log\STATUS.txt"
-write-host "Info -- Use Status summary log :: $logstatusfile_name"  -ForegroundColor "green"	
-local-set-statusfile -log_file $logstatusfile_name
+local-set-statusfile -statusfile $logstatusfile_name
 local-clear-logfile  -log_file $logstatusfile_name
 
 
@@ -208,6 +205,13 @@ finally {
 				local-print -Text "Error -- Faild to relase the emaphore FILE_BACKUP - not set or Backup not started?"	-ForegroundColor "red"			
 			}
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
+			#==============================================================================
+			
+			#==============================================================================
+			# Check the logfiles and create summary text for check mail
+			
+			local-get-file_from_postion -filename (local-get-logfile) -byte_pos 0 -search_pattern "error","fehler","0x0000" -log_file (local-get-statusfile)
+			
 			#==============================================================================
 }
 

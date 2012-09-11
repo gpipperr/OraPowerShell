@@ -251,7 +251,7 @@ Process {
 		}
 		local-print  -Text "Info -- set Oracle Home to::" , $env:ORACLE_HOME
 		
-		#seht the nls_settings
+		#set the nls_settings
 		$NLS_LANG=$dB.nls_settings.nls_lang.toString()
 		try {
 			set-item -path env:NLS_LANG -value $NLS_LANG
@@ -260,7 +260,27 @@ Process {
 			new-item -path env: -name NLS_LANG -value $NLS_LANG
 		}
 		local-print  -Text "Info -- set NLS LANG to::" , $env:NLS_LANG
-					
+		
+		# TNS setting
+		$TNS_ADMIN=$dB.nls_settings.tns_admin.toString()
+		
+		if ("defaut".equals($TNS_ADMIN)) {
+			$TNS_ADMIN=$ORACLE_HOME+"\NETWORK\ADMIN"
+		}
+		else {
+			$check_result=local-check-dir -lcheck_path $TNS_ADMIN -dir_name "TNS ADMIN Location" -create_dir "false"
+			if ($check_result.equals("false")) {
+				throw "TNS ADMIN::$TNS_ADMIN not extis for Instance::$ORACLE_SID"					
+			}
+		}
+		try {
+			set-item -path env:TNS_ADMIN -value $TNS_ADMIN
+		}
+		catch {
+			new-item -path env: -name TNS_ADMIN -value $TNS_ADMIN
+		}
+		local-print  -Text "Info -- set TNS_ADMIN to::" , $env:TNS_ADMIN
+		
 		
 		# create the connect string to the database
 		$sql_connect_string ="/ as sysdba"

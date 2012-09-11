@@ -1058,20 +1058,22 @@ param (   $db
 		, $sql_connect_string)
 		
 
-	local-print  -Text "Info -- Check Alert.log for errros not yet fully tested and implemented"
+	local-print  -Text "Info -- Check Alert.log"
 	
 	$starttime=get-date
 	# Numeric Day of the week
 	$day_of_week=[int]$starttime.DayofWeek 
 	
-	## check the alert log	
+	## check the alert log		
 	
 	# check if adrci is accessible
 		# if yes use adrci
 		# get all incident information with adrci
 	##
+	
+	
 	# if not geht the alert_log position
-		# get parameter bdump from sqlplus
+	# get parameter bdump from sqlplus
 $alert_log=@'
 set pagesize 0 
 set feedback off
