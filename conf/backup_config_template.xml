@@ -36,14 +36,22 @@
 	
 	<!-- how to connect to the database -->
     <nls_settings>
-      <!-- if true use "/ as sysdba" to connect to the local instance -->
+      
+	  <!-- if true use "/ as sysdba" to connect to the local instance -->
       <use_direct_connnect_for_sys>true</use_direct_connnect_for_sys>
-      <!-- if false use the following nls and user settings ot connect to the database -->
+      
+	  <!-- if false use the following nls and user settings ot connect to the database -->
       <tns_alias>gpi</tns_alias>
       <username password="system" encrypt="false" certificate="false">backupuser</username>
+	  
 	  <!-- Language of messages - charset like GERMAN_GERMANY.UTF8 -->
 	  <nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
-    </nls_settings>
+	  
+	  <!-- TNS_ADMIN -->
+	  <!-- if the value is "default" the Oracle Home Path is used, else the path -->
+	  <tns_admin>default</tns_admin>
+    
+	</nls_settings>
     
 	
 	<!-- Backup Database and Archivelogs -->

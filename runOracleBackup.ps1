@@ -264,7 +264,7 @@ Process {
 		# TNS setting
 		$TNS_ADMIN=$dB.nls_settings.tns_admin.toString()
 		
-		if ("defaut".equals($TNS_ADMIN)) {
+		if ("default".equals($TNS_ADMIN)) {
 			$TNS_ADMIN=$ORACLE_HOME+"\NETWORK\ADMIN"
 		}
 		else {

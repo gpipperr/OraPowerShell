@@ -130,7 +130,7 @@ function local-get-file_from_postion{
 				if ($after_match -gt 0 ) {
 					# debug 
 					# local-print  -Text "Info -- after_match feature postion::",$after_match
-					$log_line=("                -> {0} " -f $fline )
+					$log_line=("{0,20} -> {1} " -f " ",$fline )
 					$aline+=$log_line
 					$after_match--;					
 				}
@@ -168,7 +168,7 @@ function local-get-file_from_postion{
 			# write the result to the summary log
 			local-print  -Text "Info -- add check summery to the satus logfile:",$log_file
 			if ($log_file) {
-				add-content $log_file ("============================{0}==============================="	-f $filename_only) 
+				add-content $log_file ("============================{0,20}==============================="	-f $filename_only) 
 				add-content $log_file $aline
 			}
 			else {
