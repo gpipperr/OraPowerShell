@@ -139,7 +139,7 @@ function local-print{
 				$log_message  | Out-File -FilePath "$backup_log" -Append
 			 }
 			 catch {
-			    write-host -ForegroundColor "red" "Error -- Logfile not accessible"
+			    write-host -ForegroundColor "red" "Error -- Logfile not accessible see text above"
 			 }
 		} 
 		catch {
