@@ -26,7 +26,7 @@ if ($IsAdmin) {
 	local-register-eventlog
 }
 else{
-    local-print -ForegroundColor "red"  -Text "--------------------------------------------------------------------"
+	local-print -ForegroundColor "red"  -Text "--------------------------------------------------------------------"
 	local-print -ForegroundColor "red"  -Text "You must start a administrative session to register the event source"
 	local-print -ForegroundColor "red"  -Text "--------------------------------------------------------------------"
 }	

@@ -5,7 +5,6 @@
 # Site:   http://orapowershell.codeplex.com
 #==============================================================================
 <#
-
 	.NOTES
 		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de
 		Security:
@@ -15,7 +14,6 @@
 		set-ExecutionPolicy -scope CurrentUser RemoteSigned
 		or
 		sign scripts!
-  		
 	.SYNOPSIS
 		.net connection to the database - helper funktions
 		
@@ -37,11 +35,9 @@
 #
 #
 function db_load_dll{
-
-Param (
-	 $dll_path = "d:\oracle\product\11.2.0.3\client_64bit\odp.net\bin\2.x\Oracle.DataAccess.dll"
-)
-
+	Param (
+		 $dll_path = "d:\oracle\product\11.2.0.3\client_64bit\odp.net\bin\2.x\Oracle.DataAccess.dll"
+	)
 	# Try to load the DDL for the Oracle Connection
 	try{
 		local-print  -Text "Info -- try to load the .Net dll from ::",$dll_path
@@ -68,12 +64,12 @@ Param (
 ####
 
 function db_connect{
-Param (
-	$user
- ,	$password
- ,  $tns_alias
- ,  [Oracle.DataAccess.Client.OracleConnection]  $OracleConnection
-)
+	Param (
+	   $user
+	 , $password
+	 , $tns_alias
+	 , [Oracle.DataAccess.Client.OracleConnection]  $OracleConnection
+	)
  
 	# Connect String 
 	$ConnectionString  = "User ID="+$user+";"
@@ -100,12 +96,12 @@ Param (
 # db_read_sql -SQLCommand "select * from all_users" -OracleConnection  $handle
 ##
 function db_read_sql {
-param(
-	   $SQLCommand
-	,  [Oracle.DataAccess.Client.OracleConnection]  $OracleConnection
-	,  $result_file = "db_information.csv"
-	,  $headerinfo   ="SQL Query"
-)
+	param(
+		   $SQLCommand
+		,  [Oracle.DataAccess.Client.OracleConnection]  $OracleConnection
+		,  $result_file = "db_information.csv"
+		,  $headerinfo   ="SQL Query"
+	)
 
 	#initialise SQL Command
 	$OracleCommand = New-Object -TypeName Oracle.DataAccess.Client.OracleCommand
@@ -125,7 +121,6 @@ param(
 	
 	##-------------------------
 	## http://msdn.microsoft.com/en-us/library/system.data.oracleclient.oracledatareader.aspx
-	
 	
 	$reader=$OracleCommand.ExecuteReader()
 	
@@ -170,22 +165,20 @@ param(
 	# write the last results
 	# save the generated db Content to disk
 	add-Content -Path "$result_file" -value $csv
-		
-		
+
 	##-------------------------
 	$csv=""
 	$OracleDataAdapter.Dispose()
 	$OracleCommand.Dispose()
-	
 }
 
 #==============================================================================
 # Close the DB Connect 
 ##
 function db_close_connect{
-param (  
-	[Oracle.DataAccess.Client.OracleConnection] $OracleConnection
-)
+	param (  
+		[Oracle.DataAccess.Client.OracleConnection] $OracleConnection
+	)
 	local-print  -Text "Info -- Close the DB Connection to::",$OracleConnection.DatabaseName
 	if ($OracleConnection.state.value__ -eq 0 ) {
 		local-print  -Text "Info -- Connection was closed"
@@ -195,5 +188,3 @@ param (
 		local-print  -Text "Info -- Connection is closed"
 	}
 }
-
-

@@ -6,10 +6,7 @@
 #==============================================================================
 
 <#
-
-  
-  
-	.NOTES
+ 	.NOTES
 		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de			
 		Security:
 			(see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_script_aufrufen )
@@ -22,7 +19,6 @@
 		Generic functions for backup
 	.COMPONENT
 		Oracle Backup Script
-
 #>
 
 ## global PARAMETER
@@ -32,7 +28,6 @@ Set-Variable CLF "`r`n" -option constant
 
 Set-Variable backup_logfile 	"DB_BACKUP" -option AllScope
 Set-Variable backup_statusfile 	"STATUS.TXT" -option AllScope
-
 
 #==============================================================================
 # get the location of the log file
@@ -46,7 +41,7 @@ function local-set-logfile {
 		$logfile
 	)
 	$backup_logfile=$logfile
-	write-host ("Info -- Use log file Name ::{0}" -f (local-get-logfile) )  -ForegroundColor "green"	 
+	write-host ("Info -- Use log file Name ::{0}" -f (local-get-logfile) )  -ForegroundColor "green"
 }
 
 #==============================================================================
@@ -62,8 +57,8 @@ function local-set-statusfile {
 		$statusfile
 	)
 	
-    $backup_statusfile=$statusfile
-	write-host ("Info -- Use Status summary log ::{0}" -f (local-get-statusfile) )  -ForegroundColor "green"	 
+	$backup_statusfile=$statusfile
+	write-host ("Info -- Use Status summary log ::{0}" -f (local-get-statusfile) )  -ForegroundColor "green" 
 }
 
 #==============================================================================
@@ -73,6 +68,7 @@ function local-set-statusfile {
 function local-get-eventlog-name {
 	return "Application"
 }
+
 #==============================================================================
 # get the name of log source for the event log
 ##
@@ -84,14 +80,13 @@ function local-get-eventlog-source {
 # clear log file
 ##
 function local-clear-logfile {
-param (
-	$log_file
-)
+	param (
+		$log_file
+	)
 	$today=(get-date).date
 	
 	# check if file exists
 	if ( Test-Path $backup_logfile ) {
-	  	
 		# check if file is from today - append 
 		$file_age=Get-Item  $backup_logfile | select LastWriteTime
 	  	if ($file_age.LastWriteTime -gt $today ){
@@ -114,26 +109,22 @@ param (
 function local-print{
 	# Parametes
 	Param( 
-			 [String]   $ForegroundColor = 'White'
-			,[String[]] $text 
-			,[String[]] $errortext
+		  [String]   $ForegroundColor = 'White'
+		, [String[]] $text 
+		, [String[]] $errortext
 	)
 	# End param
 	Begin {}
 	Process {
-		
 		$backup_log = local-get-logfile 
-	
 		# Message for the log
 		if ($errortext){
 			$text=$errortext 
 			$ForegroundColor = "red"
 		}
-		
 		$log_message = (Get-Date -Format "yyyy-MM-dd HH:mm:ss") +":: " +$text 
-		
 		try {
-	         write-host -ForegroundColor $ForegroundColor $text  
+			write-host -ForegroundColor $ForegroundColor $text  
 			 # check if the file is accesible
 			 try{
 				$log_message  | Out-File -FilePath "$backup_log" -Append
@@ -146,9 +137,9 @@ function local-print{
 				throw "Error -- Failed to create log entry in: $backup_log. The error was: $_."
 		}
 	}
+	
 	End {}
 }
-
 
 #==============================================================================
 # if you like to log to the eventlog you have to register the event id
@@ -157,7 +148,7 @@ function local-print{
 #
 ###
 function local-register-eventlog {
-	
+
 	$log_source=local-get-eventlog-source
 	$event_log=local-get-eventlog-name
 	
@@ -169,14 +160,13 @@ function local-register-eventlog {
 	}
 	else {
 	 local-print -text "Info --Event Source::",$log_source,"Event log::",$event_log,"still registered"
-	}	
+	}
 }
 #==============================================================================
 # deregister the eventlog Source
 #  to delete a custom event log use  [system.Diagnostics.EventLog]::Delete("Anwendung")
 ####
 function local-deregister-eventlog {
-		
 	$log_source=local-get-eventlog-source
 	$event_log=local-get-eventlog-name
 	
@@ -198,9 +188,10 @@ function local-deregister-eventlog {
 # one type [System.Diagnostics.EventLogEntryType]::Information 
 ##
 function local-log-event { 
-		param( [string]$logText
-		     , [string]$logtype = "Information "
-			 ) 
+	param( 
+		  [string]$logText
+		, [string]$logtype = "Information "
+	 ) 
 	
 	#Name of the event source
 	$log_source=local-get-eventlog-source
@@ -209,7 +200,6 @@ function local-log-event {
 	try {	
 		# check if the eventsource exists, if not create the source!
 		if([system.Diagnostics.EventLog]::SourceExists($log_source,".")){ 
-			
 			#
 			$log = New-Object System.Diagnostics.EventLog($event_log,".")
 			$log.set_source($log_source) 
@@ -249,7 +239,7 @@ function local-log-event {
 # source: http://msdn.microsoft.com/en-us/library/system.runtime.interopservices.marshal.securestringtocotaskmemunicode.aspx
 ##
 function local-read-secureString {
-		 Param( [String] $text )#end param
+	Param( [String] $text )#end param
 	 
 	 #String to secure String
 	 $stext=ConvertTo-SecureString -String $text
@@ -267,15 +257,15 @@ function local-read-secureString {
 ##
 
 function local-check-dir {
-		 Param(
-			[string] $lcheck_path,
-			[string] $dir_name,
-			[string] $create_dir="true"	
-		 ) #end param
+	 Param(
+		 [string] $lcheck_path
+		,[string] $dir_name
+		,[string] $create_dir="true"
+	 ) #end param
  
 	$check_result="false"
-   
-   	if ( Test-Path  $lcheck_path) {
+
+	if ( Test-Path  $lcheck_path) {
 	  local-print -ForegroundColor "green"  -Text "Info --", $dir_name, "directory::" , $lcheck_path , "exists"
 	  $check_result="true"
 	}
@@ -291,7 +281,6 @@ function local-check-dir {
 	}
 	return 	$check_result	
 }	
-	
 
 #==============================================================================
 # search in XML the password and decrypt the password
@@ -324,8 +313,8 @@ function local-encryptXMLPassword {
 				
 			}
 			else {
-				local-print  -Text "Info -- check Password :: is encrypted for user::" ,($username).toString()				
-			}			
+				local-print  -Text "Info -- check Password :: is encrypted for user::" ,($username).toString()
+			}
 		}
 	}
 	return $result
@@ -372,7 +361,7 @@ function rcopydata{
 		$robocopy = (gc env:systemroot)+"\system32\RoboCopy.exe" 
 	}     
 	else { 
-        local-print   "Error -- Download a copy of RoboCopy and put in $env:systemroot\system32\" 
+		local-print   "Error -- Download a copy of RoboCopy and put in $env:systemroot\system32\" 
 		throw "Download a copy of RoboCopy and put in $env:systemroot\system32\" 
 	}    
 	
@@ -382,12 +371,11 @@ function rcopydata{
 	
 	if ($roptions) {
 		# transform to arry
-		$options+=$roptions.Split(" ")		
+		$options+=$roptions.Split(" ")
 	}
 	else {
 		
 		local-print  -Text "Warning -- parameter roptions missing,using defaults" -ForegroundColor "yellow"
-		
 		$options  +="/R:0" + $CRF
 		$options  +="/W:0" + $CRF
 		$options  +="/S"   + $CRF
@@ -400,12 +388,11 @@ function rcopydata{
 	
     local-print  -Text "Info -- start robocopy with the following command line"
 	local-print  -Text "Info --",$options
-		
+
 	# start robocopy to transfer the data
-	
-		
+
 	& $robocopy "/JOB:$scriptpath/generated/generated_robocopy" 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() }
-	
+
 }
 
 

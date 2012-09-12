@@ -130,7 +130,7 @@ Begin {
 Process {
 
 		local-print        -Text "Info -- Start File Backup::", "at::", $starttime  -ForegroundColor "yellow"
-		local-log-event -logText "Info -- Start File Backup::", "at::", $starttime		
+		local-log-event -logText "Info -- Start File Backup::", "at::", $starttime
 	}
 End {}
 }
@@ -179,7 +179,7 @@ try{
 
 		
 		if ( $volume.use_vss.equals("true") ) {
-			local-print -Text "Warning -- to copy with Volumen Shadow Copy use Script runVSSBackup!"	-ForegroundColor "yellow"			
+			local-print -Text "Warning -- to copy with Volumen Shadow Copy use Script runVSSBackup!" -ForegroundColor "yellow"
 		}
 		
 		$vol_name			=$volume.name
@@ -205,7 +205,7 @@ try{
 			$roptions=$folder.robocopy_parameter.InnerText
 			
 			# Do the Backup
-			doBackup 	-vol_drive_letter $vol_drive_letter -soure_directories $source  -target_directory $target -roptions $roptions
+			doBackup  -vol_drive_letter $vol_drive_letter -soure_directories $source  -target_directory $target -roptions $roptions
 		}
 	}
 	#
@@ -213,8 +213,8 @@ try{
 
 } 
 catch {
-	local-print -Text "Error -- Failed to create backup: The error was: $_."	 -ForegroundColor "red"			
-	local-log-event -logtype "Error" -logText "Error -- Failed to create backup: The error was: $_."				
+	local-print -Text "Error -- Failed to create backup: The error was: $_." -ForegroundColor "red"
+	local-log-event -logtype "Error" -logText "Error -- Failed to create backup: The error was: $_."
 }
 finally {
 			#==============================================================================
@@ -225,20 +225,20 @@ finally {
 				$sem.Release() |  out-null
 			}
 			catch {
-				local-print -Text "Error -- Faild to release  the emaphore FILE_BACKUP - not set or Backup not started?"	-ForegroundColor "red"			
+				local-print -Text "Error -- Faild to release  the emaphore FILE_BACKUP - not set or Backup not started?" -ForegroundColor "red"
 			}
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 			#==============================================================================
 			
 			#==============================================================================
 			# Check the log files and create summary text for check mail
-			
+
 			local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern "error","fehler","0x0000" -log_file (local-get-statusfile)
-			
+
 			# send the result of the check to a mail reciptant 
 			# only if configured!
 			local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)
-			
+
 			#==============================================================================
 }
 

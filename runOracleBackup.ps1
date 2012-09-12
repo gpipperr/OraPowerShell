@@ -9,7 +9,7 @@
 
   
 	.NOTES
-		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de		
+		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de
 
 		Security:
 		(see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_script_aufrufen )
@@ -195,7 +195,7 @@ Process {
 				
 				# if Oracle Home not exits - exit
 				if ($check_result.equals("false")) {
-						throw "ORACLE_HOME::$ORACLE_HOME not exits for ASM Instance::$ORACLE_SID"					
+						throw "ORACLE_HOME::$ORACLE_HOME not exits for ASM Instance::$ORACLE_SID"
 				}
 					
 				try {
@@ -227,9 +227,9 @@ Process {
 					
 				# if Oracle Home not exits - exit
 				if ($check_result.equals("false")) {
-						throw "ORACLE_HOME::$ORACLE_HOME not extis for GRID"					
+						throw "ORACLE_HOME::$ORACLE_HOME not extis for GRID"
 				}
-						
+
 				try {
 					set-item -path env:ORACLE_HOME -value $ORACLE_HOME
 				}
@@ -238,7 +238,7 @@ Process {
 				}
 				
 				local-print  -Text "Info -- set Oracle Home to::" , $env:ORACLE_HOME
-									
+
 				local-print  -Text "Info -- start backup configuration of the GRID instance"
 				
 				local-backup-grid-metainfo -grid $grid
@@ -270,7 +270,7 @@ Process {
 		
 		# if Oracle Home not exits - exit
 		if ($check_result.equals("false")) {
-				throw "ORACLE_HOME::$ORACLE_HOME not exits for Instance::$ORACLE_SID"					
+				throw "ORACLE_HOME::$ORACLE_HOME not exits for Instance::$ORACLE_SID"
 		}
 			
 		try {
@@ -300,7 +300,7 @@ Process {
 		else {
 			$check_result=local-check-dir -lcheck_path $TNS_ADMIN -dir_name "TNS ADMIN Location" -create_dir "false"
 			if ($check_result.equals("false")) {
-				throw "TNS ADMIN::$TNS_ADMIN not exits for Instance::$ORACLE_SID"					
+				throw "TNS ADMIN::$TNS_ADMIN not exits for Instance::$ORACLE_SID"
 			}
 		}
 		try {
@@ -310,12 +310,11 @@ Process {
 			new-item -path env: -name TNS_ADMIN -value $TNS_ADMIN
 		}
 		local-print  -Text "Info -- set TNS_ADMIN to::" , $env:TNS_ADMIN
-		
-		
+
 		# create the connect string to the database
 		$sql_connect_string ="/ as sysdba"
 		$rman_connect_string="/"
-	
+
 		if ($db.nls_settings.use_direct_connnect_for_sys.equals("true")){
 			$sql_connect_string="/ as sysdba"
 			$rman_connect_string="/"
@@ -331,7 +330,7 @@ Process {
 			$rman_connect_string = $sql_connect_string
 			local-print  -Text "Info -- use as connection to the database::",$log_connection_string
 		}
-	
+
 		# Check if the connect is possible
 		$can_connect=local-check-connect -sql_connect_string $sql_connect_string
 		
@@ -359,12 +358,12 @@ Process {
 					# User export
 					if ($db.db_user_export.export.Equals("true")) {
 						local-backup-db-user  -db $db -sql_connect_string $sql_connect_string
-					} 	
+					} 
 					
-				}					
+				}
 			} 
 			catch {
-				throw "Error -- Failed to create backup: The error was: $_."							
+				throw "Error -- Failed to create backup: The error was: $_."
 			}
 		}
 		
@@ -376,17 +375,17 @@ Process {
 					
 					if ($db.db_archive.Equals("true")) {
 						local-backup-db-archive -db $db -sql_connect_string $sql_connect_string -rman_connect_string $rman_connect_string
-					}				
+					}
 					else {
-						local-print -Text "Error-- Archvielog backup was not enableed (db_archive=false) for this instance::",$ORACLE_SID   -ForegroundColor "red"		
-					}	
-				}			
+						local-print -Text "Error-- Archvielog backup was not enableed (db_archive=false) for this instance::",$ORACLE_SID   -ForegroundColor "red"
+					}
+				}
 			} 
 			catch {
-					local-print -Text "Error-- Failed to create Archvielog backup: The error was: $_."	 -ForegroundColor "red"			
-					local-log-event -logtype "Error" -logText "Error- -- Failed to create Archvielog backup: The error was: $_."										
+					local-print -Text "Error-- Failed to create Archvielog backup: The error was: $_."	 -ForegroundColor "red"
+					local-log-event -logtype "Error" -logText "Error- -- Failed to create Archvielog backup: The error was: $_."
 			}
-		}	
+		}
 	}
 	# Copy generated files
 	if ($backupconfig.backup.files.copyfiles.Equals("true")) {
@@ -397,10 +396,10 @@ Process {
 			backupFiles -files $backupconfig.backup.files 
 		}
 		catch{
-			throw "Error- -- Failed to create backup: The error was: $_."							
-		}	
+			throw "Error- -- Failed to create backup: The error was: $_."
+		}
 	}
-}	
+}
 
 #END
 End { }
@@ -418,21 +417,21 @@ try{
 			local-print -Text "Info -- Backup Script started with Parameter::",$argument1
 		}
 		else {
-			local-print -Text "Error -- Backup Script wrong Parameter::",$argument1  -ForegroundColor "red"		
-			local-print -Text "Error -- Valid Parameter for the Database is:: DB"  -ForegroundColor "red"	
-			local-print -Text "Error -- Valid Parameter for the Archivelogs of the Database is:: ARCHIVE"  -ForegroundColor "red"	
+			local-print -Text "Error -- Backup Script wrong Parameter::",$argument1  -ForegroundColor "red"
+			local-print -Text "Error -- Valid Parameter for the Database is:: DB"  -ForegroundColor "red"
+			local-print -Text "Error -- Valid Parameter for the Archivelogs of the Database is:: ARCHIVE"  -ForegroundColor "red"
 			exit
 		}
 	}
 	else {
 		# if no parameter backup the complete DB enviroment
 		$argument1='DB'
-		local-print -Text "Warning -- Backup Script called without parameter" -ForegroundColor "Yellow"		
+		local-print -Text "Warning -- Backup Script called without parameter" -ForegroundColor "Yellow"
 		local-print -Text "Info -- Backup Script started with default parameter::",$argument1
 	}
-	
+
 	startBackup -scope $argument1
-	
+
 	local-freeSpace 
 
 } 
@@ -440,11 +439,11 @@ catch {
 	#  Error Details:
 	#  $error[0].Exception | fl * -force
 	#
-	local-print -Text "Error -- Failed to create backup: The error was: $_."	 -ForegroundColor "red"			
-	local-log-event -logtype "Error" -logText "Error- -- Failed to create backup: The error was: $_."				
+	local-print -Text "Error -- Failed to create backup: The error was: $_." -ForegroundColor "red"
+	local-log-event -logtype "Error" -logText "Error- -- Failed to create backup: The error was: $_."
 }
 finally {
-			
+
 			#==============================================================================
 			# Exit the semaphore
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
@@ -453,11 +452,11 @@ finally {
 				$sem.Release() |  out-null
 			}
 			catch {
-				local-print -Text "Error -- Faild to release  the emaphore ORALCE_BACKUP - not set or Backup not started?"	 -ForegroundColor "red"			
+				local-print -Text "Error -- Faild to release  the emaphore ORALCE_BACKUP - not set or Backup not started?" -ForegroundColor "red"
 			}
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 			#==============================================================================
-			
+
 			#==============================================================================
 			# Check the logfiles and create summary text for check mail
 			
@@ -467,8 +466,7 @@ finally {
 			local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)
 			
 			#==============================================================================
-			
-			
+
 }
 
 #==============================================================================#######

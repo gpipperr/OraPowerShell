@@ -5,8 +5,6 @@
 # Site:   http://orapowershell.codeplex.com
 #==============================================================================
 <#
-
-  
 	.NOTES
 		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de
 		Security:
@@ -25,7 +23,6 @@
 		
 	.COMPONENT
 		Oracle Backup Script
-
 #>
 
 #==============================================================================
@@ -33,8 +30,8 @@
 ###
 
 function local-check-all-directories {
-		Param ( $DB ) # end Param
-		
+	Param ( $DB ) # end Param
+
 	$check_path= $dB.db_backup_dest.ToString()+"\"+$dB.dbname.ToString()
 	$check_result=local-check-dir -lcheck_path $check_path -dir_name "DB Backup"
 	
@@ -64,7 +61,7 @@ function local-check-all-directories {
 }
 #==============================================================================
 function local-check-connect{
-	Param (   $sql_connect_string  = "/ as sysdba"			
+	Param (   $sql_connect_string  = "/ as sysdba"
 	) #end param
 	try {
 			local-print  -Text "Info -- check if Oracle SID is accessible ::" , $env:ORACLE_SID
@@ -77,7 +74,6 @@ set feedback off
 select count(*) from v$instance;
 quit
 '@| & "$env:ORACLE_HOME\bin\sqlplus" -s "$sql_connect_string"
-
 			# if check_db is not a string is is mostly a error return from sql*plus
 			# trim on [] will cause the exection
 			try{
@@ -122,8 +118,6 @@ function local-backup-database {
 	
 	# Check if the backup directories exits
 	local-check-all-directories($DB)
-	
-	
 	##check Version of Database
 	# Must be on the first line!!
 $isenterprise=@'
@@ -132,7 +126,7 @@ set feedback off
 select count(*) from v$version where banner like '%Enterprise%';
 quit
 '@| & "$ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string"
-		
+
 	$isenterprise=$isenterprise.Trim()
 
 	local-print  -Text "Info -- check DB Version - Get 1 for EE and 0 for SE - Result is ::" ,$isenterprise
@@ -416,49 +410,48 @@ function local-backup-db-metainfo {
 			catch {
 				local-print  -ErrorText "Error -- Dot Net Library Oracle.DataAccess.dll not found in path (attribute dot_net_orcle_home) ::",$dot_net_library
 				$use_dot_net=$false
-			}			
-		}	
+			}
+		}
 		else {
 			local-print  -ErrorText "Info -- use sqlplus to get DB meta information" 
 			$use_dot_net=$false
-		}		
+		}
 	}
 	else {
 		local-print  -ErrorText "Error -- attribute use_dot_net of xml node db_meta_info not there"
-		$use_dot_net=$false		
-	}	
-	
+		$use_dot_net=$false
+	}
+
 	# Check if tns alias usage is configured
 	if ($db.nls_settings.use_direct_connnect_for_sys.equals("true")){
 		local-print  -ErrorText "Error -- need sys user over tnsalias connection to use .net feature"
 		$use_dot_net=$false	
-	}	
-	
+	}
+
 	# start using dot_net
 	if ( $use_dot_net) {
-		
+
 		$metainfo_backup=$backup_path+"\db_meta_information_"+$dbname+"_"+$day_of_week+".csv"
-		
+
 		# recrate File
 		$sep=";"
 		$csv="sep="+$sep+$CLF
 		set-Content -Path "$metainfo_backup" -value $csv
-		
+
 		# Load the dll
 		$handle=db_load_dll -dll_path $dot_net_library
 		$handle=$handle[1]
-		
+
 		#connect to the DB
 		# get user name und tns
 		$ltns_alias = $db.nls_settings.tns_alias.toString()
 		$lepassword = ($db.nls_settings.username).GetAttribute("password") 
 		$lepassword = local-read-secureString -text $lepassword
 		$lusername  = $db.nls_settings.username.InnerText
-		
+
 		$connect=db_connect -user $lusername -password $lepassword -tns_alias $ltns_alias -OracleConnection $handle
-		
+
 		##########
-	
 		# read from the DB
 		[String[]]$csv_header ="----- Version -----"+$CLR
 		[String[]]$sql        ="select * from v`$version"
@@ -510,14 +503,13 @@ function local-backup-db-metainfo {
 				local-print  -ErrorText "Error -- read from DB::",$csv_header[$i],"with::",$sql[$i],"error::",$_
 			}
 		}
-					
+
 		#
 		#
 		$csv_header=""
 		$sql=""
 		#
 		db_close_connect -OracleConnection  $handle
-	
 	}
 	else {
 		# use sqlplus
@@ -525,7 +517,7 @@ function local-backup-db-metainfo {
 		local-print  -Text "Info -- write the meta information as SQL*Plus Spool of DB into::",$metainfo_backup
 		& $ORACLE_HOME/bin/sqlplus "$sql_connect_string" "@$scriptpath\sql\info.sql" "$metainfo_backup"  | out-null
 	}
-	
+
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	local-print  -Text "Info -- Finish Backup Metadata of DB::", $DB.dbname ,"at::" ,$endtime ," - Duration::" , $duration,  "Minutes"  -ForegroundColor "yellow"
@@ -540,8 +532,8 @@ function local-backup-db-metainfo {
 
 function local-backup-db-archive {
 	Param (   $db 
-			, $sql_connect_string  = "/ as sysdba"
-			, $rman_connect_string = "/" 
+		, $sql_connect_string  = "/ as sysdba"
+		, $rman_connect_string = "/" 
 	) #end param
 	
 	$starttime=get-date
@@ -611,13 +603,13 @@ quit
 	$rman_script +="#Summary info" + $CLF 
 	$rman_script +="list backup summary;" + $CLF 
 	$rman_script +=$CLF 
-	
+
 	# save the generated rman script to disk
 	Set-Content -Path "$scriptpath\generated\generated_archive.rman" -value $rman_script
-	
+
 	#start the backup script for this day
 	& $ORACLE_HOME/bin/rman target "$rman_connect_string" nocatalog "@$scriptpath\generated\generated_archive.rman" 2>&1 | foreach-object { local-print -text "RMAN OUT::",$_.ToString() }
-	
+
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	local-print  -Text "Info -- Finish Backup Archivelogs of DB::" ,$DB.dbname ,"at::", $endtime, " - Duration::"  ,$duration  ,"Minutes"  -ForegroundColor "yellow"
@@ -630,10 +622,11 @@ quit
 #
 ###
 function local-backup-db-user {
-	Param ( 	$db
-			, 	$sql_connect_string  = "/ as sysdba"
+	Param ( 
+		  $db
+		, sql_connect_string  = "/ as sysdba"
 	) #end param
-	
+
 	$starttime=get-date
 	# Numeric Day of the week
 	$day_of_week=[int]$starttime.DayofWeek 
@@ -662,10 +655,10 @@ function local-backup-db-user {
 		local-print  -Text "Info -- check if User exists - Result is ::" ,$user_exists
 		if ($user_exists.equals("0")){
 			local-print     -Text    "Error -- Export User::",$db_user,"not possible - user not exits"   -ForegroundColor "red"
-			local-log-event -logText "Error -- Export User::",$db_user,"not possible - user not exits"   -logtype "Error"			
+			local-log-event -logText "Error -- Export User::",$db_user,"not possible - user not exits"   -logtype "Error"
 		}
 		else {
-	
+
 			# check Export Directory
 			$export_db_dir=$dB.db_user_export.export_dir_db.ToString()
 			$export_os_dir=$dB.db_user_export.export_dir_os.ToString() + "\" + $dbname
@@ -747,9 +740,9 @@ function local-backup-db-user {
 				}
 			}
 			else {
-				local-print  -Text "Error -- attribute use_sys_account on username is missing." -  -ForegroundColor "red"		 
+				local-print  -Text "Error -- attribute use_sys_account on username is missing." -  -ForegroundColor "red"
 				$connect_string="$sql_connect_string"
-			}			
+			}
 			# check if the user can connect
 			
 			
@@ -785,8 +778,8 @@ function local-backup-db-user {
 			catch {
 				$inc_level="0"
 				local-print  -Text "Error -- Export Policy is not correct! Fix the error - Error::" ,$_ -ForegroundColor "red"
-			}			
-			
+			}
+
 			# create the parameter file for datapump
 			$dp_script ="DIRECTORY="+$export_db_dir+$CLF
 			$dp_script+="DUMPFILE="+$db_user+"_"+$inc_level+"_%U.dmp"+$CLF
@@ -799,9 +792,9 @@ function local-backup-db-user {
 			
 			# save the generated rman script to disk
 			Set-Content -Path "$scriptpath\generated\generated_export.dp" -value $dp_script
-						
+	
 			#start the export of the data
-			if ( $user_can_connect -eq "true" ) {	
+			if ( $user_can_connect -eq "true" ) {
 				& "$ORACLE_HOME/bin/expdp" "$connect_string" "parfile=$scriptpath\generated\generated_export.dp" 2>&1 | foreach-object { local-print -text "EXPDP OUT::",$_.ToString().replace($CLF," ") }
 				
 				# zip the result 
@@ -811,7 +804,7 @@ function local-backup-db-user {
 					local-print  -Text "Info -- try to load zip lib for compression the export from::",$ziplib_path
 					try {
 						# see
-						# source for ziplib : http://powershellzip.codeplex.com/				
+						# source for ziplib : http://powershellzip.codeplex.com/
 						# examples  http://devio.wordpress.com/2009/02/11/zipping-files-with-powershell/
 						# 
 						
@@ -839,8 +832,8 @@ function local-backup-db-user {
 			}
 			else {
 				local-print     -Text    "Error -- Export User::",$db_user,"not possible - user can not connect"   -ForegroundColor "red"
-				local-log-event -logText "Error -- Export User::",$db_user,"not possible - user can not connect"   -logtype "Error"			
-			}			
+				local-log-event -logText "Error -- Export User::",$db_user,"not possible - user can not connect"   -logtype "Error"
+			}
 		}
 	}
 	
@@ -864,8 +857,8 @@ Param ( $asm )
 
 	$ORACLE_HOME = $asm.asm_oracle_home.ToString()
 	$ORACLE_SID  = $asm.asm_instancesid.ToString()
-		
-		
+	
+	
 	$backup_path=$asm.asm_backup_dest.ToString()+"\"+$asm.asm_instancesid.ToString()
 	# Check if the backup directories exits
 	local-check-dir -lcheck_path $backup_path -dir_name "ASM Meta Infos"
@@ -910,7 +903,7 @@ Param ( $asm )
 		& "$ORACLE_HOME\bin\asmcmd.bat" md_backup -b $disk_config_backup 2>&1 | foreach-object { local-print -text "ASMCMD OUT::",$_.ToString() }
 	}
 	catch {
-		local-print -errorText "Error -- Failed to get ASM Disk Config with asmcmd :: The error was: $_."	 	
+		local-print -errorText "Error -- Failed to get ASM Disk Config with asmcmd :: The error was: $_."
 	}
 	
 	# Fix
@@ -992,7 +985,7 @@ Param ( $grid )
 		set-content $ocr_info_file $ocr_info
 	}
 	catch {
-		local-print -errorText "Error -- Failed to get ASM Disk Config with asmcmd :: The error was: $_."	 	
+		local-print -errorText "Error -- Failed to get ASM Disk Config with asmcmd :: The error was: $_."
 	}
 
 	#Where is the voting Disk?
@@ -1004,9 +997,8 @@ Param ( $grid )
 		set-content $vot_info_file $vot_info
 	}
 	catch {
-		local-print -errorText "Error -- Failed to get GRID Disk Config with asmcmd :: The error was: $_."	 	
+		local-print -errorText "Error -- Failed to get GRID Disk Config with asmcmd :: The error was: $_."
 	}
-
 
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
@@ -1064,7 +1056,7 @@ param (   $db
 	# Numeric Day of the week
 	$day_of_week=[int]$starttime.DayofWeek 
 	
-	## check the alert log		
+	## check the alert log
 	
 	# check if adrci is accessible
 		# if yes use adrci
@@ -1089,10 +1081,10 @@ quit
 				
 			# check if size << 500MB => if bigger warning => 1GB error!
 			$alert_log_file=(get-ChildItem "$alert_log\alert_$env:ORACLE_SID.log")  #| out-null
-						
+	
 			$alert_log_size=($alert_log_file.length/1MB)
-			
-		     
+	
+	
 			if ( $alert_log_size -gt  1000 ) {
 				local-print  -ErrorText ("Error -- Alertlog of the instance::{0} -> size::{1:n} MB to big!" -f $env:ORACLE_SID,$alert_log_size)
 			}
@@ -1102,14 +1094,14 @@ quit
 			else {
 				local-print  -Text ("Info -- Alertlog of the instance::{0} -> size::{1:n} MB" -f $env:ORACLE_SID,$alert_log_size)
 			}
-		
+	
 	 
 			# make copy with the ocopy utilty
 			$alert_check_log = "$alert_log\alert_$env:ORACLE_SID.check_log"
 			$alert_log_full_name=$alert_log_file.toString()
 
 			local-print  -Text "Info -- Copy the open file ::",$alert_log_full_name, " to::" , $alert_check_log
-		
+	
 			#copy
 			& "$env:ORACLE_home\bin\ocopy"  "$alert_log_full_name" "$alert_check_log" 2>&1 | foreach-object { local-print -text "OCOPY OUT::",$_.ToString() }
 					
@@ -1117,30 +1109,28 @@ quit
 			$log_status_xml="$scriptpath\conf\last_config_status.xml"
 			if (get-ChildItem $log_status_xml -ErrorAction silentlycontinue ) {
 				#read 
-				$log_last_status= [xml] ( get-content $log_status_xml)				
+				$log_last_status= [xml] ( get-content $log_status_xml)
 			}
-			else {	
+			else {
 				$log_last_status= [xml] "<alert_log><last_byte_position>0</last_byte_position></alert_log>"
 			}
 			#
 			$byte_pos=$log_last_status.alert_log.last_byte_position.toString()
-					
+	
 			# check the file 
 			# return the byte position of the last read in this file
 			$byte_pos=local-get-file_from_position -filename $alert_check_log -byte_pos $byte_pos -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match 5
-		    						
+
 			$log_last_status.alert_log.last_byte_position="$byte_pos"
 			# save the status file again on disk 
 			$log_last_status.save($log_status_xml)
-		
+
 		} 
 		catch {
 			local-print -ErrorText "Error--",$_
 			throw "Error check the alert.log :: $_"
 		}
-	##	
-
-	
+	##
 	##
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
