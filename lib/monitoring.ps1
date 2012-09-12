@@ -55,11 +55,11 @@ function local-freeSpace {
 }
 
 #==============================================================================
-#local-get-file_from_postion
+#local-get-file_from_position
 # read a file from a byte position
 ##
 
-function local-get-file_from_postion{
+function local-get-file_from_position{
 	param (
 		  [String]   $filename
 		, [int]      $byte_pos 
@@ -85,12 +85,12 @@ function local-get-file_from_postion{
 			# Open Streamreader to read the file
 			# see http://msdn.microsoft.com/de-de/library/system.io.streamreader%28v=vs.80%29.aspx
 			#
-			local-print  -Text "Info -- read file", $filename, "size byte::",$filesize,"from postion::",$byte_pos,"writing",$print_lines_after_match," lines after finding"
+			local-print  -Text "Info -- read file", $filename, "size byte::",$filesize,"from position::",$byte_pos,"writing",$print_lines_after_match," lines after finding"
 			$sreader= New-Object System.IO.StreamReader($filename)
 			
 		
 	
-			# set the file pointer to the last postion
+			# set the file pointer to the last position
 			$last_byte_pos = $byte_pos
 			$sreader.BaseStream.Position = $byte_pos
 			
@@ -131,7 +131,7 @@ function local-get-file_from_postion{
 				
 				if ($after_match -gt 0 ) {
 					# debug 
-					# local-print  -Text "Info -- after_match feature postion::",$after_match
+					# local-print  -Text "Info -- after_match feature position::",$after_match
 					$log_line=("{0,20} -> {1} " -f " ",$fline )
 					$aline+=$log_line
 					$after_match--;					
@@ -187,7 +187,7 @@ function local-get-file_from_postion{
 		finally {
 			if ($sreader) {
 				$sreader.close();
-				local-print  -Text "Info -- add check summery to the satus logfile:",$log_file
+				local-print  -Text "Info -- add check summery to the status logfile:",$log_file
 			}
 		}
 		
@@ -200,8 +200,8 @@ function local-get-file_from_postion{
 	}	
 	<#
 		.EXAMPLE
-		local-get-file_from_postion -filename "D:\OraPowerShellCodePlex\log\DB_BACKUP_5.log" 10 ("Warning","RMAN-0") "D:\OraPowerShellCodePlex\log\status_mail.log"
-		local-get-file_from_postion -filename "D:\OraPowerShellCodePlex\test\test_pattern_match.txt" 0 (local-get-oracle-error-pattern) "D:\OraPowerShellCodePlex\test\pattern_match.log" -print_lines_after_match 5
+		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\log\DB_BACKUP_5.log" 10 ("Warning","RMAN-0") "D:\OraPowerShellCodePlex\log\status_mail.log"
+		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\test\test_pattern_match.txt" 0 (local-get-oracle-error-pattern) "D:\OraPowerShellCodePlex\test\pattern_match.log" -print_lines_after_match 5
 		
 	#>
 }

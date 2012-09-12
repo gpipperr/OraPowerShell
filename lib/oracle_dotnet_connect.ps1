@@ -91,7 +91,7 @@ Param (
 	# Set the Connect string
 	$OracleConnection.ConnectionString = $ConnectionString
 	# Open DB Account
-	local-print  -Text "Info -- Open  the DB Connetion to::",$Log_ConnectionString
+	local-print  -Text "Info -- Open  the DB Connection to::",$Log_ConnectionString
 	$OracleConnection.Open()	
 }
 
@@ -186,7 +186,7 @@ function db_close_connect{
 param (  
 	[Oracle.DataAccess.Client.OracleConnection] $OracleConnection
 )
-	local-print  -Text "Info -- Close the DB Connetion to::",$OracleConnection.DatabaseName
+	local-print  -Text "Info -- Close the DB Connection to::",$OracleConnection.DatabaseName
 	if ($OracleConnection.state.value__ -eq 0 ) {
 		local-print  -Text "Info -- Connection was closed"
 	}
