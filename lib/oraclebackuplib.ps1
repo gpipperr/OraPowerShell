@@ -1152,6 +1152,34 @@ quit
 	
  }
 
+#==============================================================================
+# local-check-db-alertlog
+# check the alert log of the database
+##
+function local-get-crs-home-from-inventory {
+	# read the location from the inventory file
+	$oraInventory_dir=(Get-ItemProperty HKLM:\Software\Oracle).inst_loc.toString() + "\ContentsXML"
+	$oraInventroy= [xml] (get-content "$oraInventory_dir\inventory.xml")
+	
+	# searc for <HOME NAME="OraCrs11g_home1" LOC="D:\oracle\product\11.2.0.3\grid" TYPE="O" IDX="4" CRS="true"/> CRS =true!
+	$crs_home=""
+	$found=$false
+	foreach ($orahome in $oraInventroy.INVENTORY.HOME_LIST.HOME) {
+		if ( ($orahome).HasAttribute("CRS")){
+			if ( ($orahome).GetAttribute("CRS").equals("true") ) {
+				$crs_home=($orahome).GetAttribute("LOC")
+				$found=$true
+			}
+		}
+	}
+	
+	if ($found) {
+		return $crs_home
+	}
+	else {
+		throw "CRS Home not found in $oraInventory_dir\inventory.xml"
+	}	
+ }
 
 #============================= End of File ====================================
 
