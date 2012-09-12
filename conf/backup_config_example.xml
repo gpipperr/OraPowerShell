@@ -1,143 +1,131 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- oracle backup configuration Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de -->
 <backup>
+	<!-- configuration of the asm enviroment -->
+	<asm>
+		<!-- set to true if ASM Option of the Database is in use -->
+		<asm_in_use>false</asm_in_use>
+		<asm_meta_info>true</asm_meta_info>
+		<asm_backup_dest>d:\oracle\flash_recovery_area</asm_backup_dest>
+		<!-- ASM instance SID - if RAC check for the NODE ID like +ASM1! -->
+		<asm_instancesid>+ASM</asm_instancesid>
+		<!-- if default - try to get from the oralce installation repository the locatoin -->
+		<asm_oracle_home>default</asm_oracle_home>  
+	</asm>
+	<!-- configuration of the grid enviroment -->
+	<grid>
+		<!-- set to true if RAC Option of the Database is in use -->
+		<grid_in_use>false</grid_in_use>
+		<backup_grid>true</backup_grid>
+		<grid_backup_dest>d:\oracle\flash_recovery_area</grid_backup_dest>
+		<!-- if default - try to get from the oralce installation repository the locatoin -->
+	<grid_oracle_home>default</grid_oracle_home>
+	</grid>
+	<!--- configuration of the db's to backup -->
+	<db>
+	<!-- DB Parameter -->
+	<!-- Name of the database -->
+	<dbname>gpi</dbname>
+	<!-- SID of the database -->
+	<sid>gpi</sid>
+	<!-- Oracle Home of the databaes -->
+	<oracle_home>d:\oracle\product\11.2.0.3\dbhome_1</oracle_home>
+	
+	<!-- how to connect to the database -->
+	<nls_settings>
+  
+	<!-- if true use "/ as sysdba" to connect to the local instance -->
+	<use_direct_connnect_for_sys>true</use_direct_connnect_for_sys>
+  
+	<!-- if false use the following nls and user settings ot connect to the database -->
+	<tns_alias>gpi</tns_alias>
+		<username password="system" encrypt="false" certificate="false">backupuser</username>
+		<!-- Language of messages - charset like GERMAN_GERMANY.UTF8 -->
+		<nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
+		<!-- TNS_ADMIN -->
+		<!-- if the value is "default" the Oracle Home Path is used, else the path -->
+		<tns_admin>default</tns_admin>
+	</nls_settings>
 
-  <!-- configuration of the asm enviroment -->
-  <asm>
-    <!-- set to true if ASM Option of the Database is in use -->
-    <asm_in_use>false</asm_in_use>
-    <asm_meta_info>true</asm_meta_info>
-	<asm_backup_dest>d:\oracle\flash_recovery_area</asm_backup_dest>
-
-
-    <!-- ASM instance SID - if RAC check for the NODE ID like +ASM1! -->
-    <asm_instancesid>+ASM</asm_instancesid>
-    <!-- if default - try to get from the oralce installation repository the locatoin -->
-    <asm_oracle_home>default</asm_oracle_home>
-  </asm>
-
-  <!-- configuration of the grid enviroment -->
-  <grid>
-    <!-- set to true if RAC Option of the Database is in use -->
-    <grid_in_use>false</grid_in_use>
-    <backup_grid>true</backup_grid>
-	<grid_backup_dest>d:\oracle\flash_recovery_area</grid_backup_dest>
-
-    <!-- if default - try to get from the oralce installation repository the locatoin -->
-    <grid_oracle_home>default</grid_oracle_home>
-  </grid>
-
-  <!--- configuration of the db's to backup -->
-  <db>
-    <!-- DB Parameter -->
-    <!-- Name of the database -->
-    <dbname>gpi</dbname>
-    <!-- SID of the database -->
-    <sid>gpi</sid>
-    <!-- Oracle Home of the databaes -->
-    <oracle_home>d:\oracle\product\11.2.0.3\dbhome_1</oracle_home>
-
-    <!-- how to connect to the database -->
-    <nls_settings>
-      <!-- if true use "/ as sysdba" to connect to the local instance -->
-      <use_direct_connnect_for_sys>false</use_direct_connnect_for_sys>
-      <!-- if false use the following nls and user settings ot connect to the database -->
-      <tns_alias>gpi</tns_alias>
-      <username password="01000000d08c9ddf0115d1118c7a00c04fc297eb0100000058f977ee2b4df048b7579e226b356a3200000000020000000000106600000001000020000000f455557ec1eb4390d19a931ff4165470cac312a1309ffe4a80df3af12c763ea1000000000e8000000002000020000000346a5e41e0959468e05e1bf392ad329d40d67de0856baec32de7bc240b67d2d910000000da0a20cd166f0a90a7b89d3f3f64e79340000000630333fdb07c208c7e53041336830a66b8c656ba672c078b33ce6d356b79bb9ac0b281712df775e83bf4fbd1b9b9775149495a5b8265bb49bf23beb19cf50128" encrypt="true" certificate="false">backupuser</username>
-
-      <!-- Language of messages - charset -->
-      <nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
-	  
-	  <!-- TNS_ADMIN -->
-	  <!-- if the value is "default" the Oracle Home Path is used, else the path -->
-	  <tns_admin>D:\oracle\TNS_ADMIN</tns_admin>
-	  
-    </nls_settings>
-
-    <!-- if db_backup_use_flash = true store only meta information and export in this location -->
-    <db_backup_dest>d:\oracle\flash_recovery_area</db_backup_dest>
-    <!-- if true - use the flash /fast recovery parameter as location for the backup , if false use parameter db_backup_dest -->
-    <db_backup_use_flash>true</db_backup_use_flash>
-    <!-- copy the complete flash recovery Areas to the location of the parameter db_backup_dest -->
-    <backup_flash_to_disk>false</backup_flash_to_disk>
-    <!-- Backup Database and Archivelogs -->
-    <db_backup>true</db_backup>
-    <!-- Backup Policy - how many backups to store on disk -->
-    <db_backup_count_of>1</db_backup_count_of>
-    <!--IF EE Edition you can use the pattern to define the leveles for each day (Day 1 = Monday, Day 7 = Sunday) -->
-    <!-- 0,0,0,0,0,0,0 = every day one full backup -->
-    <!-- 1,1,2,1,1,2,0 = only Sunday full backup  -->
-    <db_backup_incremental_policy>0,0,0,0,0,0,0</db_backup_incremental_policy>
+	<!-- Backup Database and Archivelogs -->
+	<db_backup>true</db_backup>
+	<!-- if db_backup_use_flash = true store only meta information and export in this location -->
+	<db_backup_dest>d:\oracle\flash_recovery_area</db_backup_dest>
+	<!-- if true - use the flash /fast recovery parameter as location for the backup , if false use parameter db_backup_dest -->
+	<db_backup_use_flash>true</db_backup_use_flash>
+	<!-- copy the complete flash recovery Areas to the location of the parameter db_backup_dest -->
+	<backup_flash_to_disk>false</backup_flash_to_disk>
+	<!-- Backup Policy - how many backups to store on disk -->
+	<db_backup_count_of>1</db_backup_count_of>
+	<!--IF EE Edition you can use the pattern to define the leveles for each day (Day 1 = Monday, Day 7 = Sunday) -->
+	<!-- 0,0,0,0,0,0,0 = every day one full backup -->
+	<!-- 1,1,2,1,1,2,0 = only Sunday full backup  -->
+	<db_backup_incremental_policy>0,0,0,0,0,0,0</db_backup_incremental_policy>
 	<!-- if EE Edition parallel can be used 1-4 -->
 	<db_backup_channels>1</db_backup_channels>
-	<!-- if EE and BIG Tablespace portions if data for multiple channels -->
-	<db_backup_section_size>5000M</db_backup_section_size>
+	<!-- if EE and BIG Tablespace portions if data for multiple channels parameter can be false or a value like 5000M  -->
+	<db_backup_section_size>false</db_backup_section_size>
 	<!-- if EE using Backup Compressoin -->
 	<db_backup_compress>true</db_backup_compress>
 
-	
 	<!-- Backup the Metainformation like the controlfile trace etc. -->
 	<!-- attribute use_dot_net= false => use sqlplus and sql spool , true => use .net Dll to create csv file -->
 	<!-- Oracle home for the DLL -->
 	<!-- only possilbe if the tns Alias in the nls_setting / user / password Section is valid -->
-    <db_meta_info use_dot_net="true" dot_net_orcle_home="d:\oracle\product\11.2.0.3\dbhome_1" >true</db_meta_info>
+	<db_meta_info use_dot_net="true" dot_net_orcle_home="d:\oracle\product\11.2.0.3\client_64bit" >true</db_meta_info>
 
-	    
 	<!-- check the Alert log for errors -->
 	<!-- if listener_summary = true you get a list of connection to the database -->
-	<!-- to clean the log file use the runCleanLogfile.ps1 Script weekly 		 -->
+	<!-- to clean the log file use the runCleanLogfile.ps1 Script weekly -->
 	<db_check_alert_log listner_summary="false">true</db_check_alert_log>
-	
-    <!-- Parameter for the archive only backup -->
-    <!-- if backup script is started wiht the parameter ARCHIVE - save only archivelogs if true-->
-    <db_archive>true</db_archive>
+
+	<!-- Parameter for the archive only backup -->
+	<!-- if backup script is started wiht the parameter ARCHIVE - save only archivelogs if true-->
+	<db_archive>true</db_archive>
 	 <!-- if true - use the flash /fast recovery parameter as location for the backup , if false use parameter archive_backup_dest -->
 	<archive_use_flash>true</archive_use_flash>
-    <!-- Destination for the archivelog Backup if db default flash_recovery_area is not in use -->
-    <archive_backup_dest>d:\oracle\flash_recovery_area</archive_backup_dest>
-
-    <!-- Export the following users -->
-    <db_user_export>
-      <!-- if true do some exports  -->
-      <export>true</export>
-	  <!-- if true the export will be zipped -->
-	  <compress_export>false</compress_export>
-      <!-- datapump Export Directory -->
-      <export_dir_db>export_dir_db</export_dir_db>
-      <export_dir_os>d:\oracle\flash_recovery_area</export_dir_os>
-      <!-- for each day of the week set a number, this number will be overwritten -->
-      <export_policy>0,1,0,1,0,1,2</export_policy>
-      <!-- the user to export -->
-      <user>
-        <!-- if encrypt=false the password will be encrypted wiht MS secure String , only readable on local Maschine -->
-        <!-- if use_sys_account = false we will use the useracount to export the data, if true wie use the nls_settings of the DB section -->
-        <!-- filter not jet implemented - expdump filter to include/exclude objects -->
-        <!-- tns_alias TNSnames.ora entry to connect to the database if use_sys_account = false -->
-        <username filter="*" password="01000000d08c9ddf0115d1118c7a00c04fc297eb0100000058f977ee2b4df048b7579e226b356a3200000000020000000000106600000001000020000000ebd2dae1252288d0fca9addb9301897a3c08796e6e2fa67668e613be7f7f0a04000000000e8000000002000020000000780e637676f4dcfbb6da920a52d3a9f2c5c53911128e4db57b2fab2478037c6c1000000065cd9e41bb885d6a497f21d160e2ffe740000000d8efda7438e094c0bd06704e6aaae4c49b63b10f9c6ea153f4c77c5189ec2c6c0b731ac659b47d7b89ca5ea190a1e8af86cec8dca86b0d36fd4765af4865486f" encrypt="true" use_sys_account="true" tns_alias="gpi" certificate="false">scott</username>
-
-      </user>
-    </db_user_export>
-  </db>
-  <!-- next database -->
-
-
-  <!-- Extra File you like to copy to an other destination -->
-  <files>
-
-	<copyfiles>false</copyfiles>
-    <!-- Pair of directories to copy with robocopy -->
-	<pair>
-		<source_dir>d:\oracle\flash_recovery_area</source_dir>
-		<target_dir>c:\backup\flash_recovery_area</target_dir>
-		<!-- Parameter for robocopy -->
-		<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>		
-	</pair>
-	<!-- Pair of directories to copy with robocopy -->
-	<pair>
-		<source_dir>d:\scripts</source_dir>
-		<target_dir>c:\backup\scripts</target_dir>
-		<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
-	</pair>
-  </files>
-
+	<!-- Destination for the archivelog Backup if db default flash_recovery_area is not in use -->
+	<archive_backup_dest>d:\oracle\flash_recovery_area</archive_backup_dest>
+  
+	<!-- Export the following users -->
+	<db_user_export>
+		<!-- if true do some exports  -->
+		<export>true</export>
+		<!-- if true the export will be zipped -->
+		<compress_export>true</compress_export>
+		<!-- datapump Export Directory -->
+		<export_dir_db>export_dir_db</export_dir_db>
+		<export_dir_os>d:\oracle\flash_recovery_area</export_dir_os>
+		<!-- for each day of the week set a number, this number will be overwritten -->
+		<export_policy>0,1,0,1,0,1,2</export_policy>
+		<!-- the user to export -->
+		<user>
+			<!-- if encrypt=false the password will be encrypted wiht MS secure String , only readable on local Maschine -->
+			<!-- if use_sys_account = false we will use the useracount to export the data, if true wie use the nls_settings of the DB section -->
+			<!-- filter not jet implemented - expdump filter to include/exclude objects -->
+			<!-- tns_alias TNSnames.ora entry to connect to the database if use_sys_account = false -->
+			<username filter="*" password="tiger" encrypt="false" use_sys_account="true" tns_alias="gpi" certificate="false" >scott</username>    
+		</user>
+	</db_user_export>
+	</db>
+	<!-- add the same DB section for the next database -->
+	<!-- Extra File you like to copy to an other destination -->
+	<files>
+		<!-- if true copy the files -->
+		<copyfiles>false</copyfiles>
+		<!-- Pair of directories to copy with robocopy -->
+		<pair>
+			<source_dir>d:\oracle\flash_recovery_area</source_dir>
+			<target_dir>c:\backup\flash_recovery_area</target_dir>
+			<!-- Parameter for robocopy -->
+			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
+		</pair>
+		<!-- Pair of directories to copy with robocopy -->
+		<pair>
+			<source_dir>d:\scripts</source_dir>
+			<target_dir>c:\backup\scripts</target_dir>
+			<!-- Parameter for robocopy -->
+			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
+		</pair>
+	</files>  
 </backup>

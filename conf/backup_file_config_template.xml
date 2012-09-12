@@ -27,7 +27,7 @@
 			<target_share>\\srvbackup01</target_share>
 			<!-- Robocopy feature -->
 			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
-		</folder>		
+		</folder>
 	</volume>
 	<!-- next volumen -->
 	<volume>
@@ -47,6 +47,6 @@
 			<target_share>\\srvbackup02</target_share>
 			<!-- Robocopy feature -->
 			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
-		</folder>			
-	</volume>	
+		</folder>
+	</volume>
 </backup>

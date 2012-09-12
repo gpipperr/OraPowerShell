@@ -18,8 +18,8 @@
 			<!-- if the share needs to be connected! -->
 			<target_share>\\Fritz!nas\fritz.nas</target_share>
 			<!-- Robocopy feature -->
-			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /B]]></robocopy_parameter>
-		</folder>			
+			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
+		</folder>
 	</volume>
 	<volume>
 		<!-- Name of the volume -->
@@ -38,6 +38,6 @@
 			<target_share>\\Fritz!nas\fritz.nas</target_share>
 			<!-- Robocopy feature -->
 			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
-		</folder>		
-	</volume>	
+		</folder>
+	</volume>
 </backup>
