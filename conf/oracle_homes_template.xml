@@ -30,6 +30,7 @@
 		<!-- SID List of databases in this home -->
 		<!-- if no db in this home set one to the value false -->
 		<db>
+			<!-- if you set the SID to false you get a configuation to set only the oracle home -->
 			<sid>false</sid>
 			<sid>ORCL</sid>
 		</db>		

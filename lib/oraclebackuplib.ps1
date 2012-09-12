@@ -14,7 +14,6 @@
 		set-ExecutionPolicy -scope CurrentUser RemoteSigned
 		or
 		sign scripts!
-  		
 	.SYNOPSIS
 		Generic functions for backup
 		
@@ -624,7 +623,7 @@ quit
 function local-backup-db-user {
 	Param ( 
 		  $db
-		, sql_connect_string  = "/ as sysdba"
+		, $sql_connect_string  = "/ as sysdba"
 	) #end param
 
 	$starttime=get-date
