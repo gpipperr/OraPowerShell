@@ -86,6 +86,29 @@ $sem = New-Object System.Threading.Semaphore(1, 1, "FILE_BACKUP")
 # read Configuration
 $backupconfig= [xml] ( get-content $config_xml)
 
+# read if exist the mail configuration
+$mailconfig_xml="$scriptpath\conf\mail_config.xml"
+
+if (Get-ChildItem $mailconfig_xml -ErrorAction silentlycontinue) {
+	$mailconfig = [xml]  ( get-content $mailconfig_xml)
+}
+else {
+	$mailconfig = [xml] "<mail><use_mail>false</use_mail></mail>"
+}
+# check for password in the mail_xml
+
+# encrypt the password and change the xml config
+$result=local-encryptXMLPassword $mailconfig
+
+# Store Configuration (needed if passwort was not encrypted!)
+if ($result.equals(1)) { 
+    local-print  -Text "Info -- Save XML Configuration with encrypted password"
+	$mailconfig.Save("$mailconfig_xml")
+}
+else {
+	local-print  -Text "Info -- XML Configuration for E-mail Transport not changed - all passwords encrypted"
+}
+
 #==============================================================================
 
 $starttime=get-date
@@ -211,6 +234,10 @@ finally {
 			# Check the logfiles and create summary text for check mail
 			
 			local-get-file_from_postion -filename (local-get-logfile) -byte_pos 0 -search_pattern "error","fehler","0x0000" -log_file (local-get-statusfile)
+			
+			# send the result of the check to a mail reciptant 
+			# only if configured!
+			local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)
 			
 			#==============================================================================
 }

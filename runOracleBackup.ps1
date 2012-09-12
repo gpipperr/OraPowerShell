@@ -59,6 +59,16 @@ $config_xml="$scriptpath\conf\backup_config.xml"
 # read Configuration
 $backupconfig= [xml] ( get-content $config_xml)
 
+# read if exist the mail configuration
+$mailconfig_xml="$scriptpath\conf\mail_config.xml"
+
+if (Get-ChildItem $mailconfig_xml -ErrorAction silentlycontinue) {
+	$mailconfig = [xml]  ( get-content $mailconfig_xml)
+}
+else {
+	$mailconfig = [xml] "<mail><use_mail>false</use_mail></mail>"
+}
+
 #==============================================================================
 # read Helper Functions
 .  $scriptpath\lib\backuplib.ps1
@@ -114,6 +124,20 @@ if ($result.equals(1)) {
 }
 else {
 	local-print  -Text "Info -- XML Backup Configuration not changed - all passwords encrypted"
+}
+
+# check for password in the mail_xml
+
+# encrypt the password and change the xml config
+$result=local-encryptXMLPassword $mailconfig
+
+# Store Configuration (needed if passwort was not encrypted!)
+if ($result.equals(1)) { 
+    local-print  -Text "Info -- Save XML Configuration with encrypted password"
+	$mailconfig.Save("$mailconfig_xml")
+}
+else {
+	local-print  -Text "Info -- XML Configuration for E-mail Transport not changed - all passwords encrypted"
 }
 
 #
@@ -407,6 +431,9 @@ try{
 
 } 
 catch {
+	#  Error Details:
+	#  $error[0].Exception | fl * -force
+	#
 	local-print -Text "Error -- Failed to create backup: The error was: $_."	 -ForegroundColor "red"			
 	local-log-event -logtype "Error" -logText "Error- -- Failed to create backup: The error was: $_."				
 }
@@ -429,6 +456,9 @@ finally {
 			# Check the logfiles and create summary text for check mail
 			
 			local-get-file_from_postion -filename (local-get-logfile) -byte_pos 0 -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile)
+			# send the result of the check to a mail reciptant 
+			# only if configured!
+			local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)
 			
 			#==============================================================================
 			
