@@ -129,7 +129,7 @@ function setdb {
 			foreach ($dbsid in  $orahome.db.sid ){
 				$ORACLE_HOME_LIST +=$oracle_home
 				
-				$orasid=$dbsid.toString()								
+				$orasid=$dbsid.toString()
 				if ($orasid.equals("false")) {
 					$orasid="set no SID"
 					$ORACLE_SID_LIST  +=""
@@ -139,7 +139,7 @@ function setdb {
 				}
 				$home_count+=1
 				
-				Write-host -ForegroundColor "yellow"  ( "  + [{0,2}]   {1}"  -f $home_count,$orasid) 				
+				Write-host -ForegroundColor "yellow"  ( "  + [{0,2}]   {1}"  -f $home_count,$orasid)
 			}
 			Write-host -ForegroundColor "green" $liner
 		}
@@ -166,13 +166,13 @@ function setdb {
 			if ($home_selector -match "^[0123456789]+$" ) {
 			    if ($home_selector -gt 0 ) {
 					if ($home_selector -lt $home_count+1 ){
-						$valid_answer="true"	
+						$valid_answer="true"
 					}
-				}					
-			}			
+				}
+			}
 		}
 		catch {
-			$valid_answer="false"			
+			$valid_answer="false"
 		}
 		if ($valid_answer.equals("false")) {
 			Write-host -ForegroundColor "red" "Please enter a vaild choise between 1 and $home_count !"
@@ -190,7 +190,7 @@ function setdb {
 	catch {
 		new-item -path env: -name ORACLE_HOME -value $ORACLE_HOME_LIST[$home_count]
 	}
-	# Oracle SID	
+	# Oracle SID
 	try {
 		set-item -path env:ORACLE_SID -value $ORACLE_SID_LIST[$home_count]
 	}
@@ -207,40 +207,9 @@ function setdb {
 	write-host -ForegroundColor "green" "set the ORACLE_HOME to ::" $ENV:ORACLE_HOME 
 	write-host -ForegroundColor "green" "set the ORALCE_SID  to ::" $ENV:ORACLE_SID
 	write-host -ForegroundColor "green" $liner
-		
 
-	
 	Remove-Item variable:ORACLE_HOME_LIST
 	Remove-Item variable:ORACLE_SID_LIST
-	
-	#======== only for information
-	
-	<# 
-	Solution with System.Management.Automation.Host.ChoiceDescription
-	
-	$options = [System.Management.Automation.Host.ChoiceDescription[]]@()
-	$C=0
-	# Create the option Array
-	# & markiet das Label für den Hotkey
-	# http://msdn.microsoft.com/en-us/library/system.management.automation.host.choicedescription_members%28v=vs.85%29
-
-	foreach ($H in $ORACLE_HOME_NAME ) {
-		$C +=1
-		$label=$H+" &"+$C
-		$HMessage="Use the oracle enviroment "+$H
-		$options +=  New-Object System.Management.Automation.Host.ChoiceDescription( $label, $HMessage)
-	}
-
-	write-host "-------------------------------------" -ForegroundColor "yellow"
-
-	$title   = "Set the Oracle Enviroment V1.1"
-	$message = "Please choose the Oracle Enviromen you like to use"
-
-	$result = $host.ui.PromptForChoice($title, $message, [System.Management.Automation.Host.ChoiceDescription[]] $options, 0) 
-
-	write-host "-------------------------------------" -ForegroundColor "yellow"
-	#>
-
 
 }
 

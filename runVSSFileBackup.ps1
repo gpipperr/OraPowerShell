@@ -197,7 +197,7 @@ function endBackup {
 			,$volume_drive_letter  = "D:"
 		)
 	
-	local-print  -Text "Info -- prepare the script vss_generated_finish.vss to finish the backup"	
+	local-print  -Text "Info -- prepare the script vss_generated_finish.vss to finish the backup"
 	# generate the diskshadow command file
 	$vss_script="END BACKUP"+$CLF
 	$vss_script+="LIST shadows all"+$CLF
@@ -231,13 +231,13 @@ function endBackup {
 	}	
 	
 	if ($shadow) {
-		local-print  -Text "Error -- there are still shadow copies on the system count::",$shadow.count -ForegroundColor "red"			
+		local-print  -Text "Error -- there are still shadow copies on the system count::",$shadow.count -ForegroundColor "red"
 		foreach ($s in $shadow) {
 			local-print  -Text "Error -- ID        ::",$s.id
 			local-print  -Text "Error -- VolumeName::",$s.VolumeName
 		}
 		#http://technet.microsoft.com/de-de/library/cc754915(v=ws.10).aspx
-		$vss_script="delete shadows volume "+$volume_drive_letter+""+$CLF		
+		$vss_script="delete shadows volume "+$volume_drive_letter+""+$CLF
 		# save the generated script to disk
 		Set-Content -Path "$scriptpath\generated\vss_generated_clean.vss" -value $vss_script
 		# start the script
@@ -263,7 +263,7 @@ function endBackup {
 try{
 
 	#Parameter
-	$meta_data_cab_file  	="c:\vss_meta_oracle_data.cab"
+	$meta_data_cab_file  ="c:\vss_meta_oracle_data.cab"
 
 	foreach ( $volume in $backupconfig.backup.volume ) {
 
@@ -296,11 +296,10 @@ try{
 		}
 	 	endBackup -vss_vol_drive_letter $vss_vol_drive_letter -volume_drive_letter $volume_drive_letter
 	}
-	
 }   
 catch {
-	local-print -Text "Error -- Failed to create backup: The error was: $_."	 -ForegroundColor "red"			
-	local-log-event -logtype "Error" -logText "Error -- Failed to create backup: The error was: $_."				
+	local-print -Text "Error -- Failed to create backup: The error was: $_."	 -ForegroundColor "red"
+	local-log-event -logtype "Error" -logText "Error -- Failed to create backup: The error was: $_."
 }
 finally {
 		#==============================================================================
@@ -311,19 +310,19 @@ finally {
 			$sem.Release() |  out-null
 		}
 		catch {
-			local-print -Text "Error -- Faild to release the emaphore VSS_BACKUP - not set or Backup not started?"	-ForegroundColor "red"			
+			local-print -Text "Error -- Faild to release the emaphore VSS_BACKUP - not set or Backup not started?"	-ForegroundColor "red"
 		}
 		local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 		#==============================================================================
 		#==============================================================================
 		# Check the log files and create summary text for check mail
-			
+
 		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern "error","fehler","0x0000"  -log_file (local-get-statusfile)
-		
+
 		# send the result of the check to a mail reciptant 
 		# only if configured!
 		local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)
-			
+
 		#==============================================================================
 }
 

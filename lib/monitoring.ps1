@@ -8,12 +8,12 @@
 <#
  
 	.NOTES
-		Created: 09.2012 : Gunther Pippèrr (c) http://www.pipperr.de			
+		Created: 09.2012 : Gunther Pippèrr (c) http://www.pipperr.de
 		Security:
 			(see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_script_aufrufen )
 			To switch it off (as administrator)
 			get-Executionpolicy -list
-			set-ExecutionPolicy -scope CurrentUser RemoteSigned		
+			set-ExecutionPolicy -scope CurrentUser RemoteSigned
 	.SYNOPSIS
 		Generic functions for monitoring the Oracle Database 
 	.DESCRIPTION
@@ -49,8 +49,8 @@ function local-freeSpace {
 			local-print  -ErrorText	($bline -f $free.DeviceID,($free.FreeSpace/1GB),($free.Size/1GB),$per_free)
 		}
 		else {
-			local-print  -Text		($gline -f $free.DeviceID,($free.FreeSpace/1GB),($free.Size/1GB),$per_free)
-		}		
+			local-print  -Text ($gline -f $free.DeviceID,($free.FreeSpace/1GB),($free.Size/1GB),$per_free)
+		}
 	}
 }
 
@@ -87,24 +87,22 @@ function local-get-file_from_position{
 			#
 			local-print  -Text "Info -- read file", $filename, "size byte::",$filesize,"from position::",$byte_pos,"writing",$print_lines_after_match," lines after finding"
 			$sreader= New-Object System.IO.StreamReader($filename)
-			
-		
-	
+
 			# set the file pointer to the last position
 			$last_byte_pos = $byte_pos
 			$sreader.BaseStream.Position = $byte_pos
-			
+
 			# read in array
 			$aline=@()
 			[String] $fline="-"
 			[int] $counter=0;
-			
+
 			#Debug
 			#local-print  -Text "Info -- check logfile::",$filename_only," for pattern::",$search_pattern
-			
+
 			# print also lines after a match 
 			$after_match=0;
-			
+
 			do {
 				# read one line
 				$fline=$sreader.ReadLine()
@@ -116,25 +114,24 @@ function local-get-file_from_position{
 					if ( -not ( $sreader.EndOfStream) ){
 						$fline=" "
 					}
-				}				
+				}
 				# fix byte to char !!! 
 				# $sreader.BaseStream.Position ?? shows only x*1024 ??
 				#[System.Text.Encoding]::Unicode.GetByteCount($s)   ??
 				$last_byte_pos=$last_byte_pos+$fline.length
-				 	
-				
+
 				# only debug
 				# local-print  -Text ( "Info -- read line {0,3}  : {1}" -f $counter,$fline )
-				
+
 				## search in the line
 				# if Match is one line before
-				
+
 				if ($after_match -gt 0 ) {
 					# debug 
 					# local-print  -Text "Info -- after_match feature position::",$after_match
 					$log_line=("{0,20} -> {1} " -f " ",$fline )
 					$aline+=$log_line
-					$after_match--;					
+					$after_match--;
 				}
 				else {
 					foreach ($spat in $search_pattern){
@@ -147,28 +144,28 @@ function local-get-file_from_position{
 							else {
 								$log_line=("{0,20}:: Byte {1,12} - Match [{2,15}] : {3}" -f $filename_only,$last_byte_pos,$spat,$fline )
 							}
-							$aline+=$log_line		
+							$aline+=$log_line
 							
 							# set the the defiend default:
 							$after_match=$print_lines_after_match
 							# debug 
 							# local-print -text "Info -- set after match to::",$after_match
-														
+
 						}
 					}
 				}
 			}
-			until ((-not ($fline)) )		
+			until ((-not ($fline)) )
 			
 			# write to log file
 			if ( (-not $aline) -or ( $aline.length -eq 0) ) {
 				$aline+=("{0,20}:: Byte Position {1,12} : {2} Nothing from interest found - last check {3:d}" -f $filename_only,$last_byte_pos,$fline,(get-date))
-			}			
+			}
 			
 			$aline+="============================================================================="			
-			
+
 			# write the result to the summary log
-			
+
 			if ($log_file) {
 				add-content $log_file ("============================{0,20}==============================="	-f $filename_only) 
 				add-content $log_file $aline
@@ -196,8 +193,7 @@ function local-get-file_from_position{
 	else {
 		local-print  -ErrorText "Error -- File $filename not found"
 		return 0
-	
-	}	
+	}
 	<#
 		.EXAMPLE
 		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\log\DB_BACKUP_5.log" 10 ("Warning","RMAN-0") "D:\OraPowerShellCodePlex\log\status_mail.log"
@@ -217,7 +213,7 @@ function local-get-oracle-error-pattern{
 	# read pattern definition
 	try {
 		$pattern_path="$scriptpath\conf\oracle_search_pattern.xml"
-		$pattern_list= [xml] ( get-content $pattern_path)			
+		$pattern_list= [xml] ( get-content $pattern_path)
 		
 		# read the pattern into the array
 		foreach ($pat in $pattern_list.search_pattern.error_pattern ) {
@@ -370,7 +366,7 @@ function local-send-status-file {
 			$status_file= "D:\OraPowerShellCodePlex\log\STATUS.txt"
 			$password	= Read-Host "Mail-Password:"
 			
-			local-send-status-file -smtpServer $smtpServer -port $port -to $to -from $from -status_file $status_file -username $username -password $password	
+			local-send-status-file -smtpServer $smtpServer -port $port -to $to -from $from -status_file $status_file -username $username -password $password
 	
 	#>
 }
@@ -435,7 +431,7 @@ function local-send-status {
 		}
 		else {
 			# use the .net classes to send the e-mail
-			local-send-status-file -smtpServer $smtpServer -port $port -to $to -from $from -status_file $log_file  -username $username -password $password				
+			local-send-status-file -smtpServer $smtpServer -port $port -to $to -from $from -status_file $log_file  -username $username -password $password
 		}
 	}
 	else {
