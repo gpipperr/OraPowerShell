@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mail>
+  <!-- if true use the mail feature -->
+  <use_mail>true</use_mail>
+  <!-- SMTP Server Details -->
+  <smtpServer>smtp.pipperr.de</smtpServer>
+  <port>25</port>
+  <!-- if the smtp server needs the fqdn and your local maschine -->
+  <!-- has no domain configured it is not possible to use the easy .net class -->
+  <!-- if true => telnet must used -->
+  <smpt_server_needs_fqdn>true</smpt_server_needs_fqdn>
+    
+  <!-- if you need username / password = true -->
+  <!-- if false  => no credentials            -->
+  <!-- if os    => use the actual user        -->
+  <use_credential>true</use_credential>
+  
+  <username password="01000000d08c9ddf0115d1118c7a00c04fc297eb0100000058f977ee2b4df048b7579e226b356a3200000000020000000000106600000001000020000000c1f9124c4bb670d6a24df41fddf8436e8b6f041c7d92b3b2a9af2facd04197ea000000000e8000000002000020000000e9b52677786cdb26f86388ae5a1487489538c8db088802813f1ff58c6ea93a61100000003c808012f901413680806e4b9eeb57204000000060e4316cc77fed75a1e1b98485283294a704200d78f0671945acf8ef2681bd8390a129724c9701486c7d0cf8f8c707e21b6be209d203d72743011589d68d3151" encrypt="true">gunther@pipperr.de</username>
+  <!-- Mail -->
+  <to>gunther@pipperr.de</to>
+  <from>admin@pipper.de</from>
+</mail>

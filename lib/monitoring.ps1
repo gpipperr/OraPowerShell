@@ -240,5 +240,207 @@ function local-get-oracle-error-pattern{
 
 	return $error_pattern
 }
+#==============================================================================
+#  local-get-oracle-error-pattern
+#  return a array of oracle default error search pattern
+##
+
+
+function local-send-status-file {
+	param (
+		 $smtpServer 
+		,$port
+		,$to
+		,$from
+		,$status_file
+		,$username
+		,$password	
+	)
+	
+	# check the parameter
+	try{
+		# check the file name with the mail text
+		if (-not (Get-ChildItem $status_file -ErrorAction silentlycontinue) ){
+			local-print  -ErrorText "Error --  the text of the e-mail NOT exists: $status_file"
+			throw "File $status_file  not exist!"
+		}
+		else {
+			local-print  -Text "Info -- the text of the e-mail exists: $status_file"
+		}
+		
+		# check the name resolution
+		$ip=local-get-IpAdress -hostname $smtpServer 
+		local-print  -Text "Info -- the hostname of the smtpServer $smtpServer can be resolved to the IP adress::$ip"
+		
+		# check if the connect to the port is possilbe
+		# see http://www.toms-blog.com/powershell-emulate-telnet-session-and-test-output/
+		$socket = new-object System.Net.Sockets.TcpClient($smtpServer , $port)  
+		if($socket -eq $null) {  
+			throw "Can not connect to the smtpServer $smtpServer on port $port"
+		}
+		else {
+			local-print  -Text "Info -- Smtp Connect to the smtpServer $smtpServer estabisched on port::$port"
+		}	
+		$socket.close()	
+	}
+	catch {
+		local-print  -ErrorText "Error --",$_
+		throw $_
+	}
+	
+	
+	try {
+		#http://technet.microsoft.com/de-de/library/dd347693.aspx
+		#
+		# Send-MailMessage -to $to -from $from -subject "Daily Status file from" -Attachment (local-get-statusfile) -smtpServer $smtpServer -credential $credential
+		# cause Error see catch block
+		
+		# Use step by step 
+		
+		#.Net Object
+		$mail = New-Object System.Net.Mail.MailMessage
+	 
+		# Sender Address
+		$mail.From = $from;
+	 
+		# Recipient Address
+		$mail.To.Add($to);
+	 
+		# Message Subject
+		$hostname=@( hostname )
+		$mail.Subject = ( "Host::{0} Status from ::{1:d}" -f $hostname,(get-date))
+	 
+		# Message Body
+		# read content from status file
+		$mailtext = get-content $status_file
+		
+		$mail.Body = $mailtext;
+		
+		# Connect to your mail server
+		$smtp = New-Object System.Net.Mail.SmtpClient($smtpServer);
+	    
+		# only if nessesary
+		if ($username) {
+			$smtp.Credentials = New-Object System.Net.NetworkCredential($username, $password);
+		}
+	 
+		# Send Email
+		$smtp.Send($mail);
+		
+	
+	}
+	catch {
+
+		$error_txt+=@()
+		
+		$error_txt+=($error[0].Exception | fl * -force)
+		
+		local-print -ErrorText "Error --",  $error_txt
+		
+		$error_txt=("-"*40)+$CLRF
+		
+		local-print -ErrorText "Error --",  $error_txt
+		
+		$error_txt=" If you get this Error :"+$CLRF
+		$error_txt+=" Ausnahme beim Aufrufen von Send mit 1 Argument(en):  Postfach nicht verfügbar. Die Serverantwort war: Please use a fully-qualified domain name for HELO/EHLO"+$CLRF
+		local-print -ErrorText "Error --",  $error_txt
+		
+		$error_txt=" check for this possible reason"+$CLRF
+		$error_txt+=" The current implementation of the System.Net.Mail.SmtpClient uses the NetBIOS name of the computer in the HELO / EHLO  commands."+$CLRF
+		$error_txt+=" Many anti-spam systems require the FQDN instead. As a result, email  sent with the SmtpClient class is often blocked."+$CLRF
+		$error_txt+=" see http://social.msdn.microsoft.com/forums/en-US/netfxnetcom/thread/77f45c5f-76be-400c-a529-a1e49d6d8e62/"+$CLRF
+		$error_txt+=" Hotfix"+$CLRF
+		$error_txt+=" http://support.microsoft.com/kb/957497"+$CLRF
+		
+		local-print -ErrorText "Error --",  $error_txt
+	}
+	finally {
+		# close the connection
+		#$smtp.Dispose()
+	}
+	
+	
+	<#
+		.Example
+			$smtpServer = "smtp.pipperr.de"
+			$to			= "gunther@pipperr.de"
+			$from		= "gunther@pipperr.de"
+			$port		= 25
+			$username	= "gunther@pipperr.de"
+			$status_file= "D:\OraPowerShellCodePlex\log\STATUS.txt"
+			$password	= Read-Host "Mail-Password:"
+			
+			local-send-status-file -smtpServer $smtpServer -port $port -to $to -from $from -status_file $status_file -username $username -password $password	
+	
+	#>
+}
+
+#==============================================================================
+# local-get-IpAdress
+# get the first IP Adress of a hostname
+#
+##
+function local-get-IpAdress {
+	param (
+	$hostname
+	)
+	
+	try {
+		#http://msdn.microsoft.com/de-de/library/system.net.dns.aspx
+		$resolf=[System.Net.Dns]::GetHostAddresses($hostname)
+		return $resolf[0].IPAddressToString
+	} 
+	catch {
+		local-print  -ErrorText "Error --",$S_
+		throw "Can not resolve the $hostname"
+	}
+}
+
+#==============================================================================
+# local-send-status
+# send the status via e-mail
+#
+##
+function local-send-status {
+	param ( 
+			$mailconfig 
+		, 	$log_file 
+	)
+		
+	if  ("true".equals($mailconfig.mail.use_mail.toString()) ) {
+
+		# Server
+		$smtpServer = $mailconfig.mail.smtpServer.toString()
+		$port		= $mailconfig.mail.port.toString()
+			
+		# user
+		if ("true".equals($mailconfig.mail.use_credential.toString()) ) {
+			
+			$lepassword = ($mailconfig.mail.username).GetAttribute("password") 
+			$password = local-read-secureString -text $lepassword
+			$username  = $mailconfig.mail.username.InnerText
+		}
+		else {
+	       local-print -Text "Warning -- try to send mail without credentials"  -ForegroundColor "yellow" 	
+		}
+		
+		# Mail
+		$to			= $mailconfig.mail.to.toString()
+		$from		= $mailconfig.mail.from.toString()		
+			
+		local-print -Text "Info -- Send the status mail with:  -smtpServer $smtpServer -port $port -to $to -from $from -status_file $log_file  -username $username -password xxxxx"
+				
+		if ("true".equals( $mailconfig.mail.smpt_server_needs_fqdn.toString())) {
+			local-print -Text "Warning -- Sending e-mail via telnet not jet implemented"  -ForegroundColor "yellow"
+		}
+		else {
+			# use the .net classes to send the e-mail
+			local-send-status-file -smtpServer $smtpServer -port $port -to $to -from $from -status_file $log_file  -username $username -password $password				
+		}
+	}
+	else {
+		local-print -Text "Warning -- Sending status report via E-Mail is not configured"  -ForegroundColor "yellow"
+	}
+}
 
 #==============================================================================
