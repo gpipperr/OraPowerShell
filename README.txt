@@ -31,6 +31,10 @@ To configure the Oracle Backup copy the file conf/backup_config_template.xml to 
 
 To configure the File Backup copy the file conf/backup_file_config_template.xml to conf/backup_file_config.xml and edit the file
 
-#cmd-let to configure the enviromen
+#cmdlet to configure the enviroment
 
 To configure the setdb enviroment copy the file conf/oracle_homes_template.xml to conf/oracle_homes.xml and edit the file
+
+#Satus E-Mail configuration
+
+To configure the mail server copy the the conf/mail_config_template.xml to conf/mail_config.xml and edit the file
