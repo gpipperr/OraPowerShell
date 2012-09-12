@@ -186,6 +186,9 @@ Process {
 							
 				#ASM ORACLE_HOME
 				$ORACLE_HOME=$asm.asm_oracle_home.ToString()
+				if ("default".equals($ORACLE_HOME)){
+					$ORACLE_HOME=local-get-crs-home-from-inventory
+				}
 				
 				# check if the directory exits
 				$check_result=local-check-dir -lcheck_path $ORACLE_HOME -dir_name "ORACLE_HOME" -create_dir "false"
@@ -215,6 +218,9 @@ Process {
 				
 				#GRID ORACLE_HOME
 				$ORACLE_HOME=$grid.grid_oracle_home.ToString()
+				if ("default".equals($ORACLE_HOME)){
+					$ORACLE_HOME=local-get-crs-home-from-inventory
+				}
 				
 				# check if the directory exits
 				$check_result=local-check-dir -lcheck_path $ORACLE_HOME -dir_name "ORACLE_HOME" -create_dir "false"
