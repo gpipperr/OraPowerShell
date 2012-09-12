@@ -56,16 +56,16 @@ $config_xml="$scriptpath\conf\backup_file_config.xml"
 #==============================================================================
 # log and status file handling
 #
-# move old logfile to .0 
+# move old log file to .0 
 # if log is older then today, if not append
-# we have per day one logfile from this week and from the last week the .0 logs
+# we have per day one log file from this week and from the last week the .0 logs
 
 $starttime=get-date
 # Numeric Day of the week
 $day_of_week=[int]$starttime.DayofWeek 
 
 # Log
-# set the global logfile
+# set the global log file
 $logfile_name=$scriptpath.path+"\log\VSSFILE_BACKUP_"+$day_of_week+".log"
 local-set-logfile    -logfile $logfile_name
 local-clear-logfile -log_file $logfile_name
@@ -306,19 +306,19 @@ finally {
 		#==============================================================================
 		# Exit the semaphore
 		local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
-		local-print  -Text "Info -- relase the Semaphore VSS_BACKUP"
+		local-print  -Text "Info -- release  the Semaphore VSS_BACKUP"
 		try {
 			$sem.Release() |  out-null
 		}
 		catch {
-			local-print -Text "Error -- Faild to relase the emaphore VSS_BACKUP - not set or Backup not started?"	-ForegroundColor "red"			
+			local-print -Text "Error -- Faild to release the emaphore VSS_BACKUP - not set or Backup not started?"	-ForegroundColor "red"			
 		}
 		local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 		#==============================================================================
 		#==============================================================================
-		# Check the logfiles and create summary text for check mail
+		# Check the log files and create summary text for check mail
 			
-		local-get-file_from_postion -filename (local-get-logfile) -byte_pos 0 -search_pattern "error","fehler","0x0000"  -log_file (local-get-statusfile)
+		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern "error","fehler","0x0000"  -log_file (local-get-statusfile)
 		
 		# send the result of the check to a mail reciptant 
 		# only if configured!

@@ -1,1 +1,1 @@
-Folder for logfiles
+Folder for log files

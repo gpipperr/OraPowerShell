@@ -91,9 +91,9 @@ $sem = New-Object System.Threading.Semaphore(1, 1, "ORALCE_BACKUP")
 #==============================================================================
 # log and status file handling
 #
-# move old logfile to .0 
+# move old log file to .0 
 # if log is older then today, if not append
-# we have per day one logfile from this week and from the last week the .0 logs
+# we have per day one log file from this week and from the last week the .0 logs
 
 $starttime=get-date
 # Numeric Day of the week
@@ -105,7 +105,7 @@ $logfile_name=$scriptpath.path+"\log\DB_BACKUP_"+$day_of_week+".log"
 local-set-logfile    -logfile $logfile_name
 local-clear-logfile -log_file $logfile_name
 
-# Status Logfile
+# Status Log file
 $logstatusfile_name=$scriptpath.path+"\log\STATUS.txt"
 local-set-statusfile -statusfile $logstatusfile_name
 local-clear-logfile  -log_file  (local-get-statusfile)
@@ -192,7 +192,7 @@ Process {
 				
 				# if Oracle Home not exits - exit
 				if ($check_result.equals("false")) {
-						throw "ORACLE_HOME::$ORACLE_HOME not extis for ASM Instance::$ORACLE_SID"					
+						throw "ORACLE_HOME::$ORACLE_HOME not exits for ASM Instance::$ORACLE_SID"					
 				}
 					
 				try {
@@ -264,7 +264,7 @@ Process {
 		
 		# if Oracle Home not exits - exit
 		if ($check_result.equals("false")) {
-				throw "ORACLE_HOME::$ORACLE_HOME not extis for Instance::$ORACLE_SID"					
+				throw "ORACLE_HOME::$ORACLE_HOME not exits for Instance::$ORACLE_SID"					
 		}
 			
 		try {
@@ -294,7 +294,7 @@ Process {
 		else {
 			$check_result=local-check-dir -lcheck_path $TNS_ADMIN -dir_name "TNS ADMIN Location" -create_dir "false"
 			if ($check_result.equals("false")) {
-				throw "TNS ADMIN::$TNS_ADMIN not extis for Instance::$ORACLE_SID"					
+				throw "TNS ADMIN::$TNS_ADMIN not exits for Instance::$ORACLE_SID"					
 			}
 		}
 		try {
@@ -409,10 +409,10 @@ try{
 	if ($argument1) {
 		$argument1 = $argument1.toUpper()
 		if ( $argument1.equals("DB") -or  $argument1.equals("ARCHIVE") ) {
-			local-print -Text "Info -- Backup Script started with Paramter::",$argument1
+			local-print -Text "Info -- Backup Script started with Parameter::",$argument1
 		}
 		else {
-			local-print -Text "Error -- Backup Script wrong Paramter::",$argument1  -ForegroundColor "red"		
+			local-print -Text "Error -- Backup Script wrong Parameter::",$argument1  -ForegroundColor "red"		
 			local-print -Text "Error -- Valid Parameter for the Database is:: DB"  -ForegroundColor "red"	
 			local-print -Text "Error -- Valid Parameter for the Archivelogs of the Database is:: ARCHIVE"  -ForegroundColor "red"	
 			exit
@@ -421,8 +421,8 @@ try{
 	else {
 		# if no parameter backup the complete DB enviroment
 		$argument1='DB'
-		local-print -Text "Warning -- Backup Script called without paramter" -ForegroundColor "Yellow"		
-		local-print -Text "Info -- Backup Script started with default paramter::",$argument1
+		local-print -Text "Warning -- Backup Script called without parameter" -ForegroundColor "Yellow"		
+		local-print -Text "Info -- Backup Script started with default parameter::",$argument1
 	}
 	
 	startBackup -scope $argument1
@@ -442,12 +442,12 @@ finally {
 			#==============================================================================
 			# Exit the semaphore
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
-			local-print  -Text "Info -- relase the Semaphore ORALCE_BACKUP"
+			local-print  -Text "Info -- release  the Semaphore ORALCE_BACKUP"
 			try {
 				$sem.Release() |  out-null
 			}
 			catch {
-				local-print -Text "Error -- Faild to relase the emaphore ORALCE_BACKUP - not set or Backup not started?"	 -ForegroundColor "red"			
+				local-print -Text "Error -- Faild to release  the emaphore ORALCE_BACKUP - not set or Backup not started?"	 -ForegroundColor "red"			
 			}
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 			#==============================================================================
@@ -455,7 +455,7 @@ finally {
 			#==============================================================================
 			# Check the logfiles and create summary text for check mail
 			
-			local-get-file_from_postion -filename (local-get-logfile) -byte_pos 0 -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile)
+			local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile)
 			# send the result of the check to a mail reciptant 
 			# only if configured!
 			local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)

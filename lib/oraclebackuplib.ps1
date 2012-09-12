@@ -67,7 +67,7 @@ function local-check-connect{
 	Param (   $sql_connect_string  = "/ as sysdba"			
 	) #end param
 	try {
-			local-print  -Text "Info -- check if Oracle SID is accasible ::" , $env:ORACLE_SID
+			local-print  -Text "Info -- check if Oracle SID is accessible ::" , $env:ORACLE_SID
 		
 			# test Connect to the datbase
 			# must be on first line
@@ -484,7 +484,7 @@ function local-backup-db-metainfo {
 		$csv_header	+="----- datastructur tempfiles ------"+$CLR
 		$sql       	+="select name as tempfile_name from v`$tempfile"
 		#
-		$csv_header	+="----- datastructur logfiles ------"+$CLR
+		$csv_header	+="----- datastructur log files ------"+$CLR
 		$sql       	+="select member as logfile_name from v`$logfile"
 		#
 		$csv_header	+="----- datastructur tablespace ------"+$CLR
@@ -1113,7 +1113,7 @@ quit
 			#copy
 			& "$env:ORACLE_home\bin\ocopy"  "$alert_log_full_name" "$alert_check_log" 2>&1 | foreach-object { local-print -text "OCOPY OUT::",$_.ToString() }
 					
-			# read the last byte postion from conf.file
+			# read the last byte position from conf.file
 			$log_status_xml="$scriptpath\conf\last_config_status.xml"
 			if (get-ChildItem $log_status_xml -ErrorAction silentlycontinue ) {
 				#read 
@@ -1126,8 +1126,8 @@ quit
 			$byte_pos=$log_last_status.alert_log.last_byte_position.toString()
 					
 			# check the file 
-			# return the byte postion of the last read in this file
-			$byte_pos=local-get-file_from_postion -filename $alert_check_log -byte_pos $byte_pos -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match 5
+			# return the byte position of the last read in this file
+			$byte_pos=local-get-file_from_position -filename $alert_check_log -byte_pos $byte_pos -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match 5
 		    						
 			$log_last_status.alert_log.last_byte_position="$byte_pos"
 			# save the status file again on disk 

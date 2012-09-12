@@ -35,7 +35,7 @@ Set-Variable backup_statusfile 	"STATUS.TXT" -option AllScope
 
 
 #==============================================================================
-# get the location of the logfile
+# get the location of the log file
 ##
 
 function local-get-logfile {
@@ -46,11 +46,11 @@ function local-set-logfile {
 		$logfile
 	)
 	$backup_logfile=$logfile
-	write-host ("Info -- Use Logfile Name ::{0}" -f (local-get-logfile) )  -ForegroundColor "green"	 
+	write-host ("Info -- Use log file Name ::{0}" -f (local-get-logfile) )  -ForegroundColor "green"	 
 }
 
 #==============================================================================
-# get the location of the status logfile
+# get the location of the status log file
 ##
 
 function local-get-statusfile {
@@ -81,7 +81,7 @@ function local-get-eventlog-source {
 }
 
 #==============================================================================
-# clear logfile
+# clear log file
 ##
 function local-clear-logfile {
 param (
@@ -95,7 +95,7 @@ param (
 		# check if file is from today - append 
 		$file_age=Get-Item  $backup_logfile | select LastWriteTime
 	  	if ($file_age.LastWriteTime -gt $today ){
-			local-print -text "Info -- Append logfile logfile last access::",$file_age.LastWriteTime,"Today::",$today
+			local-print -text "Info -- Append log file -- log file last access::",$file_age.LastWriteTime,"Today::",$today
 		}
 		else { 
 			cp "$backup_logfile" "$backup_logfile.0"
@@ -104,12 +104,12 @@ param (
 		}
 	}
 	else {
-		local-print -text "Info -- Logfile not exists"
+		local-print -text "Info -- Log file not exists"
 	}
 }
 
 #==============================================================================
-# Helper Funktion to write logfile and display message
+# Helper Funktion to write log file and display message
 ##
 function local-print{
 	# Parametes
@@ -187,7 +187,7 @@ function local-deregister-eventlog {
 		local-print -text "Info --  Event Source::",$log_source," for Event log::",$event_log,"deregistered"
 	}
 	else {
-		local-print -text "Error --  Event Source::",$log_source," for Event log::",$event_log,"not extists"
+		local-print -text "Error --  Event Source::",$log_source," for Event log::",$event_log,"not exits"
 	}
 }
 
