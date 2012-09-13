@@ -84,22 +84,23 @@ function local-clear-logfile {
 		$log_file
 	)
 	$today=(get-date).date
+	$log_file_name = split-path $log_file -Leaf
 	
 	# check if file exists
-	if ( Test-Path $backup_logfile ) {
+	if ( Test-Path $log_file ) {
 		# check if file is from today - append 
-		$file_age=Get-Item  $backup_logfile | select LastWriteTime
+		$file_age=Get-Item  $log_file | select LastWriteTime
 	  	if ($file_age.LastWriteTime -gt $today ){
-			local-print -text "Info -- Append log file -- log file last access::",$file_age.LastWriteTime,"Today::",$today
+			local-print -text "Info -- Append to file $log_file_name -- file last access::",$file_age.LastWriteTime,"Today::",$today
 		}
 		else { 
-			cp "$backup_logfile" "$backup_logfile.0"
-			rm "$backup_logfile"
-			local-print -text "Info -- remove old logfle",$backup_logfile
+			cp "$log_file" "$log_file.0"
+			rm "$log_file"
+			local-print -text "Info -- remove old logfile",$log_file
 		}
 	}
 	else {
-		local-print -text "Info -- Log file not exists"
+		local-print -text "Info -- file $log_file_name not exists"
 	}
 }
 
