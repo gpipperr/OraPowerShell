@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<mail>
+<mail version="0.2">
 	<!-- if true use the mail feature -->
 	<use_mail>false</use_mail>
 	<!-- SMTP Server Details -->

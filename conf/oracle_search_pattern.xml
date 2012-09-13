@@ -3,7 +3,7 @@
 Oracle internal Errors (idea of list from nagios oracle.cfg, but list fixed with oracle documentation
 see  http://docs.oracle.com/cd/E18283_01/server.112/e17766/toc.htm
 -->
-<search_pattern>
+<search_pattern version="0.2" >
 	<!-- NLS Errors -->
 	<error_pattern>TNS-121[0-9][0-9]</error_pattern>
 	<error_pattern>TNS-12545</error_pattern>

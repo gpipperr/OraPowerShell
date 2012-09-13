@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- File backup configuration Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de -->
-<backup>
+<backup version="0.2">
    <!-- Name of the drive --> 
 	<volume>
 		<!-- Name of the volume -->
