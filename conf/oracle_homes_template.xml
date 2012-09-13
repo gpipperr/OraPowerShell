@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<oracle_homes>
+<oracle_homes version="0.2">
 	<!-- Language Settings -->
 	<nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
 	<!-- Path for SQL*Plus to sql Scripts -->

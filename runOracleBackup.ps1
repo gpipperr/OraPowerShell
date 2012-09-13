@@ -39,7 +39,7 @@
 #>
 
 # Enviroment
-
+Set-Variable CONFIG_VERSION "0.2" -option constant
 
 $Invocation = (Get-Variable MyInvocation -Scope 0).Value
 $scriptpath=Split-Path $Invocation.MyCommand.Path
@@ -58,6 +58,20 @@ $config_xml="$scriptpath\conf\backup_config.xml"
 
 # read Configuration
 $backupconfig= [xml] ( get-content $config_xml)
+
+#Check if the XML file has the correct version
+if ( $backupconfig.backup.HasAttribute("version") ) {
+	$xml_script_version=$backupconfig.backup.getAttribute("version")
+	if ( $CONFIG_VERSION.equals( $xml_script_version)) {
+		write-host "Info -- XML configuration with the right version::  $CONFIG_VERSION "
+	}
+	else {
+		throw "Configuration xml file version is wrong, found: $xml_script_version but need :: $CONFIG_VERSION !"
+	}
+ }
+else {
+	throw "Configuration xml file version info missing, please check the xml template from the  new version and add the version attribte to <backup> !"
+}
 
 # read if exist the mail configuration
 $mailconfig_xml="$scriptpath\conf\mail_config.xml"

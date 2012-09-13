@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- oracle backup configuration Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de -->
-<backup>
+<backup version="0.2">
 	<!-- configuration of the asm enviroment -->
 	<asm>
 		<!-- set to true if ASM Option of the Database is in use -->

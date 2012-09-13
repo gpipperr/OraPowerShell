@@ -32,6 +32,8 @@ Set-StrictMode -Version 2.0
 		set the enviroment to the first db 
 		setdb 1
 #>
+Set-Variable CONFIG_VERSION "0.2" -option constant
+
 
 function setdb {
 	[CmdletBinding()]
@@ -47,7 +49,20 @@ function setdb {
 	$scriptpath=$Invocation.MyCommand.Module.ModuleBase
 	$config_xml="$scriptpath\conf\oracle_homes.xml"
 	$oraconfig= [xml] ( get-content $config_xml)
-
+	
+	# XML Version check
+	if ( $oraconfig.oracle_homes.HasAttribute("version") ) {
+		$xml_script_version=$oraconfig.oracle_homes.getAttribute("version")
+		if ( $CONFIG_VERSION.equals( $xml_script_version)) {
+			write-host "Info -- XML configuration with the right version::  $CONFIG_VERSION "
+		}
+		else {
+			throw "Configuration xml file version is wrong, found: $xml_script_version but need :: $CONFIG_VERSION !"
+		}
+	 }
+	else {
+		throw "Configuration xml file version info missing, please check the xml template from the new version and add the version attribte to <backup> !"
+	}
 
 	#======== Store the old Path in the Backkground
 	try {
