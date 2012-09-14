@@ -262,69 +262,10 @@ Process {
 
 	# Database 
 	foreach ($db in $backupconfig.backup.db) {
-
-		# Set the Enviroment Variables
 		
-		#Oracle SID
-		$ORACLE_SID=$dB.sid.ToString()
-		try {
-			set-item -path env:ORACLE_SID -value $ORACLE_SID
-		}
-		catch {
-			new-item -path env: -name ORACLE_SID -value $ORACLE_SID
-		}
-		local-print  -Text "Info -- set Oracle SID to::" , $env:ORACLE_SID
+		# the the DB enviroment
+		local-set-dbEnviroment -db $db 
 		
-		
-		# ORACLE_HOME
-		$ORACLE_HOME=$dB.oracle_home.ToString()
-		
-		# check if the directory exits
-		$check_result=local-check-dir -lcheck_path $ORACLE_HOME -dir_name "ORACLE_HOME" -create_dir "false"
-		
-		# if Oracle Home not exits - exit
-		if ($check_result.equals("false")) {
-				throw "ORACLE_HOME::$ORACLE_HOME not exits for Instance::$ORACLE_SID"
-		}
-			
-		try {
-			set-item -path env:ORACLE_HOME -value $ORACLE_HOME
-		}
-		catch {
-			new-item -path env: -name ORACLE_HOME -value $ORACLE_HOME
-		}
-		local-print  -Text "Info -- set Oracle Home to::" , $env:ORACLE_HOME
-		
-		#set the nls_settings
-		$NLS_LANG=$dB.nls_settings.nls_lang.toString()
-		try {
-			set-item -path env:NLS_LANG -value $NLS_LANG
-		}
-		catch {
-			new-item -path env: -name NLS_LANG -value $NLS_LANG
-		}
-		local-print  -Text "Info -- set NLS LANG to::" , $env:NLS_LANG
-		
-		# TNS setting
-		$TNS_ADMIN=$dB.nls_settings.tns_admin.toString()
-		
-		if ("default".equals($TNS_ADMIN)) {
-			$TNS_ADMIN=$ORACLE_HOME+"\NETWORK\ADMIN"
-		}
-		else {
-			$check_result=local-check-dir -lcheck_path $TNS_ADMIN -dir_name "TNS ADMIN Location" -create_dir "false"
-			if ($check_result.equals("false")) {
-				throw "TNS ADMIN::$TNS_ADMIN not exits for Instance::$ORACLE_SID"
-			}
-		}
-		try {
-			set-item -path env:TNS_ADMIN -value $TNS_ADMIN
-		}
-		catch {
-			new-item -path env: -name TNS_ADMIN -value $TNS_ADMIN
-		}
-		local-print  -Text "Info -- set TNS_ADMIN to::" , $env:TNS_ADMIN
-
 		# create the connect string to the database
 		$sql_connect_string ="/ as sysdba"
 		$rman_connect_string="/"
@@ -332,7 +273,7 @@ Process {
 		if ($db.nls_settings.use_direct_connnect_for_sys.equals("true")){
 			$sql_connect_string="/ as sysdba"
 			$rman_connect_string="/"
-			local-print  -Text "Info --  use as connection to the database::",$sql_connect_string
+			local-print  -Text "Info -- use as connection to the database::",$sql_connect_string
 		}
 		else {
 			$tns_alias = $db.nls_settings.tns_alias.toString()
@@ -483,5 +424,5 @@ finally {
 
 }
 
-#==============================================================================#######
+#==============================================================================
 
