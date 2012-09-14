@@ -21,6 +21,7 @@ grant select on v_$instance to backupuser;
 grant select on v_$version to backupuser;
 grant select on dba_directories to backupuser;
 grant select on v_$parameter to backupuser;
+grant select on v_$diag_info to backupuser;
 
 ---
 
