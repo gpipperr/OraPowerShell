@@ -133,7 +133,7 @@ function local-cleanDBLog {
 		, $Long_retention  = 365
 	)
 	
-	local-print -Text "Info -- Cleaning the logfile of the database", $env:ORACLE_SID
+	local-print -Text "Info -- Cleaning the XML ADR logfile of the database", $env:ORACLE_SID
 	
 	# get the ADR Home
 	
@@ -172,7 +172,17 @@ quit
 	& "$env:ORACLE_HOME\bin\adrci" exec="set homepath $adr_home_path;set control \(SHORTP_POLICY=$hrs_short\); set control \(LONGP_POLICY=$hrs_long\);purge" 2>&1 | foreach-object { local-print -text "ADRCI OUT::",$_.ToString() }
 	
 	#done
-
+	
+	#=======================================
+	# clean tracefiles D:\oracle\diag\rdbms\gpi\gpi\trace
+	# FIX!
+	# delete everything that is not touched in the last 30 days and file is not open!
+	#
+	#
+	#
+		
+	
+	# =====================================
 	# audit_file_dest clean the audit files
 	
 	$audit_file_dest=@'
@@ -202,8 +212,39 @@ function local-cleanListenerLog {
 		 $log_rentention
 	)
 	
-	local-print -Text "Info -- Cleaning the Listner logfile not yet fully implemented"
+	local-print -Text "Info -- Only the shrink of the Listner  XML logfile is implemented!"
+		
+	# Use adrci to clean the xml logfile of the listener
 	
+	$listener_adr_home=@()
+	
+	& "$env:ORACLE_HOME\bin\adrci" exec="show homes"  2>&1 | foreach-object { $listener_adr_home+=$_.ToString() }
+	
+	foreach ($s in $listener_adr_home) {
+			if  ( $s.indexOF("tnslsnr") -gt -1 ) {
+				$listener_adr_home= $s
+			}
+	}
+	local-print -Text "Info -- Listener adrci diag home:",$listener_adr_home
+	
+	$hrs_short=24*60*$log_rentention
+	$hrs_long =24*60*$log_rentention
+	$listener_adr_home=$listener_adr_home.replace("\","\\")
+	
+	local-print -Text "Info -- start adrci with set homepath $listener_adr_home;set control (SHORTP_POLICY=$hrs_short) ;set control (LONGP_POLICY=$hrs_long);purge "
+	
+	& "$env:ORACLE_HOME\bin\adrci" exec="set homepath $listener_adr_home;set control \(SHORTP_POLICY=$hrs_short\); set control \(LONGP_POLICY=$hrs_long\);purge" 2>&1 | foreach-object { local-print -text "ADRCI OUT::",$_.ToString() }
+	
+	#done
+	
+	# Handling to clean the pur trace file
+	# FIX it!
+	#
+	# Rotate the listener log to a new file not suported with ADR in use!
+	# TNS-01251: Cannot set trace/log directory under ADR
+	#
+	
+	<#
 	
 	if (-not (([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))) {
 		local-print -Text "Info -- Cleaning the Listner logfile you need administrative rights!"
@@ -212,8 +253,11 @@ function local-cleanListenerLog {
 	}
 	else {
 		
-		$listener_home=@()
+		# listener.log trace file Handling
+		
 		# collect the results of the lsnrctl 
+		
+		$listener_home=@()
 		& "$env:ORACLE_HOME\bin\lsnrctl" show oracle_home 2>&1 | foreach-object { $listener_home+=$_.ToString() }
 		foreach ($s in $listener_home) {
 			if  ( $s.indexOF("ORACLE_HOME=") -gt -1 ) {
@@ -222,6 +266,10 @@ function local-cleanListenerLog {
 			}
 		}
 		local-print -Text "Info -- Listener runs under this ORACLE_HOME:",$listener_home
+		
+		
+		# set the orginal Oracle Home for the listener
+		
 		try {
 			set-item -path env:ORACLE_HOME -value $listener_home
 		}
@@ -229,6 +277,7 @@ function local-cleanListenerLog {
 			new-item -path env: -name ORACLE_HOME -value $listener_home
 		}	
 		local-print  -Text "Info -- Set Oracle Home to::" , $env:ORACLE_HOME
+		
 		$xml_listener_log=@()
 		& "$env:ORACLE_HOME\bin\lsnrctl" show log_file 2>&1 | foreach-object { $xml_listener_log+=$_.ToString() }
 		foreach ($s in $xml_listener_log) {
@@ -237,9 +286,22 @@ function local-cleanListenerLog {
 				$xml_listener_log= $xml_listener_log.replace('"','')
 			}
 		}
-			local-print  -Text "Info -- Listener logs to this logfile ::" , $xml_listener_log
-		
+		local-print  -Text "Info -- Listener logs to this logfile ::" , $xml_listener_log
+		 
+		 # not possible when used with adrci!
+		 # rotage logfile
+		 # set new logfile
+		 
+		 	 
+		 # zip old logfile
+		 # use zip lib 
+		 # xml and trace
+		 
+		 # delete old logfile
+		 # xml and trace
 	}
+	
+	#>
 }
 
 #==============================================================================
@@ -260,6 +322,12 @@ function local-cleanGRIDLog {
 #============================== Start the Log Rotate / Purge ==================
 try{
 
+
+	
+	local-print  -Text "Info -- Check if other instance of a backup script is running (over Semaphore ORALCE_BACKUP)"
+	# Wait till the semaphore if free
+	$sem.WaitOne()
+
 	$log_rentention  = $args[0]
 	$Short_retention = $args[1]
 	$Long_retention  = $args[2]
@@ -270,8 +338,6 @@ try{
 	if ( -not $long_retention   ) { $long_retention   = 365 }
 	
 	
-	$listner_home=""
-		
 	#ASM
 	foreach ($asm in $backupconfig.backup.asm) {
 		if ($asm.asm_in_use.Equals("true")) {
@@ -377,7 +443,8 @@ try{
 	# check with the settings of the last DB the home of the listener
 	# Clean the listener Log
 	local-cleanListenerLog -log_rentention $log_rentention
-
+	
+	# check for free diskspace
 	local-freeSpace 
 } 
 catch {
@@ -397,7 +464,7 @@ finally {
 			$sem.Release() |  out-null
 		}
 		catch {
-			local-print -Text "Error -- Faild to release  the emaphore ORACLE_LOG_ROTATE - not set or Backup not started?" -ForegroundColor "red"
+			local-print -Text "Error -- Faild to release the semaphore ORACLE_LOG_ROTATE - not set or Backup not started?" -ForegroundColor "red"
 		}
 		local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 		#==============================================================================
@@ -405,7 +472,7 @@ finally {
 		#==============================================================================
 		# Check the logfiles and create summary text for check mail
 		
-		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern "error,fehler" -log_file (local-get-statusfile)
+		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern ("error","fehler") -log_file (local-get-statusfile)
 		# send the result of the check to a mail reciptant 
 		# only if configured!
 		local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)

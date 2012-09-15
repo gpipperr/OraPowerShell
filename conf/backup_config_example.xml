@@ -34,17 +34,20 @@
 	<!-- how to connect to the database -->
 	<nls_settings>
   
-	<!-- if true use "/ as sysdba" to connect to the local instance -->
-	<use_direct_connnect_for_sys>true</use_direct_connnect_for_sys>
+	
   
 	<!-- if false use the following nls and user settings ot connect to the database -->
-	<tns_alias>gpi</tns_alias>
-		<username password="system" encrypt="false" certificate="false">backupuser</username>
-		<!-- Language of messages - charset like GERMAN_GERMANY.UTF8 -->
+	<nls_settings>
+		<!-- if true use "/ as sysdba" to connect to the local instance -->
+		<use_direct_connnect_for_sys>true</use_direct_connnect_for_sys>
+		<!-- if false use the following nls and user settings ot connect to the database -->
+		<tns_alias>gpi</tns_alias>
+		<username password="01000000d08c9ddf0115d1118c7a00c04fc297eb0100000058f977ee2b4df048b7579e226b356a3200000000020000000000106600000001000020000000f455557ec1eb4390d19a931ff4165470cac312a1309ffe4a80df3af12c763ea1000000000e8000000002000020000000346a5e41e0959468e05e1bf392ad329d40d67de0856baec32de7bc240b67d2d910000000da0a20cd166f0a90a7b89d3f3f64e79340000000630333fdb07c208c7e53041336830a66b8c656ba672c078b33ce6d356b79bb9ac0b281712df775e83bf4fbd1b9b9775149495a5b8265bb49bf23beb19cf50128" encrypt="true" certificate="false">backupuser</username>
+		<!-- Language of messages - charset -->
 		<nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
 		<!-- TNS_ADMIN -->
 		<!-- if the value is "default" the Oracle Home Path is used, else the path -->
-		<tns_admin>default</tns_admin>
+		<tns_admin>D:\oracle\TNS_ADMIN</tns_admin>
 	</nls_settings>
 
 	<!-- Backup Database and Archivelogs -->
@@ -72,6 +75,7 @@
 	<!-- attribute use_dot_net= false => use sqlplus and sql spool , true => use .net Dll to create csv file -->
 	<!-- Oracle home for the DLL -->
 	<!-- only possilbe if the tns Alias in the nls_setting / user / password Section is valid -->
+	<!-- only possilbe if the tns Alias in the nls_setting / user / password Section is valid and use_direct_connnect_for_sys must be false ! -->
 	<db_meta_info use_dot_net="true" dot_net_orcle_home="d:\oracle\product\11.2.0.3\client_64bit" >true</db_meta_info>
 
 	<!-- check the Alert log for errors -->

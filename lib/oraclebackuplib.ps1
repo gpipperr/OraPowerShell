@@ -1126,20 +1126,36 @@ param (   $db
 	
 	## check the alert log
 	
+	#==============================
 	# check if adrci is accessible
+		
 		# if yes use adrci
 		# get all incident information with adrci
-	##
+		#
+		#
+		# adrci> show alert -p "originating_timestamp >= systimestamp-1/24" -term;?
+		# adrci> show alert -p "message_text like '%ORA-600%' and originating_timestamp >= systimestamp-30" -term;
+		# calls via script adrci script=/generated/test_alert_log.adrci
+		#
+		# SPOOL /home/seiler/logs/alert_log_errors.log
+		# ECHO "ALERT LOG ERRORS:"; SET HOMEPATH diag/rdbms/orcl/orcl; SHOW 
+		# ALERT -TERM -P "MESSAGE_TEXT LIKE '%ORA-%'"
+		# SPOOL OFF
+		#
+		#
+		
 	
-	
+	#===================================
 	# if not geht the alert_log position
+	# read of the traditional trace file
+	
 	# get parameter bdump from sqlplus
 $alert_log=@'
 set pagesize 0 
 set feedback off
 select value from v$parameter where name ='background_dump_dest';
 quit
-'@| & "$ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string"
+'@| & "$env:ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string"
 		
 		local-print  -Text "Info -- read the alert log destination from the database::",$alert_log
 		
