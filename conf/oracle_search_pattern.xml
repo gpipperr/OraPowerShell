@@ -19,6 +19,7 @@ see  http://docs.oracle.com/cd/E18283_01/server.112/e17766/toc.htm
 	<error_pattern>ORA-06[0-3][0-9]</error_pattern> 	<!-- ORA-6000 - ORA-0639 internal errors -->
 	<error_pattern>ORA-6[0-3][0-9]</error_pattern>		<!-- ORA-6000 - ORA-0639 internal errors -->
 	<error_pattern>ORA-006[0-3][0-9]</error_pattern>	<!-- ORA-6000 - ORA-0639 internal errors -->
+	<error_pattern>ORA-00700</error_pattern>			<!-- ORA-700 soft internal error over something like this:alter session set events '942 incident(table_missing)' -->
 	<error_pattern>ORA-1114</error_pattern> 			<!-- datafile I/O write error -->
 	<error_pattern>ORA-01115</error_pattern> 	 		<!-- datafile I/O read error -->
 	<error_pattern>ORA-01116</error_pattern> 	 		<!-- cannot open datafile -->

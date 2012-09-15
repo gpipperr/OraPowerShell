@@ -34,17 +34,22 @@
 	<!-- how to connect to the database -->
 	<nls_settings>
   
-	<!-- if true use "/ as sysdba" to connect to the local instance -->
-	<use_direct_connnect_for_sys>true</use_direct_connnect_for_sys>
+		<!-- if true use "/ as sysdba" to connect to the local instance -->
+		<use_direct_connnect_for_sys>true</use_direct_connnect_for_sys>
   
-	<!-- if false use the following nls and user settings ot connect to the database -->
-	<tns_alias>gpi</tns_alias>
+		<!-- if false use the following nls and user settings ot connect to the database -->
+		<tns_alias>gpi</tns_alias>
+		
+		<!-- if false use the following nls and user settings ot connect to the database -->
 		<username password="system" encrypt="false" certificate="false">backupuser</username>
+		
 		<!-- Language of messages - charset like GERMAN_GERMANY.UTF8 -->
 		<nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
+		
 		<!-- TNS_ADMIN -->
 		<!-- if the value is "default" the Oracle Home Path is used, else the path -->
 		<tns_admin>default</tns_admin>
+		
 	</nls_settings>
 
 	<!-- Backup Database and Archivelogs -->
@@ -71,8 +76,8 @@
 	<!-- Backup the Metainformation like the controlfile trace etc. -->
 	<!-- attribute use_dot_net= false => use sqlplus and sql spool , true => use .net Dll to create csv file -->
 	<!-- Oracle home for the DLL -->
-	<!-- only possilbe if the tns Alias in the nls_setting / user / password Section is valid -->
-	<db_meta_info use_dot_net="true" dot_net_orcle_home="d:\oracle\product\11.2.0.3\client_64bit" >true</db_meta_info>
+	<!-- only possilbe if the tns Alias in the nls_setting / user / password Section is valid and use_direct_connnect_for_sys must be false ! -->
+	<db_meta_info use_dot_net="false" dot_net_orcle_home="d:\oracle\product\11.2.0.3\client_64bit" >true</db_meta_info>
 
 	<!-- check the Alert log for errors -->
 	<!-- if listener_summary = true you get a list of connection to the database -->

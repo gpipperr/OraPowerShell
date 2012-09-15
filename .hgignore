@@ -3,6 +3,7 @@ syntax: glob
 # no old logfiles
 *.log
 STATUS.txt
+*.0
 
 # no auto generated files
 generated_*
