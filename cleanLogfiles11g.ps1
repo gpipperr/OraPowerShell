@@ -175,12 +175,35 @@ quit
 	
 	#=======================================
 	# clean tracefiles D:\oracle\diag\rdbms\gpi\gpi\trace
-	# FIX!
-	# delete everything that is not touched in the last 30 days and file is not open!
+	# delete everything that is not touched in the last $Short_retention days and file is not open!
 	#
-	#
-	#
-		
+	# using $Short_retention for the audits!
+	
+	$today = get-date 
+	
+	# list of typical trace files
+	$trace_dirs=@()
+	$trace_dirs+=$adr_base+"\"+$adr_home_path.replace("\\","\")+"\trace\*.trc"
+	$trace_dirs+=$adr_base+"\"+$adr_home_path.replace("\\","\")+"\trace\*.trm"
+	
+	$file_count=0
+	$file_size=0
+	
+	foreach ($trace_dir in $trace_dirs ) {
+		local-print -Text ("Info -- Cleaning the trace log files of the database older then $Short_retention days from now {0:D} from location {1}" -f $today,$trace_dir)
+		foreach ( $file_obj in ( get-childitem $trace_dir -recurse | where-object {($today - $_.LastWriteTime).Days -gt $Short_retention} )) {
+			# check if the file is open
+			if ( -not (local-check-file-open -filename  $file_obj.fullname) ) {
+				remove-item $file_obj.PSPath 2>&1 | foreach-object { local-print -text "DEL OUT::",$_.ToString() }
+				$file_count++
+				$file_size+=$file_obj.length
+			}
+			else {
+				local-print -Text ("Warning -- The trace files of the database {0} is still open" -f $file_obj.fullname) -ForegroundColor "yellow"
+			}
+		}
+	}
+	local-print -Text ("Info -- Delete {0} trace log files (Size {1:n} MB) older then $Short_retention days from now {2:D} from location {3}" -f $file_count,($file_size/1MB),$today,$trace_dir)
 	
 	# =====================================
 	# audit_file_dest clean the audit files
@@ -197,10 +220,16 @@ quit
 	
 	local-print -Text ("Info -- Cleaning the audit log files of the database older then 30 days from now {0:D} from location {1}" -f $today,$audit_file_dest)
 	
-	# using $Short_retention for the audits!
-	get-childitem $audit_file_dest -recurse | where-object {($today - $_.LastWriteTime).Days -gt $Short_retention}  | remove-item
+	$file_count=0
+	$file_size=0
 	
-
+	# using $Short_retention for the audits!
+	foreach ( $file_obj in (get-childitem $audit_file_dest -recurse | where-object {($today - $_.LastWriteTime).Days -gt $Short_retention} )) {
+		$file_count++
+		$file_size+=$file_obj.length
+		remove-item 2>&1 | foreach-object { local-print -text "DEL OUT::",$_.ToString() }
+	}
+	local-print -Text ("Info -- Delete {0} audit log files (Size {1:n} MB) older then $Short_retention days from now {2:D} from location {3}" -f $file_count,($file_size/1MB),$today,$audit_file_dest)
 }
 
 #==============================================================================
@@ -472,7 +501,7 @@ finally {
 		#==============================================================================
 		# Check the logfiles and create summary text for check mail
 		
-		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern ("error","fehler") -log_file (local-get-statusfile)
+		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern ("error","fehler","kann nicht","can not") -log_file (local-get-statusfile)
 		# send the result of the check to a mail reciptant 
 		# only if configured!
 		local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)
