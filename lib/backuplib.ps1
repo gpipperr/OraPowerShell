@@ -396,6 +396,42 @@ function rcopydata{
 
 }
 
+#==============================================================================
+# check for open file
+#
+#
+	#trap {
+	#		Set-Variable -name file_open -value $true -scope 1
+	#		#$file_open=$true;	
+	#	}
+	# test open
+	
+function local-check-file-open {
+	 param(
+		[String] $filename 
+	 )
+	
+	$file_open=$false;
+	
+ 	$file_handle= New-Object System.IO.FileInfo $filename
+	try {
+		$file_stream = $file_handle.Open( [System.IO.FileMode]::OpenOrCreate, [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None )
+		# close is successfull
+		if ($file_stream) {
+			$file_stream.close();
+			$file_stream.dispose()
+			# wait a short moment that the file is realy closed!
+			# reason => execption when after the test remove-item is called with out a short break
+			sleep 2
+		}
+	}
+	catch {
+		$_
+		$file_open=$true;
+	}
+	return $file_open  
+}
+
 
 
 
