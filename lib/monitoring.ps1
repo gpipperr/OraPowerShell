@@ -60,12 +60,40 @@ function local-freeSpace {
 ##
 
 function local-get-file_from_position{
+
+	<#
+	
+	.DESCRIPTION
+		Anlayse Logfile for Errors with a list af patterns and write the result to a status log
+		
+	.PARAMETER $filename
+		File to analyse
+	.PARAMETER $byte_pos 
+		Byte Position in the file to start the analyse 0 - From the beginning
+	.PARAMETER  $search_pattern
+		String arry with the pattern to search
+	.PARAMETER $log_file 
+		File to write the output (result of the matches)
+	.PARAMETER $print_lines_after_match
+		If a match occurs print also to the logfile the next x lines
+	.PARAMETER $print_lines_before_match 
+		If > 0 print ONE! line BEFORE the match 
+	.PARAMETER $ignorePat
+		Arrray of ingore pattern - If a match occur it will be checked if other word in the line are disable the match
+	
+	.EXAMPLE
+		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\log\DB_BACKUP_5.log" 10 ("Warning","RMAN-0") "D:\OraPowerShellCodePlex\log\status_mail.log"
+		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\test\test_pattern_match.txt" 0 (local-get-oracle-error-pattern) "D:\OraPowerShellCodePlex\test\pattern_match.log" -print_lines_after_match 5
+		
+	#>
+		
 	param (
 		  [String]   $filename
 		, [int]      $byte_pos 
 		, [String[]] $search_pattern
 		, [String]   $log_file 
 		, [int]      $print_lines_after_match = 0 
+		, [int]      $print_lines_before_match = 0
 		, [String[]] $ignorePat = ("Insgesamt","Extras")
 	)
 	
@@ -103,8 +131,12 @@ function local-get-file_from_position{
 
 			# print also lines after a match 
 			$after_match=0;
+			
+			$line_before_match="-"
 
 			do {
+				#remember the line before
+				if ($fline) { $line_before_match=$fline}
 				# read one line
 				$fline=$sreader.ReadLine()
 				$counter++
@@ -119,6 +151,7 @@ function local-get-file_from_position{
 				# fix byte to char !!! 
 				# $sreader.BaseStream.Position ?? shows only x*1024 ??
 				#[System.Text.Encoding]::Unicode.GetByteCount($s)   ??
+				$last_byte_before_pos=$last_byte_pos
 				$last_byte_pos=$last_byte_pos+$fline.length
 
 				# only debug
@@ -137,7 +170,7 @@ function local-get-file_from_position{
 				else {
 					$print_line=$true
 					foreach ($spat in $search_pattern){
-						if ($fline	-imatch $spat ) {
+							if ($fline	-imatch $spat ) {
 							$print_line=$true
 							# if match , use the ignore list to filter false results
 							foreach ($ipat in $ignorePat){
@@ -148,10 +181,24 @@ function local-get-file_from_position{
 							if ($print_line){
 								# if byte pos is 0 - read from start of file - we can use the line nummber
 								if ($byte_pos -eq 0) {
+									
+									# print the one line before the match
+									if ($print_lines_before_match -gt 0) {
+										$log_line=("{0,20}:: Line {1,6} - Match [{2,15}]  : {3}" -f $filename_only,($counter-1),$spat,$line_before_match )
+										$aline+=$log_line
+									}
+									
 									$log_line=("{0,20}:: Line {1,6} - Match [{2,15}]  : {3}" -f $filename_only,$counter,$spat,$fline )
 								}
 								# if byte pos is > 0 - read from a byte pos inside the file - output byte position
 								else {
+									
+									# print the one line before the match
+									if ($print_lines_before_match -gt 0) {
+										$log_line=("{0,20}:: Byte {1,12} - Match [{2,15}] : {3}" -f $filename_only,$last_byte_before_pos,$spat,$line_before_match )
+										$aline+=$log_line
+									}
+									
 									$log_line=("{0,20}:: Byte {1,12} - Match [{2,15}] : {3}" -f $filename_only,$last_byte_pos,$spat,$fline )
 								}
 								$aline+=$log_line
@@ -161,9 +208,12 @@ function local-get-file_from_position{
 								# debug 
 								# local-print -text "Info -- set after match to::",$after_match
 							}
+							# exit after the first match
+							break
 						}
 					}
 				}
+				
 			}
 			until ((-not ($fline)) )
 			
@@ -204,12 +254,7 @@ function local-get-file_from_position{
 		local-print  -ErrorText "Error -- File $filename not found"
 		return 0
 	}
-	<#
-		.EXAMPLE
-		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\log\DB_BACKUP_5.log" 10 ("Warning","RMAN-0") "D:\OraPowerShellCodePlex\log\status_mail.log"
-		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\test\test_pattern_match.txt" 0 (local-get-oracle-error-pattern) "D:\OraPowerShellCodePlex\test\pattern_match.log" -print_lines_after_match 5
-		
-	#>
+	
 }
 #==============================================================================
 #  local-get-oracle-error-pattern
