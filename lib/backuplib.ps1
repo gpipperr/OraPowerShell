@@ -391,9 +391,16 @@ function rcopydata{
 	local-print  -Text "Info --",$options
 
 	# start robocopy to transfer the data
+	
+	$robo_log=@()
 
-	& $robocopy "/JOB:$scriptpath/generated/generated_robocopy" 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString() }
+	& $robocopy "/JOB:$scriptpath/generated/generated_robocopy" 2>&1 | foreach-object { local-print -text "ROBOCOPY OUT::",$_.ToString();$robo_log+=$_.ToString()  }
 
+	 local-print  -Text "Result -- robocopy from $soure_directories to $target_directory"
+	for ($i=$robo_log.length-7; $i -le ($robo_log.length-3); $i++) {
+		 local-print  -Text ( "Result -- Robocopy transfer:: {0}" -f $robo_log[$i] )
+	}
+	$robo_log=$null
 }
 
 #==============================================================================
