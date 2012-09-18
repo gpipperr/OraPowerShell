@@ -877,6 +877,10 @@ function local-backup-db-user {
 			if ( $user_can_connect -eq "true" ) {
 				& "$ORACLE_HOME/bin/expdp" "$connect_string" "parfile=$scriptpath\generated\generated_export.dp" 2>&1 | foreach-object { local-print -text "EXPDP OUT::",$_.ToString().replace($CLF," ") }
 				
+				$size_before=0
+				get-item "$export_os_dir\*.dmp" | foreach-object { $size_before+=$_.length }
+						
+						
 				# zip the result 
 				$compress_export=$dB.db_user_export.compress_export.ToString()
 				if ($compress_export.equals("true"))  {
@@ -895,7 +899,13 @@ function local-backup-db-user {
 						
 						local-print  -Text "Info -- Create zip File ::",$zip_name," in Export dir::",$export_os_dir
 						
+						
 						$zip.CreateZip($zip_name,$export_os_dir,$false,"\.dmp$")
+						
+						# get file object
+						$size_after=get-item "$zip_name" 
+						#cast to size not nice .-)
+						$size_after=$size_after.length
 						
 						#Remove the old dumps after the zip
 						# * must be on the end of the path variable!!
@@ -905,10 +915,13 @@ function local-backup-db-user {
 					catch {
 						local-print     -Text    "Error -- Compessing Export not succesfull reason::",$_   -ForegroundColor "red"
 					}
+
+					local-print  -Text ( "Result -- Export the user $db_user - size of uncompressed export {0:n} MB - compressed {1:0} MB" -f ($size_before/1MB),($size_after/1MB) )
 				}
 				else {
-					local-print  -Text "Info -- Export not compressed"
+					local-print  -Text ( "Result -- Export the user $db_user - size of uncompressed export {0:n} MB" -f ($size_before/1MB) )
 				}
+				
 			}
 			else {
 				local-print     -Text    "Error -- Export User::",$db_user,"not possible - user can not connect"   -ForegroundColor "red"
