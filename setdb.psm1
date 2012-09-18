@@ -54,7 +54,7 @@ function setdb {
 	if ( $oraconfig.oracle_homes.HasAttribute("version") ) {
 		$xml_script_version=$oraconfig.oracle_homes.getAttribute("version")
 		if ( $CONFIG_VERSION.equals( $xml_script_version)) {
-			write-host "Info -- XML configuration with the right version::  $CONFIG_VERSION "
+			#debug write-host "Info -- XML configuration with the right version::  $CONFIG_VERSION "
 		}
 		else {
 			throw "Configuration xml file version is wrong, found: $xml_script_version but need :: $CONFIG_VERSION !"

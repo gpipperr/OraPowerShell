@@ -167,9 +167,11 @@ quit
 	$hrs_long =24*60*$Long_retention
 	$adr_home_path=$adr_home_path.replace("\","\\")
 	
-	local-print -Text "Info -- start adrci with set homepath $adr_home_path;set control (SHORTP_POLICY=$hrs_short) ;set control (LONGP_POLICY=$hrs_long);purge "
+	
 	
 	& "$env:ORACLE_HOME\bin\adrci" exec="set homepath $adr_home_path;set control \(SHORTP_POLICY=$hrs_short\); set control \(LONGP_POLICY=$hrs_long\);purge" 2>&1 | foreach-object { local-print -text "ADRCI OUT::",$_.ToString() }
+	
+	local-print -Text "Result -- use adrci with set homepath $adr_home_path;set control (SHORTP_POLICY=$hrs_short) ;set control (LONGP_POLICY=$hrs_long);purge to clean the XML Logs of the database $env:ORACLE_SID "
 	
 	#done
 	
@@ -203,7 +205,7 @@ quit
 			}
 		}
 	}
-	local-print -Text ("Info -- Delete {0} trace log files (Size {1:n} MB) older then $Short_retention days from now {2:D} from location {3}" -f $file_count,($file_size/1MB),$today,$trace_dir)
+	local-print -Text ("Result -- Delete {0} trace log files (Size {1:n} MB) older then $Short_retention days from now {2:D} from location {3}" -f $file_count,($file_size/1MB),$today,$trace_dir)
 	
 	# =====================================
 	# audit_file_dest clean the audit files
@@ -229,7 +231,7 @@ quit
 		$file_size+=$file_obj.length
 		remove-item 2>&1 | foreach-object { local-print -text "DEL OUT::",$_.ToString() }
 	}
-	local-print -Text ("Info -- Delete {0} audit log files (Size {1:n} MB) older then $Short_retention days from now {2:D} from location {3}" -f $file_count,($file_size/1MB),$today,$audit_file_dest)
+	local-print -Text ("Result -- Delete {0} audit log files (Size {1:n} MB) older then $Short_retention days from now {2:D} from location {3}" -f $file_count,($file_size/1MB),$today,$audit_file_dest)
 }
 
 #==============================================================================
@@ -260,9 +262,9 @@ function local-cleanListenerLog {
 	$hrs_long =24*60*$log_rentention
 	$listener_adr_home=$listener_adr_home.replace("\","\\")
 	
-	local-print -Text "Info -- start adrci with set homepath $listener_adr_home;set control (SHORTP_POLICY=$hrs_short) ;set control (LONGP_POLICY=$hrs_long);purge "
-	
 	& "$env:ORACLE_HOME\bin\adrci" exec="set homepath $listener_adr_home;set control \(SHORTP_POLICY=$hrs_short\); set control \(LONGP_POLICY=$hrs_long\);purge" 2>&1 | foreach-object { local-print -text "ADRCI OUT::",$_.ToString() }
+	
+	local-print -Text "Result -- use adrci with set homepath $listener_adr_home;set control (SHORTP_POLICY=$hrs_short) ;set control (LONGP_POLICY=$hrs_long);purge to clean the XML Log of the listener "
 	
 	#done
 	
@@ -357,14 +359,20 @@ try{
 	# Wait till the semaphore if free
 	$sem.WaitOne()
 
+	# check for free diskspace before the clean
+	local-freeSpace 
+	
+	# Parameter
 	$log_rentention  = $args[0]
-	$Short_retention = $args[1]
-	$Long_retention  = $args[2]
+	$short_retention = $args[1]
+	$long_retention  = $args[2]
 	
 	# set the defaults
 	if ( -not $log_rentention   ) { $log_rentention   = 5   }
 	if ( -not $short_retention  ) { $short_retention  = 30  }
 	if ( -not $long_retention   ) { $long_retention   = 365 }
+	
+	local-print  -Text "Info -- start the clean of the logfile with argument 1 (log_rentention) = $log_rentention days --  argument 2 (short_retention) = $short_retention  days --  argument 3 (long_retention) = $long_retention days"
 	
 	
 	#ASM
@@ -501,7 +509,7 @@ finally {
 		#==============================================================================
 		# Check the logfiles and create summary text for check mail
 		
-		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern ("error","fehler","kann nicht","can not") -log_file (local-get-statusfile)
+		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern ("error","fehler","kann nicht","can not","result","warning") -log_file (local-get-statusfile)
 		# send the result of the check to a mail reciptant 
 		# only if configured!
 		local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)

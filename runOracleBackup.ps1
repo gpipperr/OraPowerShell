@@ -307,7 +307,14 @@ Process {
 					
 					# check alert Log
 					if ($db.db_check_alert_log.InnerText.Equals("true")) {
-						local-check-db-alertlog -db $db -sql_connect_string $sql_connect_string
+						
+						# how many line you like to see after a match in the alertlog
+						$print_lines_after_match=1
+						# check if configured over the config xml
+						if ( $db.db_check_alert_log.HasAttribute("print_lines_after_match")){
+							$print_lines_after_match=$db.db_check_alert_log.GetAttribute("print_lines_after_match")
+						}						
+						local-check-db-alertlog -db $db -sql_connect_string $sql_connect_string -print_lines_after_match $print_lines_after_match
 					} 
 					
 					# User export

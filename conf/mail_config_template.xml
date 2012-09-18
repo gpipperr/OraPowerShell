@@ -3,20 +3,20 @@
 	<!-- if true use the mail feature -->
 	<use_mail>false</use_mail>
 	<!-- SMTP Server Details -->
-	<smtpServer>smtp.pipperr.de</smtpServer>
+	<smtpServer>smtp.myserver.de</smtpServer>
 	<port>25</port>
 	<!-- if the smtp server needs the fqdn and your local maschine -->
 	<!-- has no domain configured it is not possible to use the easy .net class -->
 	<!-- if true => telnet must used -->
-	<smpt_server_needs_fqdn>true</smpt_server_needs_fqdn>
+	<smpt_server_needs_fqdn>false</smpt_server_needs_fqdn>
 
 	<!-- if you need username / password = true -->
 	<!-- if false  => no credentials            -->
 	<!-- if os    => use the actual user        -->
 	<use_credential>true</use_credential>
-	<username password="tester" encrypt="false">gunther@pipperr.de</username>
+	<username password="mypassword" encrypt="false">user@mail.com</username>
 
 	<!-- Mail -->
-	<to>gunther@pipperr.de</to>
-	<from>admin@pipper.de</from>
+	<to>admin@mail.local</to>
+	<from>admin@mail.local</from>
 </mail>

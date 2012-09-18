@@ -197,7 +197,7 @@ quit
 
 	$isenterprise=$isenterprise.Trim()
 
-	local-print  -Text "Info -- check DB Version - Get 1 for EE and 0 for SE - Result is ::" ,$isenterprise
+	local-print  -Text "Info -- check DB Version - Get 1 for EE and 0 for SE - Found ::" ,$isenterprise
 
 	# Optimize the backup for Enterprise features
 	#
@@ -381,7 +381,7 @@ quit
 		#
 		$endtime=get-date
 		$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
-		local-print  -Text "Info -- Finish Flash Recovery Backup of the Backup Files of DB::", $DB.dbname ,"at::",  $duration, "Minutes"  -ForegroundColor "yellow"
+		local-print  -Text "Result -- Finish Flash Recovery Backup of the Backup Files of DB::", $DB.dbname ,"at::",  $duration, "Minutes"  -ForegroundColor "yellow"
 		local-log-event -logText "Info -- Finish Flash Recovery Backup of the Backup Files of DB::", $DB.dbname ,"at::",  $duration, "Minutes"
 		local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 	}	
@@ -452,49 +452,61 @@ function local-backup-db-metainfo {
 
 	# use sqlplus or .net dll
 	if ( $db.db_meta_info.HasAttribute("use_dot_net") ){
-	    if ( $db.db_meta_info.GetAttribute("use_dot_net").equals("true") ) {					
-			$dot_net_library=$db.db_meta_info.GetAttribute("dot_net_orcle_home")
-			#search for the library in the path of dot_net_orcle_home
-			try {
-				$fl=Get-ChildItem $dot_net_library -Recurse -Include "Oracle.DataAccess.dll" -ErrorAction silentlycontinue
-				if ($fl) {
-					if ($fl.count) {
-						$dot_net_library=$fl[0].DirectoryName +"\"+ $fl[0].Name
-					} 
-					else {
-						$dot_net_library=$fl.DirectoryName +"\"+ $fl.Name
-					}
-				}		
-				# Use .net!
-				if (get-item $dot_net_library -ErrorAction silentlycontinue ) {
-					$use_dot_net=$true	
-				}
-				else {
-					$use_dot_net=$false	
-					$i=$error.count-1
-					local-print  -ErrorText "Error --",$error[$i]
-				}
+		
+		#  check if attribute is true
+	    if ( $db.db_meta_info.GetAttribute("use_dot_net").equals("true") ) {
+			
+			# Check if tns alias usage is configured
+			if ($db.nls_settings.use_direct_connnect_for_sys.equals("true")){
+				local-print  -ErrorText "Error -- need sys user over tnsalias connection to use .net feature"
+				$use_dot_net=$false	
 			} 
-			catch {
-				local-print  -ErrorText "Error -- Dot Net Library Oracle.DataAccess.dll not found in path (attribute dot_net_orcle_home) ::",$dot_net_library
-				$use_dot_net=$false
+			else {
+				
+				#search for the library in the path of dot_net_orcle_home
+				
+				$dot_net_library=$db.db_meta_info.GetAttribute("dot_net_orcle_home")
+				
+				try {
+					$fl=Get-ChildItem $dot_net_library -Recurse -Include "Oracle.DataAccess.dll" -ErrorAction silentlycontinue
+					
+					if ($fl) {
+						if ($fl.count) {
+							$dot_net_library=$fl[0].DirectoryName +"\"+ $fl[0].Name
+						} 
+						else {
+							$dot_net_library=$fl.DirectoryName +"\"+ $fl.Name
+						}
+					}		
+					
+					# Use .net!
+					if (get-item $dot_net_library -ErrorAction silentlycontinue ) {
+						$use_dot_net=$true
+					}
+					else {
+						$use_dot_net=$false
+						$i=$error.count-1
+						local-print  -ErrorText "Error --",$error[$i]
+					}
+				} 
+				catch {
+					local-print  -ErrorText "Error -- Dot Net Library Oracle.DataAccess.dll not found in path (attribute dot_net_orcle_home) ::",$dot_net_library
+					$use_dot_net=$false
+				}
 			}
+			
 		}
 		else {
-			local-print  -ErrorText "Info -- use sqlplus to get DB meta information" 
-			$use_dot_net=$false
+				local-print  -Text "Info -- use sqlplus to get DB meta information" 
+				$use_dot_net=$false
 		}
 	}
 	else {
-		local-print  -ErrorText "Error -- attribute use_dot_net of xml node db_meta_info not there"
-		$use_dot_net=$false
+			local-print  -ErrorText "Error -- attribute use_dot_net of xml node db_meta_info not there"
+			$use_dot_net=$false
 	}
-
-	# Check if tns alias usage is configured
-	if ($db.nls_settings.use_direct_connnect_for_sys.equals("true")){
-		local-print  -ErrorText "Error -- need sys user over tnsalias connection to use .net feature"
-		$use_dot_net=$false	
-	}
+	
+	
 
 	# start using dot_net
 	if ( $use_dot_net) {
@@ -588,7 +600,7 @@ function local-backup-db-metainfo {
 
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
-	local-print  -Text "Info -- Finish Backup Metadata of DB::", $DB.dbname ,"at::" ,$endtime ," - Duration::" , $duration,  "Minutes"  -ForegroundColor "yellow"
+	local-print  -Text "Result -- Finish Backup Metadata of DB::", $DB.dbname ,"at::" ,$endtime ," - Duration::" , $duration,  "Minutes"  -ForegroundColor "yellow"
 	local-log-event -logText   "Info -- Finish Backup Metadata of DB::", $DB.dbname ,"at::" ,$endtime ," - Duration::" , $duration,  "Minutes" 
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 }
@@ -633,7 +645,7 @@ quit
 		local-print  -ErrorText "Error - Connection Problem::" ,$isenterprise
 	}
 
-	local-print  -Text "Info -- check DB Version - Get 1 for EE and 0 for SE - Result is ::" ,$isenterprise
+	local-print  -Text "Info -- check DB Version - Get 1 for EE and 0 for SE - Found ::" ,$isenterprise
 
 	# Optimize the backup for Enterprise features
 	#
@@ -680,7 +692,7 @@ quit
 
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
-	local-print  -Text "Info -- Finish Backup Archivelogs of DB::" ,$DB.dbname ,"at::", $endtime, " - Duration::"  ,$duration  ,"Minutes"  -ForegroundColor "yellow"
+	local-print  -Text "Result -- Finish Backup Archivelogs of DB::" ,$DB.dbname ,"at::", $endtime, " - Duration::"  ,$duration  ,"Minutes"  -ForegroundColor "yellow"
 	local-log-event -logText  "Info -- Finish Backup Archivelogs of DB::" ,$DB.dbname ,"at::", $endtime, " - Duration::"  ,$duration  ,"Minutes"
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 }
@@ -720,7 +732,7 @@ function local-backup-db-user {
 		# check if the user exists
 		$user_exists = $test_script | & "$ORACLE_HOME/bin/sqlplus" -s "$sql_connect_string"
 		$user_exists=$user_exists.Trim()
-		local-print  -Text "Info -- check if User exists - Result is ::" ,$user_exists
+		local-print  -Text "Info -- check if User exists - Found ::" ,$user_exists
 		if ($user_exists.equals("0")){
 			local-print     -Text    "Error -- Export User::",$db_user,"not possible - user not exits"   -ForegroundColor "red"
 			local-log-event -logText "Error -- Export User::",$db_user,"not possible - user not exits"   -logtype "Error"
@@ -907,7 +919,7 @@ function local-backup-db-user {
 	
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
-	local-print  -Text "Info -- Finish Export User Job of DB::", $DB.dbname ,"at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
+	local-print  -Text "Result -- Finish Export User Job of DB::", $DB.dbname ,"at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
 	local-log-event -logText "Info -- Finish Export User Job of DB::", $DB.dbname ,"at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 }
@@ -981,7 +993,7 @@ Param ( $asm )
 	
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
-	local-print  -Text "Info -- Finish Backup of ASM Meta information at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
+	local-print  -Text "Result -- Finish Backup of ASM Meta information at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
 	local-log-event -logText "Info -- Finish Backup of ASM Meta information at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 }
@@ -1071,7 +1083,7 @@ Param ( $grid )
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	
-	local-print  -Text "Info -- Finish Backup of GRID Meta information at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
+	local-print  -Text "Result -- Finish Backup of GRID Meta information at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
 	local-log-event -logText "Info -- Finish Backup of GRID Meta information at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 }
@@ -1102,7 +1114,7 @@ param ( $files )
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	
-	local-print  -Text "Info -- Finish Backup Files::",      "at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
+	local-print  -Text "Result -- Finish Backup Files::",      "at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
 	local-log-event -logText "Info -- Finish Backup Files::","at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
 	
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
@@ -1116,7 +1128,8 @@ function local-check-db-alertlog{
 
 param (   $db 
 		, $sql_connect_string)
-		
+		, [int] $print_lines_after_match
+	
 
 	local-print  -Text "Info -- Check Alert.log"
 	
@@ -1203,7 +1216,7 @@ quit
 	
 			# check the file 
 			# return the byte position of the last read in this file
-			$byte_pos=local-get-file_from_position -filename $alert_check_log -byte_pos $byte_pos -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match 5
+			$byte_pos=local-get-file_from_position -filename $alert_check_log -byte_pos $byte_pos -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match $print_lines_after_match
 
 			$log_last_status.alert_log.last_byte_position="$byte_pos"
 			# save the status file again on disk 
@@ -1219,7 +1232,7 @@ quit
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	
-	local-print  -Text "Info -- Finish Check Alert Logs::",      "at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
+	local-print  -Text "Result -- Finish Check Alert Logs::",      "at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"  -ForegroundColor "yellow"
 	local-log-event -logText "Info -- Finish Check Alert Logs::","at::" ,$endtime ," - Duration::"  ,$duration , "Minutes"
 	
 	local-print  -Text "Info ------------------------------------------------------------------------------------------------------"

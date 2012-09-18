@@ -66,6 +66,7 @@ function local-get-file_from_position{
 		, [String[]] $search_pattern
 		, [String]   $log_file 
 		, [int]      $print_lines_after_match = 0 
+		, [String[]] $ignorePat = ("Insgesamt","Extras")
 	)
 	
 	$filename_only=split-path -Leaf $filename
@@ -134,23 +135,32 @@ function local-get-file_from_position{
 					$after_match--;
 				}
 				else {
+					$print_line=$true
 					foreach ($spat in $search_pattern){
 						if ($fline	-imatch $spat ) {
-							# if byte pos is 0 - read from start of file - we can use the line nummber
-							if ($byte_pos -eq 0) {
-								$log_line=("{0,20}:: Line {1,6} - Match [{2,15}]  : {3}" -f $filename_only,$counter,$spat,$fline )
+							$print_line=$true
+							# if match , use the ignore list to filter false results
+							foreach ($ipat in $ignorePat){
+								if ( $fline -imatch $ipat) {
+									$print_line=$false
+								}
 							}
-							# if byte pos is > 0 - read from a byte pos inside the file - output byte position
-							else {
-								$log_line=("{0,20}:: Byte {1,12} - Match [{2,15}] : {3}" -f $filename_only,$last_byte_pos,$spat,$fline )
+							if ($print_line){
+								# if byte pos is 0 - read from start of file - we can use the line nummber
+								if ($byte_pos -eq 0) {
+									$log_line=("{0,20}:: Line {1,6} - Match [{2,15}]  : {3}" -f $filename_only,$counter,$spat,$fline )
+								}
+								# if byte pos is > 0 - read from a byte pos inside the file - output byte position
+								else {
+									$log_line=("{0,20}:: Byte {1,12} - Match [{2,15}] : {3}" -f $filename_only,$last_byte_pos,$spat,$fline )
+								}
+								$aline+=$log_line
+								
+								# set the the defiend default:
+								$after_match=$print_lines_after_match
+								# debug 
+								# local-print -text "Info -- set after match to::",$after_match
 							}
-							$aline+=$log_line
-							
-							# set the the defiend default:
-							$after_match=$print_lines_after_match
-							# debug 
-							# local-print -text "Info -- set after match to::",$after_match
-
 						}
 					}
 				}
