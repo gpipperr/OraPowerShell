@@ -1151,7 +1151,33 @@ param (   $db
 	# Numeric Day of the week
 	$day_of_week=[int]$starttime.DayofWeek 
 	
-	## check the alert log
+	
+	# read the last byte position and date  from conf.file
+	$log_status_xml="$scriptpath\conf\last_config_status.xml"
+	if (get-ChildItem $log_status_xml -ErrorAction silentlycontinue ) {
+		#read 
+		$log_last_status= [xml] ( get-content $log_status_xml)
+	}
+	else {
+		# create a the defaut XML
+		$log_last_status= [xml] "<alert_log><last_byte_position>0</last_byte_position><last_check_date>201201010000</last_check_date></alert_log>"
+	}
+	
+	#read the last byte postion
+	$byte_pos=$log_last_status.alert_log.last_byte_position.toString()
+	
+	# if node not exist add new node with the default 
+	if ($log_last_status.alert_log.last_check_date) {
+		$last_check_date=$log_last_status.alert_log.last_check_date.toString()
+	}
+	else {
+		$last_check_date=(get-date -format "yyyydmhh24m").toString()
+		$newitem = $log_last_status.CreateElement("last_check_date")
+		$newitem.set_InnerXML($last_check_date)
+		$log_last_status.alert_log.AppendChild($newitem)
+	}
+		
+	# check the alert log
 	
 	# if true use the ADR logic
 	if ($use_adrci) {
@@ -1204,20 +1230,27 @@ quit
 		
 		local-print  -Text "Info -- set ADR_BASE to::" , $env:ADR_BASE
 		
+		# get the time from now (systimestamp) and the last check $last_check_date in a format ADRCI can read...
+		# FIX this
+		# ?????
+		# how
+		# ?????
+		$adrc_date_string="1"
+		
 		#Command File
 		$adrci_spool_out="$scriptpath\log\adrci_alert_spool.out"
-		
+				
 		$adrci_commands=@()
 		
 		$adrci_commands+="spool $adrci_spool_out"
 		$adrci_commands+="SET HOMEPATH $adr_home_path"
 		# query the alertlog
-		$adrci_commands+="show ALERT -TERM -P `"MESSAGE_TEXT LIKE '%ORA-%' and originating_timestamp >= systimestamp-1 `" "
+		$adrci_commands+="show ALERT -TERM -P `"MESSAGE_TEXT LIKE '%ORA-%' and originating_timestamp >= systimestamp-$adrc_date_string `" "
 		$adrci_commands+="spool off"
 		# show problems
 		$adrci_commands+="spool " + (local-get-statusfile) + " append"
-		$adrci_commands+="show incident -P `"create_time >= systimestamp-1`" "
-		$adrci_commands+="show problem  -P `"first_incident >= systimestamp-1`" "
+		$adrci_commands+="show incident -P `"create_time >= systimestamp-$adrc_date_string`" "
+		$adrci_commands+="show problem  -P `"firstinc_time  >= systimestamp-$adrc_date_string`" "
 		$adrci_commands+="spool off"
 		
 		
@@ -1227,9 +1260,13 @@ quit
 		
 		set-content $adrci_command_file $adrci_commands
 		
+		add-content (local-get-statusfile) ("==============================ADRCI Output {0:d} =======================================" -f (get-date))
+		
 		& "$env:ORACLE_HOME\bin\adrci" script="$adrci_command_file" 2>&1 | out-null #foreach-object { local-print -text "ADRCI OUT::",$_.ToString() }
 		
-		local-get-file_from_position -filename $adrci_spool_out -byte_pos 0 -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match 0
+		add-content (local-get-statusfile) "=========================================================================================" 
+		
+		local-get-file_from_position -filename $adrci_spool_out -byte_pos 0 -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match 0 -print_lines_before_match 1
 
 	}
 	else {
@@ -1280,25 +1317,15 @@ quit
 			#copy
 			& "$env:ORACLE_home\bin\ocopy"  "$alert_log_full_name" "$alert_check_log" 2>&1 | foreach-object { local-print -text "OCOPY OUT::",$_.ToString() }
 					
-			# read the last byte position from conf.file
-			$log_status_xml="$scriptpath\conf\last_config_status.xml"
-			if (get-ChildItem $log_status_xml -ErrorAction silentlycontinue ) {
-				#read 
-				$log_last_status= [xml] ( get-content $log_status_xml)
-			}
-			else {
-				$log_last_status= [xml] "<alert_log><last_byte_position>0</last_byte_position></alert_log>"
-			}
-			#
-			$byte_pos=$log_last_status.alert_log.last_byte_position.toString()
+			
+			
 	
 			# check the file 
 			# return the byte position of the last read in this file
 			$byte_pos=local-get-file_from_position -filename $alert_check_log -byte_pos $byte_pos -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match $print_lines_after_match
 
-			$log_last_status.alert_log.last_byte_position="$byte_pos"
-			# save the status file again on disk 
-			$log_last_status.save($log_status_xml)
+			
+			
 
 		} 
 		catch {
@@ -1307,8 +1334,14 @@ quit
 		}
 	}
 	
-	##
 	
+	## remember the last postion in the logfile / last time of the test
+	$log_last_status.alert_log.last_byte_position="$byte_pos"
+	$log_last_status.alert_log.last_check_date=$last_check_date
+	
+	# save the status file again on disk 
+	$log_last_status.save($log_status_xml)
+		
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	
