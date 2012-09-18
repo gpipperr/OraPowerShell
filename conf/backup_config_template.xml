@@ -41,7 +41,7 @@
 		<tns_alias>gpi</tns_alias>
 		
 		<!-- if false use the following nls and user settings ot connect to the database -->
-		<username password="system" encrypt="false" certificate="false">backupuser</username>
+		<username password="mystempassword" encrypt="false" certificate="false">backupuser</username>
 		
 		<!-- Language of messages - charset like GERMAN_GERMANY.UTF8 -->
 		<nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
@@ -62,6 +62,7 @@
 	<backup_flash_to_disk>false</backup_flash_to_disk>
 	<!-- Backup Policy - how many backups to store on disk -->
 	<db_backup_count_of>1</db_backup_count_of>
+	
 	<!--IF EE Edition you can use the pattern to define the leveles for each day (Day 1 = Monday, Day 7 = Sunday) -->
 	<!-- 0,0,0,0,0,0,0 = every day one full backup -->
 	<!-- 1,1,2,1,1,2,0 = only Sunday full backup  -->
@@ -81,8 +82,9 @@
 
 	<!-- check the Alert log for errors -->
 	<!-- if listener_summary = true you get a list of connection to the database -->
+	<!-- if attribute print_lines_after_match is set, you will see x lines after a match in the alert log in the result log -->
 	<!-- to clean the log file use the runCleanLogfile.ps1 Script weekly -->
-	<db_check_alert_log listner_summary="false">true</db_check_alert_log>
+	<db_check_alert_log listner_summary="false" print_lines_after_match="5" >true</db_check_alert_log>
 
 	<!-- Parameter for the archive only backup -->
 	<!-- if backup script is started wiht the parameter ARCHIVE - save only archivelogs if true-->
