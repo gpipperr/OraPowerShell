@@ -142,6 +142,7 @@ set feedback off
 select count(*) from v$instance;
 quit
 '@| & "$env:ORACLE_HOME\bin\sqlplus" -s "$sql_connect_string"
+
 			# if check_db is not a string is is mostly a error return from sql*plus
 			# trim on [] will cause the exection
 			try{
@@ -150,15 +151,15 @@ quit
 				$can_connect="true"
 			}
 			catch {
-				local-print -ForegroundColor "red"  -Text "Error--",$check_db
-				local-log-event -logtype "Error" -logText "Error-- Can not connect to instance : The error was: $check_db."
+				local-print -ForegroundColor "red"  -Text "Error -- $_",$check_db
+				local-log-event -logtype "Error" -logText "Error -- Can not connect to instance : The error was: $check_db."
 				$can_connect="false"
 			}
 			
 		}
 		catch {
-			local-print -ForegroundColor "red"  -Text "Error-- Can not connect to instance : The error was: $_."				
-			local-log-event -logtype "Error" -logText "Error-- Can not connect to instance : The error was: $_."
+			local-print -ForegroundColor "red"  -Text "Error -- Can not connect to instance : The error was: $_."				
+			local-log-event -logtype "Error" -logText "Error -- Can not connect to instance : The error was: $_."
 			$can_connect="false"
 		}
 		
@@ -1139,9 +1140,10 @@ param ( $files )
 function local-check-db-alertlog{
 
 param (   $db 
-		, $sql_connect_string)
+		, $sql_connect_string
 		, [int] $print_lines_after_match
-	
+		, $use_adrci = $true
+	)
 
 	local-print  -Text "Info -- Check Alert.log"
 	
@@ -1151,15 +1153,18 @@ param (   $db
 	
 	## check the alert log
 	
-	#==============================
-	# check if adrci is accessible
-		
+	# if true use the ADR logic
+	if ($use_adrci) {
+		local-print  -Text "Info -- Check Alert.log of the ADR Feature"
+	
+		#==============================
+		# check if adrci is accessible / ADR is in USE
 		# if yes use adrci
 		# get all incident information with adrci
 		#
 		#
 		# adrci> show alert -p "originating_timestamp >= systimestamp-1/24" -term;?
-		# adrci> show alert -p "message_text like '%ORA-600%' and originating_timestamp >= systimestamp-30" -term;
+		# adrci> show alert -p "message_text like '%ORA-609%' and  originating_timestamp >= systimestamp-1" -term;
 		# calls via script adrci script=/generated/test_alert_log.adrci
 		#
 		# SPOOL /home/seiler/logs/alert_log_errors.log
@@ -1169,12 +1174,73 @@ param (   $db
 		#
 		#
 		
+		
+	# get the ADR Base
 	
-	#===================================
-	# if not geht the alert_log position
-	# read of the traditional trace file
+	$adr_base=@'
+set pagesize 0 
+set feedback off
+SELECT value FROM v$diag_info WHERE NAME = 'ADR Base';
+quit
+'@| & "$env:ORACLE_HOME\bin\sqlplus" -s "$sql_connect_string"
 	
-	# get parameter bdump from sqlplus
+	# get the ADR Home
+	$adr_home_path=@'
+set pagesize 0 
+set feedback off
+SELECT replace(homepath.value,adrbase.value||'\','') FROM v$diag_info homepath, v$diag_info adrbase WHERE homepath.name = 'ADR Home'  AND adrbase.name  = 'ADR Base';
+quit
+'@| & "$env:ORACLE_HOME\bin\sqlplus" -s "$sql_connect_string"
+
+		local-print -Text "Info -- ADR Base::",$adr_base, " Home path of this DB::", $env:ORACLE_SID, "Path::",$adr_home_path
+
+		# set the ADR BASE in the envviroment
+		try {
+			set-item -path env:ADR_BASE -value $adr_base
+		}
+		catch {
+			new-item -path env: -name ADR_BASE -value $adr_base
+		}
+		
+		local-print  -Text "Info -- set ADR_BASE to::" , $env:ADR_BASE
+		
+		#Command File
+		$adrci_spool_out="$scriptpath\log\adrci_alert_spool.out"
+		
+		$adrci_commands=@()
+		
+		$adrci_commands+="spool $adrci_spool_out"
+		$adrci_commands+="SET HOMEPATH $adr_home_path"
+		# query the alertlog
+		$adrci_commands+="show ALERT -TERM -P `"MESSAGE_TEXT LIKE '%ORA-%' and originating_timestamp >= systimestamp-1 `" "
+		$adrci_commands+="spool off"
+		# show problems
+		$adrci_commands+="spool " + (local-get-statusfile) + " append"
+		$adrci_commands+="show incident -P `"create_time >= systimestamp-1`" "
+		$adrci_commands+="show problem  -P `"first_incident >= systimestamp-1`" "
+		$adrci_commands+="spool off"
+		
+		
+		$adrci_command_file="$scriptpath\generated\generated_adrci.adrci"
+		
+		# write the command file
+		
+		set-content $adrci_command_file $adrci_commands
+		
+		& "$env:ORACLE_HOME\bin\adrci" script="$adrci_command_file" 2>&1 | out-null #foreach-object { local-print -text "ADRCI OUT::",$_.ToString() }
+		
+		local-get-file_from_position -filename $adrci_spool_out -byte_pos 0 -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match 0
+
+	}
+	else {
+	
+	
+		#===================================
+		# if not geht the alert_log position
+		# read of the traditional trace file
+		
+		# get parameter bdump from sqlplus
+		
 $alert_log=@'
 set pagesize 0 
 set feedback off
@@ -1239,8 +1305,10 @@ quit
 			local-print -ErrorText "Error--",$_
 			throw "Error check the alert.log :: $_"
 		}
+	}
+	
 	##
-	##
+	
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	
