@@ -878,9 +878,8 @@ function local-backup-db-user {
 				& "$ORACLE_HOME/bin/expdp" "$connect_string" "parfile=$scriptpath\generated\generated_export.dp" 2>&1 | foreach-object { local-print -text "EXPDP OUT::",$_.ToString().replace($CLF," ") }
 				
 				$size_before=0
-				get-item "$export_os_dir\*.dmp" | foreach-object { $size_before+=$_.length }
-						
-						
+				get-item "$export_os_dir\$db_user*.dmp" | foreach-object { $size_before+=$_.length }
+				
 				# zip the result 
 				$compress_export=$dB.db_user_export.compress_export.ToString()
 				if ($compress_export.equals("true"))  {
