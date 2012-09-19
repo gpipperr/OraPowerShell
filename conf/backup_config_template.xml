@@ -81,10 +81,11 @@
 	<db_meta_info use_dot_net="false" dot_net_orcle_home="d:\oracle\product\11.2.0.3\client_64bit" >true</db_meta_info>
 
 	<!-- check the Alert log for errors -->
-	<!-- if listener_summary = true you get a list of connection to the database -->
+	<!-- if listener_summary = true you get a list of connection to the database - not yet implemented! -->
 	<!-- if attribute print_lines_after_match is set, you will see x lines after a match in the alert log in the result log -->
+	<!-- if attribute use_adrci is true, ADRCI will be used to read the alertlog, if false the trace of the alertlog will be read directly -->
 	<!-- to clean the log file use the runCleanLogfile.ps1 Script weekly -->
-	<db_check_alert_log listner_summary="false" print_lines_after_match="5" >true</db_check_alert_log>
+	<db_check_alert_log listner_summary="false" print_lines_after_match="7" use_adrci="true">true</db_check_alert_log>
 
 	<!-- Parameter for the archive only backup -->
 	<!-- if backup script is started wiht the parameter ARCHIVE - save only archivelogs if true-->

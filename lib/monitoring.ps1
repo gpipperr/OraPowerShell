@@ -83,7 +83,7 @@ function local-get-file_from_position{
 	
 	.EXAMPLE
 		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\log\DB_BACKUP_5.log" 10 ("Warning","RMAN-0") "D:\OraPowerShellCodePlex\log\status_mail.log"
-		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\test\test_pattern_match.txt" 0 (local-get-oracle-error-pattern) "D:\OraPowerShellCodePlex\test\pattern_match.log" -print_lines_after_match 5
+		local-get-file_from_position -filename "D:\OraPowerShellCodePlex\test\test_pattern_match.txt" 0 (local-get-error-pattern -list "oracle") "D:\OraPowerShellCodePlex\test\pattern_match.log" -print_lines_after_match 5
 		
 	#>
 		
@@ -257,40 +257,63 @@ function local-get-file_from_position{
 	
 }
 #==============================================================================
-#  local-get-oracle-error-pattern
+#  local-get-error-pattern
 #  return a array of oracle default error search pattern
 ##
 
-function local-get-oracle-error-pattern{
-	
+function local-get-error-pattern{
+
+param (
+	[String] $list = "oracle" 
+)
 	[String[]] $error_pattern=@()
 	
 	# read pattern definition
 	try {
-		$pattern_path="$scriptpath\conf\oracle_search_pattern.xml"
+		$pattern_path="$scriptpath\conf\search_pattern.xml"
 		$pattern_list= [xml] ( get-content $pattern_path)
 		
-		# read the pattern into the array
-		foreach ($pat in $pattern_list.search_pattern.error_pattern ) {
-			$error_pattern+=$pat.toString()
-		}	
+		if ("oracle".equals($list)) {
+		
+			# read the pattern into the array
+			foreach ($pat in $pattern_list.search_pattern.oracle.error_pattern ) {
+				$error_pattern+=$pat.toString()
+			}
+		}
+		else {
+			# read the pattern into the array
+			foreach ($pat in $pattern_list.search_pattern.other.error_pattern ) {
+				$error_pattern+=$pat.toString()
+			}		
+		}
 	} 
 	catch {
 		local-print  -ErrorText "Error -- Pattern definition $pattern_path hast errors",$_
 		
-		$error_pattern+="error"
-		$error_pattern+="fehler"
-		$error_pattern+="ORA-"
-		$error_pattern+="RMAN-"
-		$error_pattern+="TNS-"
-		$error_pattern+="idle instance"
+		if ("oracle".equals($list)) {
+			$error_pattern+="error"
+			$error_pattern+="fehler"
+			$error_pattern+="ORA-"
+			$error_pattern+="RMAN-"
+			$error_pattern+="TNS-"
+			$error_pattern+="idle instance"
+		}
+		else {
+			$error_pattern+="error"
+			$error_pattern+="fehler"
+			$error_pattern+="kann nicht"
+			$error_pattern+="can not"
+			$error_pattern+="result"
+			$error_pattern+="warning"
+		}
 		
 		local-print  -ErrorText "Error -- Using default list ",$error_pattern
-		 
 	}
 
 	return $error_pattern
 }
+
+
 #==============================================================================
 #  local-get-oracle-error-pattern
 #  return a array of oracle default error search pattern
@@ -494,4 +517,4 @@ function local-send-status {
 	}
 }
 
-#==============================================================================
+#============================= End of File ====================================

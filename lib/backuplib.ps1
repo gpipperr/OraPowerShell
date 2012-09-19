@@ -7,12 +7,12 @@
 
 <#
  	.NOTES
-		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de			
+		Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de
 		Security:
 			(see http://www.pipperr.de/dokuwiki/doku.php?id=windows:powershell_script_aufrufen )
 			To switch it off (as administrator)
 			get-Executionpolicy -list
-			set-ExecutionPolicy -scope CurrentUser RemoteSigned		
+			set-ExecutionPolicy -scope CurrentUser RemoteSigned
 	.SYNOPSIS
 		Generic functions for backup
 	.DESCRIPTION
@@ -439,6 +439,6 @@ function local-check-file-open {
 	return $file_open  
 }
 
-
+#============================= End of File ====================================
 
 
