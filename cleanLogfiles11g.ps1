@@ -357,7 +357,7 @@ try{
 	
 	local-print  -Text "Info -- Check if other instance of a backup script is running (over Semaphore ORALCE_BACKUP)"
 	# Wait till the semaphore if free
-	$sem.WaitOne()
+	$wait_on_semaphore=$sem.WaitOne()
 
 	# check for free diskspace before the clean
 	local-freeSpace 
@@ -509,7 +509,7 @@ finally {
 		#==============================================================================
 		# Check the logfiles and create summary text for check mail
 		
-		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern ("error","fehler","kann nicht","can not","result","warning") -log_file (local-get-statusfile)
+		$last_byte_pos=local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern (local-get-error-pattern -list "other")  -log_file (local-get-statusfile)
 		# send the result of the check to a mail reciptant 
 		# only if configured!
 		local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)
@@ -518,6 +518,6 @@ finally {
 
 }
 
-#==============================================================================
+#============================= End of File ====================================
 
 

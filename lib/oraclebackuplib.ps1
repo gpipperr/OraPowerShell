@@ -1151,7 +1151,8 @@ param (   $db
 	# Numeric Day of the week
 	$day_of_week=[int]$starttime.DayofWeek 
 	
-	
+	#==============================
+	# Read the Configuration
 	# read the last byte position and date  from conf.file
 	$log_status_xml="$scriptpath\conf\last_config_status.xml"
 	if (get-ChildItem $log_status_xml -ErrorAction silentlycontinue ) {
@@ -1171,36 +1172,33 @@ param (   $db
 		$last_check_date=$log_last_status.alert_log.last_check_date.toString()
 	}
 	else {
-		$last_check_date=(get-date -format "yyyydmhh24m").toString()
+		$unixEpochStart = new-object DateTime 1970,1,1,0,0,0,([DateTimeKind]::Utc)
+		# 30 days back
+		$last_check_date=([int]([DateTime]::UtcNow - $unixEpochStart).TotalSeconds)-(60*60*24*30)
+		
 		$newitem = $log_last_status.CreateElement("last_check_date")
 		$newitem.set_InnerXML($last_check_date)
 		$log_last_status.alert_log.AppendChild($newitem)
 	}
-		
-	# check the alert log
 	
+	#==============================
+	# check if adrci is accessible / ADR is in USE
+	if ($use_adrci) {
+		if (get-Childitem "$env:ORACLE_HOME\bin\adrci.exe" -ErrorAction silentlycontinue) {
+			local-print  -Text "Info - ADRCI can be used exe: $env:ORACLE_HOME\bin\adrci.exe"
+		}
+		else {
+			$use_adrci=$false
+			local-print  -ErrorText "Error --  ADRCI not found in this enviroment : $env:ORACLE_HOME\bin\adrci.exe 10g database?"
+		}
+	}
+	
+	#==============================
 	# if true use the ADR logic
 	if ($use_adrci) {
-		local-print  -Text "Info -- Check Alert.log of the ADR Feature"
-	
-		#==============================
-		# check if adrci is accessible / ADR is in USE
-		# if yes use adrci
-		# get all incident information with adrci
-		#
-		#
-		# adrci> show alert -p "originating_timestamp >= systimestamp-1/24" -term;?
-		# adrci> show alert -p "message_text like '%ORA-609%' and  originating_timestamp >= systimestamp-1" -term;
-		# calls via script adrci script=/generated/test_alert_log.adrci
-		#
-		# SPOOL /home/seiler/logs/alert_log_errors.log
-		# ECHO "ALERT LOG ERRORS:"; SET HOMEPATH diag/rdbms/orcl/orcl; SHOW 
-		# ALERT -TERM -P "MESSAGE_TEXT LIKE '%ORA-%'"
-		# SPOOL OFF
-		#
-		#
-		
-		
+
+	local-print  -Text "Info -- Check Alert.log with the help of the ADR Feature"
+
 	# get the ADR Base
 	
 	$adr_base=@'
@@ -1233,9 +1231,19 @@ quit
 		# get the time from now (systimestamp) and the last check $last_check_date in a format ADRCI can read...
 		# FIX this
 		# ?????
-		# how
-		# ?????
-		$adrc_date_string="1"
+		# 
+		
+		# from 
+		$check_date_before = $last_check_date
+		
+		#
+		$unixEpochStart = new-object DateTime 1970,1,1,0,0,0,([DateTimeKind]::Utc)
+		$last_check_date=[int]([DateTime]::UtcNow - $unixEpochStart).TotalSeconds
+		
+		# calculate
+		# seconds since the last check / one day 
+		$adrc_date_string=($last_check_date-$check_date_before)/(60*60*24)
+		
 		
 		#Command File
 		$adrci_spool_out="$scriptpath\log\adrci_alert_spool.out"
@@ -1260,13 +1268,13 @@ quit
 		
 		set-content $adrci_command_file $adrci_commands
 		
-		add-content (local-get-statusfile) ("==============================ADRCI Output {0:d} =======================================" -f (get-date))
+		add-content (local-get-statusfile) ("==============================ADRCI Output {0:d} =========================" -f (get-date))
 		
-		& "$env:ORACLE_HOME\bin\adrci" script="$adrci_command_file" 2>&1 | out-null #foreach-object { local-print -text "ADRCI OUT::",$_.ToString() }
+		& "$env:ORACLE_HOME\bin\adrci" script="$adrci_command_file" 2>&1 | out-null
 		
-		add-content (local-get-statusfile) "=========================================================================================" 
+		add-content (local-get-statusfile)  "==============================================================================" 
 		
-		local-get-file_from_position -filename $adrci_spool_out -byte_pos 0 -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match 0 -print_lines_before_match 1
+		$last_byte_pos=local-get-file_from_position -filename $adrci_spool_out -byte_pos 0 -search_pattern (local-get-error-pattern -list "oracle") -log_file (local-get-statusfile) -print_lines_after_match 0 -print_lines_before_match 1
 
 	}
 	else {
@@ -1322,7 +1330,7 @@ quit
 	
 			# check the file 
 			# return the byte position of the last read in this file
-			$byte_pos=local-get-file_from_position -filename $alert_check_log -byte_pos $byte_pos -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile) -print_lines_after_match $print_lines_after_match
+			$byte_pos=local-get-file_from_position -filename $alert_check_log -byte_pos $byte_pos -search_pattern (local-get-error-pattern -list "oracle") -log_file (local-get-statusfile) -print_lines_after_match $print_lines_after_match
 
 			
 			
@@ -1337,7 +1345,7 @@ quit
 	
 	## remember the last postion in the logfile / last time of the test
 	$log_last_status.alert_log.last_byte_position="$byte_pos"
-	$log_last_status.alert_log.last_check_date=$last_check_date
+	$log_last_status.alert_log.last_check_date   ="$last_check_date"
 	
 	# save the status file again on disk 
 	$log_last_status.save($log_status_xml)

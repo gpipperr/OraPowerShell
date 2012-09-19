@@ -175,7 +175,7 @@ Begin {
 	
 	local-print  -Text "Info -- Check if other instance of a backup script is running (over Semaphore ORALCE_BACKUP)"
 	# Wait till the semaphore if free
-	$sem.WaitOne()
+	$wait_on_semaphore=$sem.WaitOne()
 
 }
 
@@ -310,11 +310,21 @@ Process {
 						
 						# how many line you like to see after a match in the alertlog
 						$print_lines_after_match=1
+						$use_adrci=$false
+						
 						# check if configured over the config xml
 						if ( $db.db_check_alert_log.HasAttribute("print_lines_after_match")){
 							$print_lines_after_match=$db.db_check_alert_log.GetAttribute("print_lines_after_match")
-						}						
-						local-check-db-alertlog -db $db -sql_connect_string $sql_connect_string -print_lines_after_match $print_lines_after_match
+						}
+						
+						# Use adrci to analyse the log?
+						if ( $db.db_check_alert_log.HasAttribute("use_adrci")){
+							if ("true".equals($db.db_check_alert_log.GetAttribute("use_adrci"))) {
+								$use_adrci=$true
+							}
+						}
+						# start the analyse
+						local-check-db-alertlog -db $db -sql_connect_string $sql_connect_string -print_lines_after_match $print_lines_after_match -use_adrci $use_adrci
 					} 
 					
 					# User export
@@ -422,7 +432,7 @@ finally {
 			#==============================================================================
 			# Check the logfiles and create summary text for check mail
 			
-			local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern (local-get-oracle-error-pattern) -log_file (local-get-statusfile)
+			$last_byte_pos=local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern (local-get-error-pattern -list "oracle") -log_file (local-get-statusfile)
 			# send the result of the check to a mail reciptant 
 			# only if configured!
 			local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)
@@ -431,5 +441,5 @@ finally {
 
 }
 
-#==============================================================================
+#============================= End of File ====================================
 

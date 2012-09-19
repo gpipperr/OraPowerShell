@@ -130,7 +130,7 @@ else {
 
 local-print  -Text "Info -- Check if other instance of a Backup script is running (over Semaphore VSS_BACKUP)"
 # Wait till the semaphore if free
-$sem.WaitOne() | out-null
+$wait_on_semaphore=$sem.WaitOne() | out-null
 
 #==============================================================================
 		
@@ -332,7 +332,7 @@ finally {
 		#==============================================================================
 		# Check the log files and create summary text for check mail
 
-		local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern "error","fehler","0x0000"  -log_file (local-get-statusfile)
+		$last_byte_pos=local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern (local-get-error-pattern -list "other")   -log_file (local-get-statusfile)
 
 		# send the result of the check to a mail reciptant 
 		# only if configured!
@@ -341,4 +341,4 @@ finally {
 		#==============================================================================
 }
 
-
+#============================= End of File ====================================
