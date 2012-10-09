@@ -4,6 +4,12 @@
 # Date:   08.Oktober 2012
 # Site:   http://orapowershell.codeplex.com
 #==============================================================================
+# Other Examples:
+# http://www.powershellpraxis.de/index.php/zertifikate-pki/psskripte-signieren
+# http://poshcode.org/1473
+# http://www.hanselman.com/blog/SigningPowerShellScripts.aspx
+#
+#==============================================================================
 
 <#
  	.NOTES
