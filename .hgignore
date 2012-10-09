@@ -20,5 +20,7 @@ backup_file_config.xml
 last_config_status.xml
 scratch.txt
 mail_config.xml
-
+*.pfx
+*.cer
+*.pvk
 
