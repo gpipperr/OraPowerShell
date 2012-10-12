@@ -987,6 +987,22 @@ Param ( $asm )
 	& "$ORACLE_HOME/bin/sqlplus" -s "/ as sysdba" "@$scriptpath\generated\generated_create_control_spfile_asm.sql" 2>&1 | foreach-object { local-print -text "SQLPLUS OUT::",$_.ToString() }
 	
 	
+	# use sqlplus
+	$metainfo_backup=$backup_path+"\db_meta_information_"+$dbname+"_"+$day_of_week+".log"
+	local-print  -Text "Info -- write the meta information as SQL*Plus Spool of ASM into::",$metainfo_backup
+	
+	# check the md5 hash from the sqlplus script
+	$md5_sql_file_hash=local-getMD5Hash -file "$scriptpath\sql\infoASM.sql"
+	$md5_hash_db=local-getDB_MD5Hash -file "$scriptpath\sql\infoASM.sql"
+	
+	if ($md5_hash_db.equals($md5_sql_file_hash)) {
+		local-print  -Text "Info -- infoASM.sql md5::$md5_sql_file_hash sucessfull checked"
+		& "$ORACLE_HOME/bin/sqlplus" -s "/ as sysdba" "@$scriptpath\sql\infoASM.sql" "$metainfo_backup"  | out-null
+	}
+	else {
+		local-print  -ErrorText "Error - md5 Hash of info.sql not match - Script was not executed!"
+	}	
+	
 	#PatchLevel of the database
 	$software_inventory_backup=$backup_path+"\software_lsinventory_"+$dbname+"_"+$day_of_week+".log"
 	## if Error with no set Oracle Home check this code!
