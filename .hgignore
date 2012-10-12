@@ -23,4 +23,4 @@ mail_config.xml
 *.pfx
 *.cer
 *.pvk
-
+md5_hash.xml_*

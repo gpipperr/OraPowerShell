@@ -290,6 +290,104 @@ function local-removeSignature {
 	Set-content -Path $profile -value $file_content
 
 }
+
+#==============================================================================
+# k) remove the signature
+#
+function local-createMD5Report {
+	
+	
+	$md5_hash_xml="$scriptpath\conf\md5_hash.xml"
+	
+	local-print  -Text "Info -- generate MD5 Report over all ps1/psm1 and sql files to $md5_hash_xml" -ForegroundColor "yellow"
+	
+	# generate the xml
+	$md5_db_xml="<check>"
+	
+	# all ps1 in all dirs.
+	foreach ( $script in (Get-ChildItem -Recurse -Include "*.ps1","*.psm1" -Path $scriptpath  ) ) {
+		$md5_db_xml+="<file_entry><name>$script</name>"
+		$md5hash=local-getMD5Hash -file $script
+		$md5_db_xml+="<md5>$md5hash</md5></file_entry>"
+		local-print  -Text "Info -- found $script -- md5::$md5hash"
+	}
+	
+	# only the sql in the sql path!
+	foreach ( $script in (Get-ChildItem -Recurse -Include "*.sql" -Path "$scriptpath/sql"  ) ) {
+		$md5_db_xml+="<file_entry><name>$script</name>"
+		$md5hash=local-getMD5Hash -file $script
+		$md5_db_xml+="<md5>$md5hash</md5></file_entry>"
+		local-print  -Text "Info -- found $script -- md5::$md5hash"
+	}
+	
+	$md5_db_xml+="</check>"
+	
+	#convert to xml
+	$md5db = [xml] $md5_db_xml 
+	
+	# remember the last versions
+	if (get-ChildItem $md5_hash_xml -ErrorAction silentlycontinue ) {
+		$starttime=get-date
+		$new_file_name="$md5_hash_xml" + "_" + $starttime.toString().replace(" ","_").replace(":","_")
+		cp "$md5_hash_xml" "$new_file_name"
+	}
+	
+	# save the checksums
+	$md5db.Save($md5_hash_xml)
+	
+	#================================== not in use ===========================
+	<#
+	# the XML can not be read as MD5, fciv use its own internal format !!!
+	# can not be used .-(
+	# check if the fciv exits in Path
+	try {
+		$md5prog=(fciv)
+		# if there no excpetion!
+		$md5prog="fciv.exe"
+	} 
+	catch {
+		try {
+			# Path to search for the md5 program
+			$md5prog_path="C:\Program Files\*"
+	
+			# search after the cert programm and use the last match
+			foreach ( $md5prog in (Get-ChildItem -Recurse -Include "makecert.exe" -Path $md5prog_path ) ) { }
+	
+			local-print  -Text "info -- use the md5 software from $md5prog"
+		}
+		catch {
+			local-print  -ErrorText "Error - fciv not found in $md5prog_path"
+			local-print  -ErrorText ("-"*80)
+			local-print  -ErrorText "You can download makecert.exe from http://support.microsoft.com/kb/841290"
+			local-print  -ErrorText ("-"*80)
+			$md5prog=$null
+		}
+	}
+	
+	if ($md5prog) {
+		$md5_hash_xml="$scriptpath\conf\md5_hash.xml"
+		
+		local-print  -Text "Info -- remove old $md5_hash_xml"
+		
+		if (get-ChildItem $md5_hash_xml -ErrorAction silentlycontinue ) {
+			rm "$md5_hash_xml"
+		}
+		
+		local-print  -Text "Info -- add md5 hash of all *.sql files in $scriptpath to $md5_hash_xml"
+		& "$md5prog" -md5 -add "$scriptpath\sql"  -type *.sql -xml   "$md5_hash_xml"
+		
+		local-print  -Text "Info -- add md5 hash of all *.ps1 files in $scriptpath to $md5_hash_xml"
+		& "$md5prog" -md5 -add "$scriptpath"      -type *.ps1  -xml   "$md5_hash_xml"
+		& "$md5prog" -md5 -add "$scriptpath\lib"  -type *.ps1  -xml   "$md5_hash_xml"
+		
+		local-print  -Text "Info -- add md5 hash of all *.psm1 files in $scriptpath to $md5_hash_xml"
+		& "$md5prog" -md5 -add "$scriptpath"     -type *.psm1  -xml  "$md5_hash_xml"
+	
+	}
+	#>
+	#================================== not in use ===========================
+}
+
 #==============================================================================
 # show a list of certificates
 #
@@ -349,6 +447,9 @@ function local-choose-certificate {
 	
 }
 
+
+
+
 #==============================================================================
 # Main section of the script
 #==============================================================================
@@ -364,6 +465,7 @@ function local-choose-certificate {
 # G set the security settings
 # I set the security settings to nothing"
 # J remove the signature"
+# K create MD5 Checksums
 # X exit"
 #==============================================================================
 
@@ -396,6 +498,7 @@ if ($IsAdmin) {
 			local-print  -Text " [G] --> set the security settings to signed scripts"
 			local-print  -Text " [I] --> set the security settings to nothing"
 			local-print  -Text " [J] --> remove the signature"
+			local-print  -Text " [K] --> create MD5 Checksums"
 			local-print  -Text " [X] --> exit"
 			# Ask questions
 			$answer=Read-Host "Please enter the command you like to do:"
@@ -406,7 +509,7 @@ if ($IsAdmin) {
 		
 		# check if the answer is in the range of the List above
 		try {
-			if ($answer -imatch "^[ABCDEFGHIJX]$" ) {
+			if ($answer -imatch "^[ABCDEFGHIJKX]$" ) {
 			    $valid_answer="true"
 			}
 		}
@@ -448,6 +551,9 @@ if ($IsAdmin) {
 		}
 		"J" {
 			local-removeSignature
+		}
+		"K" {
+			local-createMD5Report
 		}
 		"X" {
 			local-print  -Text "Info -- Exit"

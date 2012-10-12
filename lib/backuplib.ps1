@@ -439,6 +439,100 @@ function local-check-file-open {
 	return $file_open  
 }
 
+#==============================================================================
+# get the MD5 Hash of a file
+#
+# with external tooling
+function local-getMD5HashFciv {
+	param (
+		$file
+	)
+	
+	local-print  -Text "info -- check the integriy of the file::$file"
+	
+	# check if the fciv exits in Path
+	try {
+		$md5prog=(fciv)
+		# if there no excpetion!
+		$md5prog="fciv.exe"
+	} 
+	catch {
+		try {
+			# Path to search for the md5 program
+			$md5prog_path="C:\Program Files\*"
+	
+			# search after the cert programm and use the last match
+			foreach ( $md5prog in (Get-ChildItem -Recurse -Include "makecert.exe" -Path $md5prog_path ) ) { }
+	
+			local-print  -Text "info -- use the md5 software from $md5prog"
+		}
+		catch {
+			local-print  -ErrorText "Error - fciv not found in $md5prog_path"
+			local-print  -ErrorText ("-"*80)
+			local-print  -ErrorText "You can download makecert.exe from http://support.microsoft.com/kb/841290"
+			local-print  -ErrorText ("-"*80)	
+		}
+	}
+	$md5output=@()
+	& "$md5prog" -md5 $file 2>&1 | foreach-object { local-print -text "MD5 OUT::",$_.ToString();$md5output+=$_.ToString() }
+	
+	return $md5output[3].toLower().Replace($file.toLower(),"").Trim()
+}
+
+# better without external tooling
+#
+#http://blog.brianhartsock.com/2008/12/13/using-powershell-for-md5-checksums/
+#
+function local-getMD5Hash {
+	param(
+		$file
+	)
+	
+	if (get-ChildItem $file -ErrorAction silentlycontinue ) {
+ 
+		$algorithmus = [System.Security.Cryptography.HashAlgorithm]::Create("MD5")
+		$stream = New-Object System.IO.FileStream($file, [System.IO.FileMode]::Open)
+		
+		$md5StringBuilder = New-Object System.Text.StringBuilder
+		$algorithmus.ComputeHash($stream) | % { [void] $md5StringBuilder.Append($_.ToString("x2")) }
+		
+		$stream.close()
+		$stream.Dispose()
+		
+		return $md5StringBuilder.ToString()
+	}
+	else {
+		local-print  -ErrorText "Error - $file not found"
+	}
+}
+
+
+#==============================================================================
+# get the MD5 Hash of a file from the MD5 DB XML
+#
+
+function local-getDB_MD5Hash {
+	param (
+		$file
+	)
+	
+	$md5_hash_xml="$scriptpath\conf\md5_hash.xml"
+
+	# read Configuration
+	$md5db= [xml] ( get-content $md5_hash_xml)
+	
+	$md5hash="------"
+	
+	foreach($entry in $md5db.check.file_entry ) {
+		if ($entry.name.toString().toLower().equals($file.toLower())){
+			$md5hash=$entry.md5.toString()
+		}
+	}
+	
+	local-print  -Text "info -- read from md5 db the hash::$md5hash for the file $file"
+	
+	return $md5hash
+}
 #============================= End of File ====================================
 
 
