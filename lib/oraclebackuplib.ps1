@@ -596,7 +596,20 @@ function local-backup-db-metainfo {
 		# use sqlplus
 		$metainfo_backup=$backup_path+"\db_meta_information_"+$dbname+"_"+$day_of_week+".log"
 		local-print  -Text "Info -- write the meta information as SQL*Plus Spool of DB into::",$metainfo_backup
-		& $ORACLE_HOME/bin/sqlplus "$sql_connect_string" "@$scriptpath\sql\info.sql" "$metainfo_backup"  | out-null
+		
+		# check the md5 hash from the sqlplus script
+		$md5_sql_file_hash=local-getMD5Hash -file "$scriptpath\sql\info.sql"
+		$md5_hash_db=local-getDB_MD5Hash -file "$scriptpath\sql\info.sql"
+		
+		if ($md5_hash_db.equals($md5_sql_file_hash)) {
+			local-print  -Text "Info -- info.sql md5::$md5_sql_file_hash sucessfull checked"
+			
+			& $ORACLE_HOME/bin/sqlplus "$sql_connect_string" "@$scriptpath\sql\info.sql" "$metainfo_backup"  | out-null
+		}
+		else {
+			local-print  -ErrorText "Error - md5 Hash of info.sql not match - Script was not executed!"
+		}
+		
 	}
 
 	$endtime=get-date
