@@ -502,7 +502,7 @@ function local-getMD5Hash {
 		return $md5StringBuilder.ToString()
 	}
 	else {
-		local-print  -ErrorText "Error - $file not found"
+		local-print  -ErrorText "Error -- $file not found"
 	}
 }
 
