@@ -217,21 +217,26 @@ select value from v$parameter where name='audit_file_dest';
 quit
 '@| & "$env:ORACLE_HOME\bin\sqlplus" -s "$sql_connect_string"
 
-	# Clean the adump of the DB
-	$today = get-date 
-	
-	local-print -Text ("Info -- Cleaning the audit log files of the database older then 30 days from now {0:D} from location {1}" -f $today,$audit_file_dest)
-	
-	$file_count=0
-	$file_size=0
-	
-	# using $Short_retention for the audits!
-	foreach ( $file_obj in (get-childitem $audit_file_dest -recurse | where-object {($today - $_.LastWriteTime).Days -gt $Short_retention} )) {
-		$file_count++
-		$file_size+=$file_obj.length
-		remove-item 2>&1 | foreach-object { local-print -text "DEL OUT::",$_.ToString() }
+	if ( $audit_file_dest ) {
+		# Clean the adump of the DB
+		$today = get-date 
+		
+		local-print -Text ("Info -- Cleaning the audit log files of the database older then 30 days from now {0:D} from location ::{1}" -f $today,$audit_file_dest)
+		
+		$file_count=0
+		$file_size=0
+		
+		# using $Short_retention for the audits!
+		foreach ( $file_obj in (get-childitem $audit_file_dest -recurse | where-object {($today - $_.LastWriteTime).Days -gt $Short_retention} )) {
+			$file_count++
+			$file_size+=$file_obj.length
+			remove-item 2>&1 | foreach-object { local-print -text "DEL OUT::",$_.ToString() }
+		}
+		local-print -Text ("Result -- Delete {0} audit log files (Size {1:n} MB) older then $Short_retention days from now {2:D} from location {3}" -f $file_count,($file_size/1MB),$today,$audit_file_dest)
 	}
-	local-print -Text ("Result -- Delete {0} audit log files (Size {1:n} MB) older then $Short_retention days from now {2:D} from location {3}" -f $file_count,($file_size/1MB),$today,$audit_file_dest)
+	else {
+		local-print -Text "Result -- Audit log destination of the database $env:ORACLE_SID is not set"
+	}
 }
 
 #==============================================================================
@@ -247,25 +252,29 @@ function local-cleanListenerLog {
 		
 	# Use adrci to clean the xml logfile of the listener
 	
-	$listener_adr_home=@()
+	$a_listener_adr_home=@()
 	
-	& "$env:ORACLE_HOME\bin\adrci" exec="show homes"  2>&1 | foreach-object { $listener_adr_home+=$_.ToString() }
+	& "$env:ORACLE_HOME\bin\adrci" exec="show homes"  2>&1 | foreach-object { $a_listener_adr_home+=$_.ToString() }
 	
-	foreach ($s in $listener_adr_home) {
+	foreach ($s in $a_listener_adr_home) {
 			if  ( $s.indexOF("tnslsnr") -gt -1 ) {
 				$listener_adr_home= $s
 			}
 	}
-	local-print -Text "Info -- Listener adrci diag home:",$listener_adr_home
-	
-	$hrs_short=24*60*$log_rentention
-	$hrs_long =24*60*$log_rentention
-	$listener_adr_home=$listener_adr_home.replace("\","\\")
-	
-	& "$env:ORACLE_HOME\bin\adrci" exec="set homepath $listener_adr_home;set control \(SHORTP_POLICY=$hrs_short\); set control \(LONGP_POLICY=$hrs_long\);purge" 2>&1 | foreach-object { local-print -text "ADRCI OUT::",$_.ToString() }
-	
-	local-print -Text "Result -- use adrci with set homepath $listener_adr_home;set control (SHORTP_POLICY=$hrs_short) ;set control (LONGP_POLICY=$hrs_long);purge to clean the XML Log of the listener "
-	
+	if ($listener_adr_home) {
+		local-print -Text "Info -- Listener adrci diag home:",$listener_adr_home
+		
+		$hrs_short=24*60*$log_rentention
+		$hrs_long =24*60*$log_rentention
+		$listener_adr_home=$listener_adr_home.replace("\","\\")
+		
+		& "$env:ORACLE_HOME\bin\adrci" exec="set homepath $listener_adr_home;set control \(SHORTP_POLICY=$hrs_short\); set control \(LONGP_POLICY=$hrs_long\);purge" 2>&1 | foreach-object { local-print -text "ADRCI OUT::",$_.ToString() }
+		
+		local-print -Text "Result -- use adrci with set homepath $listener_adr_home;set control (SHORTP_POLICY=$hrs_short) ;set control (LONGP_POLICY=$hrs_long);purge to clean the XML Log of the listener "
+	}
+	else {
+		local-print -ErrorText "Error -- the listener DIAG home can not be evaluated - check listener configuration"
+	}
 	#done
 	
 	# Handling to clean the pur trace file
@@ -411,7 +420,7 @@ try{
 			local-print  -Text "Info -- set Oracle Home to::" , $env:ORACLE_HOME
 			
 			# Clean ASM instance logs
-			local-cleanDBLog -db $asm -Short_retention $Short_retention -Long_retention $Long_retention
+			local-cleanDBLog -sql_connect_string "/ as sysasm" -db $asm -Short_retention $Short_retention -Long_retention $Long_retention
 			# clean the log files of ASM enviroment - not yet implemented for Windows
 			local-cleanGRIDLog -grid_home $grid_home
 		}

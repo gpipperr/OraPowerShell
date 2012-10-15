@@ -71,7 +71,7 @@ function local-createPrivCert {
 	$cert_prog_path="C:\Program Files\Microsoft SDKs\*"
 	
 	# search after the cert programm and use the last match
-	foreach ( $cert_prog in (Get-ChildItem -Recurse -Include "makecert.exe" -Path $cert_prog_path ) ) { }
+	foreach ( $cert_prog in (Get-ChildItem -Recurse -Include "makecert.exe" -Path $cert_prog_path -ErrorAction silentlycontinue ) ) { }
 	
 	local-print  -Text "info -- use the makecert from $cert_prog"
 	
