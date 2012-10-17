@@ -306,7 +306,8 @@ function local-createMD5Report {
 	
 	# all ps1 in all dirs.
 	foreach ( $script in (Get-ChildItem -Recurse -Include "*.ps1","*.psm1" -Path $scriptpath  ) ) {
-		$md5_db_xml+="<file_entry><name>$script</name>"
+		$ScriptName=$script.PSChildName
+		$md5_db_xml+="<file_entry><name>$ScriptName</name>"
 		$md5hash=local-getMD5Hash -file $script
 		$md5_db_xml+="<md5>$md5hash</md5></file_entry>"
 		local-print  -Text "Info -- found $script -- md5::$md5hash"
@@ -314,7 +315,8 @@ function local-createMD5Report {
 	
 	# only the sql in the sql path!
 	foreach ( $script in (Get-ChildItem -Recurse -Include "*.sql" -Path "$scriptpath/sql"  ) ) {
-		$md5_db_xml+="<file_entry><name>$script</name>"
+		$ScriptName=$script.PSChildName
+		$md5_db_xml+="<file_entry><name>$ScriptName</name>"
 		$md5hash=local-getMD5Hash -file $script
 		$md5_db_xml+="<md5>$md5hash</md5></file_entry>"
 		local-print  -Text "Info -- found $script -- md5::$md5hash"

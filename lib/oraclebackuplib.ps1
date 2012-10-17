@@ -599,7 +599,8 @@ function local-backup-db-metainfo {
 		
 		# check the md5 hash from the sqlplus script
 		$md5_sql_file_hash=local-getMD5Hash -file "$scriptpath\sql\info.sql"
-		$md5_hash_db=local-getDB_MD5Hash -file "$scriptpath\sql\info.sql"
+		# Problem with different path on customerside
+		$md5_hash_db=local-getDB_MD5Hash -file "info.sql"
 		
 		if ($md5_hash_db.equals($md5_sql_file_hash)) {
 			local-print  -Text "Info -- info.sql md5::$md5_sql_file_hash sucessfull checked"
@@ -993,7 +994,9 @@ Param ( $asm )
 	
 	# check the md5 hash from the sqlplus script
 	$md5_sql_file_hash=local-getMD5Hash -file "$scriptpath\sql\infoASM.sql"
-	$md5_hash_db=local-getDB_MD5Hash -file "$scriptpath\sql\infoASM.sql"
+	# Problem with different path on customerside
+	# Need to be fixed?
+	$md5_hash_db=local-getDB_MD5Hash -file "infoASM.sql"
 	
 	if ($md5_hash_db.equals($md5_sql_file_hash)) {
 		local-print  -Text "Info -- infoASM.sql md5::$md5_sql_file_hash sucessfull checked"
