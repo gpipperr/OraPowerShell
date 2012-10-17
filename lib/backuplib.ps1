@@ -517,7 +517,7 @@ function local-getDB_MD5Hash {
 	)
 	
 	$md5_hash_xml="$scriptpath\conf\md5_hash.xml"
-
+	
 	# read Configuration
 	$md5db= [xml] ( get-content $md5_hash_xml)
 	
