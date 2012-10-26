@@ -19,6 +19,8 @@
 			<target_share>\\srvbackup01</target_share>
 			<!-- Robocopy feature not in use!-->
 			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
+			<!-- delete files oder then x days from the backup location  999 do nothing-->
+			<delete_old_files_days>999</delete_old_files_days>
 		</folder>
 		<folder>
 			<source>D:\Daten2</source>
@@ -27,6 +29,8 @@
 			<target_share>\\srvbackup01</target_share>
 			<!-- Robocopy feature -->
 			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
+			<!-- delete files oder then x days from the backup location  999 do nothing-->
+			<delete_old_files_days>999</delete_old_files_days>
 		</folder>
 	</volume>
 	<!-- next volumen -->
@@ -47,6 +51,8 @@
 			<target_share>\\srvbackup02</target_share>
 			<!-- Robocopy feature -->
 			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
+			<!-- delete files oder then x days from the backup location  999 do nothing-->
+			<delete_old_files_days>999</delete_old_files_days>
 		</folder>
 	</volume>
 </backup>

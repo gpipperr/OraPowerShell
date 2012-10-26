@@ -1153,8 +1153,14 @@ param ( $files )
 		$target_directory=$pair.target_dir.toString().trim();
 		$roptions=$pair.robocopy_parameter.InnerText
 		rcopydata -soure_directories  $soure_directory -target_directory $target_directory -roptions $roptions
-	
-	}	
+		
+		# remove old files if age > 999
+		$delete_files_age=999
+		if ( $pair.delete_old_files_days ) {
+			$delete_files_age=$pair.delete_old_files_days.toString().trim();
+		}
+		local-delte-oldFiles -target_directory $target_directory -days $delete_files_age
+	}
 	
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)

@@ -127,6 +127,8 @@
 			<target_dir>c:\backup\flash_recovery_area</target_dir>
 			<!-- Parameter for robocopy -->
 			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
+			<!-- delete files oder then x days from the backup location  999 do nothing-->
+			<delete_old_files_days>999</delete_old_files_days>
 		</pair>
 		<!-- Pair of directories to copy with robocopy -->
 		<pair>
@@ -134,6 +136,8 @@
 			<target_dir>c:\backup\scripts</target_dir>
 			<!-- Parameter for robocopy -->
 			<robocopy_parameter><![CDATA[/S /W:0 /R:0 /NP]]></robocopy_parameter>
+			<!-- delete files oder then x days from the backup location 999 do nothing -->
+			<delete_old_files_days>999</delete_old_files_days>
 		</pair>
 	</files>  
 </backup>
