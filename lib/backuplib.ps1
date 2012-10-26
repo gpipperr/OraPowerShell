@@ -280,7 +280,7 @@ function local-check-dir {
 			mkdir $lcheck_path
 		}
 	}
-	return 	$check_result	
+	return 	$check_result
 }	
 
 #==============================================================================
@@ -321,6 +321,44 @@ function local-encryptXMLPassword {
 	return $result
 }
 
+#==============================================================================
+# delete old files from the backup location
+# if delete_old_files_days null or 999 do nothing
+#
+function local-delte-oldFiles {
+	param(
+			[String] $target_directory
+		,	[int]    $days
+	)
+	
+	$today=get-date
+	$count_files=0
+	$count_size =0
+	
+	if (get-ChildItem $target_directory -ErrorAction silentlycontinue ) {
+		if  ($days -lt 999) {
+			local-print  -Text "Info -- check the directory for files to delete"
+			foreach ( $bfile in (Get-ChildItem -Recurse -Path $target_directory ) ) {
+				if (($today - $bfile.LastWriteTime).Days -gt $days) {
+					
+					$count_files++;
+					$count_size+=$bfile.Length
+					
+					local-print  -Text ( "Info -- remove the file :: {0,40} lastWriteTime:: {1:d}" -f  $bfile.FullName,$bfile.LastWriteTime )
+					$bfile.delete()
+				}
+			}
+		}
+		else {
+			local-print  -Text "Info -- delete age of the files:: $days > 998 - delete noting"
+		}
+	}
+	else {
+		local-print  -ErrorText "Error - Directory :: $target_directory not exists"
+	}
+	
+	local-print  -Text ( "Result -- delete of {0} files from backup target directory $target_directory - complete size of the deleted files {1:n} MB" -f $count_files,($count_size/1MB) )
+}
 
 #==============================================================================
 #Save data over robocopy 

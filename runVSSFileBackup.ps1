@@ -308,6 +308,14 @@ try{
 			
 			# start the backup 
 			doBackup -vss_vol_drive_letter $vss_vol_drive_letter -soure_directories $source  -target_directory $target -roptions $roptions
+			
+			# delete if configured old files 
+			# remove old files if age > 999
+			$delete_files_age=999
+			if ( $folder.delete_old_files_days ) {
+				$delete_files_age=$folder.delete_old_files_days.toString().trim();
+			}
+			local-delte-oldFiles -target_directory $target -days $delete_files_age
 		}
 	 	endBackup -vss_vol_drive_letter $vss_vol_drive_letter -volume_drive_letter $volume_drive_letter
 	}

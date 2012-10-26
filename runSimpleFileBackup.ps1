@@ -165,7 +165,7 @@ function doBackup{
 	
 	# start the copy process
 	rcopydata -soure_directories $soure_directories -target_directory $target_directory -roptions $roptions
-	
+
 	local-print  -Text "Info -- finish backup of the files from $vol_drive_letter"
 }
 
@@ -222,6 +222,14 @@ try{
 			
 			# Do the Backup
 			doBackup  -vol_drive_letter $vol_drive_letter -soure_directories $source  -target_directory $target -roptions $roptions
+				
+			# delete if configured old files 
+			# remove old files if age > 999
+			$delete_files_age=999
+			if ( $folder.delete_old_files_days ) {
+				$delete_files_age=$folder.delete_old_files_days.toString().trim();
+			}
+			local-delte-oldFiles -target_directory $target -days $delete_files_age
 		}
 	}
 	#
