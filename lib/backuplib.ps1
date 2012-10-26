@@ -323,6 +323,8 @@ function local-encryptXMLPassword {
 
 #==============================================================================
 # delete old files from the backup location
+# this is helpfull for the copy of the rman backups to for a example 
+# a nas file to clean later the enviroment
 # if delete_old_files_days null or 999 do nothing
 #
 function local-delte-oldFiles {
@@ -337,20 +339,43 @@ function local-delte-oldFiles {
 	
 	if (get-ChildItem $target_directory -ErrorAction silentlycontinue ) {
 		if  ($days -lt 999) {
-			local-print  -Text "Info -- check the directory for files to delete"
+			local-print  -Text "Info -- check the directory $target_directory for files to delete"
+			# query the directory structure
 			foreach ( $bfile in (Get-ChildItem -Recurse -Path $target_directory ) ) {
+				# if lastWriteTime is older then 
 				if (($today - $bfile.LastWriteTime).Days -gt $days) {
 					
 					$count_files++;
 					$count_size+=$bfile.Length
 					
 					local-print  -Text ( "Info -- remove the file :: {0,40} lastWriteTime:: {1:d}" -f  $bfile.FullName,$bfile.LastWriteTime )
-					$bfile.delete()
+										
+					try {
+						#check if this element is a directory
+						if ($bfile.PSIsContainer) {
+							#check first if directory is empty
+							$dirfilesCount = Get-ChildItem $bfile | Measure-Object
+							# if empty delete the directory
+							If ($dirfilesCount.count -eq 0) {
+								$bfile.delete()
+							}
+							else {
+								local-print  -Text ( "Warning -- delete directory {0} not possible, not empty found {1} files!" -f $bfile.FullName,$dirfilesCount.count)
+							}
+						}
+						else {
+							$bfile.delete()
+						}
+					} 
+					catch {
+						local-print  -ErrorText "Error -- delete file -see:: ",$_
+					}
+				
 				}
 			}
 		}
 		else {
-			local-print  -Text "Info -- delete age of the files:: $days > 998 - delete noting"
+			local-print  -Text "Info -- delete parameter of the files:: $days > 998 - nothing will be deleted"
 		}
 	}
 	else {
