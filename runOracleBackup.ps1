@@ -98,8 +98,8 @@ else {
 
 # create named Semaphore
 # http://msdn.microsoft.com/de-de/library/kt3k0k2h
-# Only on script can run at one time, 1 Resouce possilbe from 1 with the Name ORALCE_BACKUP
-$sem = New-Object System.Threading.Semaphore(1, 1, "ORALCE_BACKUP")
+# Only on script can run at one time, 1 Resouce possilbe from 1 with the Name ORACLE_BACKUP
+$sem = New-Object System.Threading.Semaphore(1, 1, "ORACLE_BACKUP")
 
 
 #==============================================================================
@@ -173,7 +173,7 @@ Param (
 # BEGIN Section
 Begin {
 	
-	local-print  -Text "Info -- Check if other instance of a backup script is running (over Semaphore ORALCE_BACKUP)"
+	local-print  -Text "Info -- Check if other instance of a backup script is running (over Semaphore ORACLE_BACKUP)"
 	# Wait till the semaphore if free
 	$wait_on_semaphore=$sem.WaitOne()
 

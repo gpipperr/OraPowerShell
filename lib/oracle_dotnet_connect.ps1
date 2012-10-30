@@ -34,7 +34,7 @@
 # to use the [1]! as result
 #
 #
-function db_load_dll{
+function local-db_load_dll{
 	Param (
 		 $dll_path = "d:\oracle\product\11.2.0.3\client_64bit\odp.net\bin\2.x\Oracle.DataAccess.dll"
 	)
@@ -57,13 +57,13 @@ function db_load_dll{
 # connect to the database
 # Return the DB Connection Object
 # 
-# $handle=db_load_dll
+# $handle=local-db_load_dll
 # $handle=$handle[1]
-# $connect=db_connect -user "scott" -password "tiger" -tns_alias "GPI" -OracleConnection $handle
+# $connect=local-db_connect -user "scott" -password "tiger" -tns_alias "GPI" -OracleConnection $handle
 #
 ####
 
-function db_connect{
+function local-db_connect{
 	Param (
 	   $user
 	 , $password
@@ -175,7 +175,7 @@ function db_read_sql {
 #==============================================================================
 # Close the DB Connect 
 ##
-function db_close_connect{
+function local-db_close_connect{
 	param (  
 		[Oracle.DataAccess.Client.OracleConnection] $OracleConnection
 	)
