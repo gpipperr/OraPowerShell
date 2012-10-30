@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- oracle import configuration Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de -->
+<import version="0.2">
+
+	<!-- Database connection -->
+	<db_settings>
+		<tns_alias>gpi</tns_alias>
+		<username password="01000000d08c9ddf0115d1118c7a00c04fc297eb01000000ea7ddff89b37c144ad485607e651da690000000002000000000010660000000100002000000068d575aecc568d01db5e1d8453a7fdff45e3aad9f9f00e681cded81980f6e20a000000000e8000000002000020000000df975c6cce1f7c9b66f94f7fba20674a4c1e0602cdff330f0d9b0a662c68c9c41000000029e942fdaeb754f0a3382c729a258c6040000000bc43767f58d8febb421c44231e754a6d1c63e59ea6882455a350430f18aca3945115ff574bd309af81aa36f1d94a856208e62816bc3a920f731a317e933c1001" encrypt="true" certificate="false">scott</username>
+		<!-- Language of messages - charset -->
+		<nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
+		<!-- where we can find the .net library of oracle -->
+		<dot_net_orcle_home>d:\oracle\product\11.2.0.3\dbhome_1</dot_net_orcle_home>
+    </db_settings>
+	
+  <xls_file>
+    <!--  Name of the import job -->
+    <job_description>Import_new_employes</job_description>
+    <!-- File to import -->
+    <file_location>D:\OraPowerShellCodePlex\test\test_data_set.xlsx</file_location>
+    
+    
+    <!-- Worksheet (tab) in the file to import -->
+    <worksheet_number>1</worksheet_number>
+    <!-- list of import Columns -->
+    <row_description>
+      <!-- start from which row position  1 is the first one -->
+      <start_row>2</start_row>
+      <!-- read until this position -1 until end -->
+      <max_row>-1</max_row>
+	  <!-- how often we should commit the new data -->
+	  <commit_count>10</commit_count>
+      <!-- first column -->
+      <column>
+        <!-- name of the column for better readness -->
+        <name>employee</name>
+        <!-- position of the row -->
+        <!-- attribute execl_name is the abcd name of the column -->
+        <position excel_name="A">1</position>
+        <!-- transform the data to the target -->
+        <transform_rule>upper</transform_rule>
+        <!-- write to database -->
+        <schema>scott</schema>
+        <tablename>emp</tablename>
+        <tab_column>name</tab_column>
+      </column>
+      <!-- second column -->
+      <column>
+        <!-- read from xls -->
+        <name>age</name>
+        <position>2</position>
+        <transform_rule trans_pattern="dd.mm.yyyy">date</transform_rule>
+        <!-- write to database -->
+        <schema>scott</schema>
+        <tablename>emp</tablename>
+        <tab_column>age</tab_column>
+      </column>
+      <!-- 3. column -->
+      <column>
+        <!-- read from xls -->
+        <name>salary</name>
+        <position>3</position>
+        <transform_rule>number</transform_rule>
+        <!-- write to database -->
+        <schema>scott</schema>
+        <tablename>emp</tablename>
+        <tab_column>sal</tab_column>
+      </column>
+    </row_description>
+  </xls_file>
+  <!-- next file -->
+</import>

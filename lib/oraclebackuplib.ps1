@@ -151,7 +151,7 @@ quit
 				$can_connect="true"
 			}
 			catch {
-				local-print -ForegroundColor "red"  -Text "Error -- $_",$check_db
+				local-print -ErrorText "Error connect to Database check sqlplus error message for the main reason::",$check_db
 				local-log-event -logtype "Error" -logText "Error -- Can not connect to instance : The error was: $check_db."
 				$can_connect="false"
 			}
@@ -520,7 +520,7 @@ function local-backup-db-metainfo {
 		set-Content -Path "$metainfo_backup" -value $csv
 
 		# Load the dll
-		$handle=db_load_dll -dll_path $dot_net_library
+		$handle=local-db_load_dll -dll_path $dot_net_library
 		$handle=$handle[1]
 
 		#connect to the DB
@@ -530,7 +530,7 @@ function local-backup-db-metainfo {
 		$lepassword = local-read-secureString -text $lepassword
 		$lusername  = $db.nls_settings.username.InnerText
 
-		$connect=db_connect -user $lusername -password $lepassword -tns_alias $ltns_alias -OracleConnection $handle
+		$connect=local-db_connect -user $lusername -password $lepassword -tns_alias $ltns_alias -OracleConnection $handle
 
 		##########
 		# read from the DB
@@ -590,7 +590,7 @@ function local-backup-db-metainfo {
 		$csv_header=""
 		$sql=""
 		#
-		db_close_connect -OracleConnection  $handle
+		local-db_close_connect -OracleConnection  $handle
 	}
 	else {
 		# use sqlplus
