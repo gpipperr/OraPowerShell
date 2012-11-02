@@ -577,7 +577,7 @@ function local-backup-db-metainfo {
 			local-print  -Text "Info -- with::",$sql[$i]
 			
 			try {
-				db_read_sql -SQLCommand $sql[$i] -OracleConnection  $handle -result_file $metainfo_backup -headerinfo $csv_header[$i]
+				local-db_read_sql -SQLCommand $sql[$i] -OracleConnection  $handle -result_file $metainfo_backup -headerinfo $csv_header[$i]
 				#write-host $i + " -->" + $csv_header[$i]+ " => " + $sql[$i]
 			}
 			catch {

@@ -92,10 +92,41 @@ function local-db_connect{
 }
 
 #==============================================================================
+# call a test sql statement 
+# helpfull to verify the importer
+# local-test-oracle-sql
+#
+function local-test-oracle-sql {
+	param ( $SQLCommand 
+		, [Oracle.DataAccess.Client.OracleConnection]  $OracleConnection 
+	)
+	
+	#initialise SQL Command
+	$OracleCommand = New-Object -TypeName Oracle.DataAccess.Client.OracleCommand
+	$OracleCommand.CommandText = $SQLCommand
+	$OracleCommand.Connection = $OracleConnection
+	 
+	# Adapter laden
+	$OracleDataAdapter = New-Object -TypeName Oracle.DataAccess.Client.OracleDataAdapter
+	$OracleDataAdapter.SelectCommand = $OracleCommand
+	 
+	#Dataset anlegen
+	$DataSet = New-Object -TypeName System.Data.DataSet
+	 
+	#Dataset mit dem Ergebniss der SQL Abfrage "füllen"
+	$OracleDataAdapter.Fill($DataSet) |  out-null
+	#
+	$reader=$OracleCommand.ExecuteReader()
+	#
+	$OracleDataAdapter.Dispose()
+	$OracleCommand.Dispose()
+ }
+
+#==============================================================================
 # execute the SQL Command
-# db_read_sql -SQLCommand "select * from all_users" -OracleConnection  $handle
+# local-db_read_sql -SQLCommand "select * from all_users" -OracleConnection  $handle
 ##
-function db_read_sql {
+function local-db_read_sql {
 	param(
 		   $SQLCommand
 		,  [Oracle.DataAccess.Client.OracleConnection]  $OracleConnection
