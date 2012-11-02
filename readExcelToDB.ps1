@@ -305,6 +305,7 @@ function local-import-excel {
 	)
 	
 	$starttime=get-date
+	
 	# Numeric Day of the week
 	$day_of_week=[int]$starttime.DayofWeek 
 	$job_name=$import_process.job_description.ToString()
@@ -322,7 +323,7 @@ function local-import-excel {
 	$workbook = $excelapp.Workbooks.Open($xlsfile)
 	
 	# read the worksheet
-	#test how many worksheets inside the boook
+	# test how many worksheets inside the boook
 	$wcount=($workbook.Worksheets  | Measure-Object).count
 	local-print  -Text ("Info -- read the worksheet {0} from {1} existing worksheets" -f $wksnumber,$wcount)
 	$worksheet=$workbook.Worksheets.item($wksnumber)
@@ -330,55 +331,120 @@ function local-import-excel {
 	
 	
 	# read job description 
-	#arry for all tablenames in the column description
-	# record datatype in powershell??
-	# Tabllenname - spaltenname
-	# Tabllenname - spaltenname
-	
-	$import_tables=@()
-	[int]$import_tab_count=0
-	
-	$import_columns=@()
-	[int]$import_col_count=0
-	
-	#hashlist
+	# arry for all tablenames in the column description
+	# hashlist
 	$tab_hash=@{}
+	# array to hold all information in a array objects
+	$imp_row=@()
 	
 	# check if the tablestructure in the database fits to the configuration
 	foreach ( $row_description in $config.row_description ) {
 		# get all import tables
 		# get the column of the tables
 		foreach ($icolumn in $row_description.column) {
-				$tab_name=$icolumn.tablename.toString()
-				$import_tables+=$tab_name
-				$import_tab_count++
 				
-				#--
-				$col_name=$icolumn.name.toString()
-				$import_columns+=$col_name
-				$import_col_count++
-				
-				#--
-				[array] $tab_hash["$tab_name"]+=$col_name
-		}	
-		
+			#--
+			$excel_col=$icolumn.name.toString()
+			if ($excel_col -eq $null) { $excel_col="--" }
+			
+			#--
+			$excel_pos=$icolumn.position.InnerText
+			if ($excel_pos -eq $null) { $excel_pos=$icolumn.position.toString() }
+			if ($excel_pos -eq $null) { $excel_pos="--" }
+			
+			#--
+			$trans_rule=$icolumn.transform_rule.InnerText
+			if ($trans_rule -eq $null) { $trans_rule=$icolumn.transform_rule.toString() }
+			if ($trans_rule -eq $null) { $trans_rule="--" }
+			
+			#--
+			$tab_name=$icolumn.tablename.toString()
+			if ($tab_name -eq $null)  { $tab_name="--" }
+			
+			#--
+			$col_name=$icolumn.tab_column.toString()
+			if ($col_name -eq $null)  { $col_name="--" }
+			
+			# object to store the information
+			$imp_col = new-object psobject
+			$imp_col | add-member noteproperty excel_colname  ($excel_col)
+			$imp_col | add-member noteproperty excel_position ($excel_pos)
+			$imp_col | add-member noteproperty transform_rule ($trans_rule)
+			$imp_col | add-member noteproperty db_tablename   ($tab_name)
+			$imp_col | add-member noteproperty db_tab_column  ($col_name)
+			
+			# Hashtable to test the DB structure
+			[array] $tab_hash["$tab_name"]+=$col_name
+			# store the metainformation for the import process
+			$imp_row+=$imp_col 
+		}
 	}
-	# remove all duplicates
-	#
-	$import_tables=($import_tables | sort-object -Unique )
-	#
-	local-print  -Text "Info -- check the the following tables if they exists::",$import_tables
-	local-print  -Text "Info -- for the following columns::",$import_columns
-	local-print  -Text "Info -- for the following Tables and columns::",$tab_hash.keys
-
-	# check the structure of the excel file
 	
+	# read the database 
+	foreach ( $key in $tab_hash.keys) {
+		local-print  -Text "Info -- check database and columns with a test query for table::$key with the columns::",$tab_hash[$key]
+		$test_sql="select "
+		foreach ( $a in $tab_hash[$key] ) {
+			$test_sql+=$a+","
+		}
+		$test_sql+="1 from "+$key+" where 1=2"
+		# test the sql statement
+		try{
+			local-test-oracle-sql  -SQLCommand $test_sql -OracleConnection $OracleConnection
+		}
+		catch {
+			throw "Test SQL was not sucessfull :: $test_sql error:$_"
+		}
+	}
 	
 	# read the data from the excel list
-	# write rows to the database
-	# commit count
+	[int] $working_row=$config.row_description.start_row.ToString()
+	# count of rows in the excel sheet
+	[int] $read_row_count=0
+	
+	# check the structure of the excel file
+	foreach ($imp_col in  $imp_row) {
+		
+		[int]$x=$imp_col.excel_position
+		
+		if ( $x -gt 0 ) {
+			$cell=$worksheet.cells.item($working_row,$x)
+			
+			if ($cell.value() -eq $null ){
+				throw ( "No data found in the cell {0},row {1}" -f $working_row,$x )
+			}
+			else {
+				local-print  -Text ( "Info -- check the excel worksheet cell {0}, row {1} :: found {2}" -f $working_row,$x,$cell.value() )
+				$read_row_count++
+			}
+		}
+		else {
+			local-print  -Text ( "Info -- check the excel worksheet found skip value {0} dummy column" -f $x )
+		}
+	}
 	
 	#
+	
+	# write rows to the database
+	#http://stackoverflow.com/questions/343299/bulk-insert-to-oracle-using-net
+	#http://www.oracle.com/technetwork/issue-archive/2009/09-sep/o59odpnet-085168.html
+	#
+	#
+	#OracleParameter myparam = new OracleParameter();
+	#int n;
+	#$OracleConnection.CommandText = "INSERT INTO [MyTable] ([MyId]) VALUES(?)";
+	#$OracleConnection.Add(myparam);
+    #
+	#for (n = 0; n < 100000; n ++) {
+    #    myparam.Value = n + 1;
+    #    mycommand.ExecuteNonQuery();
+    #  }
+	#
+	# commit count
+	#
+	
+	
+	#--
 	$endtime=get-date
 	$duration = [System.Math]::Round(($endtime- $starttime).TotalMinutes,2)
 	local-print  -Text "Result -- Finish Import of ::", $job_name ,"at::",  $duration, "Minutes"  -ForegroundColor "yellow"
