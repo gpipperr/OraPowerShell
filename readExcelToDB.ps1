@@ -311,11 +311,68 @@ function local-import-excel {
 	local-print  -Text "Info -- Start Import of ::", $job_name ,"at::", $starttime ," Day of Week::" ,$day_of_week  -ForegroundColor "yellow"
 	local-log-event -logText "Info -- Start Import of ::", $job_name ,"at::", $starttime ," Day of Week::" ,$day_of_week
 
-	# read job description
+	# File
+	$xlsfile=$config.file_location.ToString()
+	# Worksheet number
+	# need as int - if string the .item methode throws error because the wrong index data type!
+	[int]$wksnumber=$config.worksheet_number.ToString()
+	
+	# Open the Workbooks
+	local-print  -Text "Info -- open xls file::$xlsfile"
+	$workbook = $excelapp.Workbooks.Open($xlsfile)
+	
+	# read the worksheet
+	#test how many worksheets inside the boook
+	$wcount=($workbook.Worksheets  | Measure-Object).count
+	local-print  -Text ("Info -- read the worksheet {0} from {1} existing worksheets" -f $wksnumber,$wcount)
+	$worksheet=$workbook.Worksheets.item($wksnumber)
+	local-print  -Text ( "Info -- Name of the worksheet {0} :: {1}"  -f $wksnumber,$worksheet.name )
+	
+	
+	# read job description 
+	#arry for all tablenames in the column description
+	# record datatype in powershell??
+	# Tabllenname - spaltenname
+	# Tabllenname - spaltenname
+	
+	$import_tables=@()
+	[int]$import_tab_count=0
+	
+	$import_columns=@()
+	[int]$import_col_count=0
+	
+	#hashlist
+	$tab_hash=@{}
 	
 	# check if the tablestructure in the database fits to the configuration
-	
+	foreach ( $row_description in $config.row_description ) {
+		# get all import tables
+		# get the column of the tables
+		foreach ($icolumn in $row_description.column) {
+				$tab_name=$icolumn.tablename.toString()
+				$import_tables+=$tab_name
+				$import_tab_count++
+				
+				#--
+				$col_name=$icolumn.name.toString()
+				$import_columns+=$col_name
+				$import_col_count++
+				
+				#--
+				[array] $tab_hash["$tab_name"]+=$col_name
+		}	
+		
+	}
+	# remove all duplicates
+	#
+	$import_tables=($import_tables | sort-object -Unique )
+	#
+	local-print  -Text "Info -- check the the following tables if they exists::",$import_tables
+	local-print  -Text "Info -- for the following columns::",$import_columns
+	local-print  -Text "Info -- for the following Tables and columns::",$tab_hash.keys
+
 	# check the structure of the excel file
+	
 	
 	# read the data from the excel list
 	# write rows to the database
@@ -412,7 +469,7 @@ try{
 		
 			# test case to check the structure 
 			# only debug
-			local-show-structure -xlsfile $xlsfile  -excelapp $excelapp
+			#local-show-structure -xlsfile $xlsfile  -excelapp $excelapp
 		
 			# start the import routine
 			local-import-excel -config $import_process -OracleConnection $handle -excelapp $excelapp
