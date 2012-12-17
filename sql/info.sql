@@ -19,14 +19,45 @@ column property_name format a30
 column tablespace_name format a20
 column FLASHBACK_ON format a40
 column LOG_MODE format a20
+column ACTION_TIME format a10
+column ACTION      format a8
+column NAMESPACE   format a8
+column VERSION     format a10
+column ID            format a20
+column COMMENTS       format a20
+column BUNDLE_SERIES  format a6
+column comp_name format a40
+column status format a8
+column version format a12
+column schema format a12
+
+
 -------------- version -----------------
 ttitle  "---------#####version---------#####"  skip 2
 select * from v$version;
+
 select * from v$option;
+
+select comp_name
+     , status 
+	 , version
+	 , schema
+from dba_registry
+/
 
 ------- patchlevel ------
 ttitle  "---------#####patchlevel---------#####"  skip 2
-select * from sys.registry$history;
+
+select  to_char(ACTION_TIME,'dd.mm.yyyy') as ACTION_TIME
+      , ACTION
+	  , NAMESPACE
+	  , VERSION
+	  , BUNDLE_SERIES
+	  , COMMENTS
+	  , BUNDLE_SERIES
+ from registry$history
+order by ACTION_TIME desc
+/
 
 ------- properties ------
 ttitle  "---------#####properties---------#####"  skip 2
