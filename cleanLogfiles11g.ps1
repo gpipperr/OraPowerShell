@@ -364,7 +364,7 @@ try{
 
 
 	
-	local-print  -Text "Info -- Check if other instance of a backup script is running (over Semaphore ORALCE_BACKUP)"
+	local-print  -Text "Info -- Check if other instance of a backup script is running (over Semaphore ORACLE_LOG_ROTATE)"
 	# Wait till the semaphore if free
 	$wait_on_semaphore=$sem.WaitOne()
 
