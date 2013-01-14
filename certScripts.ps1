@@ -330,7 +330,7 @@ function local-createMD5Report {
 	# remember the last versions
 	if (get-ChildItem $md5_hash_xml -ErrorAction silentlycontinue ) {
 		$starttime=get-date
-		$new_file_name="$md5_hash_xml" + "_" + $starttime.toString().replace(" ","_").replace(":","_")
+		$new_file_name="$md5_hash_xml" + "_" + $starttime.toString().replace(" ","_").replace(":","_").replace(":","_")
 		cp "$md5_hash_xml" "$new_file_name"
 	}
 	
