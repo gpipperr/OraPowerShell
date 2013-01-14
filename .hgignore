@@ -24,3 +24,8 @@ mail_config.xml
 *.cer
 *.pvk
 md5_hash.xml_*
+export
+db_creation
+db_info
+adrci_alert_spool.out
+Overview-oraPowerShell.pptx
