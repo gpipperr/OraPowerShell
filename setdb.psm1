@@ -38,7 +38,8 @@ Set-Variable CONFIG_VERSION "0.2" -option constant
 function setdb {
 	[CmdletBinding()]
 	param(
-		[int] $dbnr
+		 [int]    $dbnr
+		,[String] $menue_mode = "false"
 	)
     #======== Helper
 	$liner= "---------------------------------------------------------"
@@ -129,9 +130,19 @@ function setdb {
 
 	foreach ($orahome in  $oraconfig.oracle_homes.oracle_home ){
 		
+		if ("true".equals($menue_mode)) {
+			$print_all=$false
+		}
+		else {
+			$print_all=$true
+		}			
+		
 		$ignoreHome=$orahome.enabled.toString()
 		# show the home only if enabled!
 		if ($ignoreHome.equals("true")) {
+			#check if in menue mode (show only sid's)
+			# FIXIT
+			#
 			
 			Write-host -ForegroundColor "green" $liner
 			
@@ -148,9 +159,11 @@ function setdb {
 				if ($orasid.equals("false")) {
 					$orasid="set no SID"
 					$ORACLE_SID_LIST  +=""
+					
 				}
 				else {
 					$ORACLE_SID_LIST  +=$orasid
+					$print_all=$true
 				}
 				$home_count+=1
 				

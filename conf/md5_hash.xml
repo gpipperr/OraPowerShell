@@ -1,7 +1,19 @@
 <check>
   <file_entry>
+    <name>create_mc_database.ps1</name>
+    <md5>43c59780306e21c74c8034fce1381f88</md5>
+  </file_entry>
+  <file_entry>
+    <name>getDBInfo.ps1</name>
+    <md5>8dec00e7b307f92b6fa0ebce734a2e8b</md5>
+  </file_entry>
+  <file_entry>
+    <name>readExcelToDB.ps1</name>
+    <md5>7fee96070f3902ecfb09fd7108c46239</md5>
+  </file_entry>
+  <file_entry>
     <name>backuplib.ps1</name>
-    <md5>591afb419bb88dad2ccfdb26c64f2d7b</md5>
+    <md5>73597371eff5e4262b1ab366eaaf6359</md5>
   </file_entry>
   <file_entry>
     <name>monitoring.ps1</name>
@@ -9,11 +21,11 @@
   </file_entry>
   <file_entry>
     <name>oraclebackuplib.ps1</name>
-    <md5>e99140216f09dff5d478704e092b5cdb</md5>
+    <md5>9700586675942e6c7c1d5392b79180d4</md5>
   </file_entry>
   <file_entry>
     <name>oracle_dotnet_connect.ps1</name>
-    <md5>926b375a5ecbebbde4b5f2c21ea27676</md5>
+    <md5>c0ee13d55414424178d0323cf6a81cee</md5>
   </file_entry>
   <file_entry>
     <name>registerEventSource.ps1</name>
@@ -21,11 +33,15 @@
   </file_entry>
   <file_entry>
     <name>certScripts.ps1</name>
-    <md5>1acb8ccb572a4c1672ea40426c5beb53</md5>
+    <md5>74e1f88e5ae9b90d3449278960e8fd35</md5>
+  </file_entry>
+  <file_entry>
+    <name>checkDiscAligment.ps1</name>
+    <md5>3c9155ae78775e273bf54b455ade88dc</md5>
   </file_entry>
   <file_entry>
     <name>cleanLogfiles11g.ps1</name>
-    <md5>7e2c8fa89f83537c875a18553189891a</md5>
+    <md5>c4b2ffb6e3aaea000d0396703ddf08be</md5>
   </file_entry>
   <file_entry>
     <name>profile.ps1</name>
@@ -33,19 +49,19 @@
   </file_entry>
   <file_entry>
     <name>runOracleBackup.ps1</name>
-    <md5>079da750a095507d30ba64a3ca37535e</md5>
+    <md5>fb905bc4aa58e9dc2bb5e84f0aa2324f</md5>
   </file_entry>
   <file_entry>
     <name>runSimpleFileBackup.ps1</name>
-    <md5>484bba546620afac90c25a6b20c35fd3</md5>
+    <md5>1649fd914c17456fd19062c1112ab405</md5>
   </file_entry>
   <file_entry>
     <name>runVSSFileBackup.ps1</name>
-    <md5>c52f09ba01eabaab2d1f3d6adbb24036</md5>
+    <md5>b47f49bb65a2bf101e79ce67909acc75</md5>
   </file_entry>
   <file_entry>
     <name>setdb.psm1</name>
-    <md5>d2caf60ba9da7d3874762e7d72f208c3</md5>
+    <md5>af494dd2fd4bc456be5b3f9d1c8af5d8</md5>
   </file_entry>
   <file_entry>
     <name>create_rman_user.sql</name>
@@ -53,7 +69,7 @@
   </file_entry>
   <file_entry>
     <name>info.sql</name>
-    <md5>702f350f636c8fa0989956074f50cdfa</md5>
+    <md5>3e9e9c5004ae60118caee9231cf1aef5</md5>
   </file_entry>
   <file_entry>
     <name>infoASM.sql</name>
