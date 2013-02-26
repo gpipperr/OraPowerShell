@@ -438,8 +438,18 @@ function local-backup-db-metainfo {
 
 	#PatchLevel of the database
 	$software_inventory_backup=$backup_path+"\software_lsinventory_"+$dbname+"_"+$day_of_week+".log"
+	
+	local-print  -Text "Info -- call $ORACLE_HOME/OPatch/opatch lsinventory to get the installed software version"
+	
 	## if Error with no set Oracle Home check this code!
-	& cmd /c "set ORACLE_HOME=$ORACLE_HOME&&$ORACLE_HOME/OPatch/opatch lsinventory > $software_inventory_backup"
+	& cmd /c "set ORACLE_HOME=$ORACLE_HOME&&$ORACLE_HOME\OPatch\opatch lsinventory > $software_inventory_backup" 2>&1 | foreach-object { local-print -text "OPATCH OUT::",$_.ToString() }
+    if ($LastExitCode  -gt 0 ) {
+		local-print  -ErrorText "Error -- check the opatch utility - the exit code was $LastExitCode"
+		local-print  -ErrorText "Error -- Read carefuly OPATCH output above and call optach from command line"
+	}
+	else{
+		local-print  -Text "Info -- finish call opatch lsinventory with exit code $LastExitCode"
+	}
    
 	#Save Password File
 	$pwd_backup=$backup_path+"\PWD"+$ORACLE_SID+"_"+$DAY_OF_WEEK+".ora"
