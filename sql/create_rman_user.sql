@@ -4,6 +4,7 @@
 -- Date:   01.September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
+prompt "SYS user required!"
 
 --- Create user
 create user backupuser identified by system default tablespace users temporary tablespace temp;

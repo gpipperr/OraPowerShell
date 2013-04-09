@@ -248,7 +248,7 @@ function local-cleanListenerLog {
 		 $log_rentention
 	)
 	
-	local-print -Text "Info -- Only the shrink of the Listner  XML logfile is implemented!"
+	local-print -Text "Info -- Only the shrink of the Listner XML logfile is implemented!"
 		
 	# Use adrci to clean the xml logfile of the listener
 	

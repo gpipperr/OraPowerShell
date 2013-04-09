@@ -1,3 +1,10 @@
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   Main statistic information of the database
+-- Date:   01.September 2012
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
+
 SET linesize 130
 
 ttitle left  "Workload Statistik Values" skip 2

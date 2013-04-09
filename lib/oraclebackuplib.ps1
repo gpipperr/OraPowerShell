@@ -286,6 +286,8 @@ quit
 	$backup_redundancy = $db.db_backup_count_of.ToString()
 	$rman_script +="CONFIGURE RETENTION POLICY TO REDUNDANCY "+ $backup_redundancy+";" 	+$CLF 
 	$rman_script +="SHOW ALL;"+$CLF 
+	#show the unique Name of the database in the spool file
+	$rman_script +="LIST DB_UNIQUE_NAME OF DATABASE;"+$CLF 
 	$rman_script +=$CLF 
 	
 	$rman_script +="#test old backup "						    +$CLF 
