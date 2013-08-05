@@ -21,10 +21,21 @@ ttitle off
 
 prompt "List of invalid indexes"
 
-select index_name,status
-  from all_indexes 
-where status not in ('VALID', 'N/A')
+select owner
+      ,index_name
+                  ,status
+                  ,'no partition'  
+  from dba_indexes 
+ where status not in ('VALID', 'N/A')
+union
+select index_owner
+      ,index_name
+                  ,status
+                  ,partition_name  
+  from dba_ind_partitions  
+ where status not in ('VALID', 'N/A','USABLE')
 /
+
 
 ttitle off
 prompt "List of invalid Objects"
