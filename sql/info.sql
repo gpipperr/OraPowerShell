@@ -52,7 +52,6 @@ select  to_char(ACTION_TIME,'dd.mm.yyyy') as ACTION_TIME
       , ACTION
 	  , NAMESPACE
 	  , VERSION
-	  , BUNDLE_SERIES
 	  , COMMENTS
 	  , BUNDLE_SERIES
  from registry$history
