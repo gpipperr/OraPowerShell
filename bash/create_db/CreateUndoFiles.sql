@@ -1,0 +1,17 @@
+define SYSUSER_PWD='&1'
+define UNDO_TAB_LOC='&2'
+define NUMBERING='&3'
+
+connect "SYS"/"&&SYSUSER_PWD" as SYSDBA
+
+set echo on
+spool $SCRIPTS/CreateDBFiles.log append
+
+CREATE SMALLFILE UNDO TABLESPACE "UNDOTBS&&NUMBERING" 
+ DATAFILE '&&UNDO_TAB_LOC' 
+ SIZE 2000M AUTOEXTEND ON NEXT  5120K MAXSIZE  16000M
+/ 
+
+spool off
+
+exit
