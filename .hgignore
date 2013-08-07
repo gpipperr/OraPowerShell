@@ -30,3 +30,4 @@ db_info
 adrci_alert_spool.out
 Overview-oraPowerShell.pptx
 sql\src\*
+tsc.sql
