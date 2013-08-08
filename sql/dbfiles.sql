@@ -24,7 +24,7 @@ select FILE_ID as F_ID
       ,ONLINE_STATUS as status
   from dba_data_files
  order by TABLESPACE_NAME
-         ,FILE_NAME 
+         ,FILE_NAME
 /
 
 ttitle  "Report Temp Files"  SKIP 2
