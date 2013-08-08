@@ -1,7 +1,8 @@
 -- ==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   SQL Script to check the size of a table
--- Date:   01.September 2012
+-- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:sql_groesse_tabelle
+-- Date:   08.2013
 -- Site:   http://orapowershell.codeplex.com
 -- ==============================================================================
 
@@ -25,16 +26,17 @@ column count_blk 	&&num
 column count_ext 	&&snum
 column count_part 	&&snum
 
-select  segment_name
-	 , owner
-	 , round(sum(bytes) / 1024 / 1024,3) as Size_MB
-     , sum(blocks) 	as count_blk
-	 , sum(EXTENTS) as count_ext
-	 , count(*) 	as count_part
-  from dba_segments 
- where upper(segment_name) like upper('&ENTER_TABLE.%')  
-   and upper(owner)=upper('&ENTER_OWNER.')
- group by segment_name,owner
+select segment_name
+      ,owner
+      ,round(sum(bytes) / 1024 / 1024, 3) as Size_MB
+      ,sum(blocks) as count_blk
+      ,sum(EXTENTS) as count_ext
+      ,count(*) as count_part
+  from dba_segments
+ where upper(segment_name) like upper('&ENTER_TABLE.%')
+   and upper(owner) = upper('&ENTER_OWNER.')
+ group by segment_name
+         ,owner
 /
 
 /*

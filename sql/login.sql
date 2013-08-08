@@ -9,7 +9,12 @@ SET termout off
 DEFINE _EDITOR=vi
 col x new_value y
 define y=?
-SELECT SYS_CONTEXT('USERENV','HOST') x FROM dual;
+-- use only the first part of the hostname to avoid error with value to long
+select decode(substr(SYS_CONTEXT('USERENV', 'HOST'), 1, instr(SYS_CONTEXT('USERENV', 'HOST'), '.') - 1), '',
+              SYS_CONTEXT('USERENV', 'HOST'),
+              substr(SYS_CONTEXT('USERENV', 'HOST'), 1, instr(SYS_CONTEXT('USERENV', 'HOST'), '.') - 1)) x
+  from dual
+/ 
 SET sqlprompt "_USER'@'_CONNECT_IDENTIFIER-&y>"
 SET termout ON
 
