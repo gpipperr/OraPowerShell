@@ -32,9 +32,12 @@ DOC
 	
 	- login.sql    	-  set the login prompt
 	
+	- links.sql     - show the DB Links in the database
+	
 	Create Scripts
 	
-	- clean_user.sql      - create the DDL to delete every object in the schema - parameter 1 - username
+	- clean_user.sql       - create the DDL to delete every object in the schema - parameter 1 - username
+	- space_tablespace.sql - create the DDL to shrink a tablespace - parameter 1 - Name of the tablespace (%) for all
 	
 	Reports
 	
