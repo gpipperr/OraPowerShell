@@ -79,8 +79,16 @@ select 'EXECUTE  DBMS_AQADM.DROP_QUEUE_TABLE ( queue_table => ''' || q.owner || 
 
 -- drop XML Schema definitions from this user + XML Tables 
 -- not tested yet!
-select 'execute  DBMS_XMLSCHEMA.deleteSchema(SCHEMAURL => ''' || x.SCHEMA_URL ||
-       ''',DELETE_OPTION => dbms_xmlschema.DELETE_CASCADE_FORCE);'
+select 'begin ' 
+        || chr(10) 
+		||'DBMS_XMLSCHEMA.deleteSchema(SCHEMAURL => ''' || x.SCHEMA_URL ||''''
+		|| chr(10) 
+		||',DELETE_OPTION => dbms_xmlschema.DELETE_CASCADE_FORCE); '
+		|| chr(10) 
+		|| 'end; '
+		|| chr(10) 
+		|| '/ '	 
+		|| chr(10) 
   from DBA_XML_SCHEMAS x
  where upper(x.owner) in (upper('&&USER_NAME.'))
 /
@@ -146,7 +154,8 @@ order by decode (o.object_type
 prompt -- !Attention
 prompt -- delete the ALL RECYCLEBIN's in the database
 prompt -- please comment if you don't like it 
-prompt PURGE DBA_RECYCLEBIN;
+prompt PURGE DBA_RECYCLEBIN 
+prompt /
 --
 prompt  spool off
 prompt  exit
