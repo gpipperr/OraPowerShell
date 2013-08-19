@@ -29,6 +29,7 @@ DOC
 	- tsc.sql      	-  tablespace size information
 	- space.sql    	-  space usage of a table
 	- directory.sql -  show directories in the database
+	- awr.sql       -  Usage of the AWR Repository and of the SYSAUX tablepace 
 	
 	- login.sql    	-  set the login prompt
 	

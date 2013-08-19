@@ -56,7 +56,7 @@ select GRANTOR
          ,table_name 
 /
 
-ttitle left  "Object rights from other User  to &&USER_NAME." skip 2
+ttitle left  "Object rights from other user to &&USER_NAME." skip 2
 
 select GRANTOR
       ,grantee
@@ -72,5 +72,20 @@ select GRANTOR
          ,table_name
 /
 
+ttitle left  "Profile Settings for the user &&USER_NAME." skip 2
+
+column PROFILE format a10
+column RESOURCE_NAME format a30
+column limit format a15
+
+select  p.PROFILE
+      , p.RESOURCE_NAME
+	  , p.limit
+ from    dba_profiles p
+      , dba_users u
+where u.PROFILE=p.PROFILE
+  and u.username like upper('&&USER_NAME.')	
+order by p.RESOURCE_NAME
+/  
 
 ttitle off
