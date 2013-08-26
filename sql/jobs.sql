@@ -15,6 +15,7 @@ column this_date   format a13
 column interval    format a20
 column broken      format a2
 column SCHEMA_USER format a10
+column owner       format a10      HEADING 'Owner'
 
 select job
       ,SCHEMA_USER
@@ -23,7 +24,7 @@ select job
       ,to_char(THIS_DATE, 'DD.MM HH24:MI') as this_date
       ,interval
       ,broken
-  from all_jobs
+  from dba_jobs
 /
 
 ttitle left  "Job Scheduler Information -- Oracle scheduler table " skip 2
@@ -42,7 +43,6 @@ ttitle left  "Job Scheduler History -- Oracle scheduler table of the last hour" 
 
 column log_id     FORMAT 999999   HEADING 'Log#'
 column log_date   FORMAT A13      HEADING 'Log Date'
-column owner      FORMAT A08      HEADING 'Owner'
 column job_name   FORMAT A25      HEADING 'Job'
 column status     FORMAT A10      HEADING 'Status'
 column cpu_used   FORMAT A10

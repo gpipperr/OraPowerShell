@@ -18,9 +18,7 @@ select owner
  group by rollup(owner, object_type)
 /
 
-ttitle off
-
-prompt "List of invalid indexes"
+ttitle "List of invalid indexes" SKIP 2
 
 select owner
       ,index_name
@@ -37,14 +35,23 @@ select index_owner
  where status not in ('VALID', 'N/A', 'USABLE')
 /
 
-ttitle off
-prompt "List of invalid Objects"
+ttitle "List of invalid Objects" SKIP 2
+
+select object_type|| '-> ' || decode(owner, 'PUBLIC', '', owner || '.') || object_name as TOUCH_ME
+  from all_objects
+ where status != 'VALID'
+order by object_type
+/
+
+ttitle "command to touch the  Objects" SKIP 2
+
 select 'desc ' || decode(owner, 'PUBLIC', '', owner || '.') || object_name as TOUCH_ME
   from all_objects
  where status != 'VALID'
 /
  
-prompt "delete Script for invalid synonym - synonym points on an not existing object"
+ttitle "delete Script for invalid synonym - synonym points on an not existing object" SKIP 2
+
 select 'drop ' || decode(s.owner, 'PUBLIC', 'PUBLIC SYNONYM ', 'SYNONYM ' || s.owner || '.') || s.synonym_name || ';' as DELETE_ME
   from dba_synonyms s
  where table_owner not in ('SYSTEM', 'SYS')
