@@ -62,4 +62,26 @@ select d.file_name "FILE_NAME"
  group by d.file_name 
  /
 
+ ttitle  "I/O performance of the datafiles"  SKIP 2
+ 
+ 
+column phyrds    format 999G999G999 heading "Physical|Reads"
+column phywrts   format 999G999G999 heading "Physical|Writes"
+column max_readtime   format 999D999 heading "Max Read|Time"
+column max_writetime  format 999D999 heading "Max Write|Time"
+column avg_iotime     format 999D999 heading "AVG IO|Time"
+column file_name format a25 heading "File|Name"
+
+select substr(b.name,length(b.name)-REGEXP_INSTR(reverse(b.name),'[\/|\]')+2,1000) as file_name
+     , a.phyrds
+	 , a.MAXIORTM/100 as max_readtime
+	 , a.phywrts
+	 , a.MAXIOWTM/100 as max_writetime
+	 , AVGIOTIM/100   as avg_iotime
+from v$filestat a
+   , v$dbfile b
+where a.file# = b.file#
+order by b.name
+/
+ 
 ttitle off
