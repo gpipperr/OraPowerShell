@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   overview over the datafiles of the database
+-- Desc:   overview over the datafile of the database
 -- Date:   01.September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================

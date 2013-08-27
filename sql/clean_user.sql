@@ -1,10 +1,12 @@
--- 
--- clean_user.sql
--- Script to create a sql script to clean Oracle schema from the user objects
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   Script to create a sql script to clean Oracle schema from the user objects
 -- Parameter 1: Name of the User 
 --
 -- Must be run with dba privileges
--- 
+--
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
 
 
 set verify  off

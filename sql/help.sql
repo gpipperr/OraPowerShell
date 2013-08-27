@@ -10,43 +10,49 @@ DOC
  
 	The daily scripts
 	
-	- dict.sql     	-  query the data dictionary - parameter 1 - part of the comments text
+	- dict.sql     	 - query the data dictionary - parameter 1 - part of the comments text
 	
-	- status.sql   	-  status of the instance/cluster
-	- sessions.sql 	-  actual connections to the database 
-	- tns.sql       -  show services and tns settings on services
-	- locks.sql     -  locks in the database - mode 6 is the blocker!
-	- wait.sql      -  Waiting sessions
+	- status.sql   	 - status of the instance/cluster
+	- sessions.sql 	 - actual connections to the database 
+	- process.sql    - actual processes in the database  
+	                   parameter 1 - name of the DB or OS User - parameter 2 - if Y show also internal processes
+	- tns.sql        - show services and tns settings on services
+		
+	- locks.sql      - locks in the database - mode 6 is the blocker!
+	- wait.sql       - waiting sessions
+		
+	- nls.sql        - global and session nls Settings
+	- version.sql  	 - version of the database
 	
-	- version.sql  	-  version of the database
-	- invalid.sql  	-  show all invalid objects
+	- invalid.sql  	 - show all invalid objects
 	
-	- jobs.sql      -  jobs in the database job$ and scheduler tasks info
-	- user.sql      -  Rights and roles of a user and object grants - parameter 1 - Name of the user
+	- user.sql       - rights and roles of a user and object grants - parameter 1 - Name of the user
+	- user_tab.sql   - get alle the the tables and views of a user  - parameter 1 - part of the table name
+	- tab_cat.sql    - get the tables and views of the current user 
 	
-	- asm.sql      	-  asm disk status and filling degree of the asm disks
-	- reco.sql     	-  recovery area settings and size
-	- redo.sql      -  redo log information
-	- tsc.sql      	-  tablespace size information
+	- tab.sql        - search a table or view in the database       - parameter 1 - part of the table name
+	- tab_space.sql  - space usage of a table
+	- tab_stat.sql   - get the statics of the table                 - parameter 1 - part of the table name
 	
-	- directory.sql -  show directories in the database
-	- links.sql     - show the DB Links in the database
+	- asm.sql      	 - asm disk status and filling degree of the asm disks
+	- reco.sql     	 - recovery area settings and size
+	- redo.sql       - redo log information
+	- tsc.sql      	 - tablespace size information
+	- awr.sql        - usage of the AWR repository and of the SYSAUX tablepace 
+	- directory.sql  - show directories in the database
+	- links.sql      - show the DB Links in the database
+		
+	- jobs.sql       - jobs in the database job$ and scheduler tasks info
 	
-	- sga.sql       -  show information about the oracle sga usage 
-	- pga.sql       -  show information about the pga usage
-	- awr.sql       -  usage of the AWR repository and of the SYSAUX tablepace 
-	
-	- statistic.sql  -  show information over the statistics on the DB and stat age on tables and when the stats job runs
+	- sga.sql        - show information about the oracle sga usage 
+	- pga.sql        - show information about the pga usage
+		
+	- statistic.sql  - show information over the statistics on the DB and stat age on tables and when the stats job runs
 	- cursor.sql     - show information about the coursor usage
 	- find_sql.sql   - find a sql Statement in the Cache  - parameter 1 part of the sql statment
 	- plan_sql.sql   - get the  Exection Plan for one SQL ID from the cache and from the awr repository
-	
+		
 	- ctx.sql       - Oracle Text indexes for a user and ctx settings  - parameter 1 - name of the user
-	
-	- tab.sql       - search a table or view in the database     - parameter 1 - part of the table name
-	- user_tab.sql  - get the tables and views of a user a list  - parameter 1 - name of the user
-	- tab_space.sql - space usage of a table
-	- tab_stat.sql  - get the statics of the table               - parameter 1 - part of the table name
 	
 	- login.sql    	-  set the login prompt
 		

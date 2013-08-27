@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   Informations about the pga usage in the database
+-- Desc:    Informations about the pga usage in the database
 -- Date:   08.2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
@@ -49,9 +49,11 @@ order by pga_alloc_mem_mb
        , pga_used_mem_mb
 /
 
-column name format a38
-column inst_id format 99
-ttitle left  "PGA Statistik" skip 2
+column name     format a38
+column inst_id  format 99
+column value    format 999G999G999G999 heading "Values"
+
+ttitle left  "PGA Statistic" skip 2
 select   inst_id 
        , name
        , value 

@@ -1,7 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- ctx.sql
--- get the oracle text parameters of one schema user
+-- Desc:   get the oracle text parameters of one schema user
 -- Parameter 1: Name of the User 
 --
 -- Must be run with dba privileges

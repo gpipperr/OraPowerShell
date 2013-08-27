@@ -1,7 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- tab_stat.sql
--- Get the statistic settings of the table
+-- Desc:   Get the statistic settings of the table
 -- Parameter 1: Name of the table
 --
 -- Must be run with dba privileges

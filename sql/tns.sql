@@ -1,11 +1,8 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   SQL Script Service Overview
+-- Desc:   check Services and tns Settings for the services
 -- Date:   09.2013
 -- Site:   http://orapowershell.codeplex.com
-
--- check Services and tns Settings for the services
-
 --==============================================================================
 
 set pagesize 300

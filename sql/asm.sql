@@ -80,14 +80,14 @@ select GROUP_NUMBER
 ttitle left "ASM Disk Extend distribution"
 prompt ----------------------
 
-select count(PXN_KFFXP) as Count_Extents
-      ,DISK_KFFXP as disk
-      ,GROUP_KFFXP as diskgroup
-  from X$KFFXP
- group by DISK_KFFXP
-         ,GROUP_KFFXP
+select count(pxn_kffxp) as count_extents
+      , disk_kffxp      as disk
+      , group_kffxp     as diskgroup
+  from x$kffxp
+ group by disk_kffxp
+         ,group_kffxp
+order by diskgroup,disk		 
 /
-
 
 prompt ----------------------
 
