@@ -1,3 +1,8 @@
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
 SET linesize 130 pagesize 300 recsep OFF
 
 ttitle  "Report waiting Sessions"  SKIP 2 

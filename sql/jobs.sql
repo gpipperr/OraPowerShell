@@ -3,7 +3,7 @@
 -- Desc:   get the user rights and grants
 -- Date:   01.September 2012
 -- Site:   http://orapowershell.codeplex.com
---==============================================================================
+--===============================================================================
 
 SET linesize 120 pagesize 400 recsep OFF
 

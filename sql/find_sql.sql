@@ -3,8 +3,7 @@
 -- Desc:   find the sql statement in the sql cache
 -- Date:   September 2013
 -- Site:   http://orapowershell.codeplex.com
---
---==============================================================================
+--===============================================================================
 
 define SQL_STATEMENT = &1 
 

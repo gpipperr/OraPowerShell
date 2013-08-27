@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   show invaild objects in the database
+-- Desc:   show invalid objects in the database
 -- Date:   01.September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================

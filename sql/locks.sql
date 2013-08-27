@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   SQL Script ASM Disk Overview
+-- Desc:   SQL Script Locks overview
 -- Date:   2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================

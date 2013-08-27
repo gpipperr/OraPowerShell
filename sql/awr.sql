@@ -1,11 +1,8 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   SQL Script ASM Disk Overview
+-- Desc:   Analyse the SYSAUX Tablespace
 -- Date:   08.2013
 -- Site:   http://orapowershell.codeplex.com
-
--- Analyse the SYSAUX Tablespace
-
 --==============================================================================
 
 SET pagesize 300

@@ -1,7 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- tab.sql
--- search the table in the database
+-- Desc:   search the table in the database
 -- Parameter 1: Name of the table
 --
 -- Must be run with dba privileges

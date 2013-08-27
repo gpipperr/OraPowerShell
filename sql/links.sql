@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   SQL Script Overview
+-- Desc:    SQL Script Overview
 -- Date:   01.September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
