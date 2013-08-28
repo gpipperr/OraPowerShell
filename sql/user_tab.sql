@@ -11,6 +11,11 @@ set verify off
 
 define USERNAME = &1 
 
+prompt
+prompt Parameter 1 = User Name   => &&USERNAME.
+prompt
+
+
 SET linesize 120 pagesize 400 recsep OFF
 
 ttitle left  "Tables and Views for this user &&USERNAME." skip 2

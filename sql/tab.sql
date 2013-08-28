@@ -11,7 +11,11 @@
 set verify  off
 set linesize 120 pagesize 4000 recsep OFF
 
-define TAB_NAME = &1 
+define TAB_NAME = '&1' 
+
+prompt
+prompt Parameter 1 = Tab Name          => &&TAB_NAME.
+prompt
 
 column owner      format a15 heading "Qwner" 
 column table_name format a30 heading "Table/View Name"

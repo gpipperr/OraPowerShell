@@ -27,20 +27,21 @@ column serial#    format 99999  heading "Serial"
 column machine    format a14    heading "Remote|pc/server"
 column terminal   format a14    heading "Remote|terminal"
 column program    format a17    heading "Remote|program"
-column module     format a15    heading "Remote|module"
-column client_info format a15   heading "Client|info"
-column client_identifier format A15 heading "Client|identifier"
+column module     format a12    heading "Remote|module"
+column client_info format a10   heading "Client|info"
+column client_identifier format A10 heading "Client|identifier"
 
 select  inst_id 
       , sid
 	  , serial#
+	  , status
       , username
 	  , machine
       , terminal
       , program
 	  , module
       , client_identifier
-	  , client_info
+	  , client_info	  
   from gv$session 
  where  ( username like '%&&USER_NAME.%' or ( nvl('&ALL_PROCESS.','N')='Y' and username is  null))
  order by program

@@ -27,8 +27,11 @@ DOC
 	- invalid.sql  	 - show all invalid objects
 	
 	- user.sql       - rights and roles of a user and object grants - parameter 1 - Name of the user
-	- user_tab.sql   - get alle the the tables and views of a user  - parameter 1 - part of the table name
+	- user_tab.sql   - get all the the tables and views of a user  - parameter 1 - part of the table name
+	- ls.sql         - get all the the tables and show the size of the user tab
 	- tab_cat.sql    - get the tables and views of the current user 
+	- tab_count.sql  - count the entries in a table 
+	- select.sql     - select first 3 records of the table as list
 	
 	- tab.sql        - search a table or view in the database       - parameter 1 - part of the table name
 	- tab_space.sql  - space usage of a table
@@ -37,10 +40,13 @@ DOC
 	- asm.sql      	 - asm disk status and filling degree of the asm disks
 	- reco.sql     	 - recovery area settings and size
 	- redo.sql       - redo log information
+	- flash.sql      - show the flash back informations 
 	- tsc.sql      	 - tablespace size information
 	- awr.sql        - usage of the AWR repository and of the SYSAUX tablepace 
 	- directory.sql  - show directories in the database
 	- links.sql      - show the DB Links in the database
+	- audit.sql      - show the audit settings 
+	- audit_sum.sql  - auditlog summary
 		
 	- jobs.sql       - jobs in the database job$ and scheduler tasks info
 	
@@ -51,6 +57,7 @@ DOC
 	- cursor.sql     - show information about the coursor usage
 	- find_sql.sql   - find a sql Statement in the Cache  - parameter 1 part of the sql statment
 	- plan_sql.sql   - get the  Exection Plan for one SQL ID from the cache and from the awr repository
+	- temp_sql.sql   - SQL that use the temp tablespace for sorting
 		
 	- ctx.sql       - Oracle Text indexes for a user and ctx settings  - parameter 1 - name of the user
 	
@@ -66,7 +73,9 @@ DOC
 	- check_col_usage.sql - HTML Report - Table column used in SQL Statments but not indexed
 	                        and all indexes with more then one column to check for duplicate indexing
 	
-	- top_sql.sql         - HTML Report - Top SQL Statements in the database for Buffer / CPU / Sort Usage						
+	- top_sql.sql         - HTML Report - Top SQL Statements in the database for Buffer / CPU / Sort Usage		
+
+    - audit_rep.sql	      - HTML Report - Audit Log entries
  	
 -------------------------------------------------------------------------------
 #
