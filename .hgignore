@@ -33,3 +33,4 @@ sql\src\*
 tsc.sql
 sqldx.sql
 sqlhc*.sql
+used_options_details.sql
