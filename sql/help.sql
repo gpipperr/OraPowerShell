@@ -12,10 +12,12 @@ DOC
 	
 	- dict.sql     	 - query the data dictionary - parameter 1 - part of the comments text
 	
+	- database.sql   - name and age of the database
 	- status.sql   	 - status of the instance/cluster
 	- sessions.sql 	 - actual connections to the database 
 	- process.sql    - actual processes in the database  
 	                   parameter 1 - name of the DB or OS User - parameter 2 - if Y show also internal processes
+	
 	- tns.sql        - show services and tns settings on services
 		
 	- locks.sql      - locks in the database - mode 6 is the blocker!
@@ -24,18 +26,22 @@ DOC
 	- nls.sql        - global and session nls Settings
 	- version.sql  	 - version of the database
 	
+	- init.sql       - init.ora entries
+	- init_rac.sql   - show init.parameter in a rac Enviroment to check if same parameters on each node
+	
+	
 	- invalid.sql  	 - show all invalid objects
 	
 	- user.sql       - rights and roles of a user and object grants - parameter 1 - Name of the user
+	
 	- user_tab.sql   - get all the the tables and views of a user  - parameter 1 - part of the table name
 	- ls.sql         - get all the the tables and show the size of the user tab
 	- tab_cat.sql    - get the tables and views of the current user 
 	- tab_count.sql  - count the entries in a table 
-	- select.sql     - select first 3 records of the table as list
-	
 	- tab.sql        - search a table or view in the database       - parameter 1 - part of the table name
 	- tab_space.sql  - space usage of a table
 	- tab_stat.sql   - get the statics of the table                 - parameter 1 - part of the table name
+	- select.sql     - select first 3 records of the table as list
 	
 	- asm.sql      	 - asm disk status and filling degree of the asm disks
 	- reco.sql     	 - recovery area settings and size
@@ -47,6 +53,8 @@ DOC
 	- links.sql      - show the DB Links in the database
 	- audit.sql      - show the audit settings 
 	- audit_sum.sql  - auditlog summary
+	
+	
 		
 	- jobs.sql       - jobs in the database job$ and scheduler tasks info
 	
@@ -59,7 +67,11 @@ DOC
 	- plan_sql.sql   - get the  Exection Plan for one SQL ID from the cache and from the awr repository
 	- temp_sql.sql   - SQL that use the temp tablespace for sorting
 		
+	- test_io.sql    - Use io calibrate to anylse io of the database
+	
 	- ctx.sql       - Oracle Text indexes for a user and ctx settings  - parameter 1 - name of the user
+	
+	
 	
 	- login.sql    	-  set the login prompt
 		
@@ -74,8 +86,10 @@ DOC
 	                        and all indexes with more then one column to check for duplicate indexing
 	
 	- top_sql.sql         - HTML Report - Top SQL Statements in the database for Buffer / CPU / Sort Usage		
-
-    - audit_rep.sql	      - HTML Report - Audit Log entries
+	
+	- audit_rep.sql	      - HTML Report - Audit Log entries
+		
+	- licence.sql         - HTML Report - Licence Report Overview - Feature Usage
  	
 -------------------------------------------------------------------------------
 #

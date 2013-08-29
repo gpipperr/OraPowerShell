@@ -62,8 +62,23 @@ where rownum <=20
 order by first_time_log asc
 /
 
+ttitle  "Redolog init ora Settings "  SKIP 1
+show parameter log_buffer
 
-
+ttitle left  "Trace File Locations" skip 2
+column full_trace_file_loc  format a100  heading "Trace|File"
+select p.inst_id  
+    , p.pname	
+    , p.tracefile as full_trace_file_loc
+from gv$session vs
+   , gv$process p
+where vs.paddr=p.addr
+  and vs.inst_id=p.inst_id
+  and vs.username is  null
+  and p.pname = 'LGWR'
+order by vs.username
+       , p.inst_id
+/ 
 
 ttitle off
 
