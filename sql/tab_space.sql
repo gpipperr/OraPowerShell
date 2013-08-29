@@ -33,7 +33,7 @@ select segment_name
       ,sum(EXTENTS) as count_ext
       ,count(*) as count_part
   from dba_segments
- where upper(segment_name) like upper('&ENTER_TABLE.%')
+ where upper(segment_name) like upper('&ENTER_TABLE.')
    and upper(owner) = upper('&ENTER_OWNER.')
  group by segment_name
          ,owner
@@ -48,7 +48,7 @@ declare
     select file_id
           ,TABLESPACE_NAME
       from DBA_EXTENTS
-     where upper(segment_name) like upper('&ENTER_TABLE.%')
+     where upper(segment_name) like upper('&ENTER_TABLE.')
        and upper(owner) = upper('&ENTER_OWNER.')
      group by file_id
              ,TABLESPACE_NAME
@@ -60,7 +60,7 @@ declare
           ,bytes as Sizeb
           ,file_id
       from DBA_EXTENTS
-     where upper(segment_name) like upper('&ENTER_TABLE.%')
+     where upper(segment_name) like upper('&ENTER_TABLE.')
        and upper(owner) = upper('&ENTER_OWNER.')
        and file_id = p_file_id
      order by file_id
@@ -155,7 +155,7 @@ begin
         --select count(*)
         --  into v_block_exists
         --  from DBA_EXTENTS
-        -- where upper(segment_name) like upper('&ENTER_TABLE.%')
+        -- where upper(segment_name) like upper('&ENTER_TABLE.')
         ---   and upper(owner) = upper('&ENTER_OWNER.')
         --   and file_id = trec.file_id
         --   and block_id between (i) and i+v_block_factor;
@@ -255,7 +255,7 @@ declare
 	      , owner 
 		  , SEGMENT_TYPE
 	  from dba_segments  
-	 where upper(segment_name) like upper('&ENTER_TABLE.%')  and upper(owner)=upper('&ENTER_OWNER.');
+	 where upper(segment_name) like upper('&ENTER_TABLE.')  and upper(owner)=upper('&ENTER_OWNER.');
   
 begin
 
@@ -268,15 +268,15 @@ begin
 		  
 		  dbms_space.space_usage(rec.owner,rec.segment_name,rec.segment_type,unf,unfb,fs1,fs1b,fs2,fs2b,fs3,fs3b,fs4,fs4b,full,fullb);
 		  
-		  dbms_output.put_line('Info -- Total Count of blocks that are unformatted              :'||unf ||' Bytes :'||unfb);
-		  dbms_output.put_line('Info -- Total Count of blocks that are full in the segment      :'||full||' Bytes :'||fullb);
+		  dbms_output.put_line('Info -- Total Count of blocks that are unformatted              :'||unf ||' |Bytes :'||unfb);
+		  dbms_output.put_line('Info -- Total Count of blocks that are full in the segment      :'||full||' |Bytes :'||fullb);
 		  
 		  dbms_output.put_line('Info -- ');
 		  
-		  dbms_output.put_line('Info -- Count of blocks that has at least 0  to 25%  free space :'||fs1||' Bytes :'||fs1b);
-		  dbms_output.put_line('Info -- Count of blocks that has at least 25 to 50%  free space :'||fs2||' Bytes :'||fs2b);
-		  dbms_output.put_line('Info -- Count of blocks that has at least 50 to 75%  free space :'||fs3||' Bytes :'||fs3b);
-		  dbms_output.put_line('Info -- Count of blocks that has at least 75 to 100% free space :'||fs4||' Bytes :'||fs4b);
+		  dbms_output.put_line('Info -- Count of blocks that has at least 0  to 25%  free space :'||fs1||' |Bytes :'||fs1b);
+		  dbms_output.put_line('Info -- Count of blocks that has at least 25 to 50%  free space :'||fs2||' |Bytes :'||fs2b);
+		  dbms_output.put_line('Info -- Count of blocks that has at least 50 to 75%  free space :'||fs3||' |Bytes :'||fs3b);
+		  dbms_output.put_line('Info -- Count of blocks that has at least 75 to 100% free space :'||fs4||' |Bytes :'||fs4b);
 		  
 		  dbms_output.put_line('Info ------------------------------------------------------------------');
 		 exception
@@ -287,7 +287,7 @@ begin
 				dbms_output.put_line('Error --   +Action:  Recheck the segment name and type and re-issue the statement');
 				select s.TABLESPACE_NAME , t.SEGMENT_SPACE_MANAGEMENT into v_tablespace_name , v_segment_management
 				 from dba_segments s , dba_tablespaces t
-				where upper(s.segment_name) like upper('&ENTER_TABLE.%')   
+				where upper(s.segment_name) like upper('&ENTER_TABLE.')   
 				  and upper(s.owner)=upper('&ENTER_OWNER.')
 				  and s.TABLESPACE_NAME=t.TABLESPACE_NAME;
 				  
