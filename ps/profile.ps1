@@ -42,6 +42,7 @@ Import-Module "$scriptpath\setdb.psm1"
 ####
 cd $scriptpath
 ####
-
+$wcount = @(Get-Process | Where-Object {$_.MainWindowTitle -like "OraPowerShell*"} | Select-Object MainWindowTitle ).Length + 1 
+$Host.UI.RawUI.WindowTitle = "OraPowerShell Window Nr. $wcount"
 
 

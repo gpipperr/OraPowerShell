@@ -15,6 +15,7 @@ select decode(substr(SYS_CONTEXT('USERENV', 'HOST'), 1, instr(SYS_CONTEXT('USERE
               substr(SYS_CONTEXT('USERENV', 'HOST'), 1, instr(SYS_CONTEXT('USERENV', 'HOST'), '.') - 1)) x
   from dual
 / 
+
 SET sqlprompt "_USER'@'_CONNECT_IDENTIFIER-&y>"
 SET termout ON
 

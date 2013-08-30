@@ -27,21 +27,21 @@ select comp_name
 
 ttitle left  "DB Infos -- last Patches" skip 2
 
-column ACTION_TIME format a10
-column ACTION      format a8
-column NAMESPACE   format a8
-column VERSION     format a10
-column ID            format a20
-column COMMENTS       format a20
-column BUNDLE_SERIES  format a6
+column a_time      format a10
+column action      format a16
+column namespace   format a8
+column version     format a10
+column id          format a20
+column comments    format a35
+column bundle_series  format a6
 
-select to_char(ACTION_TIME, 'dd.mm.yyyy') as ACTION_TIME
-      ,ACTION
-      ,NAMESPACE
-      ,VERSION
-      ,COMMENTS
-  from registry$history
- order by ACTION_TIME desc
+select to_char(action_time, 'dd.mm.yyyy') as a_time
+      ,action
+      ,namespace
+      ,version
+      ,comments
+  from sys.registry$history
+ order by action_time desc
 /
 
 ttitle off

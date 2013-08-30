@@ -37,11 +37,12 @@ DOC
 	- user_tab.sql   - get all the the tables and views of a user  - parameter 1 - part of the table name
 	- ls.sql         - get all the the tables and show the size of the user tab
 	- tab_cat.sql    - get the tables and views of the current user 
-	- tab_count.sql  - count the entries in a table 
-	- tab.sql        - search a table or view in the database       - parameter 1 - part of the table name
+	- tab_count.sql  - count the entries in a table                 - parameter 1 - name of the table
+	- tab.sql        - search a table or view in the database       - parameter 1 - part of the table
 	- tab_space.sql  - space usage of a table
-	- tab_stat.sql   - get the statics of the table                 - parameter 1 - part of the table name
-	- select.sql     - select first 3 records of the table as list
+	- tab_stat.sql   - get the statics of the table                 - parameter 1 - part of the table
+	- select.sql     - select first 3 records of the table as list  - parameter 1 - name of the table
+	- view_count.sql - count entries in a view                      - parameter 1 - name of the view
 	
 	- asm.sql      	 - asm disk status and filling degree of the asm disks
 	- reco.sql     	 - recovery area settings and size

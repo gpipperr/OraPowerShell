@@ -11,7 +11,10 @@
 
 set  verify off
 
-select table_name
+column table_name format a30
+column comments   format a85
+
+select table_name,comments
   from dict
  where lower(comments) like lower('%&1.%')
    and table_name like 'DBA%'

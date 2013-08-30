@@ -35,9 +35,9 @@ select  last_an
 	select   to_char(last_analyzed,'dd.mm.yyyy hh24:mi') as last_an
 		   , owner
 		   , count(*)  as tab_count
-		   , to_char(last_analyzed,'yyyyddmmhh24mi') as sort	
+		   , to_char(last_analyzed,'yyyymmddhh24mi') as sort	
 	  from dba_tables 
-	 group by owner,to_char(last_analyzed,'dd.mm.yyyy hh24:mi') ,to_char(last_analyzed,'yyyyddmmhh24mi')
+	 group by owner,to_char(last_analyzed,'dd.mm.yyyy hh24:mi') ,to_char(last_analyzed,'yyyymmddhh24mi')
     )
 order by sort asc ,owner desc
 /
@@ -81,6 +81,29 @@ select OWNER
   from dba_scheduler_jobs
   where job_name like '%STAT%'
  /   
+ 
+prompt ... GATHER_STATS_JOB 10g job should not run in 11g!
+
+column client_name       format a35 heading "Job|Name"
+column status            format a10 heading "Job|status"
+column mean_job_duration format a10 heading "Mean|duration"
+column mdl7              format a10 heading "Max|duration"
+column next_start_date   format a18 heading "Next|run"
+column window_group_name format a18 heading "Window|group"
+
+select c.client_name
+     , c.status
+	 , w.window_group_name
+	 , w.next_start_date
+	 , c.mean_job_duration
+	 , c.max_duration_last_7_days as mdl7
+from  dba_autotask_client c
+    , dba_scheduler_window_groups w
+where w.window_group_name=c.window_group
+order by 1
+/
+
+
 
 ttitle off
  

@@ -14,10 +14,13 @@ define lnum  = "format 9G999G999D99"
 define num   = "format 99G999"
 define snum  = "format 9G999"
 
-ttitle left  "Space Usage of a table" skip 2
 
 define ENTER_OWNER='&TABLE_OWNER'
 define ENTER_TABLE='&TABLE_NAME'
+
+
+ttitle left  "Space Usage of the table &ENTER_OWNER..&ENTER_TABLE." skip 2
+
 
 column segment_name format A20
 column owner        format A10

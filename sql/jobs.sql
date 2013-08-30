@@ -9,80 +9,104 @@ SET linesize 120 pagesize 400 recsep OFF
 
 ttitle left  "Job Infos -- Oracle JOB Table " skip 2
 
-column what        format a20
-column last_date   format a13
-column this_date   format a13
-column interval    format a20
-column broken      format a2
-column SCHEMA_USER format a10
-column owner       format a10      HEADING 'Owner'
+column job          format 9999999
+column what         format a15
+column last_date    format a13
+column this_date    format a13
+column next_date    format a13
+column interval     format a20
+column broken       format a2
+column schema_user  format a10
+
+column owner        format a10
 
 select job
-      ,SCHEMA_USER
-      ,substr(WHAT, 1, 20) as what
-      ,to_char(LAST_DATE, 'DD.MM HH24:MI') as last_date
-      ,to_char(THIS_DATE, 'DD.MM HH24:MI') as this_date
+      ,schema_user
+      ,substr(what, 1, 20) as what
+      ,to_char(last_date, 'dd.mm hh24:mi') as last_date
+      ,to_char(this_date, 'dd.mm hh24:mi') as this_date
+	  ,to_char(next_date, 'dd.mm hh24:mi') as next_date
       ,interval
       ,broken
   from dba_jobs
 /
 
-ttitle left  "Job Scheduler Information -- Oracle scheduler table " skip 2
+column what format a100
 
-select OWNER
-      ,JOB_NAME
-      ,RUN_COUNT
-      ,FAILURE_COUNT
-      ,to_char(LAST_START_DATE, 'DD.MM HH24:MI') as LAST_START_DATE
-      ,to_char(NEXT_RUN_DATE, 'DD.MM HH24:MI') as NEXT_RUN_DATE
-  from dba_scheduler_jobs
- order by owner
-/   
-
-ttitle left  "Job Scheduler History -- Oracle scheduler table of the last hour" skip 2
-
-column log_id     FORMAT 999999   HEADING 'Log#'
-column log_date   FORMAT A13      HEADING 'Log Date'
-column job_name   FORMAT A25      HEADING 'Job'
-column status     FORMAT A10      HEADING 'Status'
-column cpu_used   FORMAT A10
-
-select log_id
-      ,to_char(log_date, 'DD.MM HH24:MI') as log_date
-      ,owner
-      ,job_name
-      ,status
-  from dba_scheduler_job_log
- where log_date > sysdate - (1 / 24)
- order by log_date
-         ,owner
+select job
+      ,WHAT as what      
+  from dba_jobs
 /
 
-TTITLE 'Scheduled Tasks duration histroy of the last hour'
 
-select l.job_name
-      ,sum(extract(second from d.cpu_used) + (extract(MINUTE from d.cpu_used) * 60) +
-           (extract(HOUR from d.cpu_used) * 60 * 60)) as timeused
-      ,l.log_id
-  from dba_scheduler_job_log         l
-      ,dba_scheduler_job_run_details d
- where d.log_id = l.log_id
-   and d.log_date > sysdate - (1 / 24)
- group by l.job_name
-         ,l.log_id
- order by l.log_id
+ttitle "Job Scheduler Information -- Oracle scheduler table " skip 2
+
+column log_id       format 999999   heading "Log|id"
+column log_date     format a13      heading "Log|date"
+column job_name     format a30      heading "Job|name"
+column status       format a10      heading "Job|status"
+column cpu_used     format a10      heading "Cpu|used"
+column program_name format a25      heading "Program|name"
+column last_start_date format a18   heading "Last|start date"
+column next_run_date  like  last_start_date heading "Last|start date"
+
+select owner
+      ,job_name
+	  ,program_name
+      ,run_count
+      ,failure_count
+      ,to_char(last_start_date, 'dd.mm hh24:mi') as last_start_date
+      ,to_char(next_run_date, 'dd.mm hh24:mi')   as next_run_date
+  from dba_scheduler_jobs
+ order by run_count
+/   
+
+ttitle  "Job Scheduler History -- Oracle scheduler table of the last day - only the last 20" skip 2
+
+select * from (
+	select log_id
+		  ,to_char(log_date, 'dd.mm hh24:mi') as log_date
+		  ,owner
+		  ,job_name
+		  ,status
+	  from dba_scheduler_job_log
+	 where log_date > (sysdate - 1)
+	 order by log_date
+			 ,owner
+)
+where rownum < 20	 
+/
+
+TTITLE 'Scheduled Tasks duration histroy of the last day - only the first 20'
+
+select * from (
+	select l.job_name
+		  ,sum(extract(second from d.cpu_used) + (extract(minute from d.cpu_used) * 60) +
+			   (extract(hour from d.cpu_used) * 60 * 60)) as timeused
+		  ,l.log_id
+	  from dba_scheduler_job_log         l
+		  ,dba_scheduler_job_run_details d
+	 where d.log_id = l.log_id
+	   and d.log_date > (sysdate - 1)
+	 group by l.job_name
+			 ,l.log_id
+	 order by l.log_id
+)
+where rownum < 20	 
 /
 
 -- What scheduled tasks failed during execution, and why?
-COL log_id              FORMAT 9999   HEADING 'Log#'
-COL log_date            FORMAT A32    HEADING 'Log Date'
-COL owner               FORMAT A06    HEADING 'Owner'
-COL job_name            FORMAT A20    HEADING 'Job'
-COL status              FORMAT A10    HEADING 'Status'
-COL actual_start_date   FORMAT A32    HEADING 'Actual|Start|Date'
-COL error#              FORMAT 999999 HEADING 'Error|Nbr'
 
-TTITLE 'Scheduled Tasks That Failed:'
+prompt  Scheduled Tasks That Failed:
+
+column log_id              format 9999   heading 'Log#'
+column log_date            format a32    heading 'Log Date'
+column owner               format a06    heading 'Owner'
+column job_name            format a20    heading 'Job'
+column status              format a10    heading 'Status'
+column actual_start_date   format a32    heading 'Actual|Start|Date'
+column error#              format 999999 heading 'Error|Nbr'
+
 select log_id
       ,log_date
       ,owner
@@ -95,4 +119,33 @@ select log_id
  order by actual_start_date
 / 
 
+TTITLE 'Auto Tasks:'
+
+column client_name       format a35 heading "Job|Name"
+column status            format a10 heading "Job|status"
+column mean_job_duration format a10 heading "Mean|duration"
+column mdl7              format a10 heading "Max|duration"
+column next_start_date   format a18 heading "Next|run"
+column window_group_name format a18 heading "Window|group"
+
+select c.client_name
+     , c.status
+	 , w.window_group_name
+	 , w.next_start_date
+	 , c.mean_job_duration
+	 , c.max_duration_last_7_days as mdl7
+from  dba_autotask_client c
+    , dba_scheduler_window_groups w
+where w.window_group_name=c.window_group
+order by 1
+/
+
 ttitle off
+prompt
+prompt init.ora Settings for the job queue
+
+show parameter job_queue_processes
+
+prompt
+prompt
+prompt

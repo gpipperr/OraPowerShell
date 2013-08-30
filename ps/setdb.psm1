@@ -235,6 +235,8 @@ function setdb {
 	write-host -ForegroundColor "green" "set the ORACLE_HOME to ::" $ENV:ORACLE_HOME 
 	write-host -ForegroundColor "green" "set the ORALCE_SID  to ::" $ENV:ORACLE_SID
 	write-host -ForegroundColor "green" $liner
+	$titleString=$Host.UI.RawUI.WindowTitle 
+	$Host.UI.RawUI.WindowTitle = "$titleString SID: $ENV:ORACLE_SID"
 
 	Remove-Item variable:ORACLE_HOME_LIST
 	Remove-Item variable:ORACLE_SID_LIST
