@@ -45,18 +45,55 @@ set pages 0
 set heading off
 set feedback off
 spool get_ctx_desc_report.sql
+prompt set long 64000
+prompt set longchunksize 64000
+prompt set head off
+prompt set echo on
+prompt spool ctx_desc_report.txt
 select 'select ctx_report.describe_index('''||idx_owner||'.'||idx_name||''') from dual;'
   from ctxsys.ctx_indexes 
  where upper(idx_owner) in (upper('&&USER_NAME.'))
 /
+prompt spool off
+prompt exit
 spool off
 
+-- create the anlyse script
 spool get_ctx_stat_report.sql
-select 'select ctx_report.INDEX_STATS('''||idx_owner||'.'||idx_name||''') from dual;'
+prompt set echo on
+prompt set serveroutput on
+prompt create table ctx_report_output (ctx_name varchar2(40), result CLOB)
+prompt /
+prompt
+prompt declare
+prompt     x clob := null;;
+prompt   begin
+prompt      ctx_output.start_log('ix_search_stats.log');;
+select   '  ctx_report.INDEX_STATS('''||idx_owner||'.'||idx_name||''',x);'
+       ||chr(10)
+	   ||'  insert into ctx_report_output values ('''||idx_name||''',x);'
+	   ||chr(10)
+	   ||'  commit;'
   from ctxsys.ctx_indexes 
  where upper(idx_owner) in (upper('&&USER_NAME.'))
 /
+prompt     ctx_output.end_log;;
+prompt     dbms_lob.freetemporary(x);;
+prompt  end;;
+prompt /
+prompt
+prompt set long 64000
+prompt set longchunksize 64000
+prompt set head off
+prompt set pagesize 10000
+prompt spool ctx_stat_report.txt
+prompt select result 
+prompt  from ctx_report_output
+prompt / 
+prompt spool off
+prompt exit
 spool off
+
 set pages 100
 set heading on
 set feedback on
@@ -66,7 +103,9 @@ prompt ... sql report @get_ctx_desc_report.sql
 prompt
 prompt ... to get the statistic informations over the indexes call the generated 
 prompt ... sql report @get_ctx_stat_report.sql 
-prompt
+prompt ...
+prompt ... check for the run if the log directory ORACLE_HOME/ctx/log exits!
+prompt ...
  
 ttitle left  "Oracle Text Parameters" skip 2
 

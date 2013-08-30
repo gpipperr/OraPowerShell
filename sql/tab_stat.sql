@@ -81,6 +81,7 @@ where table_name like '&TABLE_NAME.%'
 /
 
 prompt ... to anaylse the space Usage use tab.sql
+prompt ... to refresh statistic use  EXEC DBMS_STATS.GATHER_TABLE_STATS ('SIEBEL', 'S_CONTROL');
 
 ttitle center "Read Statistic Values of the columns of this table " SKIP 2
 
@@ -121,6 +122,8 @@ group by table_name ,column_name
 order by column_name
 /
 
+
+
 -- Details Analyse 
 -- column endpoint_number format 99999  heading "End|Nr."
 -- column endpoint_value   heading "Value"
@@ -139,7 +142,7 @@ order by column_name
 -- /
 
 
-spool off
+
 ttitle off
 
 drop function show_rawvalue
