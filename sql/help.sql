@@ -15,6 +15,7 @@ DOC
 	- database.sql   - name and age of the database
 	- status.sql   	 - status of the instance/cluster
 	- sessions.sql 	 - actual connections to the database 
+	- trans.sql      - runnnig transactions in the database
 	- process.sql    - actual processes in the database  
 	                   parameter 1 - name of the DB or OS User - parameter 2 - if Y show also internal processes
 	
@@ -41,6 +42,8 @@ DOC
 	- tab.sql        - search a table or view in the database       - parameter 1 - part of the table
 	- tab_space.sql  - space usage of a table
 	- tab_stat.sql   - get the statics of the table                 - parameter 1 - part of the table
+	- tab_desc.sql   - describe the columns of the table            - parameter 1 - part of the table
+	- tab_last.sql   - get the change date of a record in the table - parameter - Owner, Tablename
 	- select.sql     - select first 3 records of the table as list  - parameter 1 - name of the table
 	- view_count.sql - count entries in a view                      - parameter 1 - name of the view
 	
@@ -81,7 +84,7 @@ DOC
 	- clean_user.sql       - create the DDL to delete every object in the schema - parameter 1 - username
 	- space_tablespace.sql - create the DDL to shrink a tablespace - parameter 1 - Name of the tablespace (%) for all
 	
-	Reports
+	#Reports
 	
 	- check_col_usage.sql - HTML Report - Table column used in SQL Statments but not indexed
 	                        and all indexes with more then one column to check for duplicate indexing
@@ -91,6 +94,16 @@ DOC
 	- audit_rep.sql	      - HTML Report - Audit Log entries
 		
 	- licence.sql         - HTML Report - Licence Report Overview - Feature Usage
- 	
+	
+	#Setup
+	
+	- 01-db-setup/create_global_errorlog.sql
+	                     - create a global error table and error trigger + maintain job
+						 
+ 	- 01-db-setup/delete_global_errorlog.sql
+						- delete the global error trigger + error table
+						
+	- 01-db-setup/create_audit_log_database.sql					
+						- create own tablespace for auditlog,move audit log to this tablepace - create clean job
 -------------------------------------------------------------------------------
 #

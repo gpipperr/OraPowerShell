@@ -17,14 +17,23 @@ select  PARAMETER
 order by 1
 / 
 
-ttitle left  "Charset of the database" skip 2
+ttitle left  "Char set of the database" skip 2
 column parameter format a24 heading "NLS DB Character Set"
 select  PARAMETER
        ,Value
  from nls_database_parameters 
-where parameter in ('NLS_CHARACTERSET','NLS_NCHAR_CHARACTERSET') 
-order by 1
+where parameter in ('NLS_CHARACTERSET','NLS_NCHAR_CHARACTERSET','NLS_LENGTH_SEMANTICS') 
+order by 2
 / 
+
+ttitle left  "NLS_LENGTH_SEMANTICS of the database" skip 2
+
+show parameter NLS_LENGTH_SEMANTICS
+
+prompt
+prompt ... if NLS_LENGTH_SEMANTICS is byte new varchar2 columns will be defaulted to varchar2( xx byte)
+prompt
+
 
 ttitle off
 

@@ -4,8 +4,9 @@
 -- Date:   01.September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
+SET linesize 130 pagesize 300 recsep OFF
 
-ttitle center "Invaild Objects in the database" SKIP 2
+ttitle center "Invalid Objects in the database" SKIP 2
  
 column owner format a10
 column object_type format a14
@@ -37,7 +38,7 @@ select index_owner
 
 ttitle "List of invalid Objects" SKIP 2
 
-select object_type|| '-> ' || decode(owner, 'PUBLIC', '', owner || '.') || object_name as TOUCH_ME
+select object_type|| '-> ' || decode(owner, 'PUBLIC', '', owner || '.') || object_name as Overview
   from all_objects
  where status != 'VALID'
 order by object_type
