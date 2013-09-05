@@ -33,6 +33,7 @@ select  v.inst_id
       , (select banner from v$version where banner like 'Oracle%') as edition
   from gv$database d
       ,gv$instance v
+ where d.inst_id=v.inst_id	  
  order by v.instance_name 
 /
 
@@ -41,6 +42,8 @@ SET UNDERLINE '-'
 archive log list
 
 ttitle "Current SCN" SKIP 2
+
+column current_scn format 99999999999999999999999999 
 
 SELECT name
     , to_char(sysdate,'dd.mm.yyyy hh24:mi') 

@@ -5,7 +5,7 @@
 -- Site:   http://orapowershell.codeplex.com
 --===============================================================================
 
-SET linesize 120 pagesize 400 recsep OFF
+SET linesize 150 pagesize 400 recsep OFF
 
 ttitle left  "Job Infos -- Oracle JOB Table " skip 2
 
@@ -41,13 +41,14 @@ select job
 
 ttitle "Job Scheduler Information -- Oracle scheduler table " skip 2
 
-column log_id       format 999999   heading "Log|id"
+column log_id       format 9999999   heading "Log|id"
 column log_date     format a13      heading "Log|date"
 column job_name     format a30      heading "Job|name"
 column status       format a10      heading "Job|status"
 column cpu_used     format a10      heading "Cpu|used"
-column program_name format a25      heading "Program|name"
+column program_name format a20      heading "Program|name"
 column last_start_date format a18   heading "Last|start date"
+column failure_count format 999     heading "Fail|cnt"
 column next_run_date  like  last_start_date heading "Last|start date"
 
 select owner
@@ -58,7 +59,7 @@ select owner
       ,to_char(last_start_date, 'dd.mm hh24:mi') as last_start_date
       ,to_char(next_run_date, 'dd.mm hh24:mi')   as next_run_date
   from dba_scheduler_jobs
- order by run_count
+ order by owner
 /   
 
 ttitle  "Job Scheduler History -- Oracle scheduler table of the last day - only the last 20" skip 2
@@ -99,7 +100,6 @@ where rownum < 20
 
 prompt  Scheduled Tasks That Failed:
 
-column log_id              format 9999   heading 'Log#'
 column log_date            format a32    heading 'Log Date'
 column owner               format a06    heading 'Owner'
 column job_name            format a20    heading 'Job'

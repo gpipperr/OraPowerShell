@@ -12,7 +12,7 @@ column inst_id   format 9   heading "Inst|Id"
 column status    format A8  heading "Status"
 column name      format A8  heading "Instance|Name"
 column startzeit format A15 heading "Start|Time"
-column host_name format A15 heading "Server|Name"
+column host_name format A25 heading "Server|Name"
 
 select inst_id
       ,status
