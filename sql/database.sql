@@ -37,9 +37,33 @@ select  v.inst_id
  order by v.instance_name 
 /
 
-SET UNDERLINE '-'
+
+ttitle "DB Log Mode" SKIP 2
+
+select LOG_MODE from v$database;
 
 archive log list
+
+
+ttitle "MegaByte total DB Size for all files" SKIP 2
+
+column mb_total format 999G999G999D00 heading "MegaByte total"
+
+select round((a.data_size + b.temp_size + c.redo_size)/1024/1024,3) as  mb_total
+from ( select sum(bytes) data_size        from dba_data_files ) a
+	,( select nvl(sum(bytes),0) temp_size from dba_temp_files ) b
+	,( select sum(bytes) redo_size         from sys.v_$log ) c
+/
+
+ttitle "MegaByte DB Objects in use" SKIP 2
+
+column mb_obj format 999G999G999D00 heading "MegaByte DB Objects"
+
+select round(sum(bytes)/1024/1024,3) as mb_obj 
+  from dba_segments
+/
+
+SET UNDERLINE '-'
 
 ttitle "Current SCN" SKIP 2
 
@@ -50,5 +74,7 @@ SELECT name
     , current_scn 
 FROM  v$database
 /
+
+
 
 ttitle off

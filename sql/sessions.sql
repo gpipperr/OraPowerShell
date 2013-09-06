@@ -5,9 +5,6 @@
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
-
-
-
 define USER_NAME   =  &1
 define ALL_PROCESS = '&2'
 

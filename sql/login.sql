@@ -6,7 +6,10 @@
 --==============================================================================
 
 SET termout off
+
 DEFINE _EDITOR=vi
+
+-- get the hostname
 col x new_value y
 define y=?
 -- use only the first part of the hostname to avoid error with value to long
@@ -16,6 +19,17 @@ select decode(substr(SYS_CONTEXT('USERENV', 'HOST'), 1, instr(SYS_CONTEXT('USERE
   from dual
 / 
 
-SET sqlprompt "_USER'@'_CONNECT_IDENTIFIER-&y>"
-SET termout ON
+-- get the user
+col u new_value z
+define z=?
+select user u
+  from dual
+/
 
+
+-- set the title 
+$ title Sql*plus window :: &z -- &y
+
+SET sqlprompt "_USER'@'_CONNECT_IDENTIFIER-&y>"
+
+SET termout ON
