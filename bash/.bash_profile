@@ -44,4 +44,9 @@ function myprompt {
  
 }
 
+function settitle {
+ # fix implemet this, will be called from login.sql
+ mypromt $1 $2
+}
+
 myprompt
