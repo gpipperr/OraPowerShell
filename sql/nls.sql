@@ -7,6 +7,10 @@
 
 SET linesize 130 pagesize 120
 
+ttitle left  "Session NLS Lang Values" skip 2
+
+select  SYS_CONTEXT('USERENV', 'LANGUAGE') as NLS_LANG_Parameter from dual;
+
 ttitle left  "Session NLS Values" skip 2
 
 column parameter format a24 heading "NLS Session Parameter"
