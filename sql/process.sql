@@ -5,14 +5,13 @@
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
+define USER_NAME   = &1
+define ALL_PROCESS = '&2'
 
 prompt
 prompt Parameter 1 = Username          => &&USER_NAME.
 prompt Parameter 2 = to Show all use Y => &&ALL_PROCESS.
 prompt
-
-define USER_NAME   = &1
-define ALL_PROCESS = '&2'
 
 
 set verify off

@@ -43,6 +43,7 @@ DOC
 	- tab_space.sql  - space usage of a table
 	- tab_stat.sql   - get the statics of the table                 - parameter 1 - part of the table
 	- tab_desc.sql   - describe the columns of the table            - parameter 1 - part of the table
+	- tab_ddl.sql    - get the create script of a table             - parameter - Owner, Tablename
 	- tab_last.sql   - get the change date of a record in the table - parameter - Owner, Tablename
 	- select.sql     - select first 3 records of the table as list  - parameter 1 - name of the table
 	- view_count.sql - count entries in a view                      - parameter 1 - name of the view

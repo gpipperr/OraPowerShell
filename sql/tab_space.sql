@@ -41,154 +41,157 @@ select segment_name
  group by segment_name
          ,owner
 /
-ttitle left  "Extend Map of this table" skip 2	
 
-declare
 
-  TYPE tt_blocks IS TABLE OF number  INDEX BY BINARY_INTEGER;
-   
-  cursor c_tab_files is
-    select file_id
-          ,TABLESPACE_NAME
-      from DBA_EXTENTS
-     where upper(segment_name) like upper('&ENTER_TABLE.')
-       and upper(owner) = upper('&ENTER_OWNER.')
-     group by file_id
-             ,TABLESPACE_NAME
-     order by file_id;
-
-  cursor c_extend_map(p_file_id DBA_EXTENTS.file_id%type) is
-    select block_id
-          ,blocks
-          ,bytes as Sizeb
-          ,file_id
-      from DBA_EXTENTS
-     where upper(segment_name) like upper('&ENTER_TABLE.')
-       and upper(owner) = upper('&ENTER_OWNER.')
-       and file_id = p_file_id
-     order by file_id
-             ,block_id;
-
-  v_start_block_id DBA_EXTENTS.block_id%type := 0;
-  v_end_block_id   DBA_EXTENTS.block_id%type := 0;
-  v_last_block_id  DBA_EXTENTS.block_id%type := 0;
-
-  v_last_blocks DBA_EXTENTS.blocks%type := 0;
-  v_size        number;
-  p_printout    boolean := true;
-  v_max_blocks  DBA_EXTENTS.block_id%type := 0;
-  v_datafile    dba_data_files.FILE_NAME%type;
-
-  v_block_factor pls_integer;
-  v_block_exists pls_integer;
-  
-  i pls_integer:=1;
-  t_blocks tt_blocks;
-
-begin
-  dbms_output.put_line('Info -- ======= Table Extend Map for table &ENTER_TABLE. - &ENTER_OWNER. =======');
-  for trec in c_tab_files
-  loop
-    dbms_output.put_line('Info -- Analyse file with id :: ' || trec.file_id || ' tablespace :: ' ||
-                         trec.tablespace_name);
-    dbms_output.put_line('Info --');
-    for rec in c_extend_map(p_file_id => trec.file_id)
-    loop
-      if (rec.block_id > (v_last_block_id + v_last_blocks)) then
-      
-        if (v_start_block_id != 0) then
-          dbms_output.put_line('Info -- Start : ' || to_char(v_start_block_id, '999G999G999') || ' -- End  : ' ||
-                               to_char(v_end_block_id + v_last_blocks, '999G999G999') || '  Block -- Size used MB -->' ||
-                               to_char(v_size / 1024 / 1024, '999G990D999'));
-			t_blocks(i):=v_start_block_id;
-			i:=i+1;
-			
-        end if;
-      
-        v_start_block_id := rec.block_id;
-        v_size           := rec.Sizeb;
-      else
-        v_size         := v_size + rec.Sizeb;
-        v_end_block_id := rec.block_id;
-      end if;
-      v_last_block_id := rec.block_id;
-      v_last_blocks   := rec.blocks;
-    end loop;
-    if p_printout then
-      dbms_output.put_line('Info -- Start : ' || to_char(v_start_block_id, '999G999G999') || ' -- End  : ' ||
-                           to_char(v_start_block_id + v_last_blocks, '999G999G999') || '  Block -- Size used MB -->' ||
-                           to_char(v_size / 1024 / 1024, '999G990D999'));
-			t_blocks(i):=v_start_block_id;
-			i:=i+1;
-    end if;
-    select max(block_id) into v_max_blocks from DBA_EXTENTS where file_id = trec.file_id;
-    select FILE_NAME into v_datafile from dba_data_files where FILE_ID = trec.file_id;
-    dbms_output.put_line('Info --');
-    dbms_output.put_line('Info -- last use extend block :: ' || to_char(v_max_blocks) || ' in this datafile :: ' ||
-                         v_datafile);
-    dbms_output.put_line('Info --');
-  end loop;
-
-  for trec in c_tab_files
-  loop
-  
-    select max(block_id) into v_max_blocks from DBA_EXTENTS where file_id = trec.file_id;
-
-  
-    if v_max_blocks > 500000 then
-      v_block_factor := 10000;
-    elsif v_max_blocks > 100000 then
-	  v_block_factor := 10000;
-	else  
-      v_block_factor := 1000;
-    end if;
-	
-	dbms_output.put('Info -- ');
-	dbms_output.put_line('Info -- draw map for :: ' || trec.file_id || ' tablespace :: ' || trec.tablespace_name);
-    dbms_output.put_line('Info -- Each star represent '||v_block_factor||' Blocks');
-    dbms_output.put('Info -- ');
-	
-    for i in 1 .. v_max_blocks
-    loop
-      -- all 1000 Block draw a #
-      if mod(i, v_block_factor) = 0 then
-	  
-        -- check  with the remember values
-		-- faster!
-        --select count(*)
-        --  into v_block_exists
-        --  from DBA_EXTENTS
-        -- where upper(segment_name) like upper('&ENTER_TABLE.')
-        ---   and upper(owner) = upper('&ENTER_OWNER.')
-        --   and file_id = trec.file_id
-        --   and block_id between (i) and i+v_block_factor;
-		
-		 FOR j IN 1 .. t_blocks.COUNT LOOP
-			 if t_blocks(j) between (i) and i+v_block_factor then
-			  v_block_exists:=100;
-			 end if;
-		 END LOOP;  
-		   
-        if v_block_exists > 0 then
-          dbms_output.put('+');
-        else
-          dbms_output.put('#');
-        end if;
-		
-		v_block_exists:=0;		
-      end if;
-      if mod(i, (v_block_factor * 100)) = 0 then
-        dbms_output.put_line('');
-        dbms_output.put('Info -- ');
-      end if;
-    end loop;
-    dbms_output.put_line('');
-    dbms_output.put_line('Info --');
-  end loop;
-
-  dbms_output.put_line('Info -- ======= Finish =======');
-end;
-/
+-- to slow ....
+--ttitle left  "Extend Map of this table" skip 2	
+--
+--declare
+--
+--  TYPE tt_blocks IS TABLE OF number  INDEX BY BINARY_INTEGER;
+--   
+--  cursor c_tab_files is
+--    select file_id
+--          ,TABLESPACE_NAME
+--      from DBA_EXTENTS
+--     where upper(segment_name) like upper('&ENTER_TABLE.')
+--       and upper(owner) = upper('&ENTER_OWNER.')
+--     group by file_id
+--             ,TABLESPACE_NAME
+--     order by file_id;
+--
+--  cursor c_extend_map(p_file_id DBA_EXTENTS.file_id%type) is
+--    select block_id
+--          ,blocks
+--          ,bytes as Sizeb
+--          ,file_id
+--      from DBA_EXTENTS
+--     where upper(segment_name) like upper('&ENTER_TABLE.')
+--       and upper(owner) = upper('&ENTER_OWNER.')
+--       and file_id = p_file_id
+--     order by file_id
+--             ,block_id;
+--
+--  v_start_block_id DBA_EXTENTS.block_id%type := 0;
+--  v_end_block_id   DBA_EXTENTS.block_id%type := 0;
+--  v_last_block_id  DBA_EXTENTS.block_id%type := 0;
+--
+--  v_last_blocks DBA_EXTENTS.blocks%type := 0;
+--  v_size        number;
+--  p_printout    boolean := true;
+--  v_max_blocks  DBA_EXTENTS.block_id%type := 0;
+--  v_datafile    dba_data_files.FILE_NAME%type;
+--
+--  v_block_factor pls_integer;
+--  v_block_exists pls_integer;
+--  
+--  i pls_integer:=1;
+--  t_blocks tt_blocks;
+--
+--begin
+--  dbms_output.put_line('Info -- ======= Table Extend Map for table &ENTER_TABLE. - &ENTER_OWNER. =======');
+--  for trec in c_tab_files
+--  loop
+--    dbms_output.put_line('Info -- Analyse file with id :: ' || trec.file_id || ' tablespace :: ' ||
+--                         trec.tablespace_name);
+--    dbms_output.put_line('Info --');
+--    for rec in c_extend_map(p_file_id => trec.file_id)
+--    loop
+--      if (rec.block_id > (v_last_block_id + v_last_blocks)) then
+--      
+--        if (v_start_block_id != 0) then
+--          dbms_output.put_line('Info -- Start : ' || to_char(v_start_block_id, '999G999G999') || ' -- End  : ' ||
+--                               to_char(v_end_block_id + v_last_blocks, '999G999G999') || '  Block -- Size used MB -->' ||
+--                               to_char(v_size / 1024 / 1024, '999G990D999'));
+--			t_blocks(i):=v_start_block_id;
+--			i:=i+1;
+--			
+--        end if;
+--      
+--        v_start_block_id := rec.block_id;
+--        v_size           := rec.Sizeb;
+--      else
+--        v_size         := v_size + rec.Sizeb;
+--        v_end_block_id := rec.block_id;
+--      end if;
+--      v_last_block_id := rec.block_id;
+--      v_last_blocks   := rec.blocks;
+--    end loop;
+--    if p_printout then
+--      dbms_output.put_line('Info -- Start : ' || to_char(v_start_block_id, '999G999G999') || ' -- End  : ' ||
+--                           to_char(v_start_block_id + v_last_blocks, '999G999G999') || '  Block -- Size used MB -->' ||
+--                           to_char(v_size / 1024 / 1024, '999G990D999'));
+--			t_blocks(i):=v_start_block_id;
+--			i:=i+1;
+--    end if;
+--    select max(block_id) into v_max_blocks from DBA_EXTENTS where file_id = trec.file_id;
+--    select FILE_NAME into v_datafile from dba_data_files where FILE_ID = trec.file_id;
+--    dbms_output.put_line('Info --');
+--    dbms_output.put_line('Info -- last use extend block :: ' || to_char(v_max_blocks) || ' in this datafile :: ' ||
+--                         v_datafile);
+--    dbms_output.put_line('Info --');
+--  end loop;
+--
+--  for trec in c_tab_files
+--  loop
+--  
+--    select max(block_id) into v_max_blocks from DBA_EXTENTS where file_id = trec.file_id;
+--
+--  
+--    if v_max_blocks > 500000 then
+--      v_block_factor := 10000;
+--    elsif v_max_blocks > 100000 then
+--	  v_block_factor := 10000;
+--	else  
+--      v_block_factor := 1000;
+--    end if;
+--	
+--	dbms_output.put('Info -- ');
+--	dbms_output.put_line('Info -- draw map for :: ' || trec.file_id || ' tablespace :: ' || trec.tablespace_name);
+--    dbms_output.put_line('Info -- Each star represent '||v_block_factor||' Blocks');
+--    dbms_output.put('Info -- ');
+--	
+--    for i in 1 .. v_max_blocks
+--    loop
+--      -- all 1000 Block draw a #
+--      if mod(i, v_block_factor) = 0 then
+--	  
+--        -- check  with the remember values
+--		-- faster!
+--        --select count(*)
+--        --  into v_block_exists
+--        --  from DBA_EXTENTS
+--        -- where upper(segment_name) like upper('&ENTER_TABLE.')
+--        ---   and upper(owner) = upper('&ENTER_OWNER.')
+--        --   and file_id = trec.file_id
+--        --   and block_id between (i) and i+v_block_factor;
+--		
+--		 FOR j IN 1 .. t_blocks.COUNT LOOP
+--			 if t_blocks(j) between (i) and i+v_block_factor then
+--			  v_block_exists:=100;
+--			 end if;
+--		 END LOOP;  
+--		   
+--        if v_block_exists > 0 then
+--          dbms_output.put('+');
+--        else
+--          dbms_output.put('#');
+--        end if;
+--		
+--		v_block_exists:=0;		
+--      end if;
+--      if mod(i, (v_block_factor * 100)) = 0 then
+--        dbms_output.put_line('');
+--        dbms_output.put('Info -- ');
+--      end if;
+--    end loop;
+--    dbms_output.put_line('');
+--    dbms_output.put_line('Info --');
+--  end loop;
+--
+--  dbms_output.put_line('Info -- ======= Finish =======');
+--end;
+--/
 
 
 	

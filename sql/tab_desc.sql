@@ -1,7 +1,9 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   search the table in the database
--- Parameter 1: Name of the table
+-- Desc:   describe a table in the database
+--
+-- Parameter 1: Owner of the table
+-- Parameter 2: Name of the table
 --
 -- Must be run with dba privileges
 -- 
