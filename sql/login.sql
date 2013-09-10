@@ -55,8 +55,9 @@ var OS varchar2(5)
 
 declare
  v_oracle_home varchar2(512);
- v_module varchar2(512);
+ v_module  varchar2(512);
  v_os_user varchar2(512);
+ v_host    varchar2(512);
 begin
 	:OS:='XX';    
 	
@@ -89,12 +90,19 @@ begin
 		-- try to detect the \
 	
 		v_os_user:= SYS_CONTEXT('USERENV', 'OS_USER');
+		v_host   := SYS_CONTEXT('USERENV', 'HOST');
 	    
 		if instr(v_os_user,'\') > 0 then
-		  -- ' needed for syntax highlightning of my editor ...
+		    -- ' needed for syntax highlightning of my editor ...
 			:OS:='WIN';
 		else
-			:OS:='LINUX';
+		    --  check  again the with the host
+			if instr(v_host,'\') > 0 then
+			-- ' needed for syntax highlightning of my editor ...
+				:OS:='WIN';
+			else
+				:OS:='LINUX';
+			end if;
 		end if;
 		
 	end if;

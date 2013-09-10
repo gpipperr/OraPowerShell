@@ -7,8 +7,16 @@
 -- 
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
-define TABLE_NAME = &1 
-define USER_NAME  = &2
+
+define USER_NAME  = &1
+define TABLE_NAME = &2 
+
+
+prompt
+prompt Parameter 1 = Owner Name => &&USER_NAME.
+prompt Parameter 2 = Tab Name   => &&TABLE_NAME.
+prompt
+
 
 set verify off
 
@@ -70,18 +78,18 @@ column table_name  format a15
 
 select  table_name
       , status
-	  , to_char(LAST_ANALYZED,'dd.mm.yyyy hh24:mi')
+	  , to_char(LAST_ANALYZED,'dd.mm.yyyy hh24:mi') as LAST_ANALYZED
 	  , NUM_ROWS
 	  , AVG_SPACE
 	  , CHAIN_CNT
 	  , AVG_ROW_LEN
  from dba_tables
-where table_name like '&TABLE_NAME.%'
-  and  owner      like '&USER_NAME.%'
+where table_name like '&TABLE_NAME.'
+  and  owner      like '&USER_NAME.'
 /
 
 prompt ... to anaylse the space Usage use tab.sql
-prompt ... to refresh statistic use  EXEC DBMS_STATS.GATHER_TABLE_STATS ('SIEBEL', 'S_CONTROL');
+prompt ... to refresh statistic use  EXEC DBMS_STATS.GATHER_TABLE_STATS ('&USER_NAME.', '&TABLE_NAME.');
 
 ttitle center "Read Statistic Values of the columns of this table " SKIP 2
 
@@ -102,8 +110,8 @@ select  b.table_name
 	  , a.histogram 
   from dba_tab_col_statistics a
      , dba_tab_cols b
- where b.table_name like '&TABLE_NAME.%'
-   and b.owner      like '&USER_NAME.%'
+ where b.table_name like '&TABLE_NAME.'
+   and b.owner      like '&USER_NAME.'
    and a.table_name   (+) = b.table_name
    and a.owner        (+) = b.owner
    and a.column_name  (+) = b.column_name 
@@ -116,8 +124,8 @@ select  table_name
       , column_name 
       , count(*) as count_hist_buckets
  from DBA_TAB_HISTOGRAMS 
-where table_name like '&TABLE_NAME.%'
- and  owner      like '&USER_NAME.%'
+where table_name like '&TABLE_NAME.'
+ and  owner      like '&USER_NAME.'
 group by table_name ,column_name
 order by column_name
 /

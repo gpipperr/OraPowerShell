@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   :   HTML Report for SQL queries with the most resource usage
+-- Desc:   :   HTML Report for the entries in the audit log
 -- see :   http://www.pipperr.de/dokuwiki/doku.php?id=dba:index_column_usage
 -- Date:   September 2013
 -- Site:   http://orapowershell.codeplex.com
