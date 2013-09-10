@@ -62,6 +62,20 @@ where rownum <=20
 order by first_time_log asc
 /
 
+ttitle  "Redolog Statistik"  SKIP 1
+SELECT SUBSTR(name,1,20) "Name",gets,misses,immediate_gets,immediate_misses
+FROM v$latch
+WHERE name in ('redo allocation', 'redo copy')
+/
+
+prompt MISSES/GETS (must be < 1%)
+
+ttitle  "Redolog Waits"  SKIP 1
+SELECT name,value
+FROM v$sysstat
+WHERE name = 'redo log space requests';
+
+
 ttitle  "Redolog init ora Settings "  SKIP 1
 show parameter log_buffer
 
