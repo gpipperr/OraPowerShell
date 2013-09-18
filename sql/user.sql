@@ -1,7 +1,7 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   get the user rights and grants
--- Date:   01.September 2012
+-- Date:   September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
