@@ -31,14 +31,15 @@ set long 64000;
 
 declare
  cursor c_tab_idx is
-  select index_name,owner from all_indexes where table_name='&&TAB_NAME.' and TABLE_OWNER='&&OWNER.';
+  select index_name,owner from all_indexes where table_name=upper('&&TAB_NAME.') and TABLE_OWNER=upper('&&OWNER.');
  
- v_type varchar2(32);
+ v_type  varchar2(32);
+ v_owner varchar2(32);
 begin
 
-	select OBJECT_TYPE into v_type from all_objects where object_name ='&&TAB_NAME.' and owner='&&OWNER.';
+	select OBJECT_TYPE,owner into v_type,v_owner from all_objects where object_name =upper('&&TAB_NAME.') and ( owner=upper('&&OWNER.') or owner='PUBLIC' );
 	
-	:ddllob:=dbms_metadata.get_ddl(v_type ,'&&TAB_NAME.','&&OWNER.'); 
+	:ddllob:=dbms_metadata.get_ddl(v_type ,upper('&&TAB_NAME.'),v_owner); 
   
 	-- get the index DDL for this table
 	if v_type = 'TABLE' then

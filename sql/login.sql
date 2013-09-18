@@ -128,4 +128,12 @@ undefine OS
 
 SET sqlprompt "_USER'@'_CONNECT_IDENTIFIER-&y>"
 
+
+--- global Settings
+set trimspool on
+set serveroutput on
+set pagesize 100
+set linesize 130
+
+--
 SET termout ON

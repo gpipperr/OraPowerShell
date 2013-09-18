@@ -1,7 +1,7 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   nls settings of the Session and the database
--- Date:   01.September 2012
+-- Date:   September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
@@ -20,6 +20,15 @@ select  PARAMETER
  from nls_session_parameters 
 order by 1
 / 
+
+ttitle left  "Session Time Values" skip 2
+
+select to_char(sysdate,'dd.mm.yyyy hh24:mi')      as "DB Time"
+     , to_char(current_date,'dd.mm.yyyy hh24:mi') as "Client Time"
+	 , sysdate-current_date                       as "Time gab between client and db"
+from dual
+/
+	 
 
 ttitle left  "Char set of the database" skip 2
 column parameter format a24 heading "NLS DB Character Set"
