@@ -26,8 +26,8 @@ select  t.owner
       , t.table_name
 	  , 'table' as otype
 	  , nvl(c.comments,'n/a')  as comments
-from dba_tables t
-    ,dba_tab_comments c
+from  dba_tables t
+    , dba_tab_comments c
  where upper(t.table_name) like upper('%&&tab_name.%')
  and c.table_name (+) = t.table_name
  and c.owner (+) = t.owner

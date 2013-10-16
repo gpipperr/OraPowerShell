@@ -9,7 +9,7 @@ define USER_NAME = &1
 
 set verify off
 
-SET linesize 120 pagesize 400 recsep OFF
+SET linesize 120 pagesize 500 recsep OFF
 
 ttitle left  "User Info" skip 2
 
@@ -74,9 +74,9 @@ select GRANTOR
 
 ttitle left  "Profile Settings for the user &&USER_NAME." skip 2
 
-column PROFILE format a10
+column PROFILE format a12
 column RESOURCE_NAME format a30
-column limit format a15
+column limit format a20
 
 select  p.PROFILE
       , p.RESOURCE_NAME
@@ -86,6 +86,42 @@ select  p.PROFILE
 where u.PROFILE=p.PROFILE
   and u.username like upper('&&USER_NAME.')	
 order by p.RESOURCE_NAME
-/  
+/
+
+ttitle left  "Proxy Settings for the user &&USER_NAME." skip 2
+
+
+column PROXY                    format a15 heading "Proxy"
+column CLIENT                   format a15 heading "Client|User"
+column AUTHENTICATION           format a5 heading "Auth"
+column AUTHORIZATION_CONSTRAINT format a40 heading "Auth|Const"
+column ROLE                     format a15 heading "Role"
+column PROXY_AUTHORITY          format a10 heading "Proxy|Auth"
+
+  
+select 	PROXY
+	, CLIENT
+	, AUTHENTICATION
+	, AUTHORIZATION_CONSTRAINT
+	, ROLE
+	, PROXY_AUTHORITY
+ from dba_proxies
+where PROXY like upper('&&USER_NAME.%')	
+/
+
+ttitle left  "Password History for the user &&USER_NAME." skip 2
+
+SELECT user$.NAME
+     , user$.PASSWORD
+	 , user$.ptime
+	 , user_history$.password_date
+FROM  SYS.user_history$
+    , SYS.user$
+WHERE user_history$.user# = user$.user#
+ and user$.NAME like upper('&&USER_NAME.%')	
+ /
+
+prompt ... If you have PASSWORD_REUSE_TIME and/or PASSWORD_REUSE_MAX set in a profile assigned to a user account 
+prompt ... then you can reference dictionary table USER_HISTORY$ for when the password was changed for this account.
 
 ttitle off

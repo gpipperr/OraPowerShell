@@ -80,11 +80,13 @@ CREATE OR REPLACE package body gpi_log as
                   , code
                   , modul
                   , text
+				  , error_time
                   )
            values ( seq_gpi$logerrors.nextval
                   , :1
                   , :2 
                   , :3
+				  , sysdate
                   )';
 				  
     execute immediate v_sql_text using  v_sqlcode,  p_modul, p_message;
@@ -106,6 +108,7 @@ CREATE OR REPLACE package body gpi_log as
 							, code  varchar(8)
 							, modul varchar2(120) 
 							, text  varchar2(4000)
+							, error_time date default sysdate
 						)';
 	
 	v_sql_tab2 varchar2(2000):='create unique index idx_gpi$logerrors_pk on gpi$logerrors(errorid)';

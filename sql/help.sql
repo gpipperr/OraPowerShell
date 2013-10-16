@@ -37,7 +37,9 @@ DOC
 	- user.sql       - rights and roles of a user and object grants - parameter 1 - Name of the user
 	- users.sql      - overview over the DB users
 	- user_history.sql - get some static information for the login behavior of this user - parameter 1 - Name of the user
+	- user_objects.sql - show the counts of objects from none default users
 	- profile.sql    - profiles for the user of this database
+	- proxy.sql      - proxy settings in the database
 	
 	- user_tab.sql   - get all the tables and views of a user - parameter 1 - part of the table name
 	- ls.sql         - gets all the tables and shows the size of the user tab
@@ -49,6 +51,10 @@ DOC
 	- tab_desc.sql   - describe the columns of the table            - parameter 1 - part of the table
 	- tab_ddl.sql    - get the create script of a table             - parameter - Owner, Table name
 	- tab_last.sql   - get the change date of a record in the table - parameter - Owner, Table name
+	- tab_mod.sql    - get the last modifications of the table      - parameter - Owner, Table name
+	- index.sql		 - get the informations over a index            - parameter - Owner, Index name
+	- obj_dep.sql    - get the dependencies of a object in the database  - parameter - Owner, object name
+	
 	- select.sql     - select first 3 records of the table as list  - parameter 1 - name of the table
 	- view_count.sql - count entries in a view                      - parameter 1 - name of the view
 	- comment.sql    - search over all comments                     - parameter 1 - part of the comment text
