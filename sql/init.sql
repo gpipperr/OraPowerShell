@@ -79,9 +79,10 @@ from sys.x$ksppi a
    , sys.x$ksppsv c 
 where a.indx = b.indx 
   and a.indx = c.indx 
-  and substr(ksppinm,1,1)='_' 
- and a.ksppinm like lower('%&&PARA_NAME.%')
+  --and substr(ksppinm,1,1)='_' 
+ and lower(a.ksppinm) like lower('%&&PARA_NAME.%')
 order by a.ksppinm
 /
+
 
 ttitle off

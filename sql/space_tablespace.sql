@@ -1,7 +1,7 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   SQL Script to check the size of a table
---           thanks to Christian Gärber for create alter database file statement  
+--         thanks to Christian Gärber for create alter database file statement  
 -- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:sql_groesse_tabelle
 -- Date:   08.2013
 -- Site:   http://orapowershell.codeplex.com
@@ -14,7 +14,13 @@ SET VERIFY OFF
 
 define TABLESPACE = &1
 
-ttitle left  "Space of the the tablespace" skip 2
+
+prompt
+prompt Parameter 1 = Tablespace Name  => '&TABLESPACE' 
+prompt
+
+
+ttitle left  "Space of the the table space" skip 2
 
 -- get the free size in the tablespace
 -- 

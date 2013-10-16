@@ -118,6 +118,14 @@ select 'execute dbms_service.delete_service('''||name||''');' as cmd
  where name not in (select name from gv$active_services)
 / 
 
+ttitle 'Current Service Name Paramter'
+
+@init service_names
  
+select 'alter system set service_names='''||replace(value,' ','')||''' scope=both sid=''*'';'	 as cmd
+  from gv$parameter p, gv$instance v
+ where p.inst_id=v.inst_id
+   and name ='service_names'
+/
 
 ttitle off
