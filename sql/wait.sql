@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   
+-- Desc:  show the actual wait of the database 
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 SET linesize 130 pagesize 300 recsep OFF

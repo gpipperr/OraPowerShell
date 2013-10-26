@@ -33,7 +33,11 @@ declare
   select index_name,owner from all_indexes where table_name=upper('&&TAB_NAME.') and TABLE_OWNER=upper('&&OWNER.');
   
  cursor c_obj_type is
-   select object_type,owner from all_objects where object_name =upper('&&TAB_NAME.') and ( owner=upper('&&OWNER.') or owner='PUBLIC' );
+   select object_type,owner 
+	  from all_objects 
+	 where object_name =upper('&&TAB_NAME.') 
+	   and ( owner=upper('&&OWNER.') or owner='PUBLIC' )
+	   and object_type!='TABLE PARTITION';
  
  v_type  varchar2(32);
  v_owner varchar2(32);

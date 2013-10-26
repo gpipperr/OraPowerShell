@@ -109,23 +109,116 @@ group by service_name,inst_id,username,machine
 order by 5
 /
 
-ttitle 'current services defiend but not active? delete script'
+ttitle 'current services defined but not active? delete script'
 
 column cmd format a100
 
 select 'execute dbms_service.delete_service('''||name||''');' as cmd
   from dba_services 
  where name not in (select name from gv$active_services)
-/ 
+/ 	
 
 ttitle 'Current Service Name Paramter'
 
 @init service_names
+
+
+variable ddllob clob
+
+set heading off
+set echo off
+
+set long 64000;
+
  
-select 'alter system set service_names='''||replace(value,' ','')||''' scope=both sid=''*'';'	 as cmd
-  from gv$parameter p, gv$instance v
- where p.inst_id=v.inst_id
-   and name ='service_names'
+ 
+declare
+
+TYPE tockenTab IS TABLE OF VARCHAR2(255) INDEX BY BINARY_INTEGER;
+
+cursor c_sv_value
+	is
+	select value
+	  from gv$parameter p, gv$instance v
+	 where p.inst_id=v.inst_id
+	   and name ='service_names';
+
+	v_param_list varchar2(32767);
+	v_ddl varchar(2000):='alter system set service_names=##SERVICE_NAME_LIST## scope=both sid=''*'';';
+	v_tab_length   BINARY_INTEGER;
+	v_s_array      DBMS_UTILITY.lname_array;
+    v_a_list       tockenTab;
+    v_a_count      pls_integer:=0;
+	v_s_mon_found  boolean:=false;
+
+begin
+
+	for rec in  c_sv_value
+	loop
+		-- split servicenames in a table
+		dbms_utility.comma_to_table( list   => rec.value
+								   , tablen => v_tab_length
+									, tab   => v_s_array
+								);
+		-- check for monitoring service
+		for i in 1..v_tab_length
+		loop
+			if rtrim(ltrim(upper(v_s_array(i)))) like 'S_MONITORING%' then
+				 v_s_mon_found:=true;
+			end if;
+		end loop;
+		
+		if 	v_s_mon_found = false then
+			v_tab_length:=v_tab_length+1;
+			v_s_array(v_tab_length):='S_MONITORING';
+		end if;
+			
+		-- recreate the parameter
+		for i in 1..v_tab_length
+		loop
+		
+			if i = 1 then
+				v_param_list:=rtrim(ltrim(v_s_array(i)));
+			else
+				if length(v_param_list||','||v_s_array(i)) < 200 then
+					v_param_list:=v_param_list||','||rtrim(ltrim(v_s_array(i)));
+				else
+					v_a_count:=v_a_count+1;				  
+					v_a_list(v_a_count):=v_param_list;				  
+				    v_param_list:=rtrim(ltrim(v_s_array(i)));
+				end if;
+			end if;	
+		end loop;	
+		v_a_count:=v_a_count+1;			
+		v_a_list(v_a_count):=v_param_list;	
+		
+		dbms_output.put_line( 'Info -- orginal=='||rec.value);
+		
+		
+		for i in 1..v_a_count
+		loop
+			if i = 1 then
+				v_param_list:=''''||v_a_list(i);
+			else
+				v_param_list:=v_param_list||''','''||v_a_list(i);
+			end if;							
+		end loop;		
+		v_param_list:=v_param_list||'''';		
+
+	end loop;
+	
+	:ddllob:=replace(v_ddl,'##SERVICE_NAME_LIST##',v_param_list);
+	
+end;
 /
+set linesize 130
+column cmd format a130
+
+select :ddllob as cmd from dual;
+
+undefine ddllob
+
+set heading on
+
 
 ttitle off

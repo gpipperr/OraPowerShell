@@ -16,7 +16,7 @@ prompt
 
 set verify off
 
-SET linesize 150 pagesize 120
+SET linesize 150 pagesize 180
 
 ttitle left  "Process List of the Oracle Sessions" skip 2
 
