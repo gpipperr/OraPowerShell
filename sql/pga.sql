@@ -51,7 +51,7 @@ order by pga_alloc_mem_mb
 
 column name     format a38
 column inst_id  format 99
-column value    format 999G999G999G999 heading "Values"
+column value    format 999G999G999G999G999 heading "Values"
 
 ttitle left  "PGA Statistic" skip 2
 select   inst_id 
