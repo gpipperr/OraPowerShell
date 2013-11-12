@@ -52,6 +52,7 @@ column flags           format 999999       heading 'flags'
 select
       sm.inst_id    
     , sm.service_name
+	 , ds.service_id
     , to_char(sm.begin_time,'hh24:mi:ss') beg_hist
     , to_char(sm.end_time,'hh24:mi:ss') end_hist
     , sm.goodness
@@ -100,7 +101,7 @@ ttitle 'current connection over the services for each server'
 select  
        count(*)
      , inst_id
-     , service_name 
+     , service_name 	
 	 , username
 	 , machine
  from gv$session 

@@ -10,13 +10,14 @@ DOC
  
 	The daily scripts
 	
-	- dict.sql     	 - query the data dictionary - parameter 1 - part of the comments text
+	- dict.sql       - query the data dictionary - parameter 1 - part of the comments text
 	
 	- database.sql   - name and age of the database
-	- status.sql   	 - status of the instance/cluster
+	- status.sql     - status of the instance/cluster
 	- instance.sql   - status of the instance where the user is connected
+	- limit.sql      - limits since last startup of the instances
 
-	- sessions.sql 	 - actual connections to the database 
+	- sessions.sql   - actual connections to the database 
 	- trans.sql      - running transactions in the database
 	- process.sql    - actual processes in the database  
 	                   Parameter 1 - name of the DB or OS User - parameter 2 - if Y shows also internal processes
@@ -31,6 +32,8 @@ DOC
 	
 	- init.sql       - init.ora entries
 	- init_rac.sql   - show init.parameter in a rac Environment to check if same parameters on each node
+	
+	- xmldb.sql      - show configuration of the XML DB
 	
 	- invalid.sql  	 - show all invalid objects
 	

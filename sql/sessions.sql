@@ -44,7 +44,7 @@ select  inst_id
       , client_identifier
 	  , client_info	  
   from gv$session 
- where  ( username like '%&&USER_NAME.%' or ( nvl('&ALL_PROCESS.','N')='Y' and username is  null))
+ where  ( username like upper('%&&USER_NAME.%') or ( nvl('&ALL_PROCESS.','N')='Y' and username is  null))
  order by program
          ,inst_id
 /
