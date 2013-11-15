@@ -127,7 +127,7 @@ select 'drop index ' || i.owner || '.' || i.index_name || ';'
 -- drop all other objects in the right order
 
 select 'drop ' || o.object_type || ' ' || o.owner || '.' || object_name || ' ' ||
-       decode(o.object_type, 'TABLE', 'PURGE', '') || ';' as command
+       decode(o.object_type, 'TABLE', 'CASCADE CONSTRAINTS PURGE', '') || ';' as command
   from dba_objects o
  where o.object_type in
        ('SEQUENCE', 'JAVA DATA', 'PROCEDURE', 'PACKAGE', 'PACKAGE BODY', 'TYPE BODY', 'JAVA RESOURCE', 'DIRECTORY',
