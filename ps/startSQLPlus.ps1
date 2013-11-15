@@ -4,3 +4,5 @@ $Host.UI.RawUI.WindowTitle = "OraPowerShell --  sqlplus $args"
 
 # ==== Call SQL Plus
 sqlplus $args[0] 
+
+
