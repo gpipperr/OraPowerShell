@@ -46,3 +46,5 @@ $wcount = @(Get-Process | Where-Object {$_.MainWindowTitle -like "OraPowerShell*
 $Host.UI.RawUI.WindowTitle = "OraPowerShell Window Nr. $wcount"
 
 
+
+
