@@ -1,3 +1,10 @@
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   
+-- Date:   November 2013
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
+
 select s.inst_id
      , s.username
      , u."USER" as user_name

@@ -10,10 +10,10 @@ SET linesize 130 pagesize 300 recsep OFF
 ttitle  "Report Database Files"  SKIP 1 -
        center "Sizes in MB" SKIP 2
 
-COLUMN tablespace_name format a12 heading "Tablespace"
+COLUMN tablespace_name format a18 heading "Tablespace"
 COLUMN df_size format 999999 heading "Size"
 COLUMN F_ID format 999
-COLUMN FILE_NAME format A40 heading "Filename"
+COLUMN FILE_NAME format A48 heading "Filename"
 column status format A10
 column fragidx format A12 heading "Fragmen. Index"
 
@@ -41,7 +41,7 @@ select FILE_ID as F_ID
 
 ttitle  "Usage of the datafiles"  SKIP 2
 
-select d.file_name "FILE_NAME"
+select d.file_name 
        ,ROUND(max(d.BYTES) / 1024 / 1024, 2) "total MB"
        ,DECODE(sum(f.BYTES), null, 0, ROUND(sum(f.BYTES) / 1024 / 1024, 2)) "Free MB"
        ,DECODE(sum(f.BYTES), null, 0, ROUND((max(d.BYTES) / 1024 / 1024) - (sum(f.BYTES) / 1024 / 1024), 2)) "Used MB"
@@ -85,3 +85,8 @@ order by b.name
 /
  
 ttitle off
+
+prompt ...
+prompt ... to add a datafile you can use this example
+prompt ... "ALTER TABLESPACE <NAME> ADD DATAFILE '<path>/<name>.dbf' SIZE 10M  AUTOEXTEND ON NEXT 10M  MAXSIZE 3000M;"
+prompt ...

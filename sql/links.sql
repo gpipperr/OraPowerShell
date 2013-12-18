@@ -27,8 +27,13 @@ ttitle left  "Link Infos -- All DB Links" skip 2
 
 select db_link
 	  ,owner 
+	  ,host
 from dba_db_links
  /
 
+ 
 ttitle off
+
+prompt ... to create a private db link use this statement:
+prompt ... "CREATE DATABASE LINK mylink CONNECT TO remote_user IDENTIFIED BY remote_pwd USING 'remote_db';"
 

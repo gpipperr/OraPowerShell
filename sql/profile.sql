@@ -25,6 +25,10 @@ select PROFILE
 order by PROFILE,RESOURCE_TYPE
 /
 
+prompt ...
+prompt ... example to change: "ALTER PROFILE DEFAULT   LIMIT FAILED_LOGIN_ATTEMPTS 50  PASSWORD_LIFE_TIME UNLIMITED;"
+prompt ...
+
 ttitle left  "Which Profile is in user" skip 2
 
 column username   format a24 heading "User Name"

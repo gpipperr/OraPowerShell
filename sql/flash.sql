@@ -45,6 +45,20 @@ select  to_char(INST_ID) as inst_id
 group by inst_id
 /
 
+ttitle " Flashback Restore Points"
+column scn format 99999999999999999 
+column RESTORE_POINT_TIME format a18 heading "RS P Time"
+column time format a18 heading "Time"
+column name format a30 heading "Name"
+column GUARANTEE_FLASHBACK_DATABASE format a6 heading "Garant."
+
+select scn
+     , to_char(RESTORE_POINT_TIME,'dd.mm.yyyy hh24:mi') as RESTORE_POINT_TIME
+	  , to_char(TIME,'dd.mm.yyyy hh24:mi')  as TIME
+	  , NAME
+	  , GUARANTEE_FLASHBACK_DATABASE 
+from  V$RESTORE_POINT;
+
 ttitle  "Report Flashback Logs Buffer"  SKIP 2 -
 
 column  name format A40

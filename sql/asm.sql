@@ -21,7 +21,7 @@ column total_mb &&lnum
 column group_number format 99  heading "Grp Nr."
 column inst_id format 99  heading "Inst"
 column status  format A6
-column state  format A6
+column state  format A7
 column type  format A6
 column name  format A20
 column free &&lnum
@@ -41,10 +41,12 @@ select group_number
       ,name
       ,state
       ,type
-      ,total_mb
-      ,usable_file_mb as free
-      ,total_mb - usable_file_mb as used
+      ,total_mb  Brutto
+		,decode(type,'NORMAL',total_mb/2,total_mb) Netto
+      ,usable_file_mb as free_netto
+      --,total_mb - usable_file_mb as used
   from v$asm_diskgroup
+order by name  
 /
 
 prompt ----------------------
@@ -68,13 +70,18 @@ prompt ----------------------
 column diskpath format A15
 column name format A12
 
-select GROUP_NUMBER
-      ,name
-      ,path as diskpath
-      ,TOTAL_MB
-      ,FREE_MB
-      ,total_mb - free_mb as used
-  from v$asm_disk
+select d.GROUP_NUMBER 
+      ,g.name
+      ,d.name 
+      ,d.path as diskpath  
+		,d.type
+      ,d.TOTAL_MB 
+      ,d.FREE_MB 
+      ,d.total_mb - d.free_mb as used 
+  from v$asm_disk  d 
+     , v$asm_diskgroup g 
+where g.GROUP_NUMBER = d.GROUP_NUMBER	   
+order by 1   
 /
 
 ttitle left "ASM Disk Extend distribution"
