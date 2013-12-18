@@ -40,10 +40,12 @@ select  v.inst_id
 
 ttitle "DB Log Mode" SKIP 2
 
-select LOG_MODE from v$database;
+column FORCE_LOGGING format a20 heading "Force Logging|enabled"
+column LOG_MODE format a20 heading "Log|Mode"
+
+select LOG_MODE,FORCE_LOGGING  from v$database;
 
 archive log list
-
 
 ttitle "MegaByte total DB Size for all files" SKIP 2
 

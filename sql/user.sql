@@ -11,6 +11,13 @@ set verify off
 
 SET linesize 120 pagesize 500 recsep OFF
 
+ttitle left  "User Account status" skip 2
+
+select USERNAME,ACCOUNT_STATUS,LOCK_DATE,EXPIRY_DATE 
+ from dba_users 
+ where USERNAME like upper('&&USER_NAME.')
+ /
+
 ttitle left  "User Info" skip 2
 
 select lpad(' ', 2 * level) || granted_role "User, his roles and privileges"

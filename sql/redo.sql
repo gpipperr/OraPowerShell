@@ -1,7 +1,7 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   Get the Redo Log information
--- Date:   01.September 2012
+-- Author: Gunther PippÃ¨rr ( http://www.pipperr.de )
+-- Desc:   redo
+-- Date:   November 2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
@@ -86,7 +86,7 @@ column T20 format a3 heading "20" JUSTIFY CENTER
 column T21 format a3 heading "21" JUSTIFY CENTER
 column T22 format a3 heading "22" JUSTIFY CENTER
 column T23 format a3 heading "23" JUSTIFY CENTER
-column T24 format a3 heading "24" JUSTIFY CENTER
+column T24 format a3 heading "00" JUSTIFY CENTER
 column slday format a5 heading "Day"  JUSTIFY LEFT
 
 select to_char(to_date(to_char(slday),'yyyymmdd'),'DD.MM') as slday
@@ -113,7 +113,7 @@ select to_char(to_date(to_char(slday),'yyyymmdd'),'DD.MM') as slday
 	,  decode(nvl(T21,0),0,'-',to_char(T21))  T21
 	,  decode(nvl(T22,0),0,'-',to_char(T22))  T22
 	,  decode(nvl(T23,0),0,'-',to_char(T23))  T23
-	,  decode(nvl(T24,0),0,'-',to_char(T24))  T24
+	--,  decode(nvl(T24,0),0,'-',to_char(T24))  T24
 from (
 select sum(  decode(  nvl(to_char(lh.FIRST_TIME,'yyyymmddhh24'),0) 
 						,0,0
@@ -163,11 +163,41 @@ pivot (
 )
 /
 
+ttitle  "Archive log size last 7 days"  SKIP 1
 
- 
+column SIZE_GB format 999999999 heading "Size GB"
+column dest_id format 99 heading "Arch|Dest ID"
 
+select  decode(grouping (trunc(completion_time))
+               ,1
+					,'Sum:'
+					,trunc(completion_time)
+        ) days
+      , round(sum(blocks * block_size)/1024/1024/1024,3) size_gb 
+		,DEST_ID
+  from v$archived_log 
+ where completion_time > trunc(sysdate -7)
+ group by cube (DEST_ID,trunc (completion_time)) order by 1,3
+/
+
+prompt .... look at the archive dest id for more then one archive destination
+prompt .... 
+
+ttitle  "Archive log count on disk days"  SKIP 1
+
+select   THREAD#                 as inst_id
+       , DEST_ID    
+       , trunc(COMPLETION_TIME)  as log_day
+		 , substr(name,1,10)||'..' as file_name
+		 , count(*)                as archvie_count
+    from v$archived_log
+   where name is not null
+   group by trunc(COMPLETION_TIME),THREAD#,substr(name,1,10)||'..',DEST_ID
+   order by 2,3,1
+/	
 
 ttitle  "Redolog init ora Settings "  SKIP 1
+
 show parameter log_buffer
 
 ttitle left  "Trace File Locations" skip 2
@@ -184,7 +214,6 @@ where vs.paddr=p.addr
 order by vs.username
        , p.inst_id
 / 
-
 
 ttitle  "Redolog Buffer Contention statistic:"  SKIP 2
 

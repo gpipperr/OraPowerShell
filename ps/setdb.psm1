@@ -238,8 +238,8 @@ function setdb {
 	$titleString=$Host.UI.RawUI.WindowTitle 
 	$Host.UI.RawUI.WindowTitle = "$titleString SID: $ENV:ORACLE_SID"
 
-	Remove-Item variable:ORACLE_HOME_LIST
-	Remove-Item variable:ORACLE_SID_LIST
+	. Remove-Item variable:ORACLE_HOME_LIST
+	. Remove-Item variable:ORACLE_SID_LIST
 
 }
 
