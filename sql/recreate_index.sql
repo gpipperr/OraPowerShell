@@ -213,6 +213,12 @@ prompt /
 prompt 
 prompt ttitle off
 prompt
+prompt prompt recreate statistics if missing after index rebuild at
+prompt select to_char(sysdate,'dd.mm.yyyy hh24:mi') as finish_date from dual
+prompt /
+prompt exec dbms_stats.gather_schema_stats (ownname => upper('&&USER_NAME.'), options => 'GATHER', estimate_percent => DBMS_STATS.auto_sample_size, cascade => TRUE , degree => &&PARALLEL_EXEC. );
+prompt 
+prompt 
 prompt prompt  ============ Finish ================
 prompt select to_char(sysdate,'dd.mm.yyyy hh24:mi') as finish_date from dual
 prompt /
