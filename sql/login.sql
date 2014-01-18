@@ -134,6 +134,7 @@ set trimspool on
 set serveroutput on
 set pagesize 100
 set linesize 130
-
+-- suppress scientific notation
+set NUMWIDTH  12
 --
 SET termout ON

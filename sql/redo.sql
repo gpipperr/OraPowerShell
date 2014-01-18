@@ -168,16 +168,18 @@ ttitle  "Archive log size last 7 days"  SKIP 1
 column SIZE_GB format 999999999 heading "Size GB"
 column dest_id format 99 heading "Arch|Dest ID"
 
-select  decode(grouping (trunc(completion_time))
-               ,1
-					,'Sum:'
-					,trunc(completion_time)
+select decode(grouping (trunc(completion_time))
+               , 1
+					, 'Sum:'
+					, trunc(completion_time)
         ) days
       , round(sum(blocks * block_size)/1024/1024/1024,3) size_gb 
-		,DEST_ID
-  from v$archived_log 
- where completion_time > trunc(sysdate -7)
- group by cube (DEST_ID,trunc (completion_time)) order by 1,3
+		, DEST_ID
+ from  v$archived_log 
+where completion_time > trunc(sysdate -7)
+-- where completion_time > to_date('13.01.2014  17:13','dd.mm.yyyy hh24:mi')
+-- group by DEST_ID
+group by cube (DEST_ID,trunc (completion_time)) order by 1,3
 /
 
 prompt .... look at the archive dest id for more then one archive destination

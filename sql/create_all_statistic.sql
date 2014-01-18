@@ -1,0 +1,112 @@
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   recreate the statistic of a database
+-- Date:   01.2014
+-- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:statistiken
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
+
+
+-----------------------------------------------
+set timing on
+set serveroutput on
+set linesize 256
+set pagesize 200
+set echo on
+set serveroutput on
+
+-----------------------------------------------
+
+column last format a14
+
+spool recreate_stat.log
+
+SELECT  
+	  count(*)
+	, owner 
+	, to_char(LAST_ANALYZED,'dd.mm.yyyy') as last		  
+ from dba_tables 
+group by owner,to_char(LAST_ANALYZED,'dd.mm.yyyy'),to_char(LAST_ANALYZED,'YYYYDDMM')
+order by owner,to_char(LAST_ANALYZED,'YYYYDDMM') desc
+/ 
+
+
+-----------------------------------------------
+-- delete all old statistics if necessary
+-- 
+exec DBMS_STATS.DELETE_DATABASE_STATS;
+exec DBMS_STATS.DELETE_DICTIONARY_STATS;
+exec DBMS_STATS.DELETE_FIXED_OBJECTS_STATS;
+-----------------------------------------------
+
+-----------------------------------------------
+-- gather first system stats over the io of the creation of the system statistic
+exec DBMS_STATS.gather_system_stats('Start');
+
+-----------------------------------------------
+--
+exec  DBMS_STATS.gather_fixed_objects_stats;
+
+
+-----------------------------------------------
+--
+exec DBMS_STATS.GATHER_DICTIONARY_STATS (estimate_percent  => 100, degree  => 24,options  => 'GATHER')
+
+
+-----------------------------------------------
+--
+declare
+ cursor c_owner is
+  select owner from dba_tables 
+   where owner not in ('SYS','SYSTEM','XDB')
+     --  System User statitiken anlegen?
+   -- and  owner not in ('MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','FLOWS_FILES','OLAPSYS','OWBSYS','OWBSYS_AUDIT')
+ group by owner;
+ 
+ v_parallel number:=16;
+ 
+begin
+	dbms_output.put_line('-- Info Start Anlegen der neuen Statisiken für die DB User um ::'||to_char(sysdate,'dd.mm.yyyy hh24:mi'));
+	dbms_output.put_line('-----------------------');
+	for rec in c_owner
+	loop
+				
+		dbms_output.put_line('-- Info Starte das Anlegen der Statisik für den User ::'||rec.owner ||' um ::'||to_char(sysdate,'dd.mm.yyyy hh24:mi'));
+		
+		if rec.owner not in ('MAIN_USER') then
+		   -- keine histogramme
+			dbms_stats.gather_schema_stats (ownname => rec.owner, options => 'GATHER', estimate_percent => DBMS_STATS.auto_sample_size, cascade => TRUE , degree => v_parallel );
+		else
+			-- Mit Histogrammen
+			dbms_stats.gather_schema_stats (ownname => rec.owner,cascade =>TRUE,estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE,Block_Sample=>FALSE,degree=>v_parallel,no_invalidate=>TRUE,granularity=>'ALL',method_opt=>'FOR ALL COLUMNS SIZE AUTO');             
+		end if;	
+		
+		dbms_output.put_line('-- Info Anlegen der Statisik für den User ::'||rec.owner||' beendet um ::'||to_char(sysdate,'dd.mm.yyyy hh24:mi'));
+		
+		dbms_output.put_line('-----------------------');
+		
+	end loop;
+	dbms_output.put_line('-----------------------');
+	dbms_output.put_line('-- Info Anlegen der neuen Statisiken für die DB User um ::'||to_char(sysdate,'dd.mm.yyyy hh24:mi')||' beendet');
+end;
+/
+-----------------------------------------
+-- Falls etwas fehlt
+Exec DBMS_STATS.GATHER_DATABASE_STATS (degree=>8,options=>'GATHER AUTO' );
+
+-----------------------------------------
+-- end system statistic
+EXECUTE DBMS_STATS.gather_system_stats('Stop');
+
+------------------------------------------
+
+SELECT  
+	 count(*)
+	, owner 
+	, to_char(LAST_ANALYZED,'dd.mm.yyyy') as last
+ from dba_tables 
+group by owner,to_char(LAST_ANALYZED,'dd.mm.yyyy'),to_char(LAST_ANALYZED,'YYYYDDMM')
+order by owner,to_char(LAST_ANALYZED,'YYYYDDMM') desc
+/ 
+
+spool off;

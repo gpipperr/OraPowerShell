@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   get the user rights and grants
+-- Desc:   show all jobs in the database
 -- Date:   01.September 2012
 -- Site:   http://orapowershell.codeplex.com
 --===============================================================================

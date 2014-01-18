@@ -55,6 +55,7 @@ where vs.paddr=p.addr
   and ( vs.username like '%&&USER_NAME.%' or ( nvl('&ALL_PROCESS.','N')='Y' and vs.username is  null))
 order by vs.username
        , p.inst_id
+		 ,p.spid
 /  
 
 ttitle left  "Trace File Locations" skip 2

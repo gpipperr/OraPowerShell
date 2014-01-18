@@ -22,6 +22,18 @@ from sys.aux_stats$
 order by 1,2
 /
 
+prompt .... CPUSPEED	   Workload CPU speed in millions of cycles/second
+prompt .... CPUSPEEDNW	Noworkload CPU speed in millions of cycles/second
+prompt .... IOSEEKTIM	Seek time + latency time + operating system overhead time in milliseconds
+prompt .... IOTFRSPEED	Rate of a single read request in bytes/millisecond
+prompt .... MAXTHR	   Maximum throughput that the I/O subsystem can deliver in bytes/second
+prompt .... MBRC	      Average multiblock read count sequentially in blocks
+prompt .... MREADTIM	   Average time for a multi-block read request in milliseconds
+prompt .... SLAVETHR	   Average parallel slave I/O throughput in bytes/second
+prompt .... SREADTIM	   Average time for a single-block read request in milliseconds
+
+
+
 ttitle left  "LAST ANALYZED Tables Overview" skip 2
 
 column last_an   format a18  heading "Last|analyzed"

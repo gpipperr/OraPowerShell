@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   get the profiles of the database
+-- Desc:   get the users of the database
 -- Date:   September 2013
 
 -- Site:   http://orapowershell.codeplex.com

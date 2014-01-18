@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   Script to create a sql script to clean Oracle schema from the user objects
+-- Desc:   Script to create a sql script to clean Oracle schema from the all user objects
 -- Parameter 1: Name of the User 
 --
 -- Must be run with dba privileges

@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   SQL Script Overview
+-- Desc:   search data dictionary views
 -- Date:   September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================

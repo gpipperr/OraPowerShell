@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   Informations about cursor usage in the database
+-- Desc:   Informations about sga usage in the database
 -- Date:   08.2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================

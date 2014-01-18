@@ -1,7 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   SQL Script to check the size of a table
--- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:sql_groesse_tabelle
+-- Desc:   Object dependencies 
 -- Date:   08.2013
 -- Site:   http://orapowershell.codeplex.com
 
