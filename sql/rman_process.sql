@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   Process List of Oracle sessions
+-- Desc:   Process List of RMAN Oracle sessions
 -- Date:   01.September 2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================

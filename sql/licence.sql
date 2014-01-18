@@ -1,3 +1,4 @@
+
 col SPOOL_NAME_COL new_val SPOOL_NAME
  
 SELECT replace(ora_database_name||'_'||SYS_CONTEXT('USERENV','HOST')||'_'||to_char(sysdate,'dd_mm_yyyy_hh24_mi')||'_licence.html','\','_') 

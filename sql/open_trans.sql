@@ -1,7 +1,7 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   show open transactions in the database
--- Date:   September 2012
+-- Date:   September 2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 

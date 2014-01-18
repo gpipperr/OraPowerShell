@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   redo Change
+-- Desc:   redo Change of a DB User
 -- Date:   November 2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
@@ -18,9 +18,14 @@ column mb_per_user          format 999G999G999D99
 column owner          format a20
 column days           format a10
 
-DEF dbuser='EMNOS_PL'
 
-ttitle  "Percent Overview % for this user &&dbuser"  SKIP 1
+define USER_NAME='&1'
+
+prompt
+prompt Parameter 1 = User Name          => &&USER_NAME.
+prompt
+
+ttitle  "Percent Overview % for this user &&USER_NAME"  SKIP 1
 
 with actions as
  (select so.owner as owner
@@ -68,12 +73,12 @@ select
          group by trunc(begin_interval_time)) t
  where r.days = a.days
    and t.days = r.days
-	and a.owner = '&&DBUSER'
+	and a.owner = upper('&&USER_NAME')
  order by a.days,a.owner
 / 
 
 
-ttitle  "Detail Segments Overview for this user &&dbuser"  SKIP 1
+ttitle  "Detail Segments Overview for this user &&USER_NAME"  SKIP 1
 
 select * from (
  select so.owner as owner
@@ -89,7 +94,7 @@ select * from (
      and ss.obj# = so.obj#
      and ss.dataobj# = so.dataobj#
      and begin_interval_time > trunc(sysdate - 7)
-	  and so.owner ='EMNOS_PL'	  
+	  and so.owner = upper('&&USER_NAME')
    group by so.owner,OBJECT_NAME
            ,trunc(begin_interval_time)
  order by sum(ss.db_block_changes_delta) desc			  
@@ -99,6 +104,3 @@ select * from (
 
 ttitle off
 
-			  
-			  
- 

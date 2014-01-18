@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   
+-- Desc:   check usage of temp tablespace
 -- Date:   November 2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================

@@ -29,9 +29,9 @@ column column_position format 99 heading "Pos"
 
 select  c.owner
       , c.name
-	  , c.object_type
-	  , c.column_name
-	  , c.column_position 
+	   , c.object_type
+	   , c.column_name
+	   , c.column_position 
   from  dba_part_key_columns c      
 where c.owner like upper('&&USER_NAME.')
 order by c.name,c.column_position

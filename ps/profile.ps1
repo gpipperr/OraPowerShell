@@ -20,7 +20,7 @@
 	}
 	else 
 	{
-		(get-host).UI.RawUI.BackgroundColor = "blue"    
+		(get-host).UI.RawUI.BackgroundColor = "DarkMagenta"    
 	}
 	(get-host).UI.RawUI.ForegroundColor = "white"
 	clear-host
@@ -28,19 +28,19 @@
 
 # Begrüßungs Screen
 $d = get-Date -f dd.M.yyy
-"Welcome the the Power Shell started :: " + $d
+"Welcome the the Power Shell -- started at :: " + $d
 
 $Invocation = (Get-Variable MyInvocation -Scope 0).Value
 $scriptpath=Split-Path $Invocation.MyCommand.Path
 
 ###### Alias section
-#set-alias setdb "$scriptpath\setdb.ps1" -Description "Set the Oracle Enviroment alias"
-####
+#
 
 Import-Module "$scriptpath\setdb.psm1"
 
 ####
 cd $scriptpath
+
 ####
 $wcount = @(Get-Process | Where-Object {$_.MainWindowTitle -like "OraPowerShell*"} | Select-Object MainWindowTitle ).Length + 1 
 $Host.UI.RawUI.WindowTitle = "OraPowerShell Window Nr. $wcount"

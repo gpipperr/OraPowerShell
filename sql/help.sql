@@ -21,10 +21,10 @@ DOC
 	- sessions.sql   - actual connections to the database 
 	- trans.sql      - running transactions in the database
 	- undo.sql       - show activity on the undo segment
-    - open_trans.sql - all longer open running transactions in the database
+   - open_trans.sql - all longer open running transactions in the database
 	- process.sql    - actual processes in the database  
-	                   Parameter 1 - name of the DB or OS User - parameter 2 - if Y shows also internal 
-					   processes
+	                  Parameter 1 - name of the DB or OS User - parameter 2 - if Y shows also internal 
+					      processes
 	
 	- tns.sql        - show services and tns settings on services
 		
@@ -36,6 +36,7 @@ DOC
 	
 	- init.sql       - init.ora entries
 	- init_rac.sql   - show init.parameter in a rac Environment to check if same parameters on each node
+	- db_events.sql  - test if some events are set in the DB enviroment
 	
 	- xmldb.sql      - show configuration of the XML DB
 	
@@ -61,6 +62,8 @@ DOC
 	- tab_ddl.sql    - get the create script of a table             - parameter - Owner, Table name
 	- tab_last.sql   - get the change date of a record in the table - parameter - Owner, Table name
 	- tab_mod.sql    - get the last modifications of the table      - parameter - Owner, Table name
+	- column_tyle.sql - get all columns in the database wiht this datatype  parameter 1 - datatype
+	- column.sql      - search all tables with this column name - parameter 1 - name of the column
 	
 	- tab_tablespace.sql      - get the tablespaces of the  user    - parameter - Owner
 	- tab_tablespace_all.sql  - get the used tablespace overview of this database 
@@ -82,7 +85,7 @@ DOC
 	- redo_change.sql - how create how much redo per day last 7 in the database
 	- scn.sql        - scn in the archive log history 
 	
-	- tsc.sql      	 - table space size information
+	- tsc.sql      	- table space size information
 	- awr.sql        - usage of the AWR repository and of the SYSAUX table pace 
 	- awr_sql.sql    - get SQL information
 	
@@ -115,6 +118,8 @@ DOC
 	
 	- datapump.sql    - show datapump sessions
 	
+	- streams_status.sql - Status of streams replication
+	
 	- login.sql    	  - set the login prompt
 		
 	#Create Scripts
@@ -123,6 +128,7 @@ DOC
 	- clean_user.sql       - create the DDL to delete every object in the schema - parameter 1 - username
 	- space_tablespace.sql - create the DDL to shrink a table space
 	                         parameter 1 - Name of the table space (%) for all
+	- recreate_index.sql   - Script to create a index recration script								 
 	
 	#Reports
 	=================
@@ -134,7 +140,7 @@ DOC
 	
 	- audit_rep.sql		  - HTML Report - Audit Log entries
 	
-    - licence.sql		  - HTML Report - Licence Report Overview - Feature Usage
+   - licence.sql		  - HTML Report - Licence Report Overview - Feature Usage
 	
 	#Setup
 	=================

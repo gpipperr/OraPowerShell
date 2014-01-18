@@ -1,6 +1,6 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   Analyse the SYSAUX Tablespace
+-- Desc:   Analyse the SYSAUX Table space and AWR Repository
 -- Date:   08.2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================

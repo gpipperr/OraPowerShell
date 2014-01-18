@@ -1,8 +1,8 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   SQL Script to check the size of a table
--- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:sql_groesse_tabelle
+-- Desc:   SQL Script to check io of the database
 -- Date:   08.2013
+-- Doku:   http://www.oracle.com/webfolder/technetwork/de/community/dbadmin/tipps/io_calibration/index.html
 -- Site:   http://orapowershell.codeplex.com
 ---         http://docs.oracle.com/cd/E11882_01/appdev.112/e25788/d_resmgr.htm#CJGHGFEA
 --==============================================================================
@@ -19,7 +19,7 @@ declare
   iops integer;
   mbps integer;
 begin
-  --dbms_resource_manager.calibrate_io (1, 10, iops, mbps, lat);
+  dbms_resource_manager.calibrate_io (100, 10, iops, mbps, lat);
   dbms_output.put_line('max_iops = ' || iops);
   dbms_output.put_line('latency  = ' || lat);
   dbms_output.put_line('max_mbps = ' || mbps);

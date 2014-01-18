@@ -18,6 +18,7 @@ select owner
 	 group by object_type,owner	
  ) 
 where owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT')
+and obj_type in ('TABLE','INDEX')
 group by owner,obj_type,obj_count
 order by owner,obj_type
 /

@@ -61,6 +61,7 @@ select GRANTOR
          ,GRANTOR
          ,PRIVILEGE
          ,table_name 
+order by owner,table_name,	PRIVILEGE		
 /
 
 ttitle left  "Object rights from other user to &&USER_NAME." skip 2
@@ -77,6 +78,7 @@ select GRANTOR
          ,GRANTOR
          ,PRIVILEGE
          ,table_name
+order by owner,table_name,	PRIVILEGE				
 /
 
 ttitle left  "Profile Settings for the user &&USER_NAME." skip 2
