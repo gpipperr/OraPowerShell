@@ -76,6 +76,29 @@ where p.table_owner like upper('&&OWNER.')
 order by p.partition_position  
 /
 
+
+-----------------------
+-- get the last partition of the table
+----------------------
+
+
+ttitle  "Last Portions of the table &&OWNER..&&TAB_NAME."  SKIP 1
+
+select out.TABLE_OWNER
+     , out.TABLE_NAME
+	  , out.PARTITION_NAME
+	  , out.HIGH_VALUE 
+ from dba_tab_partitions out
+where PARTITION_POSITION = (select max(PARTITION_POSITION) 
+                              from dba_tab_partitions inner
+                              where out.TABLE_OWNER = inner.TABLE_OWNER 
+										  and out.TABLE_NAME  = inner.TABLE_NAME)
+ and out.table_owner like upper('&&OWNER.')
+ and out.table_name  like upper('&&TAB_NAME.')
+order by TABLE_OWNER
+        ,TABLE_NAME
+/
+
 column partition_position clear
 column partition_name     clear
 

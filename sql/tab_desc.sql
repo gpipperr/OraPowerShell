@@ -21,7 +21,7 @@ prompt Parameter 1 = Owner Name  => &&OWNER.
 prompt Parameter 2 = Tab Name    => &&TAB_NAME.
 prompt
 
-column column_name    format a20 heading "Column name" 
+column column_name    format a25 heading "Column name" 
 column data_type      format a25 heading "Data type" 
 column data_default   format a20 heading "Column default"
 column nullable       format a3  heading "Null ?"
@@ -31,6 +31,9 @@ ttitle left  "Describe the columns of a table" skip 2
 
 select
 	  column_name
+	  ,data_length
+	  ,data_precision
+	  ,DATA_SCALE
 	, case data_type 
 	   when 'VARCHAR2' then 'varchar2('||lpad(data_length,5)||' '|| decode(char_used,'B','Byte','C','Char',char_used)||')'
 	   when 'NUMBER'   then 'number  ('||lpad(data_length,5)|| nvl(data_precision,'') ||' '||  nvl(DATA_SCALE,'') ||')'

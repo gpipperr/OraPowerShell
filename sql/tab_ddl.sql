@@ -26,7 +26,7 @@ variable ddllob clob
 set heading off
 set echo off
 
-set long 64000;
+set long 1000000;
 
 declare
  cursor c_tab_idx is
@@ -50,18 +50,39 @@ begin
 		v_owner:=o_rec.owner;
 		
 		:ddllob:=dbms_metadata.get_ddl(v_type ,upper('&&TAB_NAME.'),v_owner); 
-	  
+	  	
+		
+		:ddllob:=:ddllob||chr(10)||chr(10)||'-- DDL for Grants : '||chr(10);
+		begin
+			:ddllob:=:ddllob||dbms_metadata.GET_DEPENDENT_DDL('OBJECT_GRANT',upper('&&TAB_NAME.'),v_owner);		
+			
+	   exception 
+			when others then
+			:ddllob:=:ddllob||chr(10)||chr(10)||'-- NO DDL for Grants found : '||chr(10);
+		end;
+			  
 		-- get the index DDL for this table
 		if v_type = 'TABLE' then
 			for rec in c_tab_idx
 			loop
-				
+		
 				:ddllob:=:ddllob||chr(10)||chr(10)||'-- DDL for Index : '||rec.index_name||chr(10);
 				
-				:ddllob:=:ddllob||dbms_metadata.get_ddl('INDEX',rec.index_name,rec.owner);
+				:ddllob:=:ddllob||dbms_metadata.get_ddl('INDEX',rec.index_name,rec.owner);				
 				
+										
 			end loop;
 		end if;
+		
+		:ddllob:=:ddllob||chr(10)||chr(10)||'-- DDL for Trigger : '||chr(10);
+		begin
+			-- get the trigger if exits
+			:ddllob:=:ddllob||dbms_metadata.GET_DEPENDENT_DDL('TRIGGER' ,upper('&&TAB_NAME.'),v_owner); 
+			
+		exception 
+			when others then
+			:ddllob:=:ddllob||chr(10)||chr(10)||'-- NO DDL for Trigger found : '||chr(10);
+		end;
 	
 	end loop;
 

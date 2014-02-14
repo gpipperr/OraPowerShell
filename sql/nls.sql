@@ -21,11 +21,19 @@ select  PARAMETER
 order by 1
 / 
 
+ttitle left  "Database Time Zone" skip 2
+select DBTIMEZONE  from dual
+/
+
+ttitle left  "Session Time Zone" skip 2
+select SESSIONTIMEZONE from dual
+/
+
 ttitle left  "Session Time Values" skip 2
 
 select to_char(sysdate,'dd.mm.yyyy hh24:mi')      as "DB Time"
      , to_char(current_date,'dd.mm.yyyy hh24:mi') as "Client Time"
-	 , sysdate-current_date                       as "Time gab between client and db"
+	 , sysdate-current_date                       as "Time gab between client and db"	 
 from dual
 /
 	 

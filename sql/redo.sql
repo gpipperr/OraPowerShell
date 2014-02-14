@@ -176,8 +176,8 @@ select decode(grouping (trunc(completion_time))
       , round(sum(blocks * block_size)/1024/1024/1024,3) size_gb 
 		, DEST_ID
  from  v$archived_log 
-where completion_time > trunc(sysdate -7)
--- where completion_time > to_date('13.01.2014  17:13','dd.mm.yyyy hh24:mi')
+-- where completion_time > trunc(sysdate -3)
+where completion_time > to_date('13.01.2014  17:13','dd.mm.yyyy hh24:mi')
 -- group by DEST_ID
 group by cube (DEST_ID,trunc (completion_time)) order by 1,3
 /

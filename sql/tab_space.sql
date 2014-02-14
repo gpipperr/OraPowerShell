@@ -15,8 +15,16 @@ define num   = "format 99G999"
 define snum  = "format 9G999"
 
 
-define ENTER_OWNER='&TABLE_OWNER'
-define ENTER_TABLE='&TABLE_NAME'
+define ENTER_OWNER='&1'
+define ENTER_TABLE='&2'
+
+
+prompt
+prompt Parameter 1 = User Name     => &&ENTER_OWNER.
+prompt Parameter 2 = Table Name    => &&ENTER_TABLE.
+prompt
+
+
 
 
 ttitle left  "Space Usage of the table &ENTER_OWNER..&ENTER_TABLE." skip 2

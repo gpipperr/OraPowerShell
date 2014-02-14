@@ -11,12 +11,12 @@ ttitle left  "Workload Statistik Values" skip 2
 
 column SNAME format a15 heading "Statistic|Name"
 column pname format a12 heading "Parameter"
-column PVAL1 format 99999D99 heading "Value 1"
+column PVAL1 format a20 heading "Value 1"
 column PVAL2 format a20 heading "Value 2"
 
 select sname
 	, pname
-	, pval1
+	, to_char(pval1,'999G999G999D99') as pval1
 	, pval2 
 from sys.aux_stats$
 order by 1,2
