@@ -36,3 +36,8 @@ sqldx.sql
 sqlhc*.sql
 used_options_details.sql
 resetOMSMetrik.sql
+sql\ext\*
+sql\wiki\*
+sql\work\*
+.hg_archival*
+header.txt
