@@ -3,6 +3,8 @@
 -- Desc:   show all jobs in the database
 -- Date:   01.September 2012
 -- Site:   http://orapowershell.codeplex.com
+-- some usefull hints
+-- https://community.oracle.com/thread/648581
 --===============================================================================
 
 SET linesize 150 pagesize 400 recsep OFF

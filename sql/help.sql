@@ -19,12 +19,14 @@ DOC
 	- limit.sql      - limits since last startup of the instances
 
 	- sessions.sql   - actual connections to the database 
+	- service_session.sql - sessions per service over all instances 
 	- trans.sql      - running transactions in the database
 	- undo.sql       - show activity on the undo segment
-   - open_trans.sql - all longer open running transactions in the database
+	- open_trans.sql - all longer open running transactions in the database
 	- process.sql    - actual processes in the database  
-	                  Parameter 1 - name of the DB or OS User - parameter 2 - if Y shows also internal 
-					      processes
+							  parameter 1 - name of the DB or OS User 
+							  parameter 2 - if Y shows also internal processes
+	- tempspace_usage.sql- show processes using the temp tablespace					
 	
 	- tns.sql        - show services and tns settings on services
 		
@@ -39,6 +41,7 @@ DOC
 	- db_events.sql  - test if some events are set in the DB enviroment
 	
 	- xmldb.sql      - show configuration of the XML DB
+	- acl.sql        - show the acls of the Database (for security)
 	
 	- invalid.sql  	 - show all invalid objects
 	
@@ -50,6 +53,7 @@ DOC
 	- user_objects.sql - show the counts of objects from none default users
 	- profile.sql    - profiles for the user of this database
 	- proxy.sql      - proxy settings in the database
+	
 	
 	- user_tab.sql   - get all the tables and views of a user - parameter 1 - part of the table name
 	- ls.sql         - gets all the tables and shows the size of the user tab
@@ -64,6 +68,11 @@ DOC
 	- tab_mod.sql    - get the last modifications of the table      - parameter - Owner, Table name
 	- column_tyle.sql - get all columns in the database wiht this datatype  parameter 1 - datatype
 	- column.sql      - search all tables with this column name - parameter 1 - name of the column
+	- analyse_changed_rows.sql  - anlayse changed row for a table
+	- tab_redef.sql   - example for a online table redefination
+	- tab_stat_overview.sql - statistic over all table of a user parameter 1 - schema name
+	
+	- recycle.sql    - show the content summary of the dba recyclebin
 	
 	- tab_tablespace.sql      - get the tablespaces of the  user    - parameter - Owner
 	- tab_tablespace_all.sql  - get the used tablespace overview of this database 
@@ -71,12 +80,14 @@ DOC
 	- index.sql		 - get the informations over a index            - parameter - Owner, Index name
 	- obj_dep.sql    - get the dependencies of a object in the database  - parameter - Owner, object name
 	
+	- plsql_info.sql  - information about a plsql function/package
 	
 	- select.sql     - select first 3 records of the table as list  - parameter 1 - name of the table
 	- view_count.sql - count entries in a view                      - parameter 1 - name of the view
 	- comment.sql    - search over all comments                     - parameter 1 - part of the comment text
 	
 	- asm.sql      	 - asm disk status and filling degree of the asm disks
+	- asm_disk.sql     - asm disk space
 	- asm_balance.sql - asm disk disk balance 
 	- flash.sql      - show the flash back information?s 
 	- reco.sql     	 - recovery area settings and size
@@ -107,6 +118,7 @@ DOC
 	- find_sql.sql   - find a sql Statement in the Cache - parameter 1 part of the sql statement
 	- plan_sql.sql   - get the Execution Plan for one SQL ID from the cache and from the awr repository
 	- temp_sql.sql   - SQL that use the temp table space for sorting
+	
 		
 	- test_io.sql    - Use io calibrate to analyses io of the database
 	
@@ -119,6 +131,7 @@ DOC
 	- datapump.sql    - show datapump sessions
 	
 	- streams_status.sql - Status of streams replication
+	- streams_config.sql - streams configuration
 	
 	- login.sql    	  - set the login prompt
 		

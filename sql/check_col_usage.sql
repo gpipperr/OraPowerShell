@@ -21,18 +21,18 @@ set markup html on
 ttitle center "Columns usesd in SQL Queries but not indexed" SKIP 2
 
 set verify off
-SET linesize 130 pagesize 200 recsep OFF
+SET linesize 130 pagesize 2000 recsep OFF
 
 column  owner        format a20
 column  object_name  format a30
 column  column_name  format a25
 
-column equality_preds    format 999   heading "equ"
-column equijoin_preds    format 999   heading "Jequ"
-column nonequijoin_preds format 999   heading "Jnoe"
-column range_preds       format 999   heading "ran"
-column like_preds        format 999   heading "lik"
-column null_preds        format 999   heading "nul"
+column equality_preds    format 99999   heading "equ"
+column equijoin_preds    format 99999   heading "Jequ"
+column nonequijoin_preds format 99999   heading "Jnoe"
+column range_preds       format 99999   heading "ran"
+column like_preds        format 99999   heading "lik"
+column null_preds        format 99999   heading "nul"
 
 select o.owner
       ,o.object_name

@@ -4,8 +4,7 @@
 -- Date:   2008 - 2014
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
-
-set pagesize 0
+set pagesize 1000
 set linesize 130
 set verify off
 
@@ -20,9 +19,18 @@ define PARALLEL_EXEC=4
 -- to be on the save side use 1
 define DEF_DEGREE='1'
 
+-----------------------------
+-- define the mode
+-- 
+-- define REBUILD_MODE='PARALLEL &&PARALLEL_EXEC. NOLOGGING'
+define REBUILD_MODE='online NOLOGGING'
 
 prompt
-prompt Parameter 1 = User Name          => &&USER_NAME.
+prompt Parameter 1 = User Name => &&USER_NAME.
+prompt
+prompt Setting PARALLEL_EXEC   => &&PARALLEL_EXEC.
+prompt Setting DEF_DEGREE		 => &&DEF_DEGREE.
+prompt Setting REBUILD_MODE    => &&REBUILD_MODE.
 prompt
 
 --------------------------
@@ -35,7 +43,7 @@ set feedback on
 
 column mb_obj     format 999G999G999D90 heading "MegaByte DB Objects of the user &&USER_NAME."
 column mb_obj_idx format 999G999G999D90 heading "MegaByte Indexes of the user &&USER_NAME."
-column mb_obj_idx format 999G999G999D90 heading "MegaByte Part Indexes of the user &&USER_NAME."
+column mb_obj_part format 999G999G999D90 heading "MegaByte Part Indexes of the user &&USER_NAME."
 
 select round(sum(bytes)/1024/1024,3) as mb_obj ,'MB - ALL Segments of the user' as info
   from dba_segments
@@ -68,8 +76,6 @@ set feedback off
 
 -------------------
 -- create spool name
-
-
 col SPOOL_NAME_COL new_val SPOOL_NAME
  
 SELECT replace(ora_database_name||'_'||SYS_CONTEXT('USERENV','HOST')||'_'||to_char(sysdate,'dd_mm_yyyy_hh24_mi')||'_index_rebuild_&&USER_NAME..sql','\','_') 
@@ -98,7 +104,7 @@ prompt ttitle "MegaByte DB Index for the change in Use" SKIP 2
 prompt
 prompt column mb_obj    format 999G999G999D90 heading "MegaByte DB Objects of the user &&USER_NAME."
 prompt column mb_obj_idx format 999G999G999D90 heading "MegaByte Indexes of the user &&USER_NAME."
-prompt column mb_obj_idx format 999G999G999D90 heading "MegaByte Part Indexes of the user &&USER_NAME."
+prompt column mb_obj_part format 999G999G999D90 heading "MegaByte Part Indexes of the user &&USER_NAME."
 prompt 
 prompt select round(sum(bytes)/1024/1024,3) as mb_obj ,'MB - ALL Segments of the user' as info
 prompt   from dba_segments
@@ -128,6 +134,8 @@ prompt ttitle off
 prompt 
 prompt set echo on
 prompt set timing on
+prompt alter session set ddl_lock_timeout=10;
+prompt 
 prompt prompt
 prompt prompt =======================
 prompt prompt non partitioned indexes
@@ -136,18 +144,18 @@ prompt prompt
 --------------------------------
 -------- non partitioned indexes
 
-select 'select to_char(sysdate,''hh24:mi'') from dual;'||chr(13)||chr(10)||'prompt rebuild the '||rownum||' index '||iname||' for table '||itabname||' ('||isize ||' MB)'||chr(13)||chr(10)||'alter index &&USER_NAME..' ||iname||' REBUILD PARALLEL &&PARALLEL_EXEC.  NOLOGGING;'||chr(13)||chr(10)||'alter index &&USER_NAME..' ||iname||' LOGGING PARALLEL (DEGREE &&DEF_DEGREE. instances default);'
-from (
-select i.index_name  iname
-     , round (s.bytes / 1024 / 1024, 2) isize
-     ,i.TABLE_NAME itabname
-  from dba_indexes i, dba_segments s
- where i.owner = upper('&&USER_NAME.')
-   and i.index_type = 'NORMAL'
-   and s.owner = i.owner
-   and s.segment_name = i.index_name   
-	and i.index_name not in (select ip.index_name from DBA_IND_PARTITIONS ip  where ip.INDEX_OWNER=i.owner)
-)
+select 'select to_char(sysdate,''hh24:mi'') from dual;'||chr(13)||chr(10)||'prompt rebuild the '||rownum||' index '||iname||' for table '||itabname||' ('||isize ||' MB)'||chr(13)||chr(10)||'alter index &&USER_NAME..' ||iname||' REBUILD &&REBUILD_MODE. ;'||chr(13)||chr(10)||'alter index &&USER_NAME..' ||iname||' LOGGING PARALLEL (DEGREE &&DEF_DEGREE. instances default);'
+ from (
+ select i.index_name  iname
+      , round (s.bytes / 1024 / 1024, 2) isize
+      ,i.TABLE_NAME itabname
+   from dba_indexes i, dba_segments s
+  where i.owner = upper('&&USER_NAME.')
+    and i.index_type = 'NORMAL'
+    and s.owner = i.owner
+    and s.segment_name = i.index_name   
+  	 and i.index_name not in (select ip.index_name from DBA_IND_PARTITIONS ip  where ip.INDEX_OWNER=i.owner)
+ )
 order by itabname desc,isize asc
 /
 prompt prompt
@@ -158,7 +166,7 @@ prompt prompt
 --------------------------------
 -------- partitioned indexes
 
-select 'select to_char(sysdate,''hh24:mi'') from dual;'||chr(13)||chr(10)||'prompt rebuild the '||rownum||' index '||iname||' Partition '||PARTITION_NAME ||' for table '||itabname||' ('||isize ||' MB)'||chr(13)||chr(10)||'alter index &&USER_NAME..' ||iname||' REBUILD PARTITION '||PARTITION_NAME||' PARALLEL &&PARALLEL_EXEC.  NOLOGGING;'||chr(13)||chr(10)||'alter index &&USER_NAME..' ||iname||' LOGGING PARALLEL (DEGREE &&DEF_DEGREE. instances default);'
+select 'select to_char(sysdate,''hh24:mi'') from dual;'||chr(13)||chr(10)||'prompt rebuild the '||rownum||' index '||iname||' Partition '||PARTITION_NAME ||' for table '||itabname||' ('||isize ||' MB)'||chr(13)||chr(10)||'alter index &&USER_NAME..' ||iname||' REBUILD PARTITION '||PARTITION_NAME||' &&REBUILD_MODE. ;'||chr(13)||chr(10)||'alter index &&USER_NAME..' ||iname||' LOGGING PARALLEL (DEGREE &&DEF_DEGREE. instances default);'
 from (
 select i.index_name  iname
      , round (s.bytes / 1024 / 1024, 2) isize
