@@ -55,6 +55,7 @@ column next_run_date  like  last_start_date heading "Last|start date"
 
 select owner
       ,job_name
+		,state
 	  ,program_name
       ,run_count
       ,failure_count
