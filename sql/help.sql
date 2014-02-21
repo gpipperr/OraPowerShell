@@ -16,7 +16,7 @@ DOC
 	- database.sql   - name and age of the database
 	- status.sql     - status of the instance/cluster
 	- instance.sql   - status of the instance where the user is connected
-	- limit.sql      - limits since last startup of the instances
+	- limit.sql      - resource limits since last startup of the instances
 
 	- sessions.sql   - actual connections to the database 
 	- service_session.sql - sessions per service over all instances 
@@ -26,6 +26,7 @@ DOC
 	- process.sql    - actual processes in the database  
 							  parameter 1 - name of the DB or OS User 
 							  parameter 2 - if Y shows also internal processes
+	- resource_manager.sql - show the information about the resource manager  
 	- tempspace_usage.sql- show processes using the temp tablespace					
 	
 	- tns.sql        - show services and tns settings on services
@@ -95,6 +96,7 @@ DOC
 	- redo.sql       - redo log information
 	- redo_change.sql - how create how much redo per day last 7 in the database
 	- scn.sql        - scn in the archive log history 
+	- sqn.sql        - squence log
 	
 	- tsc.sql      	- table space size information
 	- awr.sql        - usage of the AWR repository and of the SYSAUX table pace 
@@ -132,6 +134,7 @@ DOC
 	
 	- streams_status.sql - Status of streams replication
 	- streams_config.sql - streams configuration
+	- streams_logs.sql   - show the streams archivelogs - which can be deleted 
 	
 	- login.sql    	  - set the login prompt
 		

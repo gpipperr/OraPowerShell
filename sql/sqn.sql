@@ -22,14 +22,14 @@ END;
 
 ttitle  "Report Redo Log SCN History per Day"  SKIP 1  - 
 
-column min_scn format 999999999999999
-column max_scn format 999999999999999
+column min_sqn format 999999999999999
+column max_sqn format 999999999999999
 			 
 select 
        trunc(FIRST_TIME) as days
 	  , thread#
-     , min(FIRST_CHANGE#) as min_scn
-     , max(FIRST_CHANGE#) as max_scn
+     , min(SEQUENCE#) as min_sqn
+     , max(SEQUENCE#) as max_sqn
 	  , count(*)       as archive_count		  
  from V$LOG_HISTORY 
 where FIRST_TIME > trunc(sysdate - 14)
@@ -39,10 +39,10 @@ order by 1,2
 
 ttitle off
 
-ttitle  "Report LOGS with this SCN"  SKIP 1  - 
+ttitle  "Report LOGS with this SQN"  SKIP 1  - 
 
 
-ACCEPT SCN prompt "search for SCN:"
+ACCEPT SQN prompt "search for SQN:"
 
 column NAME      format a40    heading "Archivelog|Name"
 column THREAD_NR format a2     heading "I"
@@ -58,7 +58,7 @@ select to_char(THREAD#) as  THREAD_NR
 	  , FIRST_CHANGE# 
 	  , NEXT_CHANGE#
 from v$archived_log 
-where to_number('&&SCN.')  between  FIRST_CHANGE# and NEXT_CHANGE#
+where to_number('&&SQN.')  between  SEQUENCE# and SEQUENCE#
 order by THREAD#,SEQUENCE#
 /
 
