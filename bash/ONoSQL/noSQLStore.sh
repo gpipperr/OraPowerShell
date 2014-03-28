@@ -7,10 +7,12 @@
 # Purpose
 # Main Admin Task for a Oracle NoSQL Store
 # Configuration read from nodelist.conf
-# For NoSQL Version 2.0  - Oracle 11g R2
+#
+# For NoSQL Version 2.1  - Oracle 12c R1
 #
 # 
 ########## Enviroment ##############
+
 SCRIPTPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 SCRIPTS_DIR=`dirname "$SCRIPTPATH{}"`
 
@@ -59,12 +61,22 @@ case "$1" in
         ;;
 	 admin)
         # admin
-		printLine "-- Comand java -jar $KVHOME/lib/kvstore.jar runadmin -port 5000 -host $HOSTNAME"  
+		printLine "-- Command java -jar $KVHOME/lib/kvstore.jar runadmin -port 5000 -host $HOSTNAME"  
         java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]}
         ;;	
+	 console)
+        # kvshell
+		printLine "-- Command java -jar $KVHOME/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]}"
+        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]}
+        ;;	
+     count)
+        # kvshell
+		printLine "-- Command java -jar $KVHOME/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} aggregate -count"
+        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} aggregate -count
+        ;;			
 	 ping)
         # ping
-		printLine "-- Comand java -jar $KVHOME/lib/kvstore.jar ping -port 5000 -host $HOSTNAME" 
+		printLine "-- Command java -jar $KVHOME/lib/kvstore.jar ping -port 5000 -host $HOSTNAME" 
         java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar ping -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]}    
         ;;	
     status)
@@ -97,7 +109,21 @@ case "$1" in
 		# remove all logfiles
 		COMMAND="find #KVROOTI#/. -name \"*.log\" -exec rm {} \;"
 		doStore
-		;;
+		;;	
+	getStoreSize)
+		# get the store total size on disk
+		COMMAND_TITLE="Get Store total Size on disk for each node: "
+		COMMAND="du -sh  #KVROOTI#"
+		COMMANDUSR=`whoami`
+		doStore		
+		;;		
+	getStoreSizeDetail)
+		# get the store total size on disk
+		COMMAND_TITLE="Get Store total Size on disk for each node: "
+		COMMAND="du -h  #KVROOTI#"
+		COMMANDUSR=`whoami`
+		doStore		
+		;;		
 	catLogfile)
 		# remove all logfiles
 		COMMAND_TITLE="clean Logfiles: "
@@ -131,23 +157,28 @@ case "$1" in
         echo "       createStore  -> Use the Script createStore.sh  "
         ;;	
     *)
-      echo "-- Check the configuation file entries in nodelist.conf"
+      echo "-- Check the configuration file entries in nodelist.conf"
 	  doCheck
 	  echo " "
 	  echo "Usage: $0 <parameter"
-	  echo "       start        -> Start on each node the SN  "
-	  echo "       stop         -> Stop on each Node the SN   "
-	  echo "       restart      -> Restart on each Node the SN"
-	  echo "       reload       -> Restart on each Node the SN"
+	  echo "       start        -> Start on each node the SN   "
+	  echo "       stop         -> Stop on each Node the SN    "
+	  echo "       restart      -> Restart on each Node the SN "
+	  echo "       reload       -> Restart on each Node the SN "
 	  echo "       status       -> Status on each node the SN  "
 	  echo "       kill         -> Kill on each node the SN with killall java "
-	  echo "       admin        -> Start the admin console  "
-	  echo "       ping         -> Ping the Store  "
+	  echo "       admin        -> Start the admin console     "
+	  echo "       console      -> Start the kvshell console   "
+	  echo "       count        -> Count all entries in the store  "
+	  echo "       ping         -> Ping the Store               "
+	  echo "       getStoreSize -> get the Disk size for the store for each node"
+	  echo "       getStoreSizeDetail -> get he Disk size for the store for each node for each SN"
 	  echo "       fwstatus     -> Show the status of the FW as root!  "
-	  echo "       cleanLogfile -> Clean Logfile on each node the SN  "
-	  echo "       readLogfile  -> Seach Error in the logfile on each node the SN  "
+	  echo "       cleanLogfile -> Clean Log file on each node the SN  "
+	  echo "       readLogfile  -> Search Error in the logfile on each node the SN  "
 	  echo "       catLogfile   -> Cut the logfile on each node the SN  "
-	  echo "       createStore  -> Use the Script createStore.sh  "
+	  echo "       createStore  -> Use the Script createStore.sh        "
+	  echo "       celeteStore  -> Use the Script deleteStore.sh        "
 	  exit 1	  
 	  
 esac

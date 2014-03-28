@@ -8,15 +8,16 @@ SET linesize 130 pagesize 300 recsep OFF
 
 ttitle center "Invalid Objects in the database" SKIP 2
  
-column owner format a10
-column object_type format a14
+column owner format a15
+column object_type format a18
  
 select owner
       ,object_type
       ,count(*) as anzahl
   from all_objects
  where status != 'VALID'
- group by rollup(owner, object_type)
+ --group by rollup(owner, object_type)
+ group by owner, object_type
 /
 
 ttitle "List of invalid indexes" SKIP 2

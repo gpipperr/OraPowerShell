@@ -1,5 +1,5 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+
 -- Desc:   extract the DDL of a object in the database
 --
 -- Parameter 2: Owner of the table/object
@@ -7,7 +7,6 @@
 --
 -- Must be run with dba privileges
 -- 
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
 set verify  off

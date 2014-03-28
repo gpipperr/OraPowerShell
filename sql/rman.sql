@@ -39,6 +39,7 @@ select to_char(    s.start_time      ,'dd.mm.yyyy hh24:mi') as start_time
     , to_char(max(pd.completion_time),'dd.mm.yyyy hh24:mi') as end_time
 	, round(sum(p.bytes)/1024/1024,3) as backup_byte_mb
 	, sum(p.elapsed_seconds)          as backup_duration
+	, sd.incremental_level
 	, pd.tag
  from v$backup_set   s
     , v$backup_piece p	
@@ -47,11 +48,11 @@ select to_char(    s.start_time      ,'dd.mm.yyyy hh24:mi') as start_time
 where s.completion_time > sysdate - 5
   and p.set_stamp = s.set_stamp
   and sd.SET_STAMP=s.set_stamp
-  and pd.SET_STAMP=p.set_stamp
+  and pd.SET_STAMP=p.set_stamp 
 group by to_char(s.start_time    ,'dd.mm.yyyy hh24:mi')
      , to_char(s.completion_time ,'dd.mm.yyyy hh24:mi') 
 	 , s.backup_type
-	 , s.incremental_level    
+	 , sd.incremental_level    
    	 , pd.tag	
 order by to_char(s.completion_time ,'dd.mm.yyyy hh24:mi') desc
 /

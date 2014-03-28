@@ -268,6 +268,7 @@ declare
 	select  segment_name
 	      , owner 
 		  , SEGMENT_TYPE
+		  , PARTITION_NAME
 	  from dba_segments  
 	 where upper(segment_name) like upper('&ENTER_TABLE.')  and upper(owner)=upper('&ENTER_OWNER.');
   
@@ -277,10 +278,27 @@ begin
 	loop
 
 		begin 
-		  dbms_output.put_line('Info -- Call dbms_space.space_usage for table ( Type:'|| rec.segment_type||' ) ::'||rec.segment_name);
+		  dbms_output.put_line('Info -- Call dbms_space.space_usage for table ( Type:'|| rec.segment_type||' ) ::'||rec.segment_name ||' Partition::'||rec.PARTITION_NAME);
+		  
 		  dbms_output.put_line('Info ------------------------------------------------------------------');
 		  
-		  dbms_space.space_usage(rec.owner,rec.segment_name,rec.segment_type,unf,unfb,fs1,fs1b,fs2,fs2b,fs3,fs3b,fs4,fs4b,full,fullb);
+		  dbms_space.space_usage(
+			 segment_owner            => rec.owner
+			,segment_name             => rec.segment_name
+			,segment_type             => rec.segment_type
+			,unformatted_blocks       => unf
+			,unformatted_bytes        => unfb
+			,fs1_blocks               => fs1
+			,fs1_bytes                => fs1b
+			,fs2_blocks               => fs2
+			,fs2_bytes                => fs2b
+			,fs3_blocks               => fs3
+			,fs3_bytes                => fs3b
+			,fs4_blocks               => fs4
+			,fs4_bytes                => fs4b
+			,full_blocks              => full
+			,full_bytes               => fullb
+			,partition_name           => rec.PARTITION_NAME);
 		  
 		  dbms_output.put_line('Info -- Total Count of blocks that are unformatted              :'||unf ||' |Bytes :'||unfb);
 		  dbms_output.put_line('Info -- Total Count of blocks that are full in the segment      :'||full||' |Bytes :'||fullb);
@@ -298,8 +316,8 @@ begin
 				dbms_output.put_line('Error --');
 				dbms_output.put_line('Error -- '||SQLERRM);
 				dbms_output.put_line('Error --   +This procedure can be used only on segments in  tablespaces with AUTO SEGMENT SPACE MANAGEMENT');
-				dbms_output.put_line('Error --   +Action:  Recheck the segment name and type and re-issue the statement');
-				select s.TABLESPACE_NAME , t.SEGMENT_SPACE_MANAGEMENT into v_tablespace_name , v_segment_management
+				dbms_output.put_line('Error --   +Action:  Check the segment name and type and re-issue the statement');
+				select distinct  s.TABLESPACE_NAME , t.SEGMENT_SPACE_MANAGEMENT into v_tablespace_name , v_segment_management
 				 from dba_segments s , dba_tablespaces t
 				where upper(s.segment_name) like upper('&ENTER_TABLE.')   
 				  and upper(s.owner)=upper('&ENTER_OWNER.')
@@ -312,7 +330,7 @@ begin
 		 begin 
 		  dbms_output.put_line('Info -- Call dbms_space.UNUSED_SPACE for table  ( Type:'|| rec.segment_type||' ) ::'||rec.segment_name);
 		  
-		  dbms_space.UNUSED_SPACE(rec.owner,rec.segment_name,rec.segment_type, total_blocks,  total_bytes, unused_blocks, unused_bytes, lastextf, last_extb, lastusedblock); 
+		  dbms_space.UNUSED_SPACE(rec.owner,rec.segment_name,rec.segment_type, total_blocks,  total_bytes, unused_blocks, unused_bytes, lastextf, last_extb, lastusedblock,rec.PARTITION_NAME); 
 		  
 		  dbms_output.put_line('Info ------------------------------------------------------------------');
 		  dbms_output.put_line('Info -- Used total_blocks                           :'|| total_blocks);

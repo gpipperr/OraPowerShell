@@ -1,10 +1,3 @@
---==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   get the usage of the temp tablepace
--- Date:   02.2014
--- Site:   http://orapowershell.codeplex.com
---==============================================================================
-
 --http://gavinsoorma.com/2009/06/temp-tablespace-usage/
 --
 --
@@ -20,7 +13,7 @@ column program    format a19    heading "Remote|program"
 column module     format a19    heading "Remote|module"
 column tablespace format a10    heading "Table|space"
 column osuser     format a12    heading "OS|User"
-column mb_used 	format 99999  heading "In USE|MB"
+column mb_used 	  format 99999  heading "In USE|MB"
 column statements format 9999   heading "Segments"
 
 select  ses.inst_id
@@ -56,18 +49,6 @@ select  ses.inst_id
  order by ses.inst_id 
 / 
 
---select s.sid || ',' || s.serial# sid_serial, s.username, s.osuser, p.spid, s.module,
---p.program, sum (t.blocks) * tbs.block_size / 1024 / 1024 mb_used, t.tablespace,
---count(*) statements
---from v$sort_usage t, v$session s, dba_tablespaces tbs, v$process p
---where t.session_addr = s.saddr
---and s.paddr = p.addr
---and t.tablespace = tbs.tablespace_name
---group by s.sid, s.serial#, s.username, s.osuser, p.spid, s.module,
---p.program, tbs.block_size, t.tablespace
---order by sid_serial
---/
-
 
 select TABLESPACE_NAME
 	  , round(TABLESPACE_SIZE/1024/1024,3) as TABLESPACE_SIZE_MB
@@ -76,8 +57,8 @@ select TABLESPACE_NAME
  from DBA_TEMP_FREE_SPACE
 /
 
-select  bytes
-      , MAXBYTES
+select   round(bytes/1024/1024,3) as akt_size_mb
+      ,  round(MAXBYTES/1024/1024,3) as max_size_mb
       , status
       , s.AUTOEXTENSIBLE
       , INCREMENT_BY
