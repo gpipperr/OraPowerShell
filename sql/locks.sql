@@ -28,6 +28,7 @@ select owner || '.' || object_name as obj_name
       ,os_user_name
       ,machine
       ,l.process as procid
+		,lc.inst_id
       ,s.sid || ',' || s.serial# as ss
       ,to_char(s.logon_time, 'dd.mm.yyyy hh24:mi') time
       --,l.LOCKED_MODE as logMod

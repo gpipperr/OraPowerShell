@@ -15,10 +15,12 @@ DOC
 	
 	- database.sql   - name and age of the database
 	- status.sql     - status of the instance/cluster
+	- date.sql       - get the acutal date and time of the DB
 	- instance.sql   - status of the instance where the user is connected
 	- limit.sql      - resource limits since last startup of the instances
 
 	- sessions.sql   - actual connections to the database 
+	- session_history.sql - get a summary over the last active sessions 
 	- service_session.sql - sessions per service over all instances 
 	- trans.sql      - running transactions in the database
 	- undo.sql       - show activity on the undo segment
@@ -27,7 +29,8 @@ DOC
 							  parameter 1 - name of the DB or OS User 
 							  parameter 2 - if Y shows also internal processes
 	- resource_manager.sql - show the information about the resource manager  
-	- tempspace_usage.sql- show processes using the temp tablespace					
+	- tempspace_usage.sql- show processes using the temp tablespace				
+   - parallel.sql   - parallel sql informations	
 	
 	- tns.sql        - show services and tns settings on services
 		
@@ -98,10 +101,10 @@ DOC
 	- scn.sql        - scn in the archive log history 
 	- sqn.sql        - squence log
 	
+	
 	- tsc.sql      	- table space size information
 	- awr.sql        - usage of the AWR repository and of the SYSAUX table pace 
-	- awr_sql.sql    - get SQL information
-	
+	- awr_sql_stat.sql    - get statistic of the SQL execution  of one statement - parameter 1 - SQL ID	
 	- directory.sql  - show directories in the database
 	- links.sql      - show the DB Links in the database
 	

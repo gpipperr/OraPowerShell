@@ -15,8 +15,8 @@ set pagesize 1000
 set linesize 130
 set verify off
 
-define USER_NAME ='USER'
-define TABLE_NAME ='USER_'
+define USER_NAME ='GPI'
+define TABLE_NAME ='COL_T'
 define TABLE_SPACE='USERS'
 
 set serveroutput on

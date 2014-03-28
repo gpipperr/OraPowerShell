@@ -33,3 +33,19 @@ select plan
 order by status 
 /
 
+prompt .. show user waiting with resource limit
+
+select sid
+     , serial#
+     , username
+	  , resource_consumer_group 
+ from v$session
+where event like 'resmgr%'
+/
+
+
+--http://docs.oracle.com/cd/B28359_01/server.111/b28310/dbrm009.htm#ADMIN11906
+
+
+
+

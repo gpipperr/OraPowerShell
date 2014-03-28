@@ -6,7 +6,10 @@
 --==============================================================================
 
 SET linesize 240 pagesize 400 recsep OFF
-ttitle left  "Link Infos -- DB Links this user can see " skip 2
+
+prompt
+prompt Link Infos -- The DB Links this user can see
+prompt 
 
 column owner format a10
 column host  format a60
@@ -21,13 +24,13 @@ select db_link
 from all_db_links
  /
 
-ttitle off
 
-ttitle left  "Link Infos -- All DB Links" skip 2
+ttitle left  "Link Infos -- All DB Links in the database" skip 2
 
 select db_link
 	  ,owner 
 	  ,host
+	  ,username
 from dba_db_links
  /
 
