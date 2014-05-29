@@ -13,7 +13,7 @@ ttitle left  "List of Tables" skip 2
 
 
 column table_name   format a30     heading "Table|name"
-column num_rows     format 9999999  heading "Num|rows"
+column num_rows     format 999G999G999  heading "Num|rows"
 column size_MB      format 999G990D000  heading "Size|MB"
 column table_size   format 999G990D000  heading "Size Table|MB"
 column index_size   format 999G990D000  heading "Size Index|MB"

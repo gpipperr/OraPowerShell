@@ -16,7 +16,7 @@ prompt
 
 set verify off
 
-SET linesize 130 pagesize 300 recsep OFF
+SET linesize 140 pagesize 300 recsep OFF
 
 ttitle left  "All User Sessions on this DB" skip 2
 
@@ -25,26 +25,31 @@ column inst_id    format 99     heading "Inst|ID"
 column username   format a8     heading "DB User|name"
 column sid        format 99999  heading "SID"
 column serial#    format 99999  heading "Serial"
-column machine    format a14    heading "Remote|pc/server"
-column terminal   format a14    heading "Remote|terminal"
-column program    format a17    heading "Remote|program"
-column module     format a12    heading "Remote|module"
+column machine    format a13    heading "Remote|pc/server"
+column terminal   format a13    heading "Remote|terminal"
+column program    format a16    heading "Remote|program"
+column module     format a16    heading "Remote|module"
 column client_info format a10   heading "Client|info"
 column client_identifier format A10 heading "Client|identifier"
+column OSUSER      format a15 heading "OS|User"
+column LOGON_TIME  format a12 heading "Logon|Time"
 
 select  inst_id 
       , sid
-	  , serial#
-	  , status
+	   , serial#
+	   , status
       , username
-	  , machine
+	   , machine
       , terminal
       , program
-	  , module
-      , client_identifier
-	  , client_info	  
+		, OSUSER
+	   , module
+		, to_char(LOGON_TIME,'dd.mm hh24:mi') as LOGON_TIME
+      --, client_identifier
+	   --, client_info	  
   from gv$session 
  where  ( username like upper('%&&USER_NAME.%') or ( nvl('&ALL_PROCESS.','N')='Y' and username is  null))
+ --and program not like '%(P%)%'
  order by program
          ,inst_id
 /

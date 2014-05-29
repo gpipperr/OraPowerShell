@@ -75,7 +75,7 @@ select
          group by trunc(begin_interval_time)) t
  where r.days = a.days
    and t.days = r.days
-	and a.owner = upper('&&USER_NAME')
+	and a.owner like upper(nvl('&&USER_NAME','%')
  order by a.days,a.owner
 / 
 
@@ -96,7 +96,7 @@ select * from (
      and ss.obj# = so.obj#
      and ss.dataobj# = so.dataobj#
      and begin_interval_time > trunc(sysdate - 7)
-	  and so.owner = upper('&&USER_NAME')
+	  and so.owner like upper(nvl('&&USER_NAME','%')
    group by so.owner,OBJECT_NAME
            ,trunc(begin_interval_time)
  order by sum(ss.db_block_changes_delta) desc			  

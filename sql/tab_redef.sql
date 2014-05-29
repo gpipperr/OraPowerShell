@@ -1,6 +1,3 @@
-----
--- work in progress
----
 -- http://www.dba-oracle.com/t_online_table_reorganization.htm
 -- http://www.dba-oracle.com/t_dbms_redefinition_example.htm
 -- http://docs.oracle.com/cd/E11882_01/appdev.112/e40758/d_redefi.htm#ARPLS67521
@@ -17,6 +14,12 @@ set serveroutput on
 
 ---------------------------------------
 -- Parameter
+--define USER_NAME   ='LMS_PL'
+--define TABLE_NAME  ='CSC_SERVICE_REQUEST'
+--define ORDER_BY_COL='CUSTOMER_ID'
+--define TABLE_SPACE ='tablespace TS_DATA_COMP'
+--define SET_PARALLEL=8
+
 define USER_NAME   ='&1'
 define TABLE_NAME  ='&2'
 define ORDER_BY_COL='&3'
@@ -47,6 +50,8 @@ end;
 ---------------------------------------
 -- create interim table
 -- adjust individually
+-- !!! Attention default values like sysdate are not copied by a create table as select!
+-- see : Create Table As Select Does Not Copy Table's Default Values. (Doc ID 579636.1)
 create table &&USER_NAME..&&TABLE_NAME._STAGE &&TABLE_SPACE COMPRESS FOR ALL OPERATIONS as select * from &&USER_NAME..&&TABLE_NAME. where 1=2;
 
 ---------------------------------------
@@ -359,7 +364,7 @@ where owner  = '&&USER_NAME'
 
 
 ----------------------------------------
--- recreat statistic on the table
+-- recreate statistic on the table
 --
 begin
 dbms_stats.gather_table_stats ( 

@@ -10,11 +10,12 @@ SET verify off
 
 define OWNER    = '&1' 
 define TAB_NAME = '&2' 
-define FILTER   = '&3' 
 
 prompt
 prompt Parameter 1 = Owner Name  => &&OWNER.
 prompt Parameter 2 = Tab Name    => &&TAB_NAME.
+
+define FILTER   = '&3' 
 prompt Parameter 3 = Tab Name    => &&FILTER.
 prompt
 

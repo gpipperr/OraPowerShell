@@ -35,17 +35,18 @@ column bytes_read &&num
 column bytes_written &&num
 column INSTANCE_NAME format A10
 
-select  group_number
-      , name
-      , state
-      , type
-      , total_mb  Brutto
-		, decode(type,'NORMAL',total_mb/2,total_mb) Netto
-      , usable_file_mb as free_netto
-		, round(usable_file_mb/(decode(type,'NORMAL',total_mb/2,total_mb)/100),2) as free_percent
-    --, total_mb - usable_file_mb as used
-  from v$asm_diskgroup
-order by name  
+SELECT group_number
+	,NAME
+	,STATE
+	,type
+	,total_mb Brutto
+	,decode(type, 'NORMAL', total_mb / 2, total_mb) Netto
+	,usable_file_mb AS free_netto
+	,round(usable_file_mb / (decode(type, 'NORMAL', total_mb / 2, total_mb) / 100
+			), 2) AS free_percent
+--, total_mb - usable_file_mb as used
+FROM v$asm_diskgroup
+ORDER BY NAME 
 /
 
 ttitle off

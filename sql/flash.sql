@@ -63,6 +63,20 @@ select scn
 	  , GUARANTEE_FLASHBACK_DATABASE 
 from  V$RESTORE_POINT;
 
+ttitle  "Oldest possible time to flashback"  SKIP 2 -
+
+select to_char(oldest_flashback_time,'dd-mon-yyyy hh24:mi:ss') as "Oldest time to flashback"
+ from v$flashback_database_log
+/
+
+ttitle  "Oldest possible SCN to flashback"  SKIP 2 -
+
+column oldest_flashback_scn format 99999999999999999999999999
+select oldest_flashback_scn  as "Oldest  SCN to flashback" 
+ from v$flashback_database_log
+/
+
+
 ttitle  "Report Flashback Logs Buffer"  SKIP 2 -
 
 column  name format A40

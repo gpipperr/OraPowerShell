@@ -8,7 +8,7 @@
 --==============================================================================
 
 SET pagesize 300
-SET linesize 250
+SET linesize 300
 SET VERIFY OFF
 
 

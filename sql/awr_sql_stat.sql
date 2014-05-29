@@ -18,9 +18,9 @@ SET linesize 250
 
 column begin_interval_time format a18 heading "Snap | Begin"
 column plan_hash_value     format 9999999999 heading "Plan | Hash"
-column execution_time      format 99G999G999D99 heading "Execution Time|per SQL"
+column execution_time      format 999G999G999G999D99 heading "Execution Time|per SQL"
 column executions_delta    format 99G999G999 heading "Executions|delta"
-column cpu_time_delta      format 99G999G999 heading "Cpu time|delta"
+column cpu_time_delta      format 999G999G999G999 heading "Cpu time|delta"
 column elapsed_time_delta  format 999G999G999G999 heading "Elapsed time|delta"
 column disk_reads_delta    format 99G999G999 heading "Disk Read|Delta"
 column instance_number     format 99 heading "In|st"
@@ -37,8 +37,8 @@ select ss.instance_number
     , dba_hist_snapshot s 
 where s.snap_id = ss.snap_id 
   and ss.instance_number = s.instance_number
-  and ss.sql_id = '&&sql_id.' 
-  and s.snap_id > (select max(i.snap_id)-200 from dba_hist_snapshot i where i.instance_number=ss.instance_number)   
+  and ss.sql_id = '&&sql_id.'
+  and s.snap_id > (select max(i.snap_id)-1000 from dba_hist_snapshot i where i.instance_number=ss.instance_number)   
 order by s.snap_id, ss.instance_number, ss.sql_id
 /
 

@@ -1,3 +1,7 @@
+----------------------------
+--- see also: Oracle Support Document 444164.1 (Tracing Parallel Execution with _px_trace. Part I) can be found at: https://support.oracle.com/epmos/faces/DocumentDisplay?id=444164.1
+----------------------------
+
 set pages 300 lines 300
 
 
@@ -125,3 +129,5 @@ select decode(px.qcinst_id, null, username, ' - ' || lower(substr(pp.SERVER_NAME
          ,px.SERVER_SET
          ,px.INST_ID 
 /
+
+ttitle off
