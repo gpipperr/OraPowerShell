@@ -5,7 +5,14 @@ set linesize 140
 set recsep off
 
 
-column inst_id       format 99 heading "In"
+define OWNER    = '&1' 
+
+prompt
+prompt Parameter 1 = Owner Name => &&OWNER.
+prompt
+
+column inst_id       format 99 heading "SI"
+column user_inst_id  format 99 heading "UI"
 column username      format a17 heading "User|Name"
 column machine       format a30 heading "Machine"
 column service_name  format a20 heading "Service|Name"
@@ -15,8 +22,9 @@ column session_count           format 9999 heading "Sess|Cnt"
 column status                  format a15 heading "Status"
 
 
-select  sv.inst_id
+select  sv.inst_id 
 		, sv.name as service_name
+		, s.inst_id as user_inst_id
       , s.username
 	   , s.machine		
 		, s.OSUSER
@@ -25,12 +33,15 @@ select  sv.inst_id
 		, count(*)	as session_count	      
   from gv$session s
      , gv$active_services sv
-where s.service_name like 'S\_%' escape '\' 
+where 
+--s.service_name like 'S\_%' escape '\' 
  --'
-  and sv.name = s.service_name (+)
-  and s.username not in ('LPDBA')
+ -- and 
+ sv.name = s.service_name (+)
+ and upper(s.username)  like ('&&OWNER')
 group by  s.username
 		  , s.machine
+		  , s.inst_id
 		  , sv.name
 		  , s.OSUSER
 		  , s.RESOURCE_CONSUMER_GROUP

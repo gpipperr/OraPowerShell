@@ -16,17 +16,17 @@ archive log list
 	   
 show parameter reco
 
-column LIMIT format a10
-column used  format a10
-column RECLAIMABLE format a10
+column LIMIT format a14
+column used  format a14
+column RECLAIMABLE format a14
 column NUMBER_OF_FILES  format a6 heading "Files"
-column Used format a9
+column Used format a12
 	   
-select to_char(round(SPACE_LIMIT / 1024 / 1024, 2)) || ' M' as limit
-      ,to_char(round(SPACE_USED / 1024 / 1024, 2)) || ' M' as used
+select to_char(round(SPACE_LIMIT / 1024 / 1024, 2)) || ' M Limit' as limit
+      ,to_char(round(SPACE_USED / 1024 / 1024, 2)) || ' M in Use' as used
       ,to_char(round(SPACE_RECLAIMABLE / 1024 / 1024, 2)) || ' M' as RECLAIMABLE
       ,to_char(NUMBER_OF_FILES) as NUMBER_OF_FILES
-      ,to_char(round((SPACE_USED * 100) / SPACE_LIMIT, 2), '909D00') as Used
+      ,to_char(round((SPACE_USED * 100) / SPACE_LIMIT, 2), '909D00')||' %' as Used
   from V$RECOVERY_FILE_DEST
 /
 

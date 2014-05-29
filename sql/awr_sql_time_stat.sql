@@ -30,9 +30,11 @@ column disk_reads_delta    format 99G999G999 heading "Disk Read|Delta"
 column instance_number     format 99 heading "In|st"
 column COMMAND_TYPE        format 999 heading "C|typ"
 column sql_id              format a15 heading "SQL|ID"
+column USERNAME            format a18        heading "Schema|Name"
 
 select ss.instance_number
 	  , to_char(s.begin_interval_time,'dd.mm.yyyy hh24:mi') as begin_interval_time
+	  , ss.PARSING_SCHEMA_NAME as  USERNAME
 	  , ss.sql_id 
 	  , st.COMMAND_TYPE
     -- , ss.plan_hash_value
@@ -43,14 +45,16 @@ select ss.instance_number
 	  , ss.disk_reads_delta 
  from dba_hist_sqlstat ss
     , dba_hist_snapshot s 
-	 , DBA_HIST_SQLTEXT  st
+	 , DBA_HIST_SQLTEXT  st	 
 where s.snap_id = ss.snap_id 
   and ss.instance_number = s.instance_number
   and st.sql_id=ss.sql_id 
+   --
   and s.begin_interval_time between to_date('&&START_SNAP','dd.mm.yyyy hh24:mi') and to_date('&&END_SNAP','dd.mm.yyyy hh24:mi')
   -- update or delete
   -- and st.COMMAND_TYPE in (6,7)
-order by s.snap_id, ss.instance_number, ss.elapsed_time_delta desc
+  and ss.PARSING_SCHEMA_NAME not in ('SYS','SYSTEM','HP_DBSPI','DBSNMP','LPDBA')
+order by s.snap_id, ss.instance_number,ss.PARSING_SCHEMA_NAME, ss.elapsed_time_delta desc
 /
 
 prompt 

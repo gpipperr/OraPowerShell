@@ -109,6 +109,8 @@ begin
 end;
 /
 
+--- define  this variable to avoid error with nolog logins 
+define SCRIPTPART_CALL='set_no_titel.sql'
 
 col SCRIPTPART_COL new_val SCRIPTPART_CALL
  
