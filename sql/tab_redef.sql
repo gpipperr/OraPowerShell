@@ -14,10 +14,10 @@ set serveroutput on
 
 ---------------------------------------
 -- Parameter
---define USER_NAME   ='LMS_PL'
---define TABLE_NAME  ='CSC_SERVICE_REQUEST'
---define ORDER_BY_COL='CUSTOMER_ID'
---define TABLE_SPACE ='tablespace TS_DATA_COMP'
+--define USER_NAME   ='GPI'
+--define TABLE_NAME  ='SERVICE_REQUEST'
+--define ORDER_BY_COL='CUSTOMER'
+--define TABLE_SPACE ='tablespace GPI'
 --define SET_PARALLEL=8
 
 define USER_NAME   ='&1'
