@@ -65,14 +65,14 @@ from  V$RESTORE_POINT;
 
 ttitle  "Oldest possible time to flashback"  SKIP 2 -
 
-select to_char(oldest_flashback_time,'dd-mon-yyyy hh24:mi:ss') as "Oldest time to flashback"
+select to_char(oldest_flashback_time,'dd-mon-yyyy hh24:mi:ss') as "Oldest possible time"
  from v$flashback_database_log
 /
 
 ttitle  "Oldest possible SCN to flashback"  SKIP 2 -
 
-column oldest_flashback_scn format 99999999999999999999999999
-select oldest_flashback_scn  as "Oldest  SCN to flashback" 
+column oldest_flashback_scn format 99999999999999999999999999 heading   "Oldest possible SCN" 
+select oldest_flashback_scn
  from v$flashback_database_log
 /
 
@@ -82,5 +82,17 @@ ttitle  "Report Flashback Logs Buffer"  SKIP 2 -
 column  name format A40
 
 select * from v$sgastat where name like 'flashback%';
+
+
+prompt .... check if there are some tablespaces with flashback disabled!
+
+select NAME
+     , FLASHBACK_ON
+ from v$tablespace 
+where FLASHBACK_ON='NO'
+/
+
+prompt .... no row should be visible to avoid error!
+prompt
 
 ttitle off

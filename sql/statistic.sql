@@ -5,9 +5,13 @@
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
+-- 11g: Scheduler Maintenance Tasks or Autotasks [ID 756734.1]
+-- Why Auto Optimizer Statistics Collection May Appear to be "Stuck"? (Doc ID 1320246.1)
+
+
 SET linesize 130 pagesize 120
 
-ttitle left  "Workload Statistik Values" skip 2
+ttitle left  "Workload Statistic Values" skip 2
 
 column SNAME format a15 heading "Statistic|Name"
 column pname format a12 heading "Parameter"
@@ -15,11 +19,12 @@ column PVAL1 format a20 heading "Value 1"
 column PVAL2 format a20 heading "Value 2"
 
 select sname
-	, pname
-	, to_char(pval1,'999G999G999D99') as pval1
-	, pval2 
-from sys.aux_stats$
-order by 1,2
+      ,pname
+      ,to_char(pval1, '999G999G999D99') as pval1
+      ,pval2
+  from sys.aux_stats$
+ order by 1
+         ,2
 /
 
 prompt .... CPUSPEED	   Workload CPU speed in millions of cycles/second
@@ -34,24 +39,25 @@ prompt .... SREADTIM	   Average time for a single-block read request in millisec
 
 
 
-ttitle left  "LAST ANALYZED Tables Overview" skip 2
+ttitle left  "Last analysed Tables Overview" skip 2
 
-column last_an   format a18  heading "Last|analyzed"
+column last_an   format a18  heading "Last|analysed"
 column owner     format a15  heading "Tab|Owner"
 column tab_count format 9999 heading "Tab|Count"
 
-select  last_an
-      , owner
-	  , tab_count 
- from (
-	select   to_char(last_analyzed,'dd.mm.yyyy hh24:mi') as last_an
-		   , owner
-		   , count(*)  as tab_count
-		   , to_char(last_analyzed,'yyyymmddhh24mi') as sort	
-	  from dba_tables 
-	 group by owner,to_char(last_analyzed,'dd.mm.yyyy hh24:mi') ,to_char(last_analyzed,'yyyymmddhh24mi')
-    )
-order by sort asc ,owner desc
+select last_an
+      ,owner
+      ,tab_count
+  from (select to_char(last_analyzed, 'dd.mm.yyyy') as last_an
+              ,owner
+              ,count(*) as tab_count
+              ,to_char(last_analyzed, 'yyyymmddhh') as sort
+          from dba_tables
+         group by owner
+                 ,to_char(last_analyzed, 'dd.mm.yyyy')
+                 ,to_char(last_analyzed, 'yyyymmddhh'))
+ order by sort  asc
+         ,owner desc
 /
 
 prompt...
@@ -60,29 +66,63 @@ prompt... check especially for none sys user
 prompt...
 
  
-ttitle left  "Overview histogramm statistic usage for none system user in the database" skip 2
+ttitle left  "Overview histogram statistic usage for none system user in the database" skip 2
  
 column table_name   format a25 heading "Table Name"
  
 select owner
-     , count(distinct table_name) as count_tables
-     --, column_name 
-     , count(*) as count_hist_buckets
- from DBA_TAB_HISTOGRAMS 
-where owner not in ('SYS','SYSTEM','SYSMAN','APEX_030200','XDB','ORDDATA','MDSYS','OLAPSYS','CTXSYS','SYSMAN_MDS','EXFSYS','DBSNMP','ORDSYS','WMSYS','APEX_030200','PEFSTAT')
- --and  owner like 'INTERSHOP_LIVE'
-group by owner --table_name ,column_name
-order by owner
+      ,count(distinct table_name) as count_tables
+       --, column_name 
+      ,count(*) as count_hist_buckets
+  from DBA_TAB_HISTOGRAMS
+ where owner not in ('SYS'
+                    ,'SYSTEM'
+                    ,'SYSMAN'
+                    ,'APEX_030200'
+                    ,'XDB'
+                    ,'ORDDATA'
+                    ,'MDSYS'
+                    ,'OLAPSYS'
+                    ,'CTXSYS'
+                    ,'SYSMAN_MDS'
+                    ,'EXFSYS'
+                    ,'DBSNMP'
+                    ,'ORDSYS'
+                    ,'WMSYS'
+                    ,'APEX_030200'
+                    ,'PEFSTAT')
+ group by owner --table_name ,column_name
+ order by owner
 /
 
+---------------------------- Check the Scheduler for the statistic job -------------------------------
 
-ttitle left  "Job Scheduler Information -- Oracle Statistik Auto Job " skip 2
 
-column JOB_NAME        format a30 heading "Job|Name"
-column RUN_COUNT       format 99999 heading "Run|Count"
-column FAILURE_COUNT   format 99999 heading "Failure|Count"
-column LAST_START_DATE format a18 heading "Last|run date"
-column NEXT_RUN_DATE   format a18 heading "Next|run date"
+column job_name            format a30     heading "Job|Name"
+column run_count           format 99999   heading "Run|Count"
+column failure_count       format 99999   heading "Failure|Count"
+column last_start_date     format a18     heading "Last|run date"
+column next_run_date       format a18     heading "Next|run date"
+column client_name         format a35     heading "Job|Name"
+column status              format a10     heading "Job|status"
+column mean_job_duration   format 999G999 heading "Mean|duration"
+column mdl7                format 999G999 heading "Max|duration"
+column next_start_date     format a38     heading "Next|run"
+column window_group_name   format a18     heading "Window|group"
+column job_duration        format 999G999 heading "Duration|Minutes"
+column job_start_time      format a18     heading "Job|Start time"
+column log_date            format a18     heading 'Log Date'
+column owner               format a10     heading 'Owner'
+column job_name            format a30     heading 'Job'
+column status              format a10     heading 'Status'
+column actual_start_date   format a32     heading 'Actual|Start|Date'
+column error#              format 999999  heading 'Error|Nbr'
+column window_start_time   format a18     heading 'Windows|Start'
+column job_status          format a10     heading 'Status'
+column window_name         format a20     heading 'Windows|Name'
+column window_next_time    format a38     heading 'Window|next Time'
+
+ttitle left  "Job Scheduler Information -- Oracle Statistic Auto Job " skip 2
 
 select OWNER
       ,JOB_NAME
@@ -91,32 +131,115 @@ select OWNER
       ,to_char(LAST_START_DATE, 'DD.MM.YYYY HH24:MI') as LAST_START_DATE
       ,to_char(NEXT_RUN_DATE, 'DD.MM.YYYY HH24:MI') as NEXT_RUN_DATE
   from dba_scheduler_jobs
-  where job_name like '%STAT%'
- /   
+ where job_name like '%STAT%' 
+/
  
 prompt ... GATHER_STATS_JOB 10g job should not run in 11g!
+prompt ... to delete use as sys user: exec dbms_scheduler.drop_job(job_name => 'SYS.GATHER_STATS_JOB');
+prompt
 
-column client_name       format a35 heading "Job|Name"
-column status            format a10 heading "Job|status"
-column mean_job_duration format a10 heading "Mean|duration"
-column mdl7              format a10 heading "Max|duration"
-column next_start_date   format a18 heading "Next|run"
-column window_group_name format a18 heading "Window|group"
+ttitle left  "Job Scheduler BSLN_MAINTAIN_STATS_JOB History " skip 2 
 
-select c.client_name
-     , c.status
-	 , w.window_group_name
-	 , w.next_start_date
-	 , c.mean_job_duration
-	 , c.max_duration_last_7_days as mdl7
-from  dba_autotask_client c
-    , dba_scheduler_window_groups w
-where w.window_group_name=c.window_group
-order by 1
+
+select log_id
+      ,to_char(log_date, 'DD.MM.YYYY HH24:MI') as log_date
+      ,owner
+      ,job_name
+      ,status
+      ,to_char(actual_start_date, 'DD.MM.YYYY HH24:MI') as actual_start_date
+      ,error#
+  from dba_scheduler_job_run_details
+ where JOB_NAME = 'BSLN_MAINTAIN_STATS_JOB'
+ order by actual_start_date
 /
 
+ttitle left  "Job Scheduler Window Settings " skip 2 
 
+prompt 
+prompt check if the window is not activ in the past!
+prompt
+
+column check_active format a10    heading 'Check|if ok'
+
+select window_name
+      ,to_char(last_start_date, 'DD.MM.YYYY HH24:MI') as last_start_date
+      ,enabled
+      ,active
+      ,decode(active, 'TRUE', '<==CHECK IF POSSIBLE', '-') as check_active
+  from dba_scheduler_windows
+ order by last_start_date
+/
+
+prompt
+prompt  ... if a window is still open in the past, close the window manually
+prompt  ... with : EXECUTE DBMS_SCHEDULER.CLOSE_WINDOW ('SATURDAY_WINDOW');
+prompt  ..
+
+ttitle left  "Check Window  history" skip 2 
+prompt 
+prompt check Window history
+prompt 
+
+select window_name
+      ,optimizer_stats
+      ,window_next_time
+      ,autotask_status
+  from dba_autotask_window_clients
+
+/ 
+
+ttitle left  "Check Auto tasks " skip 2 
+
+prompt 
+prompt if autotask is really enabled
+prompt
+
+select client_name
+      ,status
+  from dba_autotask_task
+/  
+
+ttitle left  "Check Auto tasks Settings" skip 2 
+
+select c.client_name
+      ,c.status
+      ,w.window_group_name
+      ,w.next_start_date as next_start_date
+      ,extract(hour from c.mean_job_duration) * 60 + extract(minute from c.mean_job_duration) as mean_job_duration
+      ,extract(hour from c.max_duration_last_7_days) * 60 + extract(minute from c.max_duration_last_7_days) as mdl7
+  from dba_autotask_client         c
+      ,dba_scheduler_window_groups w
+ where w.window_group_name = c.window_group
+ order by 1
+/
+
+prompt .... if task is disabled
+prompt .... exec DBMS_AUTO_TASK_ADMIN.ENABLE( client_name => 'auto optimizer stats collection',operation => NULL,window_name => NULL)
+prompt ....
+prompt
+
+ttitle left  "Check Auto tasks history" skip 2 
+
+prompt 
+prompt if empty no  history!!
+prompt
+
+select client_name
+      ,window_name
+      ,to_char(window_start_time, 'dd.mm.yyyy hh24:mi') as window_start_time
+       --, window_duration
+       --, job_name
+      ,job_status
+      ,to_char(job_start_time, 'dd.mm.yyyy hh24:mi') as job_start_time
+      ,extract(hour from job_duration) * 60 + extract(minute from job_duration) as job_duration
+      ,job_error
+      --, job_info 
+  from dba_autotask_job_history
+/  
 
 ttitle off
+
+
+
  
- 
+

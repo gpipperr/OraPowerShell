@@ -15,9 +15,9 @@ set serveroutput on
 ---------------------------------------
 -- Parameter
 --define USER_NAME   ='GPI'
---define TABLE_NAME  ='SERVICE_REQUEST'
---define ORDER_BY_COL='CUSTOMER'
---define TABLE_SPACE ='tablespace GPI'
+--define TABLE_NAME  ='TAB_TEST'
+--define ORDER_BY_COL='ID'
+--define TABLE_SPACE ='tablespace DATA'
 --define SET_PARALLEL=8
 
 define USER_NAME   ='&1'

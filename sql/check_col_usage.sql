@@ -1,10 +1,20 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   HTML Report column usage for SQL queries and indexes
--- see :   http://www.pipperr.de/dokuwiki/doku.php?id=dba:index_column_usage
--- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
+--
+-- HTML Report - Table column used in SQL Statements but not indexed and 
+-- all indexes with more than one column to check for duplicate indexing
+--
 --==============================================================================
+
+define OWNER    = '&1' 
+
+prompt
+prompt Parameter 1 = Owner Name => &&OWNER.
+prompt
+ 
+variable own varchar2(20);
+exec :own := upper('&&OWNER');
+
 
 col SPOOL_NAME_COL new_val SPOOL_NAME
  
@@ -49,7 +59,7 @@ select o.owner
  where u.obj# = o.OBJECT_ID
    and u.obj# = c.obj#
    and u.intcol# = c.col#
-   and o.owner like '&USERNAME.%'
+   and o.owner like :own
    and not exists (select 1
           from dba_ind_columns i
          where i.table_owner = o.owner
@@ -87,7 +97,7 @@ select *
                       ,column_name
                       ,column_position
                   from dba_ind_columns
-                 where index_owner like '&&USERNAME.%'
+                 where index_owner like :own
                  order by index_owner
                          ,table_name) pivot(min(column_name) for column_position in('1' as pos1, '2' as pos2,
                                                                                     '3' as pos3, '4' as pos4, '5' as pos5,
