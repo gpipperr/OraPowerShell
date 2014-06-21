@@ -11,10 +11,12 @@
 set verify  off
 set linesize 140 pagesize 4000 recsep OFF
 
-define COL_TYPE = '&1' 
+define OWNER    = '&1' 
+define COL_TYPE = '&2' 
 
 prompt
-prompt Parameter 1 = Column Type          => &&COL_TYPE.
+prompt Parameter 1 = Owner Name   => &&OWNER.
+prompt Parameter 2 = Column Type  => &&COL_TYPE.
 prompt
 
 column owner       format a15 heading "Qwner" 
@@ -27,10 +29,12 @@ select  t.OWNER
 		, t.TABLE_NAME
 		, t.COLUMN_NAME
 		, c.comments
- from dba_tab_columns t,DBA_COL_COMMENTS c
+ from dba_tab_columns t
+     ,DBA_COL_COMMENTS c
 where DATA_TYPE like upper('&&COL_TYPE.')
  and t.OWNER=c.OWNER (+)
- and t.TABLE_NAME = c.TABLE_NAME (+)
+ and t.TABLE_NAME  = c.TABLE_NAME (+)
  and t.COLUMN_NAME = c.COLUMN_NAME (+)
+ and t.owner=upper('&&OWNER.')
 order by OWNER,TABLE_NAME,COLUMN_NAME
 /

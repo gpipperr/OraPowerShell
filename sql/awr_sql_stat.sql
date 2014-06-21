@@ -26,6 +26,7 @@ column disk_reads_delta    format 99G999G999 heading "Disk Read|Delta"
 column instance_number     format 99 heading "In|st"
 
 select ss.instance_number
+     , ss.sql_id
 	  , to_char(s.begin_interval_time,'dd.mm.yyyy hh24:mi') as begin_interval_time
      , ss.plan_hash_value
 	  , case when ss.executions_delta = 0 then -1 else ss.elapsed_time_delta/ss.executions_delta end as  execution_time
@@ -37,8 +38,22 @@ select ss.instance_number
     , dba_hist_snapshot s 
 where s.snap_id = ss.snap_id 
   and ss.instance_number = s.instance_number
-  and ss.sql_id = '&&sql_id.'
-  and s.snap_id > (select max(i.snap_id)-1000 from dba_hist_snapshot i where i.instance_number=ss.instance_number)   
+ -- and ss.sql_id = '&&sql_id.' 
+   and ss.sql_id in (
+   '18akaxz1aa12w'
+  ,'1wyyrmpphamha'
+  ,'74why495k4a58'
+  ,'92s2zux3buytf'
+  ,'aazjks8g5panp'
+  ,'aazjks8g5panp'
+  ,'acacsq78cy633'
+  ,'bny9qf020z5gm'
+  ,'d2kbxfanh25d3'
+  ,'fmax0q3mj990d'
+  ,'g5127skfxcf00'
+  ,'gmhcw86f3fwtc'
+  ) 
+  and s.snap_id > (select max(i.snap_id)-40 from dba_hist_snapshot i where i.instance_number=ss.instance_number)   
 order by s.snap_id, ss.instance_number, ss.sql_id
 /
 

@@ -62,6 +62,7 @@ select owner
       ,to_char(last_start_date, 'dd.mm hh24:mi') as last_start_date
       ,to_char(next_run_date, 'dd.mm hh24:mi')   as next_run_date
   from dba_scheduler_jobs
+  --where rownum < 20	 
  order by owner
 /   
 
