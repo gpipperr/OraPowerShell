@@ -61,8 +61,9 @@ DOC
 	- user_ddl.sql     - get the script to create a user - parameter 1 - Name of the user
 	- user_history.sql - get some static information for the login behavior of this user 
 								Parameter 1 - Name of the user
-	- role.sql         - roles in the database 
 	- user_objects.sql - show the counts of objects from none default users
+	
+	- role.sql         - roles in the database 
 	- profile.sql      - profiles for the user of this database
 	- proxy.sql        - proxy settings in the database
 
@@ -117,6 +118,7 @@ DOC
 	- obj_grants.sql  - get the grants for this object in the database    - parameter - Owner, object name
 	
 	- plsql_info.sql  - information about a plsql function/package
+	- my_plsql.sql    - show all package of the current user
 	
 	- select.sql     - select first 3 records of the table as list - parameter 1 - name of the table
 	- view_count.sql - count entries in a view                     - parameter 1 - name of the view
