@@ -15,6 +15,7 @@ ttitle left  "Tables and Views for this akt user" skip 2
 column table_name format a30 heading "Table/View Name"
 column ttype      format a9  heading "Type"
 column comments   format a60 heading "Comment on this table/view"
+COLUMN tablespace_name format a20 heading "Tablespace Name"
 
 select t.table_name
       ,t.table_type as ttype
