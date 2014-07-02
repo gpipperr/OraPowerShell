@@ -13,7 +13,7 @@ SET linesize 120 pagesize 500 recsep OFF
 
 ttitle left  "User Account status" skip 2
 
-select USERNAME,ACCOUNT_STATUS,LOCK_DATE,EXPIRY_DATE 
+select USERNAME,ACCOUNT_STATUS,LOCK_DATE,EXPIRY_DATE,DEFAULT_TABLESPACE,TEMPORARY_TABLESPACE
  from dba_users 
  where USERNAME like upper('&&USER_NAME.')
  /

@@ -36,6 +36,7 @@ column Size_MB 		&&lnum
 column count_blk 	format 999G999G999
 column count_ext 	&&snum
 column count_part 	&&snum
+COLUMN tablespace_name format a20 heading "Tablespace Name"
 
 select segment_name
       ,owner
@@ -43,11 +44,13 @@ select segment_name
       ,sum(blocks) as count_blk
       ,sum(EXTENTS) as count_ext
       ,count(*) as count_part
+      ,tablespace_name		
   from dba_segments
  where upper(segment_name) like upper('&ENTER_TABLE.')
    and upper(owner) = upper('&ENTER_OWNER.')
  group by segment_name
          ,owner
+			,tablespace_name
 /
 
 

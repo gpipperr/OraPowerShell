@@ -26,6 +26,7 @@ DOC
 	- service_session.sql - sessions per service over all instances 
 	- trans.sql      - running transactions in the database
 	- undo.sql       - show activity on the undo segment
+	- undo_statl.sql - show statistic for the undo tablespace usage
 	- open_trans.sql - all longer open running transactions in the database
 	- process.sql    - actual processes in the database  
 						parameter 1 - name of the DB or OS User 

@@ -17,14 +17,14 @@ prompt Parameter 1 = SEQ Name          => &&SEQ_NAME.
 prompt
 
 column SEQUENCE_OWNER format a14  heading "Qwner" 
-column SEQUENCE_NAME  format a20  heading "Sequence|Name"
-column CACHE_SIZE     format 9999 heading "Cache|Size"
-column INCREMENT_BY   format 999  heading "Inc|val"
-column MIN_VALUE  format 999  heading "Min|val"
-column MAX_VALUE  format 999  heading "Max|val"
+column SEQUENCE_NAME  format a24  heading "Sequence|Name"
+column CACHE_SIZE     format 9999999 heading "Cache|Size"
+column INCREMENT_BY   format 999999  heading "Inc|val"
+column MIN_VALUE  format  999G999G999G999G999   heading "Min|val"
+column MAX_VALUE  format  999G999G999G999G999   heading "Max|val"
 column CYCLE_FLAG format a3 heading "CYC|LE"
 column ORDER_FLAG format a3 heading "ORD|ER"
-column LAST_NUMBER  format 999G999G999G999  heading "Last|number"
+column LAST_NUMBER  format 999G999G999G999G999  heading "Last|number"
 
  select SEQUENCE_OWNER
 		, SEQUENCE_NAME

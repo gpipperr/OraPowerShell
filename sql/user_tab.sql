@@ -23,12 +23,14 @@ ttitle left  "Tables and Views for this user &&USERNAME." skip 2
 column owner      format a15 heading "Qwner" 
 column table_name format a30 heading "Table/View Name"
 column otype      format a5 heading "Type"
-column comments   format a60 heading "Comment on this table/view"
+column comments   format a40 heading "Comment on this table/view"
+COLUMN tablespace_name format a20 heading "Tablespace Name"
 
 select  t.owner
       , t.table_name
 	  , 'table' as otype
 	  , nvl(c.comments,'n/a')  as comments
+	  , t.tablespace_name
 from dba_tables t
     ,dba_tab_comments c
  where upper(t.owner) like upper('%&&USERNAME.%')
@@ -40,6 +42,7 @@ union
        , v.view_name
 	   , 'view'  as otype
 	   , nvl(c.comments,'n/a')  as comments
+		,'n/a'
   from dba_views v
       ,dba_tab_comments c
  where upper(v.owner) like upper('%&&USERNAME.%')
