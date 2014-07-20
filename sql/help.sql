@@ -19,14 +19,19 @@ DOC
 	- instance.sql   - status of the instance where the user is connected
 	- limit.sql      - resource limits since last startup of the instances
 	
-	- sessions.sql   - actual connections to the database 
-	- session_history.sql - get a summary over the last active sessions 
+	- sessions.sql            - actual connections to the database 
+	- session_history.sql     - get a summary over the last active sessions 
+	- session_long_active.sql - all session that are longer actvie 
+	- session_longops.sql     - get information about long running sql statements
+	
 	- starttrace.sql      - start a trace of my session
 	- stoptrace.sql       - stop trace of my session
+	- trace_status.sql    - show all traces in the database
+	
 	- service_session.sql - sessions per service over all instances 
 	- trans.sql      - running transactions in the database
 	- undo.sql       - show activity on the undo segment
-	- undo_statl.sql - show statistic for the undo tablespace usage
+	- undo_stat.sql - show statistic for the undo tablespace usage
 	- open_trans.sql - all longer open running transactions in the database
 	- process.sql    - actual processes in the database  
 						parameter 1 - name of the DB or OS User 
@@ -37,7 +42,8 @@ DOC
 	- tempspace_usage.sql  - show processes using the temp tablespace
 	- parallel.sql         - parallel sql informations
 	
-	- tns.sql        - show services and tns settings on services
+	- tns.sql              - show services and tns settings on services
+	- taf.sql              - Check TAF settings of the connections
 	
 	- locks.sql      - locks in the database - mode 6 is the blocker!
 	- wait.sql       - waiting sessions
@@ -67,6 +73,7 @@ DOC
 	- role.sql         - roles in the database 
 	- profile.sql      - profiles for the user of this database
 	- proxy.sql        - proxy settings in the database
+	- proxy_client.sql - from which user you can connect to this user - parameter 1 the user
 
 	
 	
@@ -140,6 +147,7 @@ DOC
 	- ext/tsc.sql         - table space size information
 	- directory.sql  - show directories in the database
 	- links.sql      - show the DB Links in the database
+	- links_ddl.sql  - get the DDL of all DB links in the database
 	
 	- audit.sql      - show the audit settings 
 	- audit_sum.sql  - auditlog summary
@@ -160,7 +168,7 @@ DOC
 	- sql_temp.sql   - SQL that use the temp table space for sorting
 	
 	- ash.sql               - usage of the acive session history ASH
-	- awr.sql               - usage of the AWR repository and of the SYSAUX table pace 
+	- awr.sql               - usage of the AWR repository and of the SYSAUX table space 
 	- awr_sql_stat.sql      - get statistic of the SQL execution of one statement - parameter 1 - SQL ID
 	- awr_sql_plan.sql      - get plan of the SQL execution of one statement - parameter 1 - SQL ID
 	- awr_sql_time_stat.sql - get all sql statements from the awr for this time - parameter 1 - Startdate  - parameter 2 end date in DE format
@@ -182,6 +190,8 @@ DOC
 	- streams_config.sql      - streams configuration
 	- streams_logs.sql        - show the streams archivelogs - which can be deleted 
 	- streams_print_error.sql - print the SQL Statements for all LCRS in a transaction if a streams error ocurs
+	- streams_print_lcr.sql   - print the LCR of one Message
+	
 	
 	- login.sql      - set the login prompt
 	
@@ -220,6 +230,10 @@ DOC
 	
 	- 01-db-setup/create_audit_log_database.sql
 	- create own table space for auditlog, move audit log to this table pace - create clean job
+	
+	#The OEM Query Scripts
+	=================
+	- get the the help of the OEM scripts use oem/help_oem.sql
 	
 -------------------------------------------------------------------------------
 #

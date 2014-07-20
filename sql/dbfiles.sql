@@ -13,7 +13,7 @@ ttitle  "Report Database Files"  SKIP 1 -
 COLUMN tablespace_name format a18 heading "Tablespace"
 COLUMN df_size format 999999 heading "Size"
 COLUMN F_ID format 999
-COLUMN FILE_NAME format A48 heading "Filename"
+COLUMN FILE_NAME format A53 heading "Filename"
 column status format A10
 column fragidx format A12 heading "Fragmen. Index"
 

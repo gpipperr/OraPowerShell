@@ -131,6 +131,16 @@ order by column_name
 /
 
 
+ttitle left  "Overview of the last 10 statistics on this table" skip 2
+select h.TABLE_NAME
+     , h.PARTITION_NAME
+ 	  , to_char(h.STATS_UPDATE_TIME,'dd.mm.yyyy hh24:mi') as STATS_UPDATE_TIME
+ from dba_tab_stats_history h
+where h.table_name like  upper('&TABLE_NAME.')
+  and h.owner      like  upper('&USER_NAME.')
+  and rownum < 10
+order by STATS_UPDATE_TIME  
+/	
 
 -- Details Analyse 
 -- column endpoint_number format 99999  heading "End|Nr."

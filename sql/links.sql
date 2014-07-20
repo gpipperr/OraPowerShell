@@ -11,9 +11,9 @@ prompt
 prompt Link Infos -- The DB Links this user can see
 prompt 
 
-column owner format a10
+column owner format a14
 column host  format a60
-column db_link format a20
+column db_link format a25
 column username format a20
 
 
@@ -37,6 +37,9 @@ from dba_db_links
  
 ttitle off
 
+prompt ...
 prompt ... to create a private db link use this statement:
 prompt ... "CREATE DATABASE LINK mylink CONNECT TO remote_user IDENTIFIED BY remote_pwd USING 'remote_db';"
+prompt ... to get the DDL of all links use links_ddl.sql
+prompt ...
 

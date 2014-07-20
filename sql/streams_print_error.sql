@@ -24,9 +24,9 @@ SELECT replace(ora_database_name||'_'||SYS_CONTEXT('USERENV','HOST')||'_'||to_ch
 FROM dual
 /
 
-alter session set NLS_TERRITORY=AMERICA;;
-alter session set NLS_LANGUAGE=AMERICAN;;
-alter session set NLS_NUMERIC_CHARACTERS='.,';;
+alter session set NLS_TERRITORY=AMERICA;
+alter session set NLS_LANGUAGE=AMERICAN;
+alter session set NLS_NUMERIC_CHARACTERS='.,';
 
 spool &&SPOOL_NAME
 
@@ -173,9 +173,19 @@ prompt prompt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 prompt set heading  on
 prompt set feedback off
 prompt set define on
+prompt set echo off
 
 spool off 
 
 prompt .....
 prompt to start he recreate scripts use the script:  &&SPOOL_NAME
 prompt .....
+prompt ..... to delete the errors and restart streams use this commands:
+prompt ..... exec dbms_apply_adm.delete_all_errors( apply_name => 'downstream_apply')
+prompt ..... exec dbms_apply_adm.start_apply      ( apply_name => 'downstream_apply')
+prompt .....
+prompt .....
+
+
+
+

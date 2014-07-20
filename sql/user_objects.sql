@@ -9,7 +9,16 @@ SET linesize 73 pagesize 400 recsep OFF
 
 column OWNER format a25  
 
-select owner
+--user summary
+--break on owner SKIP 1
+--COMPUTE SUM OF size_GB ON owner
+
+COLUMN DUMMY NOPRINT;
+COMPUTE SUM OF size_GB ON DUMMY;
+BREAK ON DUMMY;
+
+select  null dummy
+     , owner
      , obj_type
 	  , obj_count 
 	  , sum(size_GB) as size_GB
@@ -21,7 +30,8 @@ select owner
 	 group by o.object_type,o.owner
  ) 
 where owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT')
-and obj_type in ('TABLE','INDEX')
+and obj_type in ('TABLE','INDEX','LOB')
+--GROUP BY rollup (owner,obj_type,obj_count)
 group by owner,obj_type,obj_count
 order by owner,obj_type
 /
