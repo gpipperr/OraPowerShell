@@ -31,7 +31,7 @@ exec DBMS_OUTPUT.put_line('start create_global_errorlog.sql');
 
 prompt "Create Table SYSTEM.ora_errors  and SEQUENCE SYSTEM.ora_errors_seq"
 
-CREATE TABLE SYSTEM.ora_errorss
+CREATE TABLE SYSTEM.ora_errors
 (
   id         NUMBER
  ,log_date   DATE
