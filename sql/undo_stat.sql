@@ -1,8 +1,8 @@
 --==============================================================================
--- Author: Gunther Pippèrr 
 -- Desc:   undo  stat
 -- Source:
 -- http://www.dbaref.com/home/dba-routine-tasks/scriptstocheckundotablespacestats
+-- http://docs.oracle.com/cd/B28359_01/server.111/b28320/dynviews_3110.htm#REFRN30295
 --==============================================================================
 set verify  off
 set linesize 120 pagesize 4000 recsep OFF

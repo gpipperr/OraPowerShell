@@ -42,7 +42,7 @@ prompt .... SREADTIM	   Average time for a single-block read request in millisec
 ttitle left  "Last analysed Tables Overview" skip 2
 
 column last_an   format a18  heading "Last|analysed"
-column owner     format a15  heading "Tab|Owner"
+column owner     format a18  heading "Tab|Owner"
 column tab_count format 9999 heading "Tab|Count"
 
 select last_an
@@ -235,6 +235,19 @@ select client_name
       ,job_error
       --, job_info 
   from dba_autotask_job_history
+/  
+
+---------------------------- Check the Statistic Settings for this database -------------------------------
+ttitle left  "Check Auto tasks history" skip 2 
+
+prompt 
+prompt if empty no  history!!
+prompt
+
+ttitle left  "How long the DB keeps old statistics" skip 2 
+
+select DBMS_STATS.GET_STATS_HISTORY_RETENTION
+  from dual
 /  
 
 ttitle off

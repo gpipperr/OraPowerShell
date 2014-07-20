@@ -13,7 +13,7 @@ column program    format a19    heading "Remote|program"
 column module     format a19    heading "Remote|module"
 column tablespace format a10    heading "Table|space"
 column osuser     format a12    heading "OS|User"
-column mb_used 	  format 99999  heading "In USE|MB"
+column mb_used 	  format 9G999G999  heading "In USE|MB"
 column statements format 9999   heading "Segments"
 
 select  ses.inst_id
@@ -57,18 +57,18 @@ select TABLESPACE_NAME
  from DBA_TEMP_FREE_SPACE
 /
 
-select   round(bytes/1024/1024,3) as akt_size_mb
-      ,  round(MAXBYTES/1024/1024,3) as max_size_mb
-      , status
-      , s.AUTOEXTENSIBLE
-      , INCREMENT_BY
-		, FILE_ID
-  from dba_temp_files s 
-/
-       
-select 'alter database tempfile ''' || s.file_name || ''' resize '||'&TEMP_NEW_SIZE'||';' as command ,FILE_ID
-  from dba_temp_files s 
-/
+-- select   round(bytes/1024/1024,3) as akt_size_mb
+--       ,  round(MAXBYTES/1024/1024,3) as max_size_mb
+--       , status
+--       , s.AUTOEXTENSIBLE
+--       , INCREMENT_BY
+-- 		, FILE_ID
+--   from dba_temp_files s 
+-- /
+--        
+-- select 'alter database tempfile ''' || s.file_name || ''' resize '||'&TEMP_NEW_SIZE'||';' as command ,FILE_ID
+--   from dba_temp_files s 
+-- /
 
 
 

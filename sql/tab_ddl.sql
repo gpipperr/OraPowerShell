@@ -1,5 +1,5 @@
 --==============================================================================
-
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   extract the DDL of a object in the database
 --
 -- Parameter 2: Owner of the table/object
@@ -48,7 +48,7 @@ begin
 		v_type:=o_rec.object_type;
 		v_owner:=o_rec.owner;
 		
-		:ddllob:=dbms_metadata.get_ddl(v_type ,upper('&&TAB_NAME.'),v_owner); 
+		:ddllob:=dbms_metadata.get_ddl(replace(v_type,' ','_') ,upper('&&TAB_NAME.'),v_owner); 
 	  	
 		
 		:ddllob:=:ddllob||chr(10)||chr(10)||'-- DDL for Grants : '||chr(10);

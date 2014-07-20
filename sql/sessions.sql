@@ -22,17 +22,18 @@ ttitle left  "All User Sessions on this DB" skip 2
 
 
 column inst_id    format 99     heading "Inst|ID"
-column username   format a8     heading "DB User|name"
+column username   format a14     heading "DB User|name"
 column sid        format 99999  heading "SID"
 column serial#    format 99999  heading "Serial"
-column machine    format a13    heading "Remote|pc/server"
+column machine    format a30    heading "Remote|pc/server"
 column terminal   format a13    heading "Remote|terminal"
 column program    format a16    heading "Remote|program"
 column module     format a16    heading "Remote|module"
 column client_info format a10   heading "Client|info"
 column client_identifier format A10 heading "Client|identifier"
-column OSUSER      format a15 heading "OS|User"
+column OSUSER      format a13 heading "OS|User"
 column LOGON_TIME  format a12 heading "Logon|Time"
+column status      format a8  heading "Status"
 
 select  inst_id 
       , sid
@@ -40,7 +41,7 @@ select  inst_id
 	   , status
       , username
 	   , machine
-      , terminal
+      --, terminal
       , program
 		, OSUSER
 	   , module
@@ -56,11 +57,18 @@ select  inst_id
 
 ttitle left  "User Sessions Summary on this DB" skip 2
 
-column cs format 999
-column program  format A40
-select count(*) as cs
-      ,username
-      ,program
+column cs format 9999
+column program  format A60
+column username format A20
+
+COLUMN DUMMY NOPRINT;
+COMPUTE SUM OF cs ON DUMMY
+BREAK ON DUMMY;
+
+select  null dummy
+      , count(*) as cs
+      , username
+      , program
   from gv$session
  where username is not null
  group by username
@@ -69,6 +77,8 @@ select count(*) as cs
 /
 
 ttitle off
+
+show parameter sessions
 
 prompt
 prompt ... to kill session     "ALTER SYSTEM KILL SESSION 'sid,serial#,@inst_id';"

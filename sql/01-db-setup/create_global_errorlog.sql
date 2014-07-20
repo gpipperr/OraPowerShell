@@ -29,9 +29,9 @@ set serveroutput on size 1000000
 
 exec DBMS_OUTPUT.put_line('start create_global_errorlog.sql');
 
-prompt "Create Table SYSTEM.ora_error  and SEQUENCE SYSTEM.ora_error_seq"
+prompt "Create Table SYSTEM.ora_errors  and SEQUENCE SYSTEM.ora_errors_seq"
 
-CREATE TABLE SYSTEM.ora_error
+CREATE TABLE SYSTEM.ora_errorss
 (
   id         NUMBER
  ,log_date   DATE
@@ -44,16 +44,16 @@ CREATE TABLE SYSTEM.ora_error
 ) tablespace sysaux
 /
 
-create unique index system.idx_ora_error_pk on system.ora_error(id) tablespace sysaux;
-alter table system.ora_error add constraint pk_ora_errpr primary key (id) enable validate;
+create unique index system.idx_ora_errors_pk on system.ora_errors(id) tablespace sysaux;
+alter table system.ora_errors add constraint pk_ora_errpr primary key (id) enable validate;
 
-create index system.idx_ora_error_date on system.ora_error(log_date) tablespace sysaux; 
+create index system.idx_ora_errors_date on system.ora_errors(log_date) tablespace sysaux; 
   
-grant select on system.ora_error to public;
+grant select on system.ora_errors to public;
 
 -----------
 
-CREATE SEQUENCE SYSTEM.ora_error_seq
+CREATE SEQUENCE SYSTEM.ora_errors_seq
 /
 
 -----------
@@ -88,9 +88,9 @@ BEGIN
       -- do nothing
       NULL;
     ELSE
-      SELECT SYSTEM.ora_error_seq.NEXTVAL INTO v_id FROM DUAL;
+      SELECT SYSTEM.ora_errors_seq.NEXTVAL INTO v_id FROM DUAL;
 
-      INSERT INTO SYSTEM.ora_error (id
+      INSERT INTO SYSTEM.ora_errors (id
                                    ,log_date
                                    ,log_usr
                                    ,terminal
@@ -118,7 +118,7 @@ END log_error;
 CREATE or REPLACE PROCEDURE system.deleteOraErrorTrigTab (p_keepdays NUMBER)
 IS
 BEGIN
-   DELETE FROM SYSTEM.ora_error WHERE log_date+p_keepdays < sysdate;
+   DELETE FROM SYSTEM.ora_errors WHERE log_date+p_keepdays < sysdate;
    COMMIT;
 END;
 /
@@ -157,7 +157,7 @@ SELECT COUNT (*) as anzahl
         ,nvl(LOG_USR,'n/a') as LOG_USR
         ,ERR_NR
         ,substr(ERR_MSG,1,200) mesg
-    FROM SYSTEM.ora_error
+    FROM SYSTEM.ora_errors
     where nvl(log_usr,'n/a') not in ('SYS','SYSMAN','DBSNMP')
 GROUP BY TO_CHAR (log_date, 'dd/mm hh24')||'h'
         ,nvl(LOG_USR,'n/a')

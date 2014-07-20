@@ -1,3 +1,9 @@
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   grants to an object in the database
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
+
 --desc DBA_ROLE_PRIVS
 --desc DBA_SYS_PRIVS
 --desc DBA_TAB_PRIVS
@@ -15,7 +21,7 @@ prompt Parameter 1 = Owner Name => &&OWNER.
 prompt Parameter 2 = Tab Name   => &&TAB_NAME.
 prompt
 
-ttitle left  "Grants the object &OWNER..&TAB_NAME." skip 2
+ttitle left  "Grants of the object &OWNER..&TAB_NAME." skip 2
 
 column GRANTEE     format a20
 column OWNER       format a20
@@ -24,10 +30,11 @@ column GRANTOR     format a20
 column PRIVILEGE   format a20
 
 
-select  GRANTEE
-		, OWNER
+select  
+		  OWNER
 		, TABLE_NAME
 		, GRANTOR
+		, GRANTEE
 		, PRIVILEGE
 --		, GRANTABLE
 --		, HIERARCHY
