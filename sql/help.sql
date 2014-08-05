@@ -23,6 +23,8 @@ DOC
 	- session_history.sql     - get a summary over the last active sessions 
 	- session_long_active.sql - all session that are longer actvie 
 	- session_longops.sql     - get information about long running sql statements
+	- my_opt_settings.sql     -  Optimizer settings in my session
+	- session_opt_settings.sql     -  Optimizer settings in my session  - parameter 1 username
 	
 	- starttrace.sql      - start a trace of my session
 	- stoptrace.sql       - stop trace of my session
@@ -31,11 +33,11 @@ DOC
 	- service_session.sql - sessions per service over all instances 
 	- trans.sql      - running transactions in the database
 	- undo.sql       - show activity on the undo segment
-	- undo_stat.sql - show statistic for the undo tablespace usage
-	- open_trans.sql - all longer open running transactions in the database
+	- undo_stat.sql  - show statistic for the undo tablespace usage
+	- open_trans.sql - all longer open running transactions in the database - uncommited transaction!
 	- process.sql    - actual processes in the database  
-						parameter 1 - name of the DB or OS User 
-						parameter 2 - if Y shows also internal processes
+						     parameter 1 - name of the DB or OS User 
+						     parameter 2 - if Y shows also internal processes
 	
 	- process_get.sql      - show the information about the session with this PID - parameter 1 PID
 	- resource_manager.sql - show the information about the resource manager  
@@ -47,6 +49,7 @@ DOC
 	
 	- locks.sql      - locks in the database - mode 6 is the blocker!
 	- wait.sql       - waiting sessions
+	- wait_text.sql  - text to a wait event - parameter 1 part of the event name
 	
 	- my_user.sql    - who am i and over with service i connect to the database
 	- nls.sql        - global and session nls Settings
@@ -57,9 +60,9 @@ DOC
 	- init_rac.sql   - show init.parameter in a rac Environment to check if same parameters on each node
 	- db_events.sql  - test if some events are set in the DB enviroment
 	
-	- xmldb.sql      - show configuration of the XML DB
-	- acl.sql        - show the acls of the Database (for security)
-	- my_acl.sql     - show my rights
+	- xmldb.sql        - show configuration of the XML DB
+	- acl.sql          - show the acls of the Database (for security)
+	- my_acl.sql       - show my rights
 	
 	- invalid.sql      - show all invalid objects
 	
@@ -70,19 +73,20 @@ DOC
 								Parameter 1 - Name of the user
 	- user_objects.sql - show the counts of objects from none default users
 	
-	- role.sql         - roles in the database 
+	- role.sql         - roles in the database - parameter 1 part of the role name
+	- role_ddl.sql     - get the dll of one role in the databae - parameter 1 the role name
+	
 	- profile.sql      - profiles for the user of this database
 	- proxy.sql        - proxy settings in the database
 	- proxy_client.sql - from which user you can connect to this user - parameter 1 the user
+	
 
-	
-	
 	- user_tab.sql    - get all the tables and views of a user - parameter 1 - part of the table name
 	- ls.sql          - gets all the tables and shows the size of the user tab
 	
+	- tab.sql         - search a table or views in the database       - parameter 1 - part of the table
 	- tab_cat.sql     - get the tables and views of the current user 
 	- tab_count.sql   - count the entries in a table                 - parameter 1 - name of the table
-	- tab.sql         - search a table or views in the database       - parameter 1 - part of the table
 	- tab_space.sql   - space usage of a table
 	- tab_stat.sql    - get the statics of the table                 - parameter - Owner, Table name
 	- tab_desc.sql    - describe the columns of the table            - parameter 1 - part of the table
@@ -90,10 +94,17 @@ DOC
 	- tab_last.sql    - get the change date of a record in the table - parameter - Owner, Table name
 	- tab_mod.sql     - get the last modifications of the table      - parameter - Owner, Table name
 	- tab_data_changes.sql - get a % overview over the tables of a user - parameter - Owner
-	- tab_usage.sql   - check if the table is used in the last time - parameter - Owner, Table name
-	- tab_part.sql    - get the partition information of a table     - parameter - Owner, Table name
 	
-	- tab_defekt_blocks.sql - check for corrupted blocks
+	- tab_usage.sql    - check if the table is used in the last time - parameter - Owner, Table name
+	- tab_part.sql     - get the partition information of a table     - parameter - Owner, Table name
+	
+	- tab_ext.sql      - get information about external tables  
+	- tab_iot.sql     - show information about a index organised table - parameter - Owner, Table name
+	
+	- tab_mat.sql      - Info about materialized views
+	- tab_mat_log.sql  - Information about materialized views
+		
+	- tab_defekt_blocks.sql           - check for corrupted blocks
 	- tab_defekt_blocks_bad_table.sql - create rowid table for all readable data for a table with a defect lob segment
 	
 	- tab_redef.sql             - example for a online table redefinition
@@ -110,7 +121,6 @@ DOC
 	
 	- sequence.sql    - search a sequence in the database parameter 1 - name of the sequence
 	
-
 	
 	- recycle.sql               - show the content summary of the dba recyclebin
 	
@@ -121,6 +131,7 @@ DOC
 	
 	- index.sql       - get the information’s over a index            - parameter - Owner, Index name
 	- index_mon.sql   - check the result of index monitoring   
+	- index_ddl.sql   - get the DDL of an index
 	
 	- obj_dep.sql     - get the dependencies of a object in the database - parameter - Owner, object name
 	- obj_grants.sql  - get the grants for this object in the database    - parameter - Owner, object name
@@ -128,9 +139,9 @@ DOC
 	- plsql_info.sql  - information about a plsql function/package
 	- my_plsql.sql    - show all package of the current user
 	
-	- select.sql     - select first 3 records of the table as list - parameter 1 - name of the table
-	- view_count.sql - count entries in a view                     - parameter 1 - name of the view
-	- comment.sql    - search over all comments                    - parameter 1 - part of the comment text
+	- select.sql      - select first 3 records of the table as list - parameter 1 - name of the table
+	- view_count.sql  - count entries in a view                     - parameter 1 - name of the view
+	- comment.sql     - search over all comments                    - parameter 1 - part of the comment text
 	
 	- asm.sql         - asm disk status and filling degree of the asm disks
 	- asm_disk.sql    - asm disk space
@@ -144,7 +155,7 @@ DOC
 	- sqn.sql         - sequence log
 	
 	
-	- ext/tsc.sql         - table space size information
+	- ext/tsc.sql    - table space size information
 	- directory.sql  - show directories in the database
 	- links.sql      - show the DB Links in the database
 	- links_ddl.sql  - get the DDL of all DB links in the database
@@ -159,17 +170,22 @@ DOC
 	- pga.sql        - show information about the pga usage
 	
 	- statistic.sql  - show information over the statistics on the DB 
-					   and stat age on tables and when the stats job runs
+					       and stat age on tables and when the stats job runs
 	
 	- cursor.sql     - show information about the cursor usage
 	
 	- sql_find.sql   - find a sql Statement in the Cache - parameter 1 part of the sql statement
 	- sql_plan.sql   - get the Execution Plan for one SQL ID from the cache
 	- sql_temp.sql   - SQL that use the temp table space for sorting
+	- sql_show_bind.sql  - Show the bind variables of the sql statement from the cursor Cache
+	- sql_kill_session.sql  - create the command to kill all sessions runing this sql at the moment - parameter 1 - SQL ID
+	- sql_purge_cursor.sql  -  purge the cursor out of the cache  - parameter 1 - SQL ID
+	- sql_profile.sql       - shwo all profiles in the database
 	
 	- ash.sql               - usage of the acive session history ASH
 	- awr.sql               - usage of the AWR repository and of the SYSAUX table space 
 	- awr_sql_stat.sql      - get statistic of the SQL execution of one statement - parameter 1 - SQL ID
+	- awr_sql_hash.sql      - get the different hashes if exits                   - parameter 1 - SQL ID
 	- awr_sql_plan.sql      - get plan of the SQL execution of one statement - parameter 1 - SQL ID
 	- awr_sql_time_stat.sql - get all sql statements from the awr for this time - parameter 1 - Startdate  - parameter 2 end date in DE format
 	- awr_temp_usage.sql    - get the sql that use temp tablespace from the awr for this time - parameter 1 - Startdate  - parameter 2 end date in DE format

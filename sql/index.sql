@@ -24,22 +24,25 @@ ttitle center "Index &&OWNER..&&INDEX_NAME.  Columns" SKIP 2
 
 SET linesize 130 pagesize 2000 recsep OFF
 
-column  index_owner format a10
-column  index_name  format a20
-column  table_name  format a20
-column  column_name format a20
-column  pos1        format a15 heading "c1"
-column  pos2        format a10 heading "c2" 
-column  pos3        format a8  heading "c3"
+column  index_owner format a10 heading "Index|Owner"
+column  index_name  format a16 heading "Index|Name"
+column  table_name  format a13 heading "Table|Name"
+column  column_name format a13 heading "Column|Name"
+column TABLESPACE_NAME format a15 heading "Table|Space"
+-- fold_before
+column  pos1        format a12 heading "c1"
+column  pos2        format a8 heading "c2" 
+column  pos3        format a6  heading "c3"
 column  pos4        format a4  heading "c4"
 column  pos5        format a4  heading "c5"
 column  pos6        format a4  heading "c6"
-column  pos7        format a3  heading "c7"
-column  pos8        format a3  heading "c8"
-column  pos9        format a2  heading "c9"
-column size_mb      format 99999 heading "Size|MB"
-column part_count   format 99 heading "Cn|Pa"
-column TABLESPACE_NAME format a20 fold_before
+-- if you like more enable!
+column  pos7        format a3  heading "c7" noprint
+column  pos8        format a3  heading "c8" noprint
+column  pos9        format a2  heading "c9" noprint
+--
+column size_mb      format 999G999G999 heading "Size|MB"
+column part_count   format 9G999 heading "Cn|Pa"
 
       
 select    i.INDEX_OWNER 
@@ -73,7 +76,7 @@ select    i.INDEX_OWNER
                                                                                     '9' as pos9))
 		 ) i , dba_segments s
 where s.owner=i.index_owner
-  and s.SEGMENT_NAME=i.table_name
+  and s.SEGMENT_NAME=i.INDEX_NAME
 group by  i.INDEX_OWNER 
         , i.TABLE_NAME
         , i.INDEX_NAME
@@ -109,14 +112,14 @@ select i.COMPRESSION
     ,  i.blevel
 	 ,  i.leaf_blocks
 	 ,  s.blocks
-	 ,  s.blocks/i.leaf_blocks as block_rate
+	 ,  decode(nvl(i.leaf_blocks,0),0,0,(s.blocks/i.leaf_blocks)) as block_rate
 	 ,  i.NUM_ROWS
 	 ,  i.DISTINCT_KEYS
     ,  i.AVG_LEAF_BLOCKS_PER_KEY
 	 ,  i.AVG_DATA_BLOCKS_PER_KEY
 	 ,  i.status	 
-	 ,  to_char(i.LAST_ANALYZED,'dd.mm.yyyy hh24:mi') as LAST_ANALYZED
-	 ,  to_char(o.LAST_DDL_TIME,'dd.mm.yyyy hh24:mi') as Created
+	 ,  to_char(i.LAST_ANALYZED,'dd.mm.rr hh24:mi') as LAST_ANALYZED
+	 ,  to_char(o.LAST_DDL_TIME,'dd.mm.rr hh24:mi') as Created
  from dba_indexes  i
     , dba_segments s
 	 , DBA_OBJECTS o

@@ -8,6 +8,12 @@
 
 define USER_NAME = &1 
 
+prompt
+prompt Parameter 1 = User  Name          => &&USER_NAME.
+prompt
+
+
+
 set verify off
 
 SET linesize 120 pagesize 400 recsep OFF

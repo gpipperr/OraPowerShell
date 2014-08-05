@@ -102,11 +102,12 @@ where rownum < 20
 
 -- What scheduled tasks failed during execution, and why?
 
+TTITLE 'Scheduled Tasks That Failed'
 prompt  Scheduled Tasks That Failed:
 
 column log_date            format a32    heading 'Log Date'
 column owner               format a06    heading 'Owner'
-column job_name            format a20    heading 'Job'
+column job_name            format a26    heading 'Job'
 column status              format a10    heading 'Status'
 column actual_start_date   format a32    heading 'Actual|Start|Date'
 column error#              format 999999 heading 'Error|Nbr'
@@ -116,11 +117,11 @@ select log_id
       ,owner
       ,job_name
       ,status
-      ,actual_start_date
+      ,substr(actual_start_date,1,18)||' ...' as actual_start_date
       ,error#
   from dba_scheduler_job_run_details
  where status <> 'SUCCEEDED'
- order by actual_start_date
+ order by log_id
 / 
 
 TTITLE 'Auto Tasks:'

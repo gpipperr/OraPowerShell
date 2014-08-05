@@ -13,6 +13,7 @@ left "Sizes in MB" SKIP 2
 column member format a50
 column THREAD# format 99
 column  GROUP# format 99
+column value format 999G999G999
 
 ttitle  "Redolog  Size of each group"  SKIP 1  - 
 left "Sizes in MB" SKIP 2
@@ -247,6 +248,7 @@ prompt misses/gets (must be < 1%)
 
 ttitle  "Waits on Redo Log Buffer"  SKIP 1
 
+column value format 999G999G999
 select name
       ,value
  from v$sysstat

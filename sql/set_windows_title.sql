@@ -1,3 +1,3 @@
 -- set the title 
-$ title  OraPowerShell - Server :: &2 ++ Database :: &1
+$ title DB :: &1 ++  Server :: &2 
 DEFINE _EDITOR=notepad

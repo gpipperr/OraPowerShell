@@ -33,12 +33,12 @@ column TABLE_OWNER        format a12    heading "Table|Owner"
 column TABLE_NAME         format a15    heading "Table|Name"
 column PARTITION_NAME     format a10    heading "Part|Name"
 column SUBPARTITION_NAME  format a10    heading "Subpart|Name"
-column INSERTS            format 999999 heading "Inserts|Count"
-column UPDATES            format 999999 heading "Updates|Count"
-column DELETES            format 999999 heading "Deletes|Count"
+column INSERTS            format 99999999 heading "Inserts|Count"
+column UPDATES            format 99999999 heading "Updates|Count"
+column DELETES            format 99999999 heading "Deletes|Count"
 column TIMESTAMP          format a20    heading "Last|Access"
 column TRUNCATED          format a3     heading "Tru|cat"
-column DROP_SEGMENTS      format 999999 heading "Drop Seg| Count"
+column DROP_SEGMENTS      format 99999999 heading "Drop Seg| Count"
 
 select TABLE_OWNER
 	 , TABLE_NAME
@@ -52,7 +52,7 @@ select TABLE_OWNER
 	 , DROP_SEGMENTS
  from DBA_TAB_MODIFICATIONS
 where TABLE_OWNER like upper('&&OWNER.') 
-  and TABLE_NAME like upper('&&TAB_NAME.%')
+  and TABLE_NAME like upper('&&TAB_NAME.')
 order by  TIMESTAMP asc  
 /
 

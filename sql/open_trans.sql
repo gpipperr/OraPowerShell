@@ -19,7 +19,7 @@ column action       format a25 heading "Action"
 column status       format a6 heading "Status"
 column logon_time   format a18 heading "Login|Time"
 column start_time   format a14 heading "Start|Time"
-column last_call_et format a14 heading "Last Sql|Time"
+column last_call_et format 999G999G999 heading "Last Sql|Time s"
 
 select n.username
      , n.osuser
@@ -27,6 +27,8 @@ select n.username
 	  , n.program
 	  , n.action
 	  , to_char(n.logon_time,'dd.mm.yyyy hh24:mi') as logon_time
+	  , n.last_call_et
+	 -- , n.status
   from gv$session n
      , gv$transaction t
 where  n.taddr = t.addr
