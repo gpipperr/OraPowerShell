@@ -62,7 +62,7 @@ function setdb {
 		}
 	 }
 	else {
-		throw "Configuration xml file version info missing, please check the xml template from the new version and add the version attribte to <backup> !"
+		throw "Configuration xml file version info missing, please check the xml template from the new version and add the version attribute to <backup> !"
 	}
 
 	#======== Store the old Path in the Backkground
