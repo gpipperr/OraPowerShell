@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oracle_tns version="0.2">
+<!-- easy Connect String descriptions Examples -->
+	<easy_connects>
+		<easy_connect>
+			<environment fgcolor="Red" bgcolor="grey" >DEV</environment>
+			<global_dbname>GPI DB Production 1</global_dbname>
+			<sid>GPI</sid>
+			<service_name>GPI</service_name>
+			<dbhost>192.168.178.57</dbhost>
+			<port>1521</port>
+			<default_user>SYS</default_user>
+		</easy_connect>
+		<easy_connect>
+			<environment fgcolor="Red" bgcolor="grey" >PROD</environment>
+			<global_dbname>GPI DB Production 2  </global_dbname>
+			<sid>GPI</sid>
+			<service_name>GPI</service_name>
+			<dbhost>jupiter</dbhost>
+			<port>1521</port>
+			<default_user>gpi</default_user>
+		</easy_connect>
+	</easy_connects>
+<!-- Entries in the tnsnames.ora-->	
+	<tns_connects>
+		<tns_connect>
+			<environment fgcolor="Red" bgcolor="grey" >PROD</environment>
+			<global_dbname>GPI DB Production</global_dbname>
+			<global_dbname></global_dbname>
+			<tns_names>ORAGPI</tns_names>
+			<default_user>gpi</default_user>
+		</tns_connect>
+	</tns_connects>	
+	
+	<!-- possible Colors
+					Black
+					Blue
+					Cyan
+					DarkBlue
+					DarkCyan
+					DarkGray
+					DarkGreen
+					DarkMagenta
+					DarkRed
+					DarkYellow
+					Gray
+					Green
+					Magenta
+					Red
+					White
+					Yellow
+	-->	
+</oracle_tns>
