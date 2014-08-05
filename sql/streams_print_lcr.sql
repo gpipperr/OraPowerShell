@@ -1,7 +1,5 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   get one LCR of a streams replication 
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
 SET linesize 130 pagesize 2000 recsep OFF

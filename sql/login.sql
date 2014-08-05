@@ -140,3 +140,8 @@ set linesize 130
 set NUMWIDTH  12
 --
 SET termout ON
+--
+alter session set NLS_DATE_FORMAT='dd.mm.RR hh24:mi';
+
+
+

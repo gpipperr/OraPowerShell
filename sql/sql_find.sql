@@ -4,18 +4,22 @@
 -- Date:   September 2013
 -- Site:   http://orapowershell.codeplex.com
 --===============================================================================
-
 define SQL_STATEMENT = &1 
+
+
+prompt
+prompt Parameter 1 = SQL_STATEMENT    => &&SQL_STATEMENT.
+prompt
+
 
 set verify off
 SET linesize 130 pagesize 800 recsep OFF
 
-
 ttitle left  "Search SQL from Cursor Cache for this text string :  &SQL_STATEMENT." skip 2
 
-column sql_text format a35 heading "SQL|Text"
-column sql_id   format a13 heading "SQL|ID"
-column INST_ID   format 99 heading "In|st"
+column sql_text           format a35 heading "SQL|Text"
+column sql_id             format a13 heading "SQL|ID"
+column INST_ID            format 99 heading "In|st"
 column parsing_user_name  format a10 heading "Parsing|Schema"
 column executions  format 999G999G999 heading "Exec"
 column buffer_gets format 999G999G999 heading "Buffer|Gets"
@@ -34,12 +38,11 @@ select  SQL_ID
 	  , sql_text
 	  /* GPI SQL Analyse */
  from gv$sqlarea
-where upper(sql_text) like upper('%&&SQL_STATEMENT.%') 
+where upper(sql_text) like upper('&&SQL_STATEMENT.') 
   and sql_text not like '%GPI SQL Analyse%'
 order by SQL_ID,INST_ID
-  /
+/
 
 prompt ... to get the execution plan call awr_sql.sql with the sql_id
 
 ttitle off
-

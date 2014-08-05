@@ -25,6 +25,13 @@ prompt Parameter 2 = Table Name    => &&ENTER_TABLE.
 prompt
 
 
+ttitle left  "Check if the table is a IOT Table" skip 2
+
+select 'This Table is'||decode(nvl(IOT_TYPE,'-'),'IOT',' index organised','heap organised') as TABLE_TYPE
+  from  dba_tables 
+ where upper(table_name) like upper('&ENTER_TABLE.')
+    and upper(owner) = upper('&ENTER_OWNER.')
+/	
 
 
 ttitle left  "Space Usage of the table &ENTER_OWNER..&ENTER_TABLE." skip 2
@@ -34,7 +41,7 @@ column segment_name format A20
 column owner        format A10
 column Size_MB 		&&lnum
 column count_blk 	format 999G999G999
-column count_ext 	&&snum
+column count_ext 	&&lnum
 column count_part 	&&snum
 COLUMN tablespace_name format a20 heading "Tablespace Name"
 

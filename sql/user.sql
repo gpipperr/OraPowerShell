@@ -83,7 +83,7 @@ order by owner,table_name,	PRIVILEGE
 
 ttitle left  "Profile Settings for the user &&USER_NAME." skip 2
 
-column PROFILE format a12
+column PROFILE format a18
 column RESOURCE_NAME format a30
 column limit format a20
 

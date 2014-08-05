@@ -35,4 +35,17 @@ order by nvl(NUM_ROWS,1) asc
 prompt ... to anaylse the space Usage use tab.sql
 prompt ... to refresh statistic use  EXEC DBMS_STATS.GATHER_TABLE_STATS ('&USER_NAME.', 'TABLE_NAME');
 
+ttitle "Read Statistic Values for all tables of this user &USER_NAME." SKIP 2
+
+column col_group format a30
+ 
+select e.extension col_group
+     , t.num_distinct
+     , t.histogram
+ from  dba_stat_extensions e
+    ,  dba_tab_col_statistics t
+where e.extension_name=t.column_name
+  and t.owner like '&USER_NAME.'
+/
+
 ttitle off

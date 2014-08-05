@@ -16,31 +16,34 @@ prompt
 SET pagesize 500
 SET linesize 250
 
-column begin_interval_time format a18 heading "Snap | Begin"
+column end_interval_time   format a18 heading "Snap | Begin"
+column begin_interval_time format a18 heading "Snap | End"
 column plan_hash_value     format 9999999999 heading "Plan | Hash"
-column execution_time      format 999G999G999G999D99 heading "Execution Time|per SQL"
-column executions_delta    format 99G999G999 heading "Executions|delta"
-column cpu_time_delta      format 999G999G999G999 heading "Cpu time|delta"
-column elapsed_time_delta  format 999G999G999G999 heading "Elapsed time|delta"
-column disk_reads_delta    format 99G999G999 heading "Disk Read|Delta"
+column execution_time_max  format 999G999G999G999D99 heading "Max Execution Time|per SQL"
+column execution_time_min  format 999G999G999G999D99 heading "Min Execution Time|per SQL"
+column snapshot_count      format 999999 heading "Snap|Cnt" 
 column instance_number     format 99 heading "In|st"
+column parsing_schema_name format a20 heading "Parsing|Schema"
 
 select ss.instance_number
      , ss.sql_id
-	  , to_char(s.begin_interval_time,'dd.mm.yyyy hh24:mi') as begin_interval_time
-     , ss.plan_hash_value
-	  , case when ss.executions_delta = 0 then -1 else ss.elapsed_time_delta/ss.executions_delta end as  execution_time
-	  , ss.executions_delta
-	  , ss.cpu_time_delta
-	  , ss.elapsed_time_delta
-	  , ss.disk_reads_delta 
-	  --, ss.PARSING_SCHEMA_NAME
+	  , ss.plan_hash_value
+	  , to_char(min(s.begin_interval_time),'dd.mm.yyyy hh24:mi') as begin_interval_time
+	  , to_char(max(s.begin_interval_time),'dd.mm.yyyy hh24:mi') as end_interval_time
+	  , min(case when ss.executions_delta = 0 then -1 else ss.elapsed_time_delta/ss.executions_delta end ) as  execution_time_min
+	  , max(case when ss.executions_delta = 0 then -1 else ss.elapsed_time_delta/ss.executions_delta end ) as  execution_time_max
+	  , count(*) snapshot_count
+     , ss.parsing_schema_name
  from dba_hist_sqlstat ss
     , dba_hist_snapshot s 
 where s.snap_id = ss.snap_id 
   and ss.instance_number = s.instance_number
- and ss.sql_id = '&&sql_id.'  
-  and s.snap_id > (select max(i.snap_id)-200 from dba_hist_snapshot i where i.instance_number=ss.instance_number)   
+ and ss.sql_id = '&&sql_id.' 
+group by   ss.instance_number
+         , ss.sql_id
+			, ss.plan_hash_value
+			, ss.parsing_schema_name
+          
 order by s.snap_id, ss.instance_number, ss.sql_id
 /
 

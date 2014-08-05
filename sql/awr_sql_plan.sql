@@ -16,6 +16,6 @@ ttitle left  "SQL Plan from AWR ID:  &SQL_ID." skip 2
 
 select 
  * from 
-TABLE(dbms_xplan.display_awr('&SQL_ID.'));
+TABLE(dbms_xplan.display_awr(sql_id=> '&SQL_ID.', format => 'TYPICAL'));
 
 ttitle off

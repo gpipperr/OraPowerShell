@@ -1,5 +1,4 @@
 --------------------------------------------------------------------------------------------------
---
 -- Source
 -- http://docs.oracle.com/cd/B19306_01/appdev.102/b14258/d_apply.htm
 -- http://docs.oracle.com/cd/B28359_01/appdev.111/b28419/t_lcr.htm#BABGGBHF
@@ -8,7 +7,6 @@
 -- http://www.fadalti.com/oracle/database/Streams.htm
 --
 --------------------------------------------------------------------------------------------------
-
 SET linesize 1000 pagesize 800 recsep OFF
 
 set trimspool on
@@ -77,6 +75,8 @@ declare
   v_typenm  VARCHAR2(61);
 
 begin
+	
+  dbms_lob.createtemporary(v_sqltext, TRUE);
 
   for rec in c_error_queue
   loop
@@ -105,7 +105,7 @@ begin
     for v_i in 1 .. v_msgcnt
     loop
       -- reinitialise all variables! 
-      v_sqltext := ' ';
+		dbms_lob.createtemporary(v_sqltext, TRUE);
       v_rowlcr  := null;
       v_res     := null;
       v_e_lcr   := null;
