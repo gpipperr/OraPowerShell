@@ -71,6 +71,8 @@ order by substr(to_char(pf.sql_text),1,100)
 / 
 
 
-
+prompt ...
+prompt to delete a profile use  exec DBMS_SQLTUNE.DROP_SQL_PROFILE(name => 'PROFILE NAME');
+prompt ...
 
 ttitle off

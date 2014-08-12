@@ -31,13 +31,23 @@ column  ACCESS_TYPE       format a20  heading "Access|Type"
 column  PROPERTY          format a10  heading "Property"
 column  ACCESS_PARAMETERS format a80  heading "Access|Parameter" Fold_before WORD_WRAPPED
 
-select  TABLE_NAME
-      , REJECT_LIMIT
-      , ACCESS_TYPE
-		, PROPERTY 
-		, ACCESS_PARAMETERS
-from DBA_EXTERNAL_TABLES
-order by OWNER
-        ,TABLE_NAME
+
+BREAK ON ROW SKIP 2
+
+TTITLE COL 10 FORMAT 09  'Detail of the external Tables :' SQL.PNO
+
+
+select  table_name
+      , reject_limit
+      , access_type
+		, property 
+		, access_parameters
+from dba_external_tables
+order by owner
+        ,table_name
 /
 
+
+clear breaks
+
+ttitle off
