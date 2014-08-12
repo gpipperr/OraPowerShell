@@ -16,8 +16,12 @@ column failed_over     format a6    heading "Fail|over"
 column service_name    format a20 	heading "Service|Name"
 column status          format a10
 
-BREAK ON inst_id skip 2
-COMPUTE SUM OF connect_count ON inst_id
+
+break on report
+COMPUTE SUM OF connect_count ON report
+
+--BREAK ON inst_id skip 2
+--COMPUTE SUM OF connect_count ON inst_id
 
 select  inst_id
       , service_name

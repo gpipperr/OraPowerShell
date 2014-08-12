@@ -181,6 +181,7 @@ DOC
 	- sql_kill_session.sql  - create the command to kill all sessions runing this sql at the moment - parameter 1 - SQL ID
 	- sql_purge_cursor.sql  -  purge the cursor out of the cache  - parameter 1 - SQL ID
 	- sql_profile.sql       - shwo all profiles in the database
+	- sql_profile_details.sql - get the details of a sql profile - parameter 1 - Profile Name
 	
 	- ash.sql               - usage of the acive session history ASH
 	- awr.sql               - usage of the AWR repository and of the SYSAUX table space 
