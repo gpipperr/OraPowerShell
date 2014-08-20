@@ -1,5 +1,11 @@
--- http://antognini.ch/2008/08/sql-profiles-in-data-dictionary/
--- http://antognini.ch/papers/SQLProfiles_20060622.pdf
+-- ==============================================================================
+-- Show the detail hints from 
+-- Must be run with dba privileges 
+-- see 
+--  http://antognini.ch/2008/08/sql-profiles-in-data-dictionary/
+--  http://antognini.ch/papers/SQLProfiles_20060622.pdf
+--
+-- ==============================================================================
 
 set verify  off
 set linesize 120 pagesize 4000 recsep OFF
@@ -10,16 +16,7 @@ prompt
 prompt Parameter 1 = Tab Name          => &&PROF_NAME.
 prompt
 
-/* 10g
-select h.attr_val as outline_hints
-  from dba_sql_profiles p
-      ,sys.sqlprof$attr h
- where p.signature = h.signature
-   and p.category = h.category
-   and p.name like upper('&&PROF_NAME.')
- order by h.attr#
- /
-*/
+column hint format a120 WORD_WRAPPED
 
 SELECT extractValue(value(h),'.') AS hint
   FROM sys.sqlobj$data od
@@ -32,13 +29,23 @@ SELECT extractValue(value(h),'.') AS hint
     AND so.plan_id = od.plan_id
 /	 
 
-/*
-aus AWR
--- muss aber im AWR sein!
-SELECT plan_table_output FROM TABLE(dbms_xplan.display_awr('SQL_ID','PLAN_HASH',NULL,'OUTLINE'))
-*/
 
-/*
+/* 10g
+
+select h.attr_val as outline_hints
+  from dba_sql_profiles p
+      ,sys.sqlprof$attr h
+ where p.signature = h.signature
+   and p.category = h.category
+   and p.name like upper('&&PROF_NAME.')
+ order by h.attr#
+ /
+
+-- aus AWR
+-- muss aber im AWR sein!
+
+SELECT plan_table_output FROM TABLE(dbms_xplan.display_awr('SQL_ID','PLAN_HASH',NULL,'OUTLINE'))
+
 DBMS_SQLTUNE.IMPORT_SQL_PROFILE(
   SQL_TEXT => SQL_FTEXT,
   PROFILE => SQLPROF_ATTR('FULL(@"SEL$1" "OBJECTS"@"SEL$1") FULL(@"SEL$1" "SEGMENTS"@"SEL$1")'),
@@ -46,4 +53,5 @@ DBMS_SQLTUNE.IMPORT_SQL_PROFILE(
   REPLACE => TRUE,
   FORCE_MATCH => TRUE
 );
+
 */

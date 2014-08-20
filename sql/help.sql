@@ -19,12 +19,12 @@ DOC
 	- instance.sql   - status of the instance where the user is connected
 	- limit.sql      - resource limits since last startup of the instances
 	
-	- sessions.sql            - actual connections to the database 
-	- session_history.sql     - get a summary over the last active sessions 
-	- session_long_active.sql - all session that are longer actvie 
-	- session_longops.sql     - get information about long running sql statements
-	- my_opt_settings.sql     -  Optimizer settings in my session
-	- session_opt_settings.sql     -  Optimizer settings in my session  - parameter 1 username
+	- sessions.sql             - actual connections to the database 
+	- session_history.sql      - get a summary over the last active sessions 
+	- session_long_active.sql  - all session that are longer actvie 
+	- session_longops.sql      - get information about long running sql statements
+	- my_opt_settings.sql      -  Optimizer settings in my session
+	- session_opt_settings.sql -  Optimizer settings in my session  - parameter 1 username
 	
 	- starttrace.sql      - start a trace of my session
 	- stoptrace.sql       - stop trace of my session
@@ -130,13 +130,16 @@ DOC
 	- tablespace_ddl.sql        - get the ddl of a tablespace, show default storage options! - parameter name of the tablespace
 	
 	- index.sql       - get the information’s over a index            - parameter - Owner, Index name
+	- index_all.sql   - get all indexes of a user                     - parameter - Owner,
 	- index_mon.sql   - check the result of index monitoring   
 	- index_ddl.sql   - get the DDL of an index
 	
-	- obj_dep.sql     - get the dependencies of a object in the database - parameter - Owner, object name
+	- obj_dep.sql     - get the dependencies of a object in the database  - parameter - Owner, object name
 	- obj_grants.sql  - get the grants for this object in the database    - parameter - Owner, object name
 	
 	- plsql_info.sql  - information about a plsql function/package
+	- plsql_errors.sql - show the errors of pl/sql objects
+	- plsql_dll.sql  - information about a plsql function/package       - parameter - Owner, object name
 	- my_plsql.sql    - show all package of the current user
 	
 	- select.sql      - select first 3 records of the table as list - parameter 1 - name of the table

@@ -14,16 +14,16 @@ prompt
 
 ttitle center "Check if a column of the Table was in use in SQL Queries" SKIP 2
 
-column  owner        format a15 
-column  object_name  format a28
-column  column_name  format a20
+column  owner        format a14 
+column  object_name  format a24
+column  column_name  format a18
 
-column equality_preds    format 9999   heading "equ"
-column equijoin_preds    format 9999   heading "Jequ"
-column nonequijoin_preds format 9999   heading "Jnoe"
-column range_preds       format 9999   heading "ran"
-column like_preds        format 9999   heading "lik"
-column null_preds        format 9999   heading "nul"
+column equality_preds    format 99G999   heading "equ"
+column equijoin_preds    format 99G999   heading "Jequ"
+column nonequijoin_preds format 99G999   heading "Jnoe"
+column range_preds       format 99G999   heading "ran"
+column like_preds        format 99G999   heading "lik"
+column null_preds        format 99G999   heading "nul"
 column last_collect      format a18     heading "last Usage |collected"
 
 
