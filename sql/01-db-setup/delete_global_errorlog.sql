@@ -47,5 +47,9 @@ drop table  SYSTEM.ora_errors purge;
 prompt "Info -- delete Error Sequence"
 drop SEQUENCE SYSTEM.ora_errors_seq;
 
+prompt "Info -- delete Error Sequence"
+drop  PROCEDURE system.deleteOraErrorTrigTab;
+
+
 
  

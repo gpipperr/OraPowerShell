@@ -1,9 +1,10 @@
+-- ==============================================================================
 -- show all created sql profiles in this database
---
---
-
+-- Must be run with dba privileges 
+-- see 
+-- ==============================================================================
 /*
- dba_sql_profiles
+ desc dba_sql_profiles
  ------------------------------------
  NAME  			NOT NULL VARCHAR2(30)
  CATEGORY 		NOT NULL VARCHAR2(30)
@@ -22,9 +23,6 @@
  TASK_REC_ID          	NUMBER
 */
 
-
-
-
 column name 		 format a30 heading "Profile|Name"
 column category    format a12 heading "Category|Name"
 column description format a12 heading "Description"
@@ -37,9 +35,9 @@ ttitle "All Profiles in the database" skip 2
 
 select  name
      , category
-	 -- , signature
+  -- , signature
 	  , substr(sql_text,1,100) as sql_text	  
-	  -- , to_char(created,'dd.mm.RR hh24:mi') 			as created
+  -- , to_char(created,'dd.mm.RR hh24:mi') 			as created
 	  , to_char(last_modified,'dd.mm.RR hh24:mi')   as created
 	  , description
 	  , type
@@ -58,11 +56,10 @@ order by last_modified desc,name
 ttitle "check the SQL Profiles in use" skip 2
 
 select vs.inst_id	
-      ,vs.sql_id
-      --,vs.sql_profile
-		,pf.name
-		,substr(pf.sql_text,1,100) as sql_text 
-		,to_char(last_modified,'dd.mm.RR hh24:mi')   as created
+      , vs.sql_id
+   	, pf.name
+		, substr(pf.sql_text,1,100) as sql_text 
+		, to_char(last_modified,'dd.mm.RR hh24:mi')   as created
   from gv$sql vs
       , dba_sql_profiles pf
 where pf.name=vs.sql_profile		
@@ -76,3 +73,4 @@ prompt to delete a profile use  exec DBMS_SQLTUNE.DROP_SQL_PROFILE(name => 'PROF
 prompt ...
 
 ttitle off
+
