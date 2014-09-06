@@ -1,7 +1,5 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- desc get all deployed target types in the Repository
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
 SET linesize 240 pagesize 400 recsep OFF
