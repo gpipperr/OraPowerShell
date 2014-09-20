@@ -43,6 +43,7 @@ DOC
 	- resource_manager.sql - show the information about the resource manager  
 	- tempspace_usage.sql  - show processes using the temp tablespace
 	- parallel.sql         - parallel sql informations
+	- parallel_dbms.sql    - get the status of DBMS_PARALLEL sessions/errors
 	
 	- tns.sql              - show services and tns settings on services
 	- taf.sql              - Check TAF settings of the connections
