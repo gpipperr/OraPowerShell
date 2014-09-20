@@ -1,0 +1,1 @@
+$ (get-host).UI.RawUI.Backgroundcolor="DarkRed"    
