@@ -3,7 +3,7 @@
 -- Desc:   set the sqlplus prompt
 --         try to find out the os of sqlplus and set the title bar of the sql*Plus window if windows
 -- 
--- Date:   01.September 2012
+-- Date:   Start 01.September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
@@ -137,11 +137,17 @@ set serveroutput on
 set pagesize 100
 set linesize 130
 -- suppress scientific notation
-set NUMWIDTH  12
+set numwidth  12
 --
-SET termout ON
+-- set your personal prefer time format
+alter session set nls_date_format='dd.mm.rr hh24:mi';
 --
-alter session set NLS_DATE_FORMAT='dd.mm.RR hh24:mi';
+--
+--
+--
+set termout on
+--
+
 
 
 

@@ -45,7 +45,15 @@ column LOG_MODE format a20 heading "Log|Mode"
 
 select LOG_MODE,FORCE_LOGGING  from v$database;
 
-archive log list
+--archive log list
+
+ttitle "Block Change Tracking" SKIP 2
+column filename format a60
+select filename
+     , status
+	  , bytes
+   from   v$block_change_tracking
+/
 
 ttitle "MegaByte total DB Size for all files" SKIP 2
 

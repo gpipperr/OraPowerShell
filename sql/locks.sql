@@ -53,3 +53,58 @@ select owner || '.' || object_name as obj_name
 /
 
 ttitle off
+
+/* Query OMS Metrik 
+with blocked_resources as
+  (select id1
+  ,id2
+  ,sum(ctime)   as blocked_secs
+  ,max(request) as max_request
+  ,count(1)     as blocked_count
+  from v$lock
+  where request > 0
+  group by id1
+  ,id2
+  )
+,blockers as
+  (select l.*
+  ,br.blocked_secs
+  ,br.blocked_count
+  from v$lock l
+  ,blocked_resources br
+  where br.id1   = l.id1
+    and br.id2   = l.id2
+    and l.lmode  > 0
+    and l.block <> 0
+  )
+select b.id1
+  ||'_'
+  ||b.id2
+  ||'_'
+  || s.sid
+  ||'_'
+  || s.serial# as id
+,'SID,SERIAL:'
+  || s.sid
+  ||','
+  || s.serial#
+  ||',LOCK_TYPE:'
+  || b.type
+  ||',PROGRAM:'
+  || s.program
+  ||',MODULE:'
+  || s.module
+  ||',ACTION:'
+  || s.action
+  ||',MACHINE:'
+  || s.machine
+  ||',OSUSER:'
+  || s.osuser
+  ||',USERNAME:'
+  || s.username as info
+,b.blocked_secs
+,b.blocked_count
+from v$session s
+,blockers b
+where b.sid = s.sid
+*/

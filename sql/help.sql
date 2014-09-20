@@ -160,6 +160,7 @@ DOC
 	
 	- ext/tsc.sql    - table space size information
 	- directory.sql  - show directories in the database
+	- my_directory.sql  - show directories of the actual connect user  in the database
 	- links.sql      - show the DB Links in the database
 	- links_ddl.sql  - get the DDL of all DB links in the database
 	
@@ -167,6 +168,7 @@ DOC
 	- audit_sum.sql  - auditlog summary
 	
 	- jobs.sql       - jobs in the database job$ and scheduler tasks info
+   - jobs_errors.sql  - jobs in the database job$ and scheduler tasks info with errors
 	
 	- sga.sql        - show information about the oracle sga usage 
 	- buffer.sql     - show information about the buffer cache usage / must run as sys
@@ -188,6 +190,7 @@ DOC
 	
 	- ash.sql               - usage of the acive session history ASH
 	- awr.sql               - usage of the AWR repository and of the SYSAUX table space 
+	- awr_sql_find.sql      - find a sql Statement in the AWR History  - parameter 1 part of the sql statement
 	- awr_sql_stat.sql      - get statistic of the SQL execution of one statement - parameter 1 - SQL ID
 	- awr_sql_hash.sql      - get the different hashes if exits                   - parameter 1 - SQL ID
 	- awr_sql_plan.sql      - get plan of the SQL execution of one statement - parameter 1 - SQL ID
@@ -195,12 +198,13 @@ DOC
 	- awr_temp_usage.sql    - get the sql that use temp tablespace from the awr for this time - parameter 1 - Startdate  - parameter 2 end date in DE format
 	- awr_pga_stat.sql      - statistic of the pga usage
 	
-	- test_io.sql      - Use io calibrate to analyses io of the database
+	- calibrate_io.sql     - Use io calibrate to analyses io of the database and set the interal i/o views
+	- system_stat.sql      - get the DB interal Systemstat values like workload statistic and i/o calibarate values
 	
 	- ctx.sql          - Oracle Text indexes for a user and ctx settings - parameter 1 - name of the user
 	
 	- rman.sql         - rman settings of this database 
-							   and summary information about the last backups for this database
+							   and summary information about the last backups for this database and the block change tracking feature
 	- rman_process.sql - get information over running rman processes for tracing
 	- rman_status.sql  - get the status of the last backup in the database
 	
@@ -211,6 +215,11 @@ DOC
 	- streams_logs.sql        - show the streams archivelogs - which can be deleted 
 	- streams_print_error.sql - print the SQL Statements for all LCRS in a transaction if a streams error ocurs
 	- streams_print_lcr.sql   - print the LCR of one Message
+	
+	
+	- db_alerts.sql                - get the internal metric settings of the db side monitoring 
+	- db_alerts_unset_all.sql       - set the threshold of all serverside metrics to null
+	
 	
 	
 	- login.sql      - set the login prompt

@@ -1,7 +1,6 @@
 -- ==============================================================================
 -- show all created sql profiles in this database
 -- Must be run with dba privileges 
--- see 
 -- ==============================================================================
 /*
  desc dba_sql_profiles
@@ -31,6 +30,8 @@ column status      format a7  heading "Status"
 column force_matching  format a3  heading "For|Mch"
 column sql_text        format a30 WORD_WRAPPED
 
+set long 64000
+
 ttitle "All Profiles in the database" skip 2
 
 select  name
@@ -58,15 +59,14 @@ ttitle "check the SQL Profiles in use" skip 2
 select vs.inst_id	
       , vs.sql_id
    	, pf.name
-		, substr(pf.sql_text,1,100) as sql_text 
+		--, substr(pf.sql_text,1,100) as sql_text 
 		, to_char(last_modified,'dd.mm.RR hh24:mi')   as created
   from gv$sql vs
       , dba_sql_profiles pf
 where pf.name=vs.sql_profile		
  and  SQL_PROFILE is not null
-order by substr(to_char(pf.sql_text),1,100)
+--order by substr(to_char(pf.sql_text),1,100)
 / 
-
 
 prompt ...
 prompt to delete a profile use  exec DBMS_SQLTUNE.DROP_SQL_PROFILE(name => 'PROFILE NAME');

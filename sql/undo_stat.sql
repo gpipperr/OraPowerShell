@@ -19,6 +19,7 @@ select to_char(begin_time,'YYYY-MM-DD HH24:MI:SS') "Begin"
     ,  to_char(end_time,'YYYY-MM-DD HH24:MI:SS') "End "
 	 ,  undoblks "UndoBlocks"
 	 ,  SSOLDERRCNT "ORA-1555"
+	 , MAXQUERYID
 from V$UNDOSTAT
 where SSOLDERRCNT > 0;
 
