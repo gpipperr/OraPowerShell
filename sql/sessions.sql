@@ -46,8 +46,8 @@ select  inst_id
 		, OSUSER
 	   , module
 		, to_char(LOGON_TIME,'dd.mm hh24:mi') as LOGON_TIME
-      --, client_identifier
-	   --, client_info	  
+     , client_identifier
+	  , client_info	  
   from gv$session 
  where  ( username like upper('%&&USER_NAME.%') or ( nvl('&ALL_PROCESS.','N')='Y' and username is  null))
  --and program not like '%(P%)%'

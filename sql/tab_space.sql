@@ -26,8 +26,10 @@ prompt
 
 
 ttitle left  "Check if the table is a IOT Table" skip 2
+column COMPRESSION FOLD_BEFORE
 
-select 'This Table is'||decode(nvl(IOT_TYPE,'-'),'IOT',' index organised','heap organised') as TABLE_TYPE
+select 'This table is '||decode(nvl(IOT_TYPE,'-'),'IOT','Index-organized','Heap-organized') as TABLE_TYPE
+     , 'This table compression is '||  COMPRESSION  || decode(COMPRESSION,'DISABLED','!',' Type is '||COMPRESS_FOR) as COMPRESSION
   from  dba_tables 
  where upper(table_name) like upper('&ENTER_TABLE.')
     and upper(owner) = upper('&ENTER_OWNER.')
@@ -310,15 +312,15 @@ begin
 			,full_bytes               => fullb
 			,partition_name           => rec.PARTITION_NAME);
 		  
-		  dbms_output.put_line('Info -- Total Count of blocks that are unformatted              :'||unf ||' |Bytes :'||unfb);
-		  dbms_output.put_line('Info -- Total Count of blocks that are full in the segment      :'||full||' |Bytes :'||fullb);
+		  dbms_output.put_line('Info -- Total Count of blocks that are unformatted              : '||unf ||' |Bytes : '||unfb);
+		  dbms_output.put_line('Info -- Total Count of blocks that are full in the segment      : '||full||' |Bytes : '||fullb);
 		  
 		  dbms_output.put_line('Info -- ');
 		  
-		  dbms_output.put_line('Info -- Count of blocks that has at least 0  to 25%  free space :'||fs1||' |Bytes :'||fs1b);
-		  dbms_output.put_line('Info -- Count of blocks that has at least 25 to 50%  free space :'||fs2||' |Bytes :'||fs2b);
-		  dbms_output.put_line('Info -- Count of blocks that has at least 50 to 75%  free space :'||fs3||' |Bytes :'||fs3b);
-		  dbms_output.put_line('Info -- Count of blocks that has at least 75 to 100% free space :'||fs4||' |Bytes :'||fs4b);
+		  dbms_output.put_line('Info -- Count of blocks that has at least 0  to 25%  free space : '||fs1||' |Bytes : '||fs1b);
+		  dbms_output.put_line('Info -- Count of blocks that has at least 25 to 50%  free space : '||fs2||' |Bytes : '||fs2b);
+		  dbms_output.put_line('Info -- Count of blocks that has at least 50 to 75%  free space : '||fs3||' |Bytes : '||fs3b);
+		  dbms_output.put_line('Info -- Count of blocks that has at least 75 to 100% free space : '||fs4||' |Bytes : '||fs4b);
 		  
 		  dbms_output.put_line('Info ------------------------------------------------------------------');
 		 exception

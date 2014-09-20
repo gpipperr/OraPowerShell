@@ -1,3 +1,4 @@
+
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   show invalid objects in the database
@@ -11,6 +12,9 @@ ttitle center "Invalid Objects in the database" SKIP 2
 column owner format a15
 column object_type format a18
  
+break on report
+COMPUTE SUM OF anzahl ON report
+
 select owner
       ,object_type
       ,count(*) as anzahl
@@ -19,6 +23,10 @@ select owner
  --group by rollup(owner, object_type)
  group by owner, object_type
 /
+
+
+CLEAR BREAKS
+
 
 ttitle "List of invalid indexes" SKIP 2
 
@@ -56,12 +64,18 @@ select owner
 
 
 ttitle "List of invalid Objects" SKIP 2
+BREAK ON owner skip 2
+column owner NOPRINT 
 
-select object_type|| '-> ' || decode(owner, 'PUBLIC', '', owner || '.') || object_name as Overview
+select object_type|| '-> ' || decode(owner, 'PUBLIC', '', owner || '.') || object_name as Overview , owner
   from all_objects
  where status != 'VALID'
-order by object_type
+order by owner
 /
+
+CLEAR BREAKS
+column owner PRINT 
+
 
 ttitle "command to touch the  Objects" SKIP 2
 

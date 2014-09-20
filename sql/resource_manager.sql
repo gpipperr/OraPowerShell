@@ -1,5 +1,6 @@
 --
 -- http://docs.oracle.com/cd/E11882_01/server.112/e17120/dbrm.htm#ADMIN027
+-- Script to monitor PX limits from Resource Manager for active sessions (Doc ID 240877.1)
 --
 
 SET linesize 130 pagesize 100 recsep OFF
@@ -43,6 +44,25 @@ select sid
 where event like 'resmgr%'
 /
 
+
+prompt .. show user resource limits
+
+select s.SID, s.SERIAL#, s.username ,rpd.plan,
+       s.RESOURCE_CONSUMER_GROUP,
+       rpd.PARALLEL_DEGREE_LIMIT_P1 
+from   v$session s, 
+       DBA_RSRC_CONSUMER_GROUPS rcg,
+       DBA_RSRC_PLAN_DIRECTIVES rpd ,
+       V$RSRC_CONSUMER_GROUP vcg
+where  s.RESOURCE_CONSUMER_GROUP is not null
+   and rcg.CONSUMER_GROUP = s.RESOURCE_CONSUMER_GROUP
+   and rcg.status = 'ACTIVE'
+   and rpd.GROUP_OR_SUBPLAN = rcg.CONSUMER_GROUP
+   and rpd.status = 'ACTIVE'
+   and vcg.name = s.RESOURCE_CONSUMER_GROUP
+/	
+	
+	
 
 --http://docs.oracle.com/cd/B28359_01/server.111/b28310/dbrm009.htm#ADMIN11906
 

@@ -29,6 +29,7 @@ select job
       ,to_char(this_date, 'dd.mm hh24:mi') as this_date
 	  ,to_char(next_date, 'dd.mm hh24:mi') as next_date
       ,interval
+		,failures
       ,broken
   from dba_jobs
 /
@@ -38,6 +39,21 @@ column what format a100
 select job
       ,WHAT as what      
   from dba_jobs
+/
+
+ttitle left  "Job Infos -- Oracle JOB Table Jobs with failures " skip 2
+
+select job
+      ,schema_user
+      ,substr(what, 1, 20) as what
+      ,to_char(last_date, 'dd.mm hh24:mi') as last_date
+      ,to_char(this_date, 'dd.mm hh24:mi') as this_date
+	  ,to_char(next_date, 'dd.mm hh24:mi') as next_date
+      ,interval
+		,failures
+      ,broken
+  from dba_jobs
+where failures > 0
 /
 
 
@@ -62,7 +78,6 @@ select owner
       ,to_char(last_start_date, 'dd.mm hh24:mi') as last_start_date
       ,to_char(next_run_date, 'dd.mm hh24:mi')   as next_run_date
   from dba_scheduler_jobs
-  --where rownum < 20	 
  order by owner
 /   
 
@@ -82,7 +97,23 @@ select * from (
 where rownum < 20	 
 /
 
-TTITLE 'Scheduled Tasks duration histroy of the last day - only the first 20'
+ttitle  "Job Scheduler History -- Summary" skip 2
+
+select    owner
+		  , job_name
+		  , nvl(status,'-') as status
+		  , count(*)		  
+	  from dba_scheduler_job_log
+	 where log_date > (sysdate - 1)
+	 group by  owner
+		  , job_name
+		  , nvl(status,'-')
+order by owner
+       , job_name
+/			 
+			 			 
+
+TTITLE 'Scheduled Tasks duration histroy of the last day - only the first 40'
 
 select * from (
 	select l.job_name
@@ -97,7 +128,7 @@ select * from (
 			 ,l.log_id
 	 order by l.log_id
 )
-where rownum < 20	 
+where rownum < 40	 
 /
 
 -- What scheduled tasks failed during execution, and why?
@@ -120,11 +151,30 @@ select log_id
       ,substr(actual_start_date,1,18)||' ...' as actual_start_date
       ,error#
   from dba_scheduler_job_run_details
- where status <> 'SUCCEEDED'
- order by log_id
+ where nvl(status,'-') <> 'SUCCEEDED'
+	and  log_date > (sysdate - 1) 
+ order by log_id desc
 / 
 
+TTITLE 'Scheduled Tasks without a Status - may be failed'
+prompt  Scheduled Tasks That Failed:
+
+select log_id
+      ,log_date
+      ,owner
+      ,job_name
+      ,status
+      ,OPERATION
+  from  dba_scheduler_job_log	
+ where nvl(status,'-') <> 'SUCCEEDED'
+ 	and  log_date > (sysdate - 1) 
+ order by log_id desc
+/ 
+
+
+
 TTITLE 'Auto Tasks:'
+prompt  Auto Task  overview:
 
 column client_name       format a35 heading "Job|Name"
 column status            format a10 heading "Job|status"

@@ -38,7 +38,7 @@ select  SQL_ID
 	  , sql_text
 	  /* GPI SQL Analyse */
  from gv$sqlarea
-where upper(sql_text) like upper('&&SQL_STATEMENT.') 
+where upper(sql_text) like upper('%&&SQL_STATEMENT.%') 
   and sql_text not like '%GPI SQL Analyse%'
 order by SQL_ID,INST_ID
 /

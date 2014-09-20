@@ -1,9 +1,6 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr
 -- Desc:   :   HTML Report for SQL queries with the most resource usage
--- see :   http://www.pipperr.de/dokuwiki/doku.php?id=dba:index_column_usage
--- Date:   September 2013
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
 col SPOOL_NAME_COL new_val SPOOL_NAME

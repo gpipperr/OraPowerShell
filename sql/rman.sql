@@ -23,6 +23,50 @@ select conf#
 order by conf#
 / 
 
+ttitle "Check Block Change Tracking" SKIP 2
+
+column filename format a60
+
+
+select filename
+     , status
+	  , bytes
+   from   v$block_change_tracking
+/
+
+ttitle "Check Usage of the Change Tracking" SKIP 2
+
+select round(sum(nvl(BLOCKS_READ,0))/ ( sum(nvl(DATAFILE_BLOCKS,0))/100 ) ,3) as PERCENT_INCREMENT   
+ from v$backup_datafile 
+where USED_CHANGE_TRACKING = 'YES'
+/
+
+ttitle "Overview over the last backups of the system tables space" SKIP 2
+
+select completion_time
+    , datafile_blocks
+    , blocks_read
+	 , blocks 
+	 , USED_CHANGE_TRACKING 
+  from v$backup_datafile w
+where USED_CHANGE_TRACKING = 'YES'  
+ and file# = 1 
+order by 1
+/
+
+ttitle "Overview over the last backups of all datafiles" SKIP 2
+
+select min(completion_time) First_time
+    , max(completion_time)  last_time
+    , count(*)              total
+    , sum(decode(USED_CHANGE_TRACKING,'YES',1,0)) as  USED_CHANGE_TRACKING
+	 , sum(decode(USED_CHANGE_TRACKING,'NO',1,0))  as  NO_CHANGE_TRACKING
+  from v$backup_datafile w
+where USED_CHANGE_TRACKING = 'YES'  
+order by 1
+/
+
+
 ttitle  "RMan last Backups Sets of the last 3 days"  SKIP 2
 
 column set_stamp            format 9999999999 heading "Set Number"

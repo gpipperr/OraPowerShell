@@ -52,17 +52,24 @@ column IndexSizeMB       fold_after
 column overflow_tableMB  fold_after
 column OverFlowSizeMB    fold_after
 column totalMB           fold_after
+column lastana           fold_after
+column numrows           fold_after
+
 
 select rpad('Index Name',30,' ')   ||'::'||lpad(index_name,22,' ')                                                             as index_nameMB
     ,  rpad('Index Size',30,' ')   ||'::'||to_char(round((IndexSize/1024/1024),3),'999G999G999G999D99')                ||' MB' as IndexSizeMB
 	 ,  rpad('Overflow Name',30,' ')||'::'||lpad(overflow_table,22,' ')                                                         as overflow_tableMB
 	 ,  rpad('Overflow Size',30,' ')||'::'||to_char(round((OverFlowSize/1024/1024),3),'999G999G999G999D99')             ||' MB' as OverFlowSizeMB
 	 ,  rpad('Total',30,' ')        ||'::'||to_char(round(((IndexSize+OverFlowSize)/1024/1024),3),'999G999G999G999D99') ||' MB' as totalMB
+	  , rpad('Last Analyzed',30,' ')||'::'||to_char(LAST_ANALYZED,'dd.mm.yyyy hh24:mi')                                ||' ' as lastana
+	  , rpad('Num Rows',30,' ')     ||'::'||NUM_ROWS                                                                  ||' ' as numrows 
   from ( 
 	select nvl(i.index_name,'-') as index_name
 		, (select sum(bytes) from dba_segments where segment_name=i.index_name and owner=i.owner) as IndexSize
 		, nvl(t.table_name,'-') as overflow_table
-		, nvl((select sum(bytes) from dba_segments where segment_name=t.table_name and owner=t.owner ),0)   as OverFlowSize       						 
+		, nvl((select sum(bytes) from dba_segments where segment_name=t.table_name and owner=t.owner ),0)   as OverFlowSize       			
+      , i.LAST_ANALYZED		
+		, i.NUM_ROWS
 	from dba_tables  t
 		 , dba_indexes i            
 	where t.IOT_NAME (+) = i.table_name

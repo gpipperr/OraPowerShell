@@ -1,0 +1,45 @@
+--==============================================================================
+-- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Desc:   show informations about directories in the database I can read
+-- Site:   http://orapowershell.codeplex.com
+--==============================================================================
+SET linesize 130 pagesize 30 recsep OFF
+
+ttitle  "Directories I can access in the database"  SKIP 1 
+
+column owner          format a15
+column directory_name format a25
+column directory_path format a60
+column grantee        format a25
+column grantor        format a18
+column privilege      format a10
+column privilege_list format a30
+
+select owner
+      ,directory_name
+      ,directory_path
+  from all_directories
+ order by 1
+         ,2
+/
+
+ttitle  "Grants to this directories"  SKIP 1 
+       
+select t.table_name as directory_name
+		, t.grantor
+      , t.grantee
+		, listagg(t.privilege,':') WITHIN GROUP (ORDER BY t.privilege )  AS privilege_list      
+  from all_tab_privs t
+     , all_directories  d
+ where t.table_name= d.directory_name
+  group by t.table_name 
+		, t.grantor
+      , t.grantee
+order by t.table_name ,t.grantee
+/
+
+prompt ...
+prompt To grant use : grant read,write on directory xxxx to yyyyyy;
+prompt ...
+
+ttitle off

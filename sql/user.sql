@@ -13,9 +13,14 @@ SET linesize 120 pagesize 500 recsep OFF
 
 ttitle left  "User Account status" skip 2
 
-select USERNAME,ACCOUNT_STATUS,LOCK_DATE,EXPIRY_DATE,DEFAULT_TABLESPACE,TEMPORARY_TABLESPACE
+select username
+     , account_status
+	  , lock_date
+	  , expiry_date
+	  , default_tablespace
+	  , temporary_tablespace
  from dba_users 
- where USERNAME like upper('&&USER_NAME.')
+ where username like upper('&&USER_NAME.')
  /
 
 ttitle left  "User Info" skip 2
@@ -89,7 +94,7 @@ column limit format a20
 
 select  p.PROFILE
       , p.RESOURCE_NAME
-	  , p.limit
+	   , p.limit
  from    dba_profiles p
       , dba_users u
 where u.PROFILE=p.PROFILE
@@ -99,7 +104,6 @@ order by p.RESOURCE_NAME
 
 ttitle left  "Proxy Settings for the user &&USER_NAME." skip 2
 
-
 column PROXY                    format a15 heading "Proxy"
 column CLIENT                   format a15 heading "Client|User"
 column AUTHENTICATION           format a5 heading "Auth"
@@ -108,29 +112,33 @@ column ROLE                     format a15 heading "Role"
 column PROXY_AUTHORITY          format a10 heading "Proxy|Auth"
 
   
-select 	PROXY
-	, CLIENT
-	, AUTHENTICATION
-	, AUTHORIZATION_CONSTRAINT
-	, ROLE
-	, PROXY_AUTHORITY
+select 	proxy
+	, client
+	, authentication
+	, authorization_constraint
+	, role
+	, proxy_authority
  from dba_proxies
-where PROXY like upper('&&USER_NAME.%')	
+where proxy like upper('&&USER_NAME.%')	
 /
 
-ttitle left  "Password History for the user &&USER_NAME." skip 2
+--ttitle left  "Password History for the user &&USER_NAME." skip 2
+--
+--SELECT user$.NAME
+--     , user$.PASSWORD
+--	 , user$.ptime
+--	 , user_history$.password_date
+--FROM  SYS.user_history$
+--    , SYS.user$
+--WHERE user_history$.user# = user$.user#
+-- and user$.NAME like upper('&&USER_NAME.%')	
+-- /
+--
+--prompt ... If you have PASSWORD_REUSE_TIME and/or PASSWORD_REUSE_MAX set in a profile assigned to a user account 
+--prompt ... then you can reference dictionary table USER_HISTORY$ for when the password was changed for this account.
 
-SELECT user$.NAME
-     , user$.PASSWORD
-	 , user$.ptime
-	 , user_history$.password_date
-FROM  SYS.user_history$
-    , SYS.user$
-WHERE user_history$.user# = user$.user#
- and user$.NAME like upper('&&USER_NAME.%')	
- /
-
-prompt ... If you have PASSWORD_REUSE_TIME and/or PASSWORD_REUSE_MAX set in a profile assigned to a user account 
-prompt ... then you can reference dictionary table USER_HISTORY$ for when the password was changed for this account.
+prompt ...
+prompt ... Unlock User         use "alter user xxxx account unlock;" 
+prompt ... Expire the password use "alter user xxx password expire;"
 
 ttitle off
