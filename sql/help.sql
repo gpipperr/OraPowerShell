@@ -218,9 +218,7 @@ DOC
 	
 	
 	- db_alerts.sql                - get the internal metric settings of the db side monitoring 
-	- db_alerts_unset_all.sql       - set the threshold of all serverside metrics to null
-	
-	
+		
 	
 	- login.sql      - set the login prompt
 	
