@@ -1,6 +1,7 @@
 -- ==============================================================================
 -- show all created sql profiles in this database
 -- Must be run with dba privileges 
+-- see 
 -- ==============================================================================
 /*
  desc dba_sql_profiles

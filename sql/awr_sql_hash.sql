@@ -16,8 +16,8 @@ prompt
 SET pagesize 500
 SET linesize 250
 
-column end_interval_time   format a18 heading "Snap | Begin"
-column begin_interval_time format a18 heading "Snap | End"
+column end_interval_time   format a18 heading "Snap | End"
+column begin_interval_time format a18 heading "Snap | Begin"
 column plan_hash_value     format 9999999999 heading "Plan | Hash"
 column execution_time_max  format 999G999G999G999D99 heading "Max Execution Time|per SQL"
 column execution_time_min  format 999G999G999G999D99 heading "Min Execution Time|per SQL"
@@ -43,8 +43,7 @@ group by   ss.instance_number
          , ss.sql_id
 			, ss.plan_hash_value
 			, ss.parsing_schema_name
-          
-order by s.snap_id, ss.instance_number, ss.sql_id
+order by 4
 /
 
 prompt

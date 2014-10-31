@@ -49,12 +49,13 @@ select ss.instance_number
 where s.snap_id = ss.snap_id 
   and ss.instance_number = s.instance_number
   and st.sql_id=ss.sql_id 
+  and ss.PX_SERVERS_EXECS_TOTAL > 0
    --
   and s.begin_interval_time between to_date('&&START_SNAP','dd.mm.yyyy hh24:mi') and to_date('&&END_SNAP','dd.mm.yyyy hh24:mi')
   -- update or delete
   -- and st.COMMAND_TYPE in (6,7)
   and ss.PARSING_SCHEMA_NAME not in ('SYS','SYSTEM','HP_DBSPI','DBSNMP','LPDBA')
-order by s.snap_id, ss.instance_number,ss.PARSING_SCHEMA_NAME, ss.elapsed_time_delta desc
+order by ss.sql_id ,s.snap_id, ss.instance_number,ss.PARSING_SCHEMA_NAME, ss.elapsed_time_delta desc
 /
 
 prompt 

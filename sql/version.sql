@@ -19,6 +19,15 @@ SELECT distinct('DB Bit Version:: '|| (length(addr)*4) || '-bit database') "Word
 FROM v$process
 /
 
+
+ttitle left  "DB Infos -- DB OS Version" skip 2
+
+column OS_VER format a30 heading "DB OS Version"
+
+select dbms_utility.port_string as os_ver from dual
+/
+
+
 ttitle left  "DB Infos -- Compatibility" skip 2
 
 column Compatible format a35

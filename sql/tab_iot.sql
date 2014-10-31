@@ -76,6 +76,7 @@ select rpad('Index Name',30,' ')   ||'::'||lpad(index_name,22,' ')              
 	  and upper(i.table_name) like upper('&&ENTER_TABLE.')
 	  and upper(i.owner)       =  upper('&&ENTER_OWNER.')  
 )  
+order by 1
 /  
 
 set heading on

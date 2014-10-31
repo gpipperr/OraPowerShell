@@ -43,12 +43,12 @@ DOC
 	- resource_manager.sql - show the information about the resource manager  
 	- tempspace_usage.sql  - show processes using the temp tablespace
 	- parallel.sql         - parallel sql informations
-	- parallel_dbms.sql    - get the status of DBMS_PARALLEL sessions/errors
 	
 	- tns.sql              - show services and tns settings on services
 	- taf.sql              - Check TAF settings of the connections
 	
 	- locks.sql      - locks in the database - mode 6 is the blocker!
+	- ddl_locks.sql  - check for DDL Locks
 	- wait.sql       - waiting sessions
 	- wait_text.sql  - text to a wait event - parameter 1 part of the event name
 	
@@ -68,7 +68,7 @@ DOC
 	- invalid.sql      - show all invalid objects
 	
 	- user.sql         - rights and roles of a user and object grants - parameter 1 - Name of the user
-	- users.sql        - overview over the DB users
+	- users.sql        - overview over the DB users  - parameter 1 - Name of the user 	
 	- user_ddl.sql     - get the script to create a user - parameter 1 - Name of the user
 	- user_history.sql - get some static information for the login behavior of this user 
 								Parameter 1 - Name of the user
@@ -129,6 +129,7 @@ DOC
 	- tab_tablespace_all.sql    - get the used tablespace overview of this database 
 	
 	- tablespace_ddl.sql        - get the ddl of a tablespace, show default storage options! - parameter name of the tablespace
+	- tablespace_space.sql      - get a overview over the free and used space for a tablespace - parameter name of the tablespace
 	
 	- index.sql       - get the information’s over a index            - parameter - Owner, Index name
 	- index_all.sql   - get all indexes of a user                     - parameter - Owner,
@@ -138,10 +139,11 @@ DOC
 	- obj_dep.sql     - get the dependencies of a object in the database  - parameter - Owner, object name
 	- obj_grants.sql  - get the grants for this object in the database    - parameter - Owner, object name
 	
-	- plsql_info.sql  - information about a plsql function/package
+	- plsql_info.sql   - information about a plsql function/package
+	- plsql_depend.sql - information about the dependencies of a package/procedure  - parameter - Owner, object name
 	- plsql_errors.sql - show the errors of pl/sql objects
-	- plsql_dll.sql  - information about a plsql function/package       - parameter - Owner, object name
-	- my_plsql.sql    - show all package of the current user
+	- plsql_dll.sql    - information about a plsql function/package       - parameter - Owner, object name
+	- my_plsql.sql     - show all package of the current user
 	
 	- select.sql      - select first 3 records of the table as list - parameter 1 - name of the table
 	- view_count.sql  - count entries in a view                     - parameter 1 - name of the view
@@ -169,7 +171,9 @@ DOC
 	- audit_sum.sql  - auditlog summary
 	
 	- jobs.sql       - jobs in the database job$ and scheduler tasks info
-   - jobs_errors.sql  - jobs in the database job$ and scheduler tasks info with errors
+	- jobs_dbms.sql  - jobs declared with dbms_job - old style jobs
+	- jobs_sheduler.sql - jobs declared over the job sheduler
+   - jobs_errors.sql   - jobs in the database job$ and scheduler tasks info with errors
 	
 	- sga.sql        - show information about the oracle sga usage 
 	- buffer.sql     - show information about the buffer cache usage / must run as sys
@@ -189,9 +193,12 @@ DOC
 	- sql_profile.sql       - shwo all profiles in the database
 	- sql_profile_details.sql - get the details of a sql profile - parameter 1 - Profile Name
 	
+	- get_plan.sql  - get the plan of the last "explain plan for"
+	
 	- ash.sql               - usage of the acive session history ASH
 	- awr.sql               - usage of the AWR repository and of the SYSAUX table space 
 	- awr_sql_find.sql      - find a sql Statement in the AWR History  - parameter 1 part of the sql statement
+	- awr_sql_find_report.sql - ceate overview report over the usage of a sql statement or hint - parameter 1 part of the sql statement
 	- awr_sql_stat.sql      - get statistic of the SQL execution of one statement - parameter 1 - SQL ID
 	- awr_sql_hash.sql      - get the different hashes if exits                   - parameter 1 - SQL ID
 	- awr_sql_plan.sql      - get plan of the SQL execution of one statement - parameter 1 - SQL ID
@@ -217,9 +224,9 @@ DOC
 	- streams_print_error.sql - print the SQL Statements for all LCRS in a transaction if a streams error ocurs
 	- streams_print_lcr.sql   - print the LCR of one Message
 	
+	- db_alerts.sql           - get the internal metric settings of the db side monitoring 
+	- db_alerts_set.sql       - set the threshold of a metric
 	
-	- db_alerts.sql                - get the internal metric settings of the db side monitoring 
-		
 	
 	- login.sql      - set the login prompt
 	
@@ -232,6 +239,8 @@ DOC
 	- space_tablespace_auto.sql - shrink each possible tablesspace without asking 								
 	
 	- recreate_index.sql        - Script to create a index recration script 
+	- recreate_table.sql        - Script to reorganise all small tables in a tablespace, offline with !alter Table move!
+	
 	
 	- create_mon_index.sql      - Script to create index enable or disable monitoring scripts for a user - parameter 1 - username
 	
