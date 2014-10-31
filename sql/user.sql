@@ -71,6 +71,8 @@ order by owner,table_name,	PRIVILEGE
 
 ttitle left  "Object rights from other user to &&USER_NAME." skip 2
 
+
+
 select GRANTOR
       ,grantee
       ,PRIVILEGE
@@ -85,6 +87,26 @@ select GRANTOR
          ,table_name
 order by owner,table_name,	PRIVILEGE				
 /
+
+ttitle left  "User Quota Settings for the user &&USER_NAME." skip 2
+
+
+select tablespace_name
+     , username
+	  , bytes
+	  , round(max_bytes /1024/1024,0) as max_bytes_mb
+from dba_ts_quotas
+where username like upper('&&USER_NAME.')
+/
+
+prompt ... max_bytes = -1 => unlimited!
+prompt
+prompt ... to set the quota 
+prompt ...  alter user &&USER_NAME. quota unlimited on xxxxxxx;
+prompt ...  alter user &&USER_NAME. quota 50M       on xxxxxxx;
+prompt ...  alter user &&USER_NAME. quota 0         on xxxxxxx;
+prompt
+
 
 ttitle left  "Profile Settings for the user &&USER_NAME." skip 2
 

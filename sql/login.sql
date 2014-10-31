@@ -3,7 +3,7 @@
 -- Desc:   set the sqlplus prompt
 --         try to find out the os of sqlplus and set the title bar of the sql*Plus window if windows
 -- 
--- Date:   Start 01.September 2012
+-- Date:   01.September 2012
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
@@ -131,6 +131,14 @@ undefine OS
 SET sqlprompt "_USER'@'_CONNECT_IDENTIFIER-&y>"
 
 
+-- set the session information
+begin 
+	dbms_application_info.set_module('DBA Connection', 'OraPowerShell');
+   dbms_application_info.set_client_info('OraPowerShell'); 
+   dbms_session.set_identifier('OraPowerShell'); 
+end;
+/
+
 --- global Settings
 set trimspool on
 set serveroutput on
@@ -141,8 +149,6 @@ set numwidth  12
 --
 -- set your personal prefer time format
 alter session set nls_date_format='dd.mm.rr hh24:mi';
---
---
 --
 --
 set termout on

@@ -232,7 +232,7 @@ begin
                                        7, 'DO_NOT_CHECK',
                                           'NONE') into  v_warning_operator_text from dual;
 		---											
-	select decode( v_critical_operator , 0, 'GT',
+		select decode( v_critical_operator , 0, 'GT',
                                         1, 'EQ',
                                         2, 'LT',
                                         3, 'LE',
@@ -243,9 +243,9 @@ begin
                                            'NONE') into v_critical_operator_text from dual;
 														 
 	   ---										 
-    dbms_output.put_line('-- Info - Warning OP          :: '|| rpad(v_warning_operator_text   ,20,' ') ||'Warning Value           :: '||  v_warning_value  );
-	dbms_output.put_line('-- Info - Critical OP         :: '|| rpad(v_critical_operator_text  ,20,' ') ||'Critical Value          :: '||  v_critical_value );
-	dbms_output.put_line('-- Info - Observation Period  :: '|| rpad(v_observation_period      ,20,' ') ||'Consecutive Occurrences :: '||  v_consecutive_occurrences  );
+     dbms_output.put_line('-- Info - Warning OP          :: '|| rpad(v_warning_operator_text   ,20,' ') ||'Warning Value           :: '||  v_warning_value  );
+	  dbms_output.put_line('-- Info - Critical OP         :: '|| rpad(v_critical_operator_text  ,20,' ') ||'Critical Value          :: '||  v_critical_value );
+	  dbms_output.put_line('-- Info - Observation Period  :: '|| rpad(v_observation_period      ,20,' ') ||'Consecutive Occurrences :: '||  v_consecutive_occurrences  );
 	   ---
 	  
      if v_warning_value is not null then

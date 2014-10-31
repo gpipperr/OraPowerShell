@@ -2,17 +2,24 @@
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   get the users of the database
 -- Date:   September 2013
-
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
-
 define USER_NAME = &1 
+
+variable PUSERNAME varchar2(32)
 
 prompt
 prompt Parameter 1 = User  Name          => &&USER_NAME.
 prompt
 
-
+begin
+ if length('&&USER_NAME.') < 1 then
+   :PUSERNAME:='%';
+ else
+   :PUSERNAME:='&&USER_NAME.'||'%';
+ end if;
+end;
+/
 
 set verify off
 
@@ -26,6 +33,7 @@ SELECT property_value as default_tablespace
   FROM database_properties
 WHERE property_name = 'DEFAULT_PERMANENT_TABLESPACE'
 /
+
 prompt ... to set the default tablespace : alter database default tablespace <tablespace name>;
 prompt
 
@@ -38,10 +46,11 @@ column created          format a16 heading "Create Date"
 
 select username
 	,  account_status 
-    ,  default_tablespace
+   ,  default_tablespace
 	,  profile
 	,  to_char(CREATED,'dd.mm.yyyy hh24:mi') as created	
  from dba_users
+where username like upper(:PUSERNAME)
 order by username
 /
 
@@ -49,3 +58,10 @@ ttitle off
 
 prompt ... to unlock the user    : alter user <name> account unlock;
 prompt ... to set the tablespace : alter user <name> default tablespace <tablespace name>;
+
+--undef variables ---
+
+undefine PUSERNAME 
+
+---------------------
+

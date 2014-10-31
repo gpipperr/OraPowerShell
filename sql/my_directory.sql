@@ -1,11 +1,12 @@
 --==============================================================================
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   show informations about directories in the database I can read
+-- Desc:   show informations about directories in the database
+-- Date:   08.08.2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 SET linesize 130 pagesize 30 recsep OFF
 
-ttitle  "Directories I can access in the database"  SKIP 1 
+ttitle  "Directories in the database"  SKIP 1 
 
 column owner          format a15
 column directory_name format a25
