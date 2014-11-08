@@ -9,7 +9,16 @@
 #
 ####################################################################
 
-## enviroment ######################################################
+## environment ######################################################
+
+# Home of the scripts
+SCRIPTPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+SCRIPTS=`dirname "$SCRIPTPATH{}"`
+export SCRIPTS
+
+##  read default config 
+CONFFILE=${SCRIPTS}/default.conf
+. ${CONFFILE}
 
 ############ source the helper functions ###########################
 
@@ -23,7 +32,7 @@
 
 ###################################################################
 printLine
-printLine  "Welcome to the destroy/deinstallation of the Database"
+printLine  "Welcome to the destroy/de installation of the Database"
 printLine
 
 # check primary configuration
@@ -33,9 +42,7 @@ printLine "............... finish"
 
 ################### GPIDB #####################################################
 
-##  read default config 
-CONFFILE=${SCRIPTS}/default.conf
-. ${CONFFILE}
+
 
 PWDFILE=${SCRIPTS}/password.conf
 export PWDFILE

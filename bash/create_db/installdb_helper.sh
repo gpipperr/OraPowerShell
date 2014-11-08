@@ -7,12 +7,17 @@
 
 ##################  GET Defaults ###################################
 
-################### Prepare Enviroment ############################
+################### Prepare Environment ############################
 
-# Home of the scrips
+# Home of the scripts
 SCRIPTPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 SCRIPTS=`dirname "$SCRIPTPATH{}"`
 export SCRIPTS
+
+##  read default config 
+CONFFILE=${SCRIPTS}/default.conf
+. ${CONFFILE}
+
 
 # Host name
 DBHOST_NAME=`hostname`
@@ -34,11 +39,24 @@ if [ "${DB_SMON_PROCESS_ID}" = "1" ]; then
 	#
 	#	fix grep ASM Home from ??? ######
 	
-	if [ -d "/u01/app/11.2.0/grid" ]; then
+	if [ -d "${S_ASM_HOME}" ]; then
+		ASM_HOME=${S_ASM_HOME}
+	elif [ -d "/u01/app/11.2.0/grid" ]; then
 	  	ASM_HOME="/u01/app/11.2.0/grid"
-	fi
-	if [ -d "/u01/app/11.2.0.3/grid" ]; then
+	elif [ -d "/u01/app/11.2.0.3/grid" ]; then
 	  	ASM_HOME="/u01/app/11.2.0.3/grid"
+	elif [ -d "/u01/app/11.2.0.4/grid" ]; then
+	  	ASM_HOME="/u01/app/11.2.0.4/grid"
+	else
+	   echo "ASM Instance found but no ASM HOME - check default.conf" 
+	   exit 1
+	fi
+	
+	if [ -d "${ASM_HOME}" ]; then
+	     echo "-- Info :: ASM Instance found : use as ASM HOME - ${ASM_HOME}" 
+	else
+		echo "-- Error :: ASM Instance found but no ASM HOME - check default.conf" 
+		exit 1
 	fi
 else
  	ASM_ENV=false
@@ -74,6 +92,21 @@ else
  SCAN_LISTENER=${DBHOST_NAME}
 fi
 export SCAN_LISTENER
+
+#Check configured Oracle Home
+if [ -d "${S_ORACLE_HOME}" ]; then
+	echo "-- Info :: Oracle HOME found  : use as ORACLE HOME - ${S_ORACLE_HOME}" 
+else
+    echo "Oracle HOME not found - check default.conf => S_ORACLE_HOME=${S_ORACLE_HOME}" 
+    exit 1
+fi
+
+if [ -d "${S_ORACLE_BASE}" ]; then
+	echo "-- Info :: Oracle BASE found  : use as ORACLE BASE - ${S_ORACLE_BASE}" 
+else
+    echo "Oracle BASE not found - check default.conf => S_ORACLE_BASE=${S_ORACLE_BASE}" 
+    exit 1
+fi
 
 ############  Helper functions #################################
 
