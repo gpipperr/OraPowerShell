@@ -10,13 +10,18 @@
 #
 ####################################################################
 
-## enviroment ######################################################
+## environment ######################################################
 
 ########### source the helper functions ###########################
 
 . installdb_helper.sh
 
 ###################################################################
+
+##  read default config 
+CONFFILE=${SCRIPTS}/default.conf
+. ${CONFFILE}
+
 
 # read default db configuration file 
 . ~/.profile
@@ -29,15 +34,13 @@ printLine  "Welcome to the installation of the Database v2.2"
 printLine  "-------------------------------------------------"
 
 # check primary configuration
-printLine "Check enviroment ....."
+printLine "Check environment ....."
 checkEnv
 printLine "............... finish"
 
 ################### GPIDB #####################################################
 
-##  read default config 
-CONFFILE=${SCRIPTS}/default.conf
-. ${CONFFILE}
+
 
 PWDFILE=${SCRIPTS}/password.conf
 export PWDFILE
