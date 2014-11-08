@@ -12,8 +12,8 @@
 #
 ### BEGIN INIT INFO
 # Provides: OracleNoSQLKVStore
-# Required-Start:
-# Required-Stop:
+# Required-Start: 92
+# Required-Stop:  08
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 6
 # Short-Description: start and stop OracleNoSQLKVStore

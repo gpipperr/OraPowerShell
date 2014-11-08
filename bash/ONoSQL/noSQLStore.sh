@@ -72,7 +72,7 @@ case "$1" in
      count)
         # kvshell
 		printLine "-- Command java -jar $KVHOME/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} aggregate -count"
-        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} aggregate -count
+        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} aggregate kv -count
         ;;			
 	 ping)
         # ping

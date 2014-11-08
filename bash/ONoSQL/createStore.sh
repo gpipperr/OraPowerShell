@@ -28,6 +28,10 @@ declare -a STORE_NODE
 declare -a STORE_ROOT
 declare -a STORE_HOME
 declare -a STORE_NAME
+declare -a STORE_HTTP_ADMIN_PORT
+declare -a STORE_ADMIN_PORT
+declare -a STORE_HA_RANGE
+declare -a STORE_SERVICERANGE
 
 . ${SCRIPTS_DIR}/nodelist.conf
 
@@ -57,9 +61,10 @@ ELEMENT_COUNT=${#STORE_NODE[@]}
 INDEX=0
 while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
 	do    # List all the elements in the array.
+	printList "Parameter ADMIN_PORT"      30 "::"  "${STORE_ADMIN_PORT[$INDEX]}"
 	echo "plan deploy-sn -dc dc1 -host ${STORE_NODE[$INDEX]} -port ${STORE_PORT[$INDEX]} -wait" >> ${CREATE_COMMANDFILE}
 	let "SNNODE = $INDEX + 1"
-	echo "plan deploy-admin -sn sn${SNNODE} -port ${ADMIN_PORT} -wait"                          >> ${CREATE_COMMANDFILE}
+	echo "plan deploy-admin -sn sn${SNNODE} -port ${STORE_ADMIN_PORT[$INDEX]} -wait"                          >> ${CREATE_COMMANDFILE}
 	let "INDEX = $INDEX + 1"
 done
 echo "pool create -name ${STORE_NAME[$ADMIN_NODE]}Pool"                                         >>  ${CREATE_COMMANDFILE}
@@ -72,8 +77,8 @@ while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
 	echo "plan change-parameters -service sn${SNNODE} -wait -params mgmtClass=oracle.kv.impl.mgmt.jmx.JmxAgent"  >>  ${CREATE_COMMANDFILE}
 	let "INDEX = $INDEX + 1"
 done
-echo "topology create -name topo -pool ${STORE_NAME[$ADMIN_NODE]}Pool -partitions 500" >>  ${CREATE_COMMANDFILE}
-echo "plan deploy-topology -name topo -wait"                                           >>  ${CREATE_COMMANDFILE}
+echo "topology create -name topo -pool ${STORE_NAME[$ADMIN_NODE]}Pool -partitions ${PARTITIONS}" >>  ${CREATE_COMMANDFILE}
+echo "plan deploy-topology -name topo -wait"                                                     >>  ${CREATE_COMMANDFILE}
 
 printLine "Show the configuration file ${CREATE_COMMANDFILE}"
 printLine 
@@ -82,13 +87,12 @@ printLine
 printLine "Show the configuration Parameter of the Store ${STORE_NAME[$ADMIN_NODE]}"
 
 printList "Parameter STORE_NAME"      30 "::"  "${STORE_NAME[$ADMIN_NODE]}"
-printList "Parameter HTTP_ADMIN_PORT" 30 "::"  "$HTTP_ADMIN_PORT"
-printList "Parameter HA_RANGE"        30 "::"  "$HA_RANGE"
-printList "Parameter SERVICERANGE"    30 "::"  "$SERVICERANGE"
-printList "Parameter ADMIN_PORT"      30 "::"  "$ADMIN_PORT"
 printList "Parameter CAPACITY"        30 "::"  "$CAPACITY"
 printList "Parameter NUM_CPU"         30 "::"  "$NUM_CPU"
 printList "Parameter MEMORY_MB"       30 "::"  "$MEMORY_MB"
+printList "Parameter PARTITIONS"      30 "::"  "$PARTITIONS"
+printList "Parameter SECURITY"        30 "::"  "$SECURITY"
+
 
 
 #
@@ -120,12 +124,20 @@ printLine "Create the boot config XML for each node"
 printLine "--"
 
 COMMAND_TITLE=""
-COMMAND="java -jar #KVHOMEI#/lib/kvstore.jar makebootconfig -root #KVROOTI# -port #KVPORT# -admin #ADMINPORT# -host #KVHOSTNAME# -harange #HARANGE# -capacity #CAPACITY# -num_cpus #NUMCPU# -memory_mb #MEMORY# -servicerange #SERVICERANGE#"
+COMMAND="java -jar #KVHOMEI#/lib/kvstore.jar makebootconfig -root #KVROOTI# -port #KVPORT# -admin #ADMINPORT# -host #KVHOSTNAME# -harange #HARANGE# -capacity #CAPACITY# -num_cpus #NUMCPU# -memory_mb #MEMORY# -servicerange #SERVICERANGE# -store-security  ${SECURITY}"
+
 
 INDEX=0
 while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
+
 	do    # List all the elements in the array.
 	echo -- Creation Store Config for NoSQL Store ${STORE_NAME[$INDEX]} on ${STORE_NODE[$INDEX]}  at "`date`"
+	
+	printList "Parameter HTTP_ADMIN_PORT" 30 "::"  "${STORE_HTTP_ADMIN_PORT[$INDEX]}"
+    printList "Parameter HA_RANGE"        30 "::"  "${STORE_HA_RANGE[$INDEX]}"
+    printList "Parameter SERVICERANGE"    30 "::"  "${STORE_SERVICERANGE[$INDEX]}"
+
+
 		
 	KVROOTI=${STORE_ROOT[$INDEX]}
 	KVHOMEI=${STORE_HOME[$INDEX]}			
@@ -133,13 +145,13 @@ while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
 	COMMANDI=${COMMAND//#KVROOTI#/${KVROOTI}}
 	COMMANDI=${COMMANDI//#KVHOMEI#/${KVHOMEI}}
 	COMMANDI=${COMMANDI//#KVPORT#/${STORE_PORT[$INDEX]}}
-	COMMANDI=${COMMANDI//#ADMINPORT#/${HTTP_ADMIN_PORT}}
+	COMMANDI=${COMMANDI//#ADMINPORT#/${STORE_HTTP_ADMIN_PORT[$INDEX]}}
 	COMMANDI=${COMMANDI//#KVHOSTNAME#/${STORE_NODE[$INDEX]}}
-	COMMANDI=${COMMANDI//#HARANGE#/${HA_RANGE}}
+	COMMANDI=${COMMANDI//#HARANGE#/${STORE_HA_RANGE[$INDEX]}}
 	COMMANDI=${COMMANDI//#CAPACITY#/${CAPACITY}}
 	COMMANDI=${COMMANDI//#NUMCPU#/${NUM_CPU}}
 	COMMANDI=${COMMANDI//#MEMORY#/${MEMORY_MB}}
-	COMMANDI=${COMMANDI//#SERVICERANGE#/${SERVICERANGE}}
+	COMMANDI=${COMMANDI//#SERVICERANGE#/${STORE_SERVICERANGE[$INDEX]}}
 		
 	echo -- use Command:: ${COMMANDI}
 	ssh  ${STORE_NODE[$INDEX]} "${COMMANDI}"
