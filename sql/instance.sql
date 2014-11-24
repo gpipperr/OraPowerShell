@@ -21,5 +21,16 @@ select status
  order by 1
 /
 
+
+ttitle left  "The instance is running under this OS User:" skip 2
+
+column osuser    format A20  heading "OS User"
+
+
+select osuser 
+  from v$session 
+ where program like '%PMON%'
+/
+
 ttitle off
 

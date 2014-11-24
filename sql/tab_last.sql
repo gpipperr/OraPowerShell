@@ -16,7 +16,7 @@ prompt Parameter 1 = Owner Name  => &&OWNER.
 prompt Parameter 2 = Tab Name    => &&TAB_NAME.
 
 define FILTER   = '&3' 
-prompt Parameter 3 = Tab Name    => &&FILTER.
+prompt Parameter 3 = Tab Filter   => &&FILTER.
 prompt
 
 set serveroutput on;

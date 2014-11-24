@@ -11,6 +11,11 @@ SELECT replace(ora_database_name||'_'||SYS_CONTEXT('USERENV','HOST')||'_'||to_ch
 FROM dual
 /
 
+
+
+
+
+
 set verify off
 SET linesize 130 pagesize 200 recsep OFF
 
@@ -89,6 +94,25 @@ select * from
 	 from v$sqlarea
 	where executions > 1
 	  and cpu_time > 10
+	order by cpu_time desc
+)
+where rownum <=20;
+
+ttitle center "Top 20 SQL Statements with mostly executed" SKIP 2
+
+select * from
+(
+	select  SQL_ID
+		  , (select username from dba_users where user_id=parsing_user_id) as "Parsing User"
+		  , executions
+		  , loads
+		  , cpu_time
+		  , buffer_gets
+		  , disk_reads
+		  , trunc(cpu_time/(executions),2) avg_cpu_per_ex
+		  , sql_text 
+	 from v$sqlarea
+	where executions > 1000	  
 	order by cpu_time desc
 )
 where rownum <=20;

@@ -18,6 +18,7 @@ DOC
 	- date.sql       - get the actual date and time of the DB
 	- instance.sql   - status of the instance where the user is connected
 	- limit.sql      - resource limits since last startup of the instances
+	- tablespace.sql - Information about the tablespaces
 	
 	- sessions.sql             - actual connections to the database 
 	- session_history.sql      - get a summary over the last active sessions 
@@ -45,12 +46,15 @@ DOC
 	- parallel.sql         - parallel sql informations
 	
 	- tns.sql              - show services and tns settings on services
+	- tns_history.sql      - show services statistics for the last 12 hours (only services with some traffic)
 	- taf.sql              - Check TAF settings of the connections
 	
 	- locks.sql      - locks in the database - mode 6 is the blocker!
 	- ddl_locks.sql  - check for DDL Locks
+	
 	- wait.sql       - waiting sessions
 	- wait_text.sql  - text to a wait event - parameter 1 part of the event name
+	- wait_get_name.sql  - search for a name of a wait event
 	
 	- my_user.sql    - who am i and over with service i connect to the database
 	- nls.sql        - global and session nls Settings
@@ -84,6 +88,8 @@ DOC
 
 	- user_tab.sql    - get all the tables and views of a user - parameter 1 - part of the table name
 	- ls.sql          - gets all the tables and shows the size of the user tab
+	
+	- comment.sql     - search over all comments                    - parameter 1 - part of the comment text
 	
 	- tab.sql         - search a table or views in the database       - parameter 1 - part of the table
 	- tab_cat.sql     - get the tables and views of the current user 
@@ -121,8 +127,7 @@ DOC
 	- lob.sql         - show the lob settings of the tables of the user - parameter - Owner
 	
 	- sequence.sql    - search a sequence in the database parameter 1 - name of the sequence
-	
-	
+		
 	- recycle.sql               - show the content summary of the dba recyclebin
 	
 	- tab_tablespace.sql        - get the tablespaces of the user    - parameter - Owner
@@ -147,11 +152,12 @@ DOC
 	
 	- select.sql      - select first 3 records of the table as list - parameter 1 - name of the table
 	- view_count.sql  - count entries in a view                     - parameter 1 - name of the view
-	- comment.sql     - search over all comments                    - parameter 1 - part of the comment text
+	
 	
 	- asm.sql         - asm disk status and filling degree of the asm disks
 	- asm_disk.sql    - asm disk space
 	- asm_balance.sql - asm disk disk balance 
+	- asm_partner.sql - Information about asm partner disk
 	- flash.sql       - show the flash back information’s 
 	- reco.sql        - recovery area settings and size
 	
@@ -169,6 +175,7 @@ DOC
 	
 	- audit.sql      - show the audit settings 
 	- audit_sum.sql  - auditlog summary
+	- audit_login.sql - audit the logins of users
 	
 	- jobs.sql       - jobs in the database job$ and scheduler tasks info
 	- jobs_dbms.sql  - jobs declared with dbms_job - old style jobs
@@ -205,6 +212,8 @@ DOC
 	- awr_sql_time_stat.sql - get all sql statements from the awr for this time - parameter 1 - Startdate  - parameter 2 end date in DE format
 	- awr_temp_usage.sql    - get the sql that use temp tablespace from the awr for this time - parameter 1 - Startdate  - parameter 2 end date in DE format
 	- awr_pga_stat.sql      - statistic of the pga usage
+	- awr_sys_stat.sql      - statistic of system historical statistics information
+	- awr_session_stat.sql  - statistic of the sessions of a user
 	
 	- calibrate_io.sql     - Use io calibrate to analyses io of the database and set the interal i/o views
 	- system_stat.sql      - get the DB interal Systemstat values like workload statistic and i/o calibarate values
@@ -212,7 +221,7 @@ DOC
 	- ctx.sql          - Oracle Text indexes for a user and ctx settings - parameter 1 - name of the user
 	
 	- rman.sql         - rman settings of this database 
-							   and summary information about the last backups for this database and the block change tracking feature
+						 and summary information about the last backups for this database and the block change tracking feature
 	- rman_process.sql - get information over running rman processes for tracing
 	- rman_status.sql  - get the status of the last backup in the database
 	
@@ -227,7 +236,8 @@ DOC
 	- db_alerts.sql           - get the internal metric settings of the db side monitoring 
 	- db_alerts_set.sql       - set the threshold of a metric
 	
-	
+	- health_mon.sql          - call the health monitoring in 11g - get the parameter 
+		
 	- login.sql      - set the login prompt
 	
 	#Create Scripts
@@ -251,6 +261,7 @@ DOC
 									and all indexes with more than one column to check for duplicate indexing
 	
 	- top_sql.sql         - HTML Report - Top SQL Statements in the database for Buffer / CPU / Sort Usage
+	- sql_user_report.sql - HTML Report - Show all sql statements for this user in the SGA 
 	
 	- audit_rep.sql       - HTML Report - Audit Log entries
 	
@@ -263,10 +274,10 @@ DOC
 					- create a global error table and error trigger + maintain job
 	
 	- 01-db-setup/delete_global_errorlog.sql
-	- delete the global error trigger + error table
+					- delete the global error trigger + error table
 	
 	- 01-db-setup/create_audit_log_database.sql
-	- create own table space for auditlog, move audit log to this table pace - create clean job
+					- create own table space for auditlog, move audit log to this table pace - create clean job
 	
 	#The OEM Query Scripts
 	=================

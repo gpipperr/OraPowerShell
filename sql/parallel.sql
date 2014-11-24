@@ -1,10 +1,10 @@
 ----------------------------
---- see also: Oracle Support Document 444164.1 (Tracing Parallel Execution with _px_trace. Part I) can be found at: https://support.oracle.com/epmos/faces/DocumentDisplay?id=444164.1
+-- see also: 
+--  Oracle Support Document 444164.1 (Tracing Parallel Execution with _px_trace. Part I) can be found at: https://support.oracle.com/epmos/faces/DocumentDisplay?id=444164.1
+--  https://docs.oracle.com/cd/E18283_01/server.112/e16541/parallel006.htm#CIHGJFFC
 ----------------------------
 
 set pages 300 lines 300
-
-
 
 column username     format a12
 column "QC SID"     format A6

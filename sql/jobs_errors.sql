@@ -109,4 +109,5 @@ order by 1,2
 
 prompt
 prompt
+TTITLE off
 

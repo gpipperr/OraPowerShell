@@ -7,30 +7,50 @@
 
 SET linesize 120 pagesize 400 recsep OFF
 
-ttitle left  "Open Cursor used " skip 2
+column user_name format a25
+
+ttitle left  "Open Cursor used summary" skip 2
 
 select inst_id
-	, user_name
-    , count(*)
+	  , user_name
+     , count(*)
  from gv$open_cursor 
-where user_name not in ( 'SYS' ) 
+where user_name not in ( 'SYS' )  and user_name is not null
 group by rollup (inst_id,user_name)
 /
 
-ttitle left  "Open Cursor used " skip 2
+ttitle left  "Open Cursor used by session" skip 2
 select inst_id
-	, user_name
-	, sid
-    , count(*)
+     , sid	
+	  , user_name	
+     , count(*)
  from gv$open_cursor 
-where user_name not in ( 'SYS' ) 
+where user_name not in ( 'SYS' ) and user_name is not null
 group by inst_id,user_name,sid
-order by inst_id,user_name
+order by 4,1,3
 /
 
-ttitle left  "Open Cursor Statistic " skip 2
 column name  format a30 heading "Statistic|Name"
 column value format 999G999G999G999 heading "Statistic|value"
+
+
+ttitle left  "Open Cursor used by session over the statistic" skip 2
+
+select  a.value
+      , s.username
+		, s.sid
+		, s.serial# 
+from v$sesstat a
+   , v$statname b
+	, v$session s 
+where a.statistic# = b.statistic#  
+  and s.sid=a.sid 
+  and b.name = 'opened cursors current'
+ /
+
+
+ttitle left  "Open Cursor Statistic " skip 2
+
 
 select inst_id,cursor_hits,parse_count,cursor_hits/(parse_count/100) as hit_percentage from 
 		( select name
