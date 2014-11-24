@@ -12,7 +12,7 @@ SET linesize 300
 SET VERIFY OFF
 
 
-define TABLESPACE = &1
+define TABLESPACE = "%"
 
 
 prompt
@@ -86,7 +86,7 @@ select  s.tablespace_name
 --/
 
 
-ttitle left  "DLL to shrink the the tablespace" skip 2
+ttitle left  "DLL to shrink the the table space" skip 2
 -- create the alter script
 --
 column command format a100

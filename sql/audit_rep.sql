@@ -61,7 +61,7 @@ select  OS_USERNAME
  ,SQL_TEXT
 -- ,OBJ_EDITION_NAME
  from dba_audit_object
-where timestamp between sysdate-200 and sysdate
+where timestamp between sysdate-1 and sysdate
 order by timestamp
 /
 

@@ -8,7 +8,6 @@
 -- 
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
-
 set verify  off
 set linesize 120 pagesize 4000 recsep OFF
 
@@ -20,11 +19,41 @@ prompt Parameter 1 = Owner       => &&OWNER.
 prompt Parameter 2 = Index Name  => &&INDEX_NAME.
 prompt
 
+
+column  index_owner format a10 heading "Index|Owner"
+column  index_name  format a25 heading "Index|Name"
+column  status      format a12 heading "Status"
+column part_info    format 999 heading "Partition|count"
+
+ttitle "Check the Status of the Index" SKIP 2
+
+select owner as index_owner
+      ,index_name
+      ,status
+      ,0 as part_info
+  from dba_indexes
+ where owner like upper('&&OWNER.%')
+	and index_name like upper('%&&INDEX_NAME.%')
+union
+select index_owner
+      ,index_name
+      ,status
+      ,count(partition_name)
+  from dba_ind_partitions
+ where status not in ('VALID', 'N/A', 'USABLE')
+   and index_owner like upper('&&OWNER.%')
+	and index_name like upper('%&&INDEX_NAME.%')
+ group by index_owner
+         ,index_name
+         ,status
+/
+
+
+
 ttitle center "Index &&OWNER..&&INDEX_NAME.  Columns" SKIP 2
 
 SET linesize 130 pagesize 2000 recsep OFF
 
-column  index_owner format a10 heading "Index|Owner"
 column  index_name  format a16 heading "Index|Name"
 column  table_name  format a13 heading "Table|Name"
 column  column_name format a13 heading "Column|Name"
