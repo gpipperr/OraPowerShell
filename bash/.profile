@@ -196,47 +196,47 @@ if [ "${OVERWRITE_PROFIL}" = "YES" ]; then
 	if [ -d "${CRS_ASM_HOME}" ]; then
 			ASM_ENV=true
 			
-      if [ -f "${CRS_ASM_HOME}/bin/cemutlo" ]; then
-          CLUSTER_NAME=`${CRS_ASM_HOME}/bin/cemutlo -n`
-      else
-          RAC_ENV=false
-          CLUSTER_NAME=false
-          VIPNODES=${ORACLE_HOSTNAME}
-          NODE_ID=
-      fi
-
-      if [ "${#CLUSTER_NAME}" -gt 2 ]; then
-        
-		printError " found Cluster ${CLUSTER_NAME}"
-        RAC_ENV=true
-		
-		if [ "${CRS_HOME_NAME}" = "OraCrs10g_home" ] ; then
-			# in 10g the srvctl not work like expected
-			# remember node 1
-			VIPNODES=`hostname`
-			# FIX and test!
-			#VIPNODES=`${CRS_ASM_HOME}/bin/olsnodes`
+		if [ -f "${CRS_ASM_HOME}/bin/cemutlo" ]; then
+			CLUSTER_NAME=`${CRS_ASM_HOME}/bin/cemutlo -n`
 		else
-			VIPNODES=`${CRS_ASM_HOME}/bin/srvctl status nodeapps | grep 'VIP' | grep 'on node' | awk '{ print $7 }'`
-			#VIPNODES=`${CRS_ASM_HOME}/bin/olsnodes`
+			RAC_ENV=false
+			CLUSTER_NAME=false
+			VIPNODES=${ORACLE_HOSTNAME}
+			NODE_ID=
 		fi
+
+		if [ "${#CLUSTER_NAME}" -gt 2 ]; then
+        
+			printError " found Cluster ${CLUSTER_NAME}"
+			RAC_ENV=true
+		
+			if [ "${CRS_HOME_NAME}" = "OraCrs10g_home" ] ; then
+				# in 10g the srvctl not work like expected
+				# remember node 1
+				VIPNODES=`hostname`
+				# FIX and test!
+				#VIPNODES=`${CRS_ASM_HOME}/bin/olsnodes`
+			else
+				VIPNODES=`${CRS_ASM_HOME}/bin/srvctl status nodeapps | grep 'VIP' | grep 'on node' | awk '{ print $7 }'`
+				#VIPNODES=`${CRS_ASM_HOME}/bin/olsnodes`
+			fi
 			
-      else
-          printError " No Cluster enviroment"
-          RAC_ENV=false
-          CLUSTER_NAME=false
-          VIPNODES=${ORACLE_HOSTNAME}	
-          NODE_ID=
-      fi
 		else
-			ASM_ENV=false
+			printError " No Cluster enviroment"
 			RAC_ENV=false
 			CLUSTER_NAME=false
 			VIPNODES=${ORACLE_HOSTNAME}	
-			NODE_ID=	
+			NODE_ID=
+		fi	
+	else
+		ASM_ENV=false
+		RAC_ENV=false
+		CLUSTER_NAME=false
+		VIPNODES=${ORACLE_HOSTNAME}	
+		NODE_ID=	
 	fi 
 
-  # ask the operator for the node id of this host - only for rac enviroment!
+	#ask the operator for the node id of this host - only for rac enviroment!
 	if [ "${RAC_ENV}" = "true" ]; then
 		printf " +please enter the node id for this node %s for the RAC Cluster ${CLUSTER_NAME}: " "${ORACLE_HOSTNAME}"  
 		read NODE_ID
@@ -247,7 +247,7 @@ if [ "${OVERWRITE_PROFIL}" = "YES" ]; then
 		fi  
 		echo "export NODE_ID=${NODE_ID}" >> ~/.profile_conf	
 	else
-    echo "export NODE_ID=" >> ~/.profile_conf	
+		echo "export NODE_ID=" >> ~/.profile_conf	
 	fi
 	
 	if [ "${ASM_ENV}" = "true" ]; then
@@ -259,11 +259,13 @@ if [ "${OVERWRITE_PROFIL}" = "YES" ]; then
 				ASM_INSTANCESID=`ls ${CRS_ASM_HOME}/dbs | grep -e hc_ | sed 's/hc_//g' | sed 's/.dat//g'`	
 			fi	
 		fi
+		
 		if [ ! -n "${ASM_INSTANCESID}" ]; then
 				ASM_INSTANCESID=+ASM${NODE_ID}
 		fi
+		
 		echo "export ASM_INSTANCESID=${ASM_INSTANCESID}" 	>> ~/.profile_conf			
-  fi
+	fi
 	
 	echo "export CLUSTER_NAME=${CLUSTER_NAME}" 			>> ~/.profile_conf	
 	echo "export RAC_ENV=${RAC_ENV}" 					>> ~/.profile_conf	
@@ -273,10 +275,11 @@ if [ "${OVERWRITE_PROFIL}" = "YES" ]; then
 	echo "export CRS_ASM_HOME=${CRS_ASM_HOME}" 		>> ~/.profile_conf
   
 	
-  ########## write config ############
-  ## check for oracle homes
-  ## search over inventory
-  ## 	
+	########## write config ############
+	## check for oracle homes
+	## search over inventory
+	## 	
+	
 	if [ -d "${ORACLE_INVENTORY_HOME}/ContentsXML" ]; then
 	 # analyse the inventory
 	 ORAINVENTORY_LIST=`grep "HOME NAME" ${ORACLE_INVENTORY_HOME}/ContentsXML/inventory.xml | awk '{ print($2 "#" $3);}' | sed 's/"//g'`
@@ -284,67 +287,81 @@ if [ "${OVERWRITE_PROFIL}" = "YES" ]; then
 	 # create the db configuration # Parameter DATABASE[NR of DB] = [ORACLE_HOME ORACLE_SID ORACLE_DBNAME NLS_LANG ]
 	 ORA_HOME_COUNTER=0
 	 
-   for 	ORA_HOME_STRING in $ORAINVENTORY_LIST
-	 do
-	   ##printError ${ORA_HOME_STRING}
-		 ##printError
+		for 	ORA_HOME_STRING in $ORAINVENTORY_LIST
+		do
+			##printError ${ORA_HOME_STRING}
+			##printError
 	   
-		 ## subtract the string
-		 LOC_POS=`expr ${ORA_HOME_STRING} : '.*LOC'`
-		 
-		 let "LOC_POS=${LOC_POS}+1"
-		 ##printLine "LOC POS" "$LOC_POS"
-		 LOC_PATH=${ORA_HOME_STRING:$LOC_POS}		 
-		 ##printLine "PATH" ${LOC_PATH}
-		 ##printLine
-		 
-		 let "LOC_POS=${LOC_POS}-10"
-		 ##printLine "LOC POS" "$LOC_POS"
-		 LOC_NAME=${ORA_HOME_STRING:5:$LOC_POS}		 
-		 ##printLine "LOC" ${LOC_NAME}
-		 ##printLine
+			## subtract the string
+			LOC_POS=`expr ${ORA_HOME_STRING} : '.*LOC'`
+			
+			let "LOC_POS=${LOC_POS}+1"
+			##printLine "LOC POS" "$LOC_POS"
+			LOC_PATH=${ORA_HOME_STRING:$LOC_POS}		 
+			##printLine "PATH" ${LOC_PATH}
+			##printLine
+			
+			let "LOC_POS=${LOC_POS}-10"
+			##printLine "LOC POS" "$LOC_POS"
+			LOC_NAME=${ORA_HOME_STRING:5:$LOC_POS}		 
+			##printLine "LOC" ${LOC_NAME}
+			##printLine
 		
 		 
-		 if [ "${LOC_NAME}" = "Ora11g_gridinfrahome1" ]; then
-		  echo "export CRS_ASM_HOME=${LOC_PATH}" >> ~/.profile_conf			
-		 else
-		  		 
-		  # set the default home, take the first home found
-			if [ "${ORA_HOME_COUNTER}" = "0" ]; then
-			 echo "export DEFAULT_ORACLE_HOME=${LOC_PATH}" >> ~/.profile_conf			
-			fi
-			
-			if [ "${BASH_OS_VERSION}" = "SunOS" ]; then
-				ORADB_LIST=`ls ${LOC_PATH}/dbs  | grep orapw | sed 's/orapw//g'`
+			if [ "${LOC_NAME}" = "Ora11g_gridinfrahome1" ]; then
+				#echo "#export CRS_ASM_HOME=${LOC_PATH}" >> ~/.profile_conf		
+				printLine "Ignore the Oracle Home ${LOC_NAME}"
 			else
-				ORADB_LIST=`ls ${LOC_PATH}/dbs  | grep -e orapw | sed 's/orapw//g'`
-			fi
+		  		 
+				# set the default home, take the first home found
+				if [ "${ORA_HOME_COUNTER}" = "0" ]; then
+				echo "export DEFAULT_ORACLE_HOME=${LOC_PATH}" >> ~/.profile_conf			
+				fi
+				
+				if [ "${BASH_OS_VERSION}" = "SunOS" ]; then
+					ORADB_LIST=`ls ${LOC_PATH}/dbs  | grep orapw | sed 's/orapw//g'`
+				else
+					ORADB_LIST=`ls ${LOC_PATH}/dbs  | grep -e orapw | sed 's/orapw//g'`		
+					if [ "${ORADB_LIST}" = "" ]; then			
+				    
+						printError "----------------------------"
+						printError "DATABASE_ENV[${ORA_HOME_COUNTER}] - NO Password files in DB Home found? - DB PWD File ERROR or no DB?"
+						printError "Please check the  ${LOC_PATH}/dbs"
+						printError "----------------------------"
+						printError "Use init.ora of the databases:"
+						ORADB_LIST=`ls ${LOC_PATH}/dbs  | grep -v init.ora | grep -e init | sed 's/init//g' | sed 's/.ora//g' `						
+				    fi
+					
+				fi
+				
+				if [ "${ORADB_LIST}" != "" ]; then
+					for ORAHOMESID in $ORADB_LIST
+					do
+						if [ "${RAC_ENV}" = "true" ]; then
+							ORADBNAME=`echo ${ORAHOMESID} | sed 's/[0-9]*//g'`
+							echo "DATABASE_ENV[${ORA_HOME_COUNTER}]=\"${LOC_PATH} ${ORAHOMESID} ${ORADBNAME} .UTF8\""  >> ~/.profile_conf		
+						else
+							echo "DATABASE_ENV[${ORA_HOME_COUNTER}]=\"${LOC_PATH} ${ORAHOMESID} ${ORAHOMESID} .UTF8\""  >> ~/.profile_conf		
+						fi
+						let "ORA_HOME_COUNTER=${ORA_HOME_COUNTER}+1"
+					done
+				else
 			
-      if [ "${ORADB_LIST}" != "" ]; then
-        for ORAHOMESID in $ORADB_LIST
-         do
-          if [ "${RAC_ENV}" = "true" ]; then
-            ORADBNAME=`echo ${ORAHOMESID} | sed 's/[0-9]*//g'`
-            echo "DATABASE_ENV[${ORA_HOME_COUNTER}]=\"${LOC_PATH} ${ORAHOMESID} ${ORADBNAME} .UTF8\""  >> ~/.profile_conf		
-          else
-            echo "DATABASE_ENV[${ORA_HOME_COUNTER}]=\"${LOC_PATH} ${ORAHOMESID} ${ORAHOMESID} .UTF8\""  >> ~/.profile_conf		
-          fi
-          let "ORA_HOME_COUNTER=${ORA_HOME_COUNTER}+1"
-        done
-      else
-        # set the oracle environment without a SID if no DB is installed yet
-        echo "DATABASE_ENV[${ORA_HOME_COUNTER}]=\"${LOC_PATH} "-" "-" .UTF8\""  >> ~/.profile_conf
-		let "ORA_HOME_COUNTER=${ORA_HOME_COUNTER}+1"
-      fi
-		 fi	
-	 done	 	
+					# set the oracle environment without a SID if no DB is installed yet		
+									
+					echo "DATABASE_ENV[${ORA_HOME_COUNTER}]=\"${LOC_PATH} "-" "-" .UTF8\""  >> ~/.profile_conf
+					let "ORA_HOME_COUNTER=${ORA_HOME_COUNTER}+1"
+				fi
+			fi	
+		done	 	
 		printLineSuccess
 		printLineSuccess "Rewrite configuration please check config file"
 		printLineSuccess	 
 		cat ~/.profile_conf
 	else
-	 printError "Oracle Inventory can not be read, please edit the ~/.profile_conf it manualy"	
+		printError "Oracle Inventory can not be read, please edit the ~/.profile_conf it manualy"	
 	fi 	
+	
 	# Reload config
 	. ~/.profile_conf
 	. ~/.profile	
