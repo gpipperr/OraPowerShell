@@ -56,6 +56,9 @@ DOC
 	- wait_text.sql  - text to a wait event - parameter 1 part of the event name
 	- wait_get_name.sql  - search for a name of a wait event
 	
+	- latch.sql       - get Informations about the DB latch usage
+	- checkpoint.sql  - get the actual status for the instance recovery
+	
 	- my_user.sql    - who am i and over with service i connect to the database
 	- nls.sql        - global and session nls Settings
 	- version.sql    - version of the database

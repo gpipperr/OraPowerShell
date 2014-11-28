@@ -177,9 +177,9 @@ select decode(grouping (trunc(completion_time))
       , round(sum(blocks * block_size)/1024/1024/1024,3) size_gb 
 		, DEST_ID
  from  v$archived_log 
--- where completion_time > trunc(sysdate -3)
-where completion_time > to_date('13.01.2014  17:13','dd.mm.yyyy hh24:mi')
--- group by DEST_ID
+where completion_time > trunc(sysdate -3)
+--where completion_time > to_date('13.01.2014  17:13','dd.mm.yyyy hh24:mi')
+--group by DEST_ID
 group by cube (DEST_ID,trunc (completion_time)) order by 1,3
 /
 
@@ -258,7 +258,14 @@ where name = 'redo log space requests'
 prompt The value of 'redo log space requests' reflects the number of times a user process waits for space in the redo log buffer.
 prompt Optimal is if the value is near 0
 
+ttitle  "Size of one Redo Log Buffer in Bytes"  SKIP 1
 
+select max(l.lebsz) log_block_size
+  from sys.x$kccle l
+ where l.inst_id = userenv('Instance')
+ /
+prompt
+  
 ttitle off
 
 prompt
