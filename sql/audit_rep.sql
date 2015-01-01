@@ -5,6 +5,15 @@
 -- Date:   September 2013
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
+/*
+Timeformat differences between audit$ and audit trail!
+select 
+    ntimestamp#,
+    from_tz(ntimestamp#,'UTC') at local,
+    from_tz(ntimestamp#,'UTC') at time zone 'Europe/Berlin'
+from sys.aud$;
+
+*/
 
 col SPOOL_NAME_COL new_val SPOOL_NAME
  

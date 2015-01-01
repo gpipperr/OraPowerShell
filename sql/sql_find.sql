@@ -36,6 +36,7 @@ select  SQL_ID
 	  , disk_reads
 	  , cpu_time
 	  , sql_text
+	  , LAST_LOAD_TIME
 	  /* GPI SQL Analyse */
  from gv$sqlarea
 where upper(sql_text) like upper('%&&SQL_STATEMENT.%') 

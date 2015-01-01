@@ -34,6 +34,7 @@ select plan
 order by status 
 /
 
+
 prompt .. show user waiting with resource limit
 
 select sid
@@ -61,8 +62,9 @@ where  s.RESOURCE_CONSUMER_GROUP is not null
    and rpd.status = 'ACTIVE'
    and vcg.name = s.RESOURCE_CONSUMER_GROUP
 /	
-	
-	
+
+
+
 
 --http://docs.oracle.com/cd/B28359_01/server.111/b28310/dbrm009.htm#ADMIN11906
 

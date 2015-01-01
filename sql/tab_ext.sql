@@ -36,6 +36,7 @@ BREAK ON ROW SKIP 2
 
 TTITLE COL 10 FORMAT 09  'Detail of the external Tables :' SQL.PNO
 
+set long 64000
 
 select  table_name
       , reject_limit
