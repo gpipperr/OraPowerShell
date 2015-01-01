@@ -122,8 +122,11 @@ BEGIN
    COMMIT;
 END;
 /
+show errors
 
------- Clean procedure job
+
+------ Clean procedure job over DBMS Job ---
+/*
 DECLARE
   X NUMBER;
 BEGIN
@@ -140,8 +143,65 @@ BEGIN
 END;
 /
 commit;
+*/
 
-show errors
+------ Clean procedure job over DBMS Scheduler ---
+
+-------------------------------------------------------------------------
+-- Create Oracle Scheduler Program
+BEGIN
+  DBMS_SCHEDULER.create_program (
+      program_name        => 'CLEAN_SQL_ERROR_LOG_TABLE_PROG'
+    , program_type        => 'STORED_PROCEDURE'
+    , program_action      => 'system.deleteOraErrorTrigTab'
+    , number_of_arguments => 1
+    , enabled             => FALSE
+    , comments            => 'Prog to clean all from SYSTEM.ora_errors ( Error Log Table in the system schema) older then xx days');
+END;
+/
+
+BEGIN
+  DBMS_SCHEDULER.define_program_argument (
+      program_name      => 'CLEAN_SQL_ERROR_LOG_TABLE_PROG'
+    , argument_name     => 'p_keepdays'
+    , argument_position => 1
+    , argument_type     => 'NUMBER'
+    , default_value     => '15');
+END;
+/
+BEGIN
+  DBMS_SCHEDULER.enable (name => 'CLEAN_SQL_ERROR_LOG_TABLE_PROG');
+END;
+/
+-------------------------------------------------------------------------
+-- Create Oracle Scheduler Time Plan
+BEGIN
+  DBMS_SCHEDULER.create_schedule (
+     schedule_name   => 'CLEAN_SQL_ERLOGTAB_TIMEPLAN'
+    , start_date      => SYSTIMESTAMP
+    , repeat_interval => 'freq=daily; byhour=13; byminute=0'
+    , end_date        => NULL
+    , comments        => 'Job time plan to delete the  SYSTEM.ora_errors ( Error Log Table in the system schema)');
+END;
+/
+-------------------------------------------------------------------------
+-- Create Scheduler Job
+BEGIN
+  DBMS_SCHEDULER.create_job (
+     job_name         => 'CLEAN_SQL_ERROR_LOG_TABLE'
+    , program_name    => 'CLEAN_SQL_ERROR_LOG_TABLE_PROG'
+    , schedule_name   => 'CLEAN_SQL_ERLOGTAB_TIMEPLAN'   
+    , comments        =>  'Job to clean all from SYSTEM.ora_errors ( Error Log Table in the system schema) older then xx days'
+	 , enabled         => true);
+END;
+/ 
+
+--
+column job_name FORMAT a40
+select owner, job_name, enabled 
+  from  dba_scheduler_jobs
+ where job_name ='CLEAN_SQL_ERROR_LOG_TABLE'
+/
  
 
 ------ Analyse example:
