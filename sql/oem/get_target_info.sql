@@ -25,3 +25,5 @@ select target_name
  where target_name = ( select target_name from  mgmt$target_properties where lower(target_type) like lower('&&TARGET_TYPE') and rownum =1)  
 order by property_name
 /
+
+clear break
