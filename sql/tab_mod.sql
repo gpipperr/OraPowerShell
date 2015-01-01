@@ -31,14 +31,14 @@ ttitle "Read Modifications for this table &TAB_NAME." SKIP 2
 
 column TABLE_OWNER        format a12    heading "Table|Owner"
 column TABLE_NAME         format a15    heading "Table|Name"
-column PARTITION_NAME     format a10    heading "Part|Name"
-column SUBPARTITION_NAME  format a10    heading "Subpart|Name"
-column INSERTS            format 99999999 heading "Inserts|Count"
-column UPDATES            format 99999999 heading "Updates|Count"
-column DELETES            format 99999999 heading "Deletes|Count"
+column PARTITION_NAME     format a12    heading "Part|Name"
+column SUBPARTITION_NAME  format a12    heading "Subpart|Name"
+column INSERTS            format 999G999G999G999 heading "Inserts|Count"
+column UPDATES            format 999G999 heading "Updates|Count"
+column DELETES            format 999G999G999G999 heading "Deletes|Count"
 column TIMESTAMP          format a20    heading "Last|Access"
 column TRUNCATED          format a3     heading "Tru|cat"
-column DROP_SEGMENTS      format 99999999 heading "Drop Seg| Count"
+column DROP_SEGMENTS      format 999 heading "Drop Seg| Count"
 
 select TABLE_OWNER
 	 , TABLE_NAME

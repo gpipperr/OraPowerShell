@@ -19,6 +19,12 @@ SELECT distinct('DB Bit Version:: '|| (length(addr)*4) || '-bit database') "Word
 FROM v$process
 /
 
+ttitle left  "check if DB been created originally in a 32-bit environment and is now on a 64-bit platform" skip 2
+--10.2.0.3 Note:412271.1
+select decode(instr(metadata,'B023'),0,'64bit Database','32bit Database') as "DB Creation"
+from kopm$
+/
+
 
 ttitle left  "DB Infos -- DB OS Version" skip 2
 
@@ -30,7 +36,7 @@ select dbms_utility.port_string as os_ver from dual
 
 ttitle left  "DB Infos -- Compatibility" skip 2
 
-column Compatible format a35
+column Compatible format a40
 
 SELECT 'Compatibility is set to :: '||value Compatible 
 FROM v$parameter WHERE name ='compatible'

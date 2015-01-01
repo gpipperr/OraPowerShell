@@ -70,14 +70,12 @@ declare
   mbps integer;
 begin
   dbms_resource_manager.calibrate_io (  
-		  num_physical_disks    => 36
+		  num_physical_disks    => 10
 		, max_latency           => 10
 		, max_iops              => iops
 		, max_mbps              => mbps
 		, actual_latency        => lat
-	)
-	
-	
+	);
   dbms_output.put_line('max_iops = ' || iops);
   dbms_output.put_line('latency  = ' || lat);
   dbms_output.put_line('max_mbps = ' || mbps);

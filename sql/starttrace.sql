@@ -10,8 +10,8 @@
 -- binds       If TRUE, bind information is present in the trace
 -- plan_stat   Frequency at which we dump row source statistics. Value should be 'NEVER', 'FIRST_EXECUTION' (equivalent to NULL) or 'ALL_EXECUTIONS'.
 
-
- begin
+-- Start tracing with session_trace_enable => No entry in dba_enabled_traces but Entry in gv$session column SQL_TRACE != 'DISABLED'
+begin
  dbms_monitor.session_trace_enable(
     session_id   => null,
     serial_num   => null,
@@ -20,6 +20,12 @@
     plan_stat    => null);
  end;
  /
+
+ 
+-- set Session identifier  and trace over this identifier
+
+--/
+ 
  
  
  

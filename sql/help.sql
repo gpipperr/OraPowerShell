@@ -36,6 +36,7 @@ DOC
 	- undo.sql       - show activity on the undo segment
 	- undo_stat.sql  - show statistic for the undo tablespace usage
 	- open_trans.sql - all longer open running transactions in the database - uncommited transaction!
+	- bgprocess.sql  - Background Processe in the database
 	- process.sql    - actual processes in the database  
 						     parameter 1 - name of the DB or OS User 
 						     parameter 2 - if Y shows also internal processes
@@ -113,6 +114,8 @@ DOC
 	
 	- tab_mat.sql      - Info about materialized views
 	- tab_mat_log.sql  - Information about materialized views
+	- refresh_group.sql    - Get all refresh groups of the DB for the  materialized views
+	- my_refresh_group.sql - Get all refresh groups of your Schema
 		
 	- tab_defekt_blocks.sql           - check for corrupted blocks
 	- tab_defekt_blocks_bad_table.sql - create rowid table for all readable data for a table with a defect lob segment
@@ -184,6 +187,7 @@ DOC
 	- jobs_dbms.sql  - jobs declared with dbms_job - old style jobs
 	- jobs_sheduler.sql - jobs declared over the job sheduler
    - jobs_errors.sql   - jobs in the database job$ and scheduler tasks info with errors
+	- jobs_window_resource_class.sql - show the relation between job windows , job classes and resource plans
 	
 	- sga.sql        - show information about the oracle sga usage 
 	- buffer.sql     - show information about the buffer cache usage / must run as sys
@@ -217,6 +221,7 @@ DOC
 	- awr_pga_stat.sql      - statistic of the pga usage
 	- awr_sys_stat.sql      - statistic of system historical statistics information
 	- awr_session_stat.sql  - statistic of the sessions of a user
+	- awr_session_resource_plan_historie.sql - Show the consumer group of all history active sessions of a user
 	
 	- calibrate_io.sql     - Use io calibrate to analyses io of the database and set the interal i/o views
 	- system_stat.sql      - get the DB interal Systemstat values like workload statistic and i/o calibarate values

@@ -7,9 +7,17 @@
 
 
 
+-- Start tracing with session_trace_enable => No entry in dba_enabled_traces but Entry in gv$session column SQL_TRACE != 'DISABLED'
 begin
 dbms_monitor.session_trace_disable(
    session_id      => null,
    serial_num      => null);
 end;
 /
+
+
+-- set Session identifier  and trace over this identifier
+--begin
+-- dbms_monitor.client_id_trace_disable ('GPI_TRACE_SESSION');
+--end;
+--/

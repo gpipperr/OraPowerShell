@@ -2,8 +2,8 @@
 -- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   show the trace status of the DB
 --==============================================================================
-
-set verify off
+-- see also Tracing Enhancements Using DBMS_MONITOR (In 10g, 11g and Above) (Doc ID 293661.1)
+--
 
 SET linesize 120 pagesize 500 recsep OFF
 
@@ -20,6 +20,7 @@ column instance_name   format a20
 
 ttitle left  "DB Trace status for Using DBMS_MONITOR only" skip 2
 
+-- https://docs.oracle.com/cd/E11882_01/server.112/e40402/statviews_3167.htm
 select trace_type
 	  , primary_id
 	  , qualifier_id1
@@ -42,21 +43,29 @@ column sid              format 99999         heading "SID"
 column serial#          format 99999         heading "Serial"
 column program    format a16    heading "Remote|program"
 column module     format a16    heading "Remote|module"
-column client_info format a10   heading "Client|info"
-column client_identifier format A10 heading "Client|identifier"
+column client_info format a15   heading "Client|info"
+column client_identifier format A15 heading "Client|identifier"
 column action format a30
+column tracefile   format a80  heading "Trace|File"  FOLD_BEFORE
+column sep FOLD_BEFORE
 
-select  inst_id 
-      , sid
-	   , serial#
-	   , username	
-		--, module
-		, ACTION
-		, to_char(LOGON_TIME,'dd.mm hh24:mi') as LOGON_TIME
-      , client_identifier
-	   , client_info	
- from gv$session 
-where SQL_TRACE != 'DISABLED'
+select  vs.inst_id 
+      , vs.sid
+	   , vs.serial#
+	   , vs.username	
+		--, vs.module
+		, vs.ACTION
+		, to_char(vs.LOGON_TIME,'dd.mm hh24:mi') as LOGON_TIME
+      , vs.client_identifier
+	   , vs.client_info	
+    --,   substr(p.tracefile,length(p.tracefile)-REGEXP_INSTR(reverse(p.tracefile),'[\/|\]')+2,1000) as tracefile
+    , p.tracefile
+	 ,rpad('+',80,'=') as sep
+from gv$session vs
+   , gv$process p
+where vs.SQL_TRACE != 'DISABLED'
+  and vs.paddr=p.addr
+  and vs.inst_id=p.inst_id
 order by inst_id
 /
 
