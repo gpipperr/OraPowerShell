@@ -39,8 +39,6 @@ select owner
          group by object_type
                  ,owner)
  where upper(owner) in (upper('&&USER_NAME.'))
--- info line for copy/past  if you need statment to check all app. users in den database
---owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT')
  group by owner
          ,obj_type
          ,obj_count
@@ -81,23 +79,26 @@ select 'EXECUTE  DBMS_AQADM.DROP_QUEUE_TABLE ( queue_table => ''' || q.owner || 
 
 -- drop XML Schema definitions from this user + XML Tables 
 -- not tested yet!
-select 'begin ' 
-        || chr(10) 
-		||'DBMS_XMLSCHEMA.deleteSchema(SCHEMAURL => ''' || x.SCHEMA_URL ||''''
-		|| chr(10) 
-		||',DELETE_OPTION => dbms_xmlschema.DELETE_CASCADE_FORCE); '
-		|| chr(10) 
-		|| 'end; '
-		|| chr(10) 
-		|| '/ '	 
-		|| chr(10) 
-  from DBA_XML_SCHEMAS x
- where upper(x.owner) in (upper('&&USER_NAME.'))
-/
+-- some time DBA_XML_SCHEMAS not exits in the database
+--
+-- select 'begin ' 
+--         || chr(10) 
+-- 		||'DBMS_XMLSCHEMA.deleteSchema(SCHEMAURL => ''' || x.SCHEMA_URL ||''''
+-- 		|| chr(10) 
+-- 		||',DELETE_OPTION => dbms_xmlschema.DELETE_CASCADE_FORCE); '
+-- 		|| chr(10) 
+-- 		|| 'end; '
+-- 		|| chr(10) 
+-- 		|| '/ '	 
+-- 		|| chr(10) 
+--   from DBA_XML_SCHEMAS x
+--  where upper(x.owner) in (upper('&&USER_NAME.'))
+-- /
+
 
 -- drop table constraints
 -- to avoid FK Contraint Errors!
-select 'alter table ' || c.OWNER || '.' || c.TABLE_NAME || ' drop CONSTRAINT ' || c.CONSTRAINT_NAME || ';'
+select 'alter table ' || c.OWNER || '."' || c.TABLE_NAME || '" drop CONSTRAINT "' || c.CONSTRAINT_NAME || '";'
   from DBA_CONSTRAINTS c
  where c.CONSTRAINT_TYPE in ('R', 'U')
    and not exists (select 1
@@ -112,7 +113,7 @@ select 'alter table ' || c.OWNER || '.' || c.TABLE_NAME || ' drop CONSTRAINT ' |
 -- drop all indexes
 -- May be unnecessary  - will be dropped also with the table
 
-select 'drop index ' || i.owner || '.' || i.index_name || ';'
+select 'drop index ' || i.owner || '."' || i.index_name || '";'
   from dba_indexes i
  where i.index_type not in ('LOB')
    and i.table_name not in (select q.QUEUE_TABLE from DBA_QUEUES q where q.owner = i.owner)
@@ -126,7 +127,7 @@ select 'drop index ' || i.owner || '.' || i.index_name || ';'
 
 -- drop all other objects in the right order
 
-select 'drop ' || o.object_type || ' ' || o.owner || '.' || object_name || ' ' ||
+select 'drop ' || o.object_type || ' ' || o.owner || '."' || object_name || '" ' ||
        decode(o.object_type, 'TABLE', 'CASCADE CONSTRAINTS PURGE', '') || ';' as command
   from dba_objects o
  where o.object_type in
@@ -159,8 +160,30 @@ prompt -- please comment if you don't like it
 prompt PURGE DBA_RECYCLEBIN 
 prompt /
 --
-prompt  spool off
-prompt  exit
+
+prompt prompt
+prompt prompt ==================== User Objects Overview after the delete ===================
+prompt prompt
+prompt select owner
+prompt      ,obj_type
+prompt      ,obj_count
+prompt from (select count(*) as obj_count
+prompt                ,object_type as obj_type
+prompt                ,owner
+prompt            from dba_objects
+prompt           group by object_type
+prompt                   ,owner)
+prompt   where upper(owner) in (upper('&&USER_NAME.'))
+prompt   group by owner
+prompt           ,obj_type
+prompt           ,obj_count
+prompt   order by owner
+prompt           ,obj_type
+prompt /
+prompt prompt ==================== User Objects Overview after the delete ===================
+
+prompt spool off
+prompt exit
 
 spool off
 set heading on

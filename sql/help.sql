@@ -24,6 +24,7 @@ DOC
 	- session_history.sql      - get a summary over the last active sessions 
 	- session_long_active.sql  - all session that are longer actvie 
 	- session_longops.sql      - get information about long running sql statements
+	- session_killed.sql       - get the process information for killed sessions
 	- my_opt_settings.sql      -  Optimizer settings in my session
 	- session_opt_settings.sql -  Optimizer settings in my session  - parameter 1 username
 	
@@ -49,6 +50,7 @@ DOC
 	- tns.sql              - show services and tns settings on services
 	- tns_history.sql      - show services statistics for the last 12 hours (only services with some traffic)
 	- taf.sql              - Check TAF settings of the connections
+	- connection_pool.sql  - Show the Database Resident Connection Pooling (DRCP) Settings
 	
 	- locks.sql      - locks in the database - mode 6 is the blocker!
 	- ddl_locks.sql  - check for DDL Locks
@@ -188,6 +190,7 @@ DOC
 	- jobs_sheduler.sql - jobs declared over the job sheduler
    - jobs_errors.sql   - jobs in the database job$ and scheduler tasks info with errors
 	- jobs_window_resource_class.sql - show the relation between job windows , job classes and resource plans
+	- jobs_logs.sql     - Details of a job
 	
 	- sga.sql        - show information about the oracle sga usage 
 	- buffer.sql     - show information about the buffer cache usage / must run as sys
@@ -222,6 +225,8 @@ DOC
 	- awr_sys_stat.sql      - statistic of system historical statistics information
 	- awr_session_stat.sql  - statistic of the sessions of a user
 	- awr_session_resource_plan_historie.sql - Show the consumer group of all history active sessions of a user
+	- awr_act_active_sessions.sql - get information about the act active Session in the last 90 minutes
+	- awr_act_blocking_sessions.sql - get information about blocking sessions in the database
 	
 	- calibrate_io.sql     - Use io calibrate to analyses io of the database and set the interal i/o views
 	- system_stat.sql      - get the DB interal Systemstat values like workload statistic and i/o calibarate values
@@ -234,6 +239,8 @@ DOC
 	- rman_status.sql  - get the status of the last backup in the database
 	
 	- datapump.sql     - show datapump sessions
+	
+	- standby_status.sql       - status of a standby / DG enviroment
 	
 	- streams_status.sql      - status of streams replication
 	- streams_config.sql      - streams configuration

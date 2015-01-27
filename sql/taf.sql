@@ -33,7 +33,7 @@ select  inst_id
 	   , failed_over		
 	   , count(*) as connect_count
  from gv$session
-where username is not null and username not in ('SYS','DBSNMP','HP_DBSPI','LPDBA') 
+where username is not null and username not in ('SYS','DBSNMP','HP_DBSPI') 
 group by  inst_id
          , machine
 			, username,status

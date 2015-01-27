@@ -41,6 +41,8 @@ select  ss.instance_number
 	, ss.SESSION_SERIAL#   
    , count(s.snap_id) as snap_count
 	, u.username 
+	, ss.CLIENT_ID
+, ss.MACHINE
 	,min( ss.PROGRAM)  as program_a	
 	,min(SQL_ID)       as sql_id_a	
 	,min(EVENT)        as event_a
@@ -52,7 +54,8 @@ where  u.user_id=ss.user_id
   and  s.snap_id = ss.snap_id 
   and ss.instance_number = s.instance_number
   and  s.snap_id > (select max(i.snap_id)-50 from dba_hist_snapshot i where i.instance_number=ss.instance_number)   
-  and  u.username like upper('&&DB_USER_NAME.')
+  and ss.SESSION_ID = 4382 
+ -- and  u.username like upper('&&DB_USER_NAME.')
   -- and ss.instance_number = 3  
   -- and s.begin_interval_time between to_date('14.11.2014 08:19','dd.mm.yyyy hh24:mi') and to_date('14.11.2014 08:31','dd.mm.yyyy hh24:mi')	
 group by ss.SESSION_ID
@@ -60,6 +63,8 @@ group by ss.SESSION_ID
 		, ss.instance_number
 		, to_char(s.begin_interval_time,'dd.mm.yyyy hh24:mi')
 		, u.username 
+			, ss.CLIENT_ID
+, ss.MACHINE
       --, ss.PROGRAM
 order by  ss.instance_number,to_char(s.begin_interval_time,'dd.mm.yyyy hh24:mi')
 /

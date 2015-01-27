@@ -39,6 +39,7 @@ select p.inst_id
 	, vs.sid
 	, vs.serial#
     , nvl(vs.username,'n/a') as username
+	 ,vs.status
 	, p.username as osusername
 	, p.pname		
 	, vs.machine
@@ -48,6 +49,8 @@ select p.inst_id
 	, vs.client_info 	
 	--, substr(p.tracefile,length(p.tracefile)-REGEXP_INSTR(reverse(p.tracefile),'[\/|\]')+2,1000) as tracefile
 	--, p.tracefile
+	--, vs.CREATOR_ADDR
+   --, vs.CREATOR_SERIAL#
 from gv$session vs
    , gv$process p
 where vs.paddr=p.addr
@@ -59,7 +62,9 @@ order by vs.username
 /  
 
 ttitle left  "Trace File Locations" skip 2
+
 column full_trace_file_loc  format a100  heading "Trace|File"
+
 select p.inst_id  
     , to_char(p.spid) as process_id
     , p.tracefile as full_trace_file_loc
@@ -71,7 +76,6 @@ where vs.paddr=p.addr
 order by vs.username
        , p.inst_id
 /  
-
 
 prompt
 prompt ... to enable trace use "oradebug  SETOSPID <Process ID>"

@@ -13,7 +13,7 @@ prompt
 prompt Parameter 1 = SQL ID     => &&SQL_ID.
 prompt
 
-SET pagesize 500
+SET pagesize 1000
 SET linesize 250
 
 column end_interval_time   format a18 heading "Snap | End"

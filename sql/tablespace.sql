@@ -30,7 +30,6 @@ column used_percent        format 90G99       heading "Used |% Max"
 column pct_used_size        format 90G99       heading "Used |% Disk"  
 column BLOCK_SIZE          format 99G999      heading "TBS BL|Size"  
 column DF_Count            format 9G999       heading "Count|DB Files"  
-column status              format a8           heading "TBS|Status"
 
 
 ttitle  "Used Space over  DBA_TABLESPACE_USAGE_METRICS"  SKIP 2
@@ -53,7 +52,6 @@ select dt.tablespace_name
 	 ,  round(((dm.used_space * dt.BLOCK_SIZE)/1024/1024/1024),3)      as used_space_gb         		
   	 ,  round(100*dm.used_percent,2) as used_percent
 	 ,  dt.BLOCK_SIZE
-	 , dt.status
   from DBA_TABLESPACE_USAGE_METRICS dm
      , dba_tablespaces dt
 where dm.tablespace_name=dt.tablespace_name
@@ -68,7 +66,7 @@ select df.tablespace_name
      , df.gb_size as DF_SIZE_GB
 	  , fs.gb_free
 	  , (df.gb_size - fs.gb_free) as used_space_gb	 
-	  , case when df.gb_max =0 then 0 else round((100/df.gb_max*(df.gb_size - fs.gb_free)),3)*100 end  as used_percent
+	  , round((100/df.gb_max*(df.gb_size - fs.gb_free)),3)*100  as used_percent
 	  , round((100/df.gb_size*(df.gb_size - fs.gb_free)),3)*100 as pct_used_size
 	  , dt.BLOCK_SIZE
 from (select tablespace_name
@@ -87,7 +85,22 @@ order by df.tablespace_name
 
 ttitle off
 
+ttitle  "Get max free extend from the tablespace"  SKIP 2
 
+column max_extend_free_mb format 999G990D999 heading "Max Free Space Extend|MB"
+column max_blocks         format 999G990     heading "Max Free Space Extend|Blocks"
+
+SELECT round(max(fs.bytes)/1024/1024,3) as max_extend_free_mb
+     , max(fs.bytes)/dt.BLOCK_SIZE as max_blocks
+     , fs.tablespace_name
+     , dt.EXTENT_MANAGEMENT	  
+	  , dt.ALLOCATION_TYPE
+ from dba_free_space fs
+    , dba_tablespaces dt
+where fs.tablespace_name=dt.tablespace_name
+group by fs.tablespace_name,dt.BLOCK_SIZE,dt.ALLOCATION_TYPE,dt.EXTENT_MANAGEMENT
+order by fs.tablespace_name
+/
   
 
 set verify on

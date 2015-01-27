@@ -10,7 +10,7 @@ define SQL_ID = &1
 
 set verify off
 
-SET linesize 120 pagesize 500 recsep OFF
+SET linesize 250 pagesize 0 recsep OFF
 
 ttitle left  "SQL Plan from AWR ID:  &SQL_ID." skip 2
 
