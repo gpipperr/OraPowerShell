@@ -24,7 +24,7 @@ ttitle left  "Space of the the table space" skip 2
 
 -- get the free size in the tablespace
 -- 
-column tablespace_name format a20   heading "Tablespace|name"
+column tablespace_name format a20   heading "Table space|name"
 column SIZE_MB         format 99G999G999D99 heading "Size MB|total"
 column max_used_mb     format 99G999G999D99 heading "Size MB|used"
 column freeable_mb     format 99G999G999D99 heading "Size MB|freeable" 
@@ -35,12 +35,12 @@ select  s.tablespace_name
       , s.bytes / 1024 / 1024 as SIZE_MB
       , (e.max_data_block_id * et.BLOCK_SIZE / 1024 / 1024) as max_used_mb
       , (s.bytes - e.max_data_block_id * et.BLOCK_SIZE) / 1024 / 1024 as freeable_mb
-	  , s.file_id
-	  , '..'||substr(s.file_name,length(s.file_name)-20,20) file_name
+	   , s.file_id
+	   , '..'||substr(s.file_name,length(s.file_name)-20,20) file_name
   from  dba_data_files s
       , (select  file_id
-              , max(block_id + blocks) + 1 max_data_block_id
-			  ,tablespace_name
+                , max(block_id + blocks) + 1 max_data_block_id
+			       , tablespace_name
           from dba_extents
 		 where tablespace_name like upper('&TABLESPACE.')
          group by file_id,tablespace_name) e

@@ -60,6 +60,7 @@ select owner
  from dba_constraints 
  where ( validated != 'VALIDATED' or status != 'ENABLED')
   and owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT')
+order by owner    
 / 
 
 
@@ -85,7 +86,7 @@ select 'desc ' || decode(owner, 'PUBLIC', '', owner || '.') || object_name as TO
 /
  
 --ttitle "delete Script for invalid synonym - synonym points on an not existing object" SKIP 2
---
+
 --select 'drop ' || decode(s.owner, 'PUBLIC', 'PUBLIC SYNONYM ', 'SYNONYM ' || s.owner || '.') || s.synonym_name || ';' as DELETE_ME
 --  from dba_synonyms s
 -- where table_owner not in ('SYSTEM', 'SYS')

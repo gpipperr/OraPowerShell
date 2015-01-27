@@ -83,4 +83,6 @@ show parameter sessions
 prompt
 prompt ... to kill session     "ALTER SYSTEM KILL SESSION 'sid,serial#,@inst_id';"
 prompt ... to end  session     "ALTER SYSTEM DISCONNECT SESSION 'sid,serial#' IMMEDIATE;"
+prompt ... 
+prompt ...  On MS Windows you can use "orakill ORACLE_SID spid" to kill from the OS the session
 prompt

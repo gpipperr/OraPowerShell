@@ -47,6 +47,7 @@ left "Sizes in MB" SKIP 2
 select group#
       ,member
       ,status
+		,TYPE
   from v$logfile
  order by 1
          ,2

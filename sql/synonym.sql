@@ -58,7 +58,20 @@ where syn.table_owner=upper('&&OWNER.')
   and obj.object_type like upper('&&TYPE_NAME.%') 
 order by obj.object_type,syn.synonym_name  
 /
-  
+
+ttitle "delete Script for invalid synonym - synonym points on an not existing object" SKIP 2
+
+select 'drop ' || decode(s.owner, 'PUBLIC', 'PUBLIC SYNONYM ', 'SYNONYM ' || s.owner || '.') || s.synonym_name || ';' as DELETE_ME
+  from dba_synonyms s
+ where s.table_owner=upper('&&OWNER.') 
+   and (db_link is null or db_link = 'PUBLIC')
+   and not exists (select 1
+                     from dba_objects o
+                    where decode(s.table_owner, 'PUBLIC', o.owner, s.table_owner) = o.owner
+                      and s.table_name = o.object_name
+						)
+/
+ 
 prompt
 
 ttitle off
