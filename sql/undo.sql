@@ -11,15 +11,16 @@ show parameter undo
 column name format a30
 column status format a20
 column username format a20
+column sid format 99999999
 
 select  a.name
-      , b.status 
-	  , d.username 
-	  , d.sid 
-	  , d.serial#
-	  , d.inst_id
+     ,  b.status 
+	  ,  d.username 
+	  ,  d.sid 
+	  ,  d.serial#
+	  ,  d.inst_id
 from    v$rollname a
-      , v$rollstat b
+     , v$rollstat b
 	  , gv$transaction c 
 	  , gv$session d
 where  a.usn = b.usn

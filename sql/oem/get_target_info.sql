@@ -16,9 +16,10 @@ column property_value   format a40 heading "Property Target"
 column property_name format a40 heading "Property  Name"
 column target_name format a40 heading "Target  Name"
 
-break on target_name
+break on TARGET_GUID
 
 select target_name 	  	 
+	  ,  TARGET_GUID
      ,  property_name
      , property_value      	   
   from mgmt$target_properties 

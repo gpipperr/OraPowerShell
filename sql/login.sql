@@ -133,9 +133,9 @@ SET sqlprompt "_USER'@'_CONNECT_IDENTIFIER-&y>"
 
 -- set the session information
 begin 
-	dbms_application_info.set_module('DBA Connection', 'OraPowerShell');
-   dbms_application_info.set_client_info('OraPowerShell'); 
-   dbms_session.set_identifier('OraPowerShell'); 
+	dbms_application_info.set_module('DBA Connection', 'DBA');
+   dbms_application_info.set_client_info('DBA'); 
+   dbms_session.set_identifier('DBA'); 
 end;
 /
 

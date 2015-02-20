@@ -122,7 +122,7 @@ select decode(px.qcinst_id, null, username, ' - ' || lower(substr(pp.SERVER_NAME
    and px.serial# = s.serial#
    and px.inst_id = s.inst_id
    and px.sid = pp.sid(+)
-   and px.serial# = pp.serial#(+)
+   and px.serial# = pp.serial#(+)	
  order by decode(px.QCINST_ID, null, px.INST_ID, px.QCINST_ID)
          ,px.QCSID
          ,decode(px.SERVER_GROUP, null, 0, px.SERVER_GROUP)

@@ -1,4 +1,6 @@
 
+SET linesize 130 pagesize 100 recsep OFF
+
 column input_type               format a30
 column status                   format a12
 column time_taken_display       format a10 heading "Time|used"
@@ -9,6 +11,7 @@ column CONTROLFILE_INCLUDED     format 99 heading "Controlf.|Count"
 column start_time                         heading "Start|Time" 
 column INCREMENTAL_LEVEL        format 99 heading "Le|vel"
 column session_recid                      heading "Session|recid"
+
 
 alter session set nls_date_format='dd.mm.yyyy hh24:mi'
 /
@@ -76,7 +79,7 @@ select  input_type
                  ,jd.start_time
                  ,jd.time_taken_display
                  ,jd.output_bytes_display )
- where rang < 2
+ where rang < 4
  order by SESSION_KEY
 /
 

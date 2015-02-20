@@ -34,19 +34,20 @@ column pname       format a8    heading "Process|name"
 column tracefile   format a20   heading "Trace|File"
 
 select p.inst_id  
-    , to_char(p.spid) as process_id
+   , to_char(p.spid) as process_id
 	, vs.sid
 	, vs.serial#
-    , nvl(vs.username,'n/a') as username
+   , nvl(vs.username,'n/a') as username
 	, p.username as osusername
 	, p.pname		
 	, vs.machine
 	--, p.terminal
 	, vs.module
-    , vs.program
+   , vs.program
 	, vs.client_info 	
 	--, substr(p.tracefile,length(p.tracefile)-REGEXP_INSTR(reverse(p.tracefile),'[\/|\]')+2,1000) as tracefile
 	--, p.tracefile
+	, vs.sql_id
 from gv$session vs
    , gv$process p
 where vs.paddr=p.addr
@@ -58,6 +59,7 @@ order by vs.username
 
 ttitle left  "Trace File Locations" skip 2
 column full_trace_file_loc  format a100  heading "Trace|File"
+
 select p.inst_id  
     , to_char(p.spid) as process_id
     , p.tracefile as full_trace_file_loc

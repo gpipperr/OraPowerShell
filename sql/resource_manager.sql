@@ -29,7 +29,7 @@ select plan
 	  , cpu_method
 	  , mgmt_method
 	  , parallel_degree_limit_mth as parallel
-	  , comments	  
+	  , comments
  from dba_rsrc_plans 
 order by status 
 /
@@ -37,34 +37,50 @@ order by status
 
 prompt .. show user waiting with resource limit
 
-select sid
+select inst_id 
+	  , sid
      , serial#
      , username
 	  , resource_consumer_group 
- from v$session
+ from gv$session
 where event like 'resmgr%'
 /
 
 
 prompt .. show user resource limits
 
-select s.SID, s.SERIAL#, s.username ,rpd.plan,
-       s.RESOURCE_CONSUMER_GROUP,
-       rpd.PARALLEL_DEGREE_LIMIT_P1 
-from   v$session s, 
+select   s.inst_id
+       --, s.SID
+		 --, s.SERIAL#
+		 , count(*)
+		 , s.username 
+		 , rpd.plan
+		 , s.RESOURCE_CONSUMER_GROUP
+		 , rpd.PARALLEL_DEGREE_LIMIT_P1 
+from   Gv$session s, 
        DBA_RSRC_CONSUMER_GROUPS rcg,
        DBA_RSRC_PLAN_DIRECTIVES rpd ,
-       V$RSRC_CONSUMER_GROUP vcg
+       GV$RSRC_CONSUMER_GROUP vcg
 where  s.RESOURCE_CONSUMER_GROUP is not null
    and rcg.CONSUMER_GROUP = s.RESOURCE_CONSUMER_GROUP
-   and rcg.status = 'ACTIVE'
+   --and rcg.status = 'ACTIVE'
    and rpd.GROUP_OR_SUBPLAN = rcg.CONSUMER_GROUP
-   and rpd.status = 'ACTIVE'
+   --and rpd.status = 'ACTIVE'
    and vcg.name = s.RESOURCE_CONSUMER_GROUP
-/	
+	and s.inst_id=vcg.inst_id
+group by s.inst_id
+		 , s.username 
+		 , rpd.plan
+		 , s.RESOURCE_CONSUMER_GROUP
+		 , rpd.PARALLEL_DEGREE_LIMIT_P1 
+order by 1,3
+/
 
 
 
+
+	
+	
 
 --http://docs.oracle.com/cd/B28359_01/server.111/b28310/dbrm009.htm#ADMIN11906
 
