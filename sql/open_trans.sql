@@ -5,7 +5,7 @@
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
-SET linesize 130 pagesize 300 recsep OFF
+SET linesize 150 pagesize 300 recsep OFF
 
 ttitle  "Report DB transactions longer open "  SKIP 1
       
@@ -24,6 +24,8 @@ column xid          format a15 heading "Transaction|id"
 column name         format a15
 
 select n.inst_id
+     , n.sid
+	  , n.serial#
      , n.username
      , n.osuser
 	  , n.machine
@@ -38,9 +40,9 @@ select n.inst_id
      , gv$transaction t
 where  n.taddr = t.addr
    and n.INST_ID = t.INST_ID
-   and to_date(t.start_time, 'MM/DD/YY HH24:MI:SS') < sysdate - (2 / 24)
-   and sysdate - (n.last_call_et / (60 * 60 * 24)) < sysdate - (2 / 24)
-   and n.status != 'ACTIVE'
+  and to_date(t.start_time, 'MM/DD/YY HH24:MI:SS') < sysdate - (2 / 24)
+  and sysdate - (n.last_call_et / (60 * 60 * 24)) < sysdate - (2 / 24)
+  and n.status != 'ACTIVE'
 /	
 
 

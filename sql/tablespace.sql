@@ -83,7 +83,7 @@ where df.tablespace_name = fs.tablespace_name
 order by df.tablespace_name
 /  
 
-ttitle off
+
 
 ttitle  "Get max free extend from the tablespace"  SKIP 2
 
@@ -101,7 +101,8 @@ where fs.tablespace_name=dt.tablespace_name
 group by fs.tablespace_name,dt.BLOCK_SIZE,dt.ALLOCATION_TYPE,dt.EXTENT_MANAGEMENT
 order by fs.tablespace_name
 /
-  
+ 
+ttitle off
 
 set verify on
 

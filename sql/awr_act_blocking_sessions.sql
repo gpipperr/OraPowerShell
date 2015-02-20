@@ -5,7 +5,6 @@
 --==============================================================================
 
 
-
 define SNAPTIME=10
 
 prompt
@@ -119,6 +118,7 @@ set markup html off
 spool off
 ttitle off
 
--- works only in a ms windows enviroment
--- autostart of the result in a browser window
+-- works only in a ms windows environment
+-- auto start of the result in a browser window
+
 host &&SPOOL_NAME

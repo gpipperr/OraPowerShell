@@ -5,9 +5,11 @@
 --==============================================================================
 
 define DB_USER_NAME='&1'
+define SERVICE_NAME='%'
 
 prompt
 prompt Parameter 1 = DB_USER_NAME     => &&DB_USER_NAME.
+prompt Parameter 2 = SERVICE_NAME     => &&SERVICE_NAME.
 prompt
 
 SET pagesize 1000
@@ -43,8 +45,8 @@ select count(*)
       ,dba_users                 u
  where ass.inst_id = ah.inst_id
     and ass.NAME_HASH = ah.SERVICE_HASH
-    --and ass.name like '%S_SIEBEL_DE_SB%'
-    and u.username like '%&&DB_USER_NAME.%'
+  --and ass.name like '%&&SERVICE_NAME.%'
+   and u.username like '%&&DB_USER_NAME.%'
    and u.user_id = ah.user_id
    and ah.SAMPLE_TIME > (sysdate - ((1 / (24 * 60)) * 60))
  group by u.username
@@ -74,8 +76,8 @@ select count(*)
       ,dba_users                 u
  where ass.inst_id = ah.inst_id
     and ass.NAME_HASH = ah.SERVICE_HASH
-    --and ass.name like '%S_SIEBEL_DE_SB%'
-    and u.username like '%&&DB_USER_NAME.%'
+ --and ass.name like '%&&SERVICE_NAME.%'
+   and u.username like '%&&DB_USER_NAME.%'
    and u.user_id = ah.user_id
    and ah.SAMPLE_TIME > (sysdate - ((1 / (24 * 60)) * 60))
  group by u.username
@@ -101,10 +103,10 @@ select count(*)
       ,dba_users                 u
  where ass.inst_id = ah.inst_id
     and ass.NAME_HASH = ah.SERVICE_HASH
-    --and ass.name like '%S_SIEBEL_DE_SB%'
-    and u.username like '%&&DB_USER_NAME.%'
+    --and ass.name like '%&&SERVICE_NAME.%'
+   and u.username like '%&&DB_USER_NAME.%'
    and u.user_id = ah.user_id
-   and ah.SAMPLE_TIME > (sysdate - ((1 / (24 * 60)) * 60))
+    and ah.SAMPLE_TIME > (sysdate - ((1 / (24 * 60)) * 60))
  group by u.username
          ,ah.inst_id
 			 ,ah.SESSION_ID

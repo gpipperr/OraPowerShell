@@ -7,6 +7,13 @@ column rule_set_owner           heading 'positive|rule owner'  format a15
 column rule_set_name            heading 'positive|rule set'    format a15
 column negative_rule_set_owner  heading 'negative|rule owner'  format a15
 column negative_rule_set_name   heading 'negative|rule set'    format a15
+
+column apply_name              heading 'apply|process|name'  format a20
+column rule_set_owner          heading 'positive|rule owner' format a15
+column rule_set_name           heading 'positive|rule set'   format a15
+column negative_rule_set_owner heading 'negative|rule owner' format a15
+column negative_rule_set_name  heading 'negative|rule set'   format a15
+
  
 break on  capture_name
 
@@ -21,11 +28,7 @@ from dba_capture
 select * from dba_capture_parameters
 /
 
-column apply_name              heading 'apply|process|name'  format a20
-column rule_set_owner          heading 'positive|rule owner' format a15
-column rule_set_name           heading 'positive|rule set'   format a15
-column negative_rule_set_owner heading 'negative|rule owner' format a15
-column negative_rule_set_name  heading 'negative|rule set'   format a15
+
  
 select apply_name
       , rule_set_owner

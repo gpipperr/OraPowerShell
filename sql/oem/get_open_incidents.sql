@@ -80,7 +80,7 @@ Incident
 select rowid,e.* from  em_issues_internal e where e.issue_id=?
 
 
-to fix a not close able incident on each table:
+to fix a not closeable incident on each table:
 => severity to 0
 => open status to 0
 => closed_date to actual date

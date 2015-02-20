@@ -9,49 +9,93 @@ set verify  off
 
 set linesize 120 pagesize 4000 recsep OFF
 
+prompt Show the Undo init.ora settings
+
+show parameter undo
 
 
-prompt -- How often and when does "Snapshot too old" (ORA-01555) occur?
-prompt --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-prompt
-Prompt -- Depending on the result: Increase the undo retention
-prompt
+ttitle "How often and when does -Snapshot too old (ORA-01555) -occur?" skip 2
 
-select to_char(begin_time,'YYYY-MM-DD HH24:MI:SS') "Begin"
+select Inst_id  
+    ,  to_char(begin_time,'YYYY-MM-DD HH24:MI:SS') "Begin"
     ,  to_char(end_time,'YYYY-MM-DD HH24:MI:SS') "End "
 	 ,  undoblks "UndoBlocks"
 	 ,  SSOLDERRCNT "ORA-1555"
 	 ,  MAXQUERYID
-from V$UNDOSTAT
-where SSOLDERRCNT > 0;
+from GV$UNDOSTAT
+where SSOLDERRCNT > 0
+order by 1
+/
 
-
-prompt --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-prompt -- length of the longest query (in seconds) 
+ttitle "length of the longest query (in seconds)" skip 2
 
 Select max(MAXQUERYLEN) From V$UNDOSTAT;
 
-prompt -- When and how often was the undo-tablespace too small?
-prompt --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-prompt
-Prompt -- Remedy: Making more space available for the undo-tablespace.
-prompt
 
-select to_char(begin_time,'YYYY-MM-DD HH24:MI:SS') "Begin"
+
+
+ttitle "When and how often was the undo-table space too small?" skip 2
+
+select Inst_id 
+	  , to_char(begin_time,'YYYY-MM-DD HH24:MI:SS') "Begin"
 	  , to_char(end_time,'YYYY-MM-DD HH24:MI:SS') "End "
 	  , undoblks "UndoBlocks"
 	  , nospaceerrcnt "Space Err"
- from V$UNDOSTAT
+ from GV$UNDOSTAT
 where nospaceerrcnt > 0
+order by 1
+/
+
+--This option is disabled by default. see http://docs.oracle.com/cd/B28359_01/server.111/b28310/undo002.htm#ADMIN10180
+ttitle "RETENTION policy on the tablespace" skip 2
+
+column tablespace_name     format a25         heading "Tablespace|Name"
+column used_space_gb       format 999G990D999 heading "Used Space|GB"
+column gb_free             format 999G990D999 heading "Free Space|GB"
+column tablespace_size_gb  format 999G990D999 heading "Max Tablespace|Size GB"
+column DF_SIZE_GB          format 999G990D999 heading "Size on| Disk GB"
+column used_percent        format 90G99       heading "Used |% Max"  
+column pct_used_size        format 90G99       heading "Used |% Disk"  
+column BLOCK_SIZE          format 99G999      heading "TBS BL|Size"  
+column DF_Count            format 9G999       heading "Count|DB Files"  
+
+select dt.tablespace_name
+	, dt.RETENTION
+ 	 ,  round((dm.tablespace_size * dt.BLOCK_SIZE)/1024/1024/1024,3) as tablespace_size_gb     	 
+	 ,  round( 
+			(case dt.CONTENTS
+				when 'TEMPORARY' then
+					(select sum(df.BLOCKS)*dt.BLOCK_SIZE from dba_temp_files df where df.TABLESPACE_NAME=dt.tablespace_name)
+				else
+				(select sum(df.BLOCKS)*dt.BLOCK_SIZE from dba_data_files df where df.TABLESPACE_NAME=dt.tablespace_name)
+		   end) /1024/1024/1024,3)  as DF_SIZE_GB
+    ,  (case dt.CONTENTS
+				when 'TEMPORARY' then
+					(select count(*) from dba_temp_files df where df.TABLESPACE_NAME=dt.tablespace_name)
+				else
+				(select count(*) from dba_data_files df where df.TABLESPACE_NAME=dt.tablespace_name)
+		   end)  as DF_Count
+	 ,  round(((dm.used_space * dt.BLOCK_SIZE)/1024/1024/1024),3)      as used_space_gb    
+  	 ,  round(100*dm.used_percent,2) as used_percent
+	 ,  dt.BLOCK_SIZE
+  from DBA_TABLESPACE_USAGE_METRICS dm
+     , dba_tablespaces dt
+where dm.tablespace_name=dt.tablespace_name
+ and dt.tablespace_name like 'UNDO%'
+order by dm.tablespace_name
 /
 
 
-prompt -- Maximal Undo usage (MB) over the last 4 days
-prompt --++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-prompt
+prompt ... 
+prompt ... if "NOGUARANTEE" the DB will not gurantee the Undo Rention time
+prompt ... 
+
+ 
+ttitle "Maximal Undo usage (MB) over the last 4 days - but only for this instance!" skip 2
+
 -- http://docs.oracle.com/cd/E11882_01/server.112/e40402/dynviews_3118.htm#REFRN30295
 -- thanks to may be trivadis ? 
---
+
 
 column days    format a6       heading "day"
 column m30    format 999999    heading "30m"
@@ -118,4 +162,30 @@ from
 order by days
 /
  
+ 
+ ttitle "Dynamic Undo Retention in the last hour"  skip 2
+--
+-- http://docs.oracle.com/cd/B28359_01/server.111/b28310/undo002.htm#ADMIN11462
+--
 
+select to_char(begin_time, 'dd.mm.yyyy HH24:MI') begin_time
+     , to_char(end_time, 'dd.mm.yyyy HH24:MI') end_time
+	  , tuned_undoretention
+ from v$undostat 
+where end_time > sysdate - (1/24*1)
+order by end_time
+/
+
+ ttitle "Dynamic Undo Retention max - min Value"  skip 2
+ 
+select min(begin_time)begin_time
+     , max(end_time) end_time
+	  , min(tuned_undoretention)
+	  , max(tuned_undoretention)
+ from v$undostat 
+/
+
+
+
+
+ttitle off
