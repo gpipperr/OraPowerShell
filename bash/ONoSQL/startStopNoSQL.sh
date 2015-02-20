@@ -25,7 +25,7 @@
 . /etc/init.d/functions
 
 ORACLE_USER=oracle
-KVHOME=/opt/oracle/produkt/11.2.0/kv-2.0.39
+KVHOME=/opt/oracle/produkt/11.2.0/kv-3.2.5
 KVROOT=/opt/oracle/kvdata/
 
 #Start or stop the Oracle NoSQL Node

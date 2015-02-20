@@ -8,10 +8,10 @@
 # Main Admin Task for a Oracle NoSQL Store
 # Configuration read from nodelist.conf
 #
-# For NoSQL Version 2.1  - Oracle 12c R1
+# For NoSQL Version 3.1  - Oracle 12c R3
 #
 # 
-########## Enviroment ##############
+########## Environment ##############
 
 SCRIPTPATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 SCRIPTS_DIR=`dirname "$SCRIPTPATH{}"`
@@ -33,6 +33,14 @@ declare -a STORE_NAME
 
 . ${SCRIPTS_DIR}/nodelist.conf
 
+################################################
+# check Security Configuration
+if [ "${ADMIN_SEC_CONFIG}" == "TRUE" ];
+then
+	STORE_CONNECT_SECURITY="-security ${STORE_ROOT[$ADMIN_NODE]}/security/${ADMIN_SECRET}"
+else
+    STORE_CONNECT_SECURITY=""
+fi
 
 #################################################
 # define commands used more then one time
@@ -61,23 +69,23 @@ case "$1" in
         ;;
 	 admin)
         # admin
-		printLine "-- Command java -jar $KVHOME/lib/kvstore.jar runadmin -port 5000 -host $HOSTNAME"  
-        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]}
+		printLine "-- Command java -jar $KVHOME/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY} "  
+        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}
         ;;	
 	 console)
         # kvshell
-		printLine "-- Command java -jar $KVHOME/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]}"
-        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]}
+		printLine "-- Command java -jar $KVHOME/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}"
+        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}
         ;;	
      count)
         # kvshell
-		printLine "-- Command java -jar $KVHOME/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} aggregate -count"
-        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} aggregate kv -count
+		printLine "-- Command java -jar $KVHOME/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY} aggregate kv -count"
+        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY} aggregate kv -count
         ;;			
 	 ping)
         # ping
-		printLine "-- Command java -jar $KVHOME/lib/kvstore.jar ping -port 5000 -host $HOSTNAME" 
-        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar ping -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]}    
+		printLine "-- Command java -jar $KVHOME/lib/kvstore.jar ping -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}" 
+        java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar ping -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}   
         ;;	
     status)
         # status of the nodes 

@@ -1,7 +1,7 @@
 # ==============================================================================
 # Author: Gunther Pippèrr ( http://www.pipperr.de )
 # Desc:   Gunther's NoSQL script library
-# Date:   07.August 2012
+# Date:   20.Februar 2015
 # Site:   http://orapowershell.codeplex.com
 # ==============================================================================
 
@@ -9,7 +9,7 @@
 
 --------------  Scripts  to create a NoSQL Store -------
 
-Scripts for the maintenance of an Oracle NoSQL 2.0 Environment
+Scripts for the maintenance of an Oracle NoSQL 3.0 Environment
 
 Scripts:
 
