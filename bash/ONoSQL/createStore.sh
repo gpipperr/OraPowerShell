@@ -7,7 +7,7 @@
 # Purpose
 # Main Admin Task for a Oracle NoSQL Store
 # Configuration read from nodelist.conf
-# For NoSQL Version 2.0  - Oracle 11g R2
+# For NoSQL Version 3.0  - Oracle 11g R2
 #
 # 
 ########## Enviroment ##############
@@ -55,15 +55,17 @@ echo "configure -name ${STORE_NAME[$ADMIN_NODE]}" >  ${CREATE_COMMANDFILE}
 echo "change-policy -params \"cacheSize=${GLOBAL_CACHE_SIZE_BYTE}\""  >> ${CREATE_COMMANDFILE}
 echo "change-policy -params \"javaMiscParams=-server -d64 -XX:+UseCompressedOops -XX:+AlwaysPreTouch -Xms${JAVA_XMS_SIZE_MB}m -Xmx${JAVA_XMX_SIZE_MB}m\" " >> ${CREATE_COMMANDFILE}
 
-echo "plan deploy-datacenter -name \"DC${STORE_NAME[$ADMIN_NODE]}\" -rf $CAPACITY -wait"         >> ${CREATE_COMMANDFILE}
+#Name the Zone
+echo "plan deploy-zone -name \"DC${STORE_NAME[$ADMIN_NODE]}\" -rf $CAPACITY -wait"         >> ${CREATE_COMMANDFILE}
 
+#Create an Administration Process
 ELEMENT_COUNT=${#STORE_NODE[@]}
 INDEX=0
 while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
 	do    # List all the elements in the array.
 	printList "Parameter ADMIN_PORT"      30 "::"  "${STORE_ADMIN_PORT[$INDEX]}"
-	echo "plan deploy-sn -dc dc1 -host ${STORE_NODE[$INDEX]} -port ${STORE_PORT[$INDEX]} -wait" >> ${CREATE_COMMANDFILE}
 	let "SNNODE = $INDEX + 1"
+	echo "plan deploy-sn    -zn zn1 -host ${STORE_NODE[$INDEX]} -port ${STORE_PORT[$INDEX]} -wait" >> ${CREATE_COMMANDFILE}
 	echo "plan deploy-admin -sn sn${SNNODE} -port ${STORE_ADMIN_PORT[$INDEX]} -wait"                          >> ${CREATE_COMMANDFILE}
 	let "INDEX = $INDEX + 1"
 done
@@ -113,8 +115,8 @@ COMMAND="mkdir -p #KVROOTI#"
 COMMANDUSR=`whoami`
 doStore
 printError
-# Check for enviroment
-printLine "Last check  of the Enviroment"
+# Check for environment
+printLine "Last check  of the Environment"
 doCheck
 printError
 
@@ -124,12 +126,21 @@ printLine "Create the boot config XML for each node"
 printLine "--"
 
 COMMAND_TITLE=""
-COMMAND="java -jar #KVHOMEI#/lib/kvstore.jar makebootconfig -root #KVROOTI# -port #KVPORT# -admin #ADMINPORT# -host #KVHOSTNAME# -harange #HARANGE# -capacity #CAPACITY# -num_cpus #NUMCPU# -memory_mb #MEMORY# -servicerange #SERVICERANGE# -store-security  ${SECURITY}"
+
+if [ "${SECURITY}" == "none"];
+then
+	STORE_SECURITY="-store-security  none"	
+	STORE_CONNECT_SECURITY_CONFIG=""
+else
+	STORE_SECURITY="-store-security configure  -pwdmgr pwdfile   -kspwd ${STORE_PWD}"
+	STORE_CONNECT_SECURITY_CONFIG="-security ${STORE_ROOT[0]}/security/client.security"
+fi
+
+COMMAND="java -jar #KVHOMEI#/lib/kvstore.jar makebootconfig -root #KVROOTI# -port #KVPORT# -admin #ADMINPORT# -host #KVHOSTNAME# -harange #HARANGE# -capacity #CAPACITY# -num_cpus #NUMCPU# -memory_mb #MEMORY# -servicerange #SERVICERANGE# ${STORE_SECURITY}"
 
 
 INDEX=0
 while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
-
 	do    # List all the elements in the array.
 	echo -- Creation Store Config for NoSQL Store ${STORE_NAME[$INDEX]} on ${STORE_NODE[$INDEX]}  at "`date`"
 	
@@ -159,6 +170,18 @@ while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
 done
 printError
 
+echo "-- Only one security files def per Store should exist"
+
+INDEX=1
+while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
+	do 
+    echo "scp ${STORE_ROOT[0]}/security/*.* ${STORE_NODE[$INDEX]}:${STORE_ROOT[$INDEX]}/security"
+	scp ${STORE_ROOT[0]}/security/*.*  ${STORE_NODE[$INDEX]}:${STORE_ROOT[$INDEX]}/security
+	let "INDEX = $INDEX + 1"
+done
+
+printError
+
 #start Nodes
 printLine
 printLine "Start the nodes"
@@ -176,18 +199,52 @@ printLine
 printLine
 
 # start the admin
-# and configure the enviroment
+# and configure the environment
 #
 printLine
 printLine "Start the configuration"
-java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} < ${CREATE_COMMANDFILE}
+echo "java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY_CONFIG}"
+java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY_CONFIG} < ${CREATE_COMMANDFILE}
 printf  "%s\n" ""
 printLine
-#
+
+# create the command file for the store user
+CREATE_USER_COMMANDFILE="${SCRIPTS_DIR}/create_storeuser_${STORE_NAME[$ADMIN_NODE]}.command"
+
+# create the Store user
+echo "plan create-user -name ${ROOT_USER} -admin -password ${ROOT_PWD} -wait"   >${CREATE_USER_COMMANDFILE}
+echo "show user -name ${ROOT_USER}"                                            >>${CREATE_USER_COMMANDFILE}
+
+
+java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY_CONFIG} < ${CREATE_USER_COMMANDFILE}
+
+
+java -Xmx256m -Xms256m -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar securityconfig pwdfile  create  -file ${STORE_ROOT[0]}/security/${ROOT_USER}.pwd
+java -Xmx256m -Xms256m -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar securityconfig pwdfile  secret  -file ${STORE_ROOT[0]}/security/${ROOT_USER}.pwd -set -alias ${ROOT_USER} -secret ${ROOT_PWD}
+
+#Root user configuration anlegen
+echo "oracle.kv.ssl.trustStore=client.trust"               > ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security 
+echo "oracle.kv.transport=ssl"                            >> ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security 
+echo "oracle.kv.ssl.protocols=TLSv1.2,TLSv1.1,TLSv1"      >> ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security 
+echo "oracle.kv.ssl.hostnameVerifier=dnmatch(CN\=NoSQL)"  >> ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security 
+echo "oracle.kv.auth.pwdfile.file=${ROOT_USER}.pwd"       >> ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security 
+echo "oracle.kv.auth.username=${ROOT_USER}"               >> ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security 
+
+
 #
 printError
 waitStart 10
-. ${SCRIPTS_DIR}/noSQLStore.sh ping
+
+printLine "-- Command java -jar $KVHOME/lib/kvstore.jar ping -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]}  ${STORE_CONNECT_SECURITY} " 
+java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar ping -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} -security ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security 
 printError
+
+#only after the user creation the grant is working
+echo "plan grant -role readwrite -user ${ROOT_USER} -wait"  >${CREATE_USER_COMMANDFILE}
+echo "show user -name ${ROOT_USER}"                        >>${CREATE_USER_COMMANDFILE}
+
+java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} -security ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security < ${CREATE_USER_COMMANDFILE}
+
+
 
 
