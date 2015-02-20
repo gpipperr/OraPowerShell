@@ -1,6 +1,10 @@
 ############################################ Global Defaults  ###################################
 # Edit this parameter
-
+#
+# Fix 
+# use  /etc/oracle/olr.loc if exits to get the actual CRS HOME
+# use id to get the user home path
+# 
 
 export NLS_LANG=american_america.al32utf8
 
