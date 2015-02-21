@@ -42,6 +42,70 @@ else
     STORE_CONNECT_SECURITY=""
 fi
 
+
+############################################
+
+createUser() {
+	printf "Name of the Store User:"
+	read USER_NAME
+	printf "Password of the Store User:"
+	read USER_PWD
+
+	# create the command file for the store user
+	CREATE_USER_COMMANDFILE="${SCRIPTS_DIR}/create_storeuser_${USER_NAME}_${STORE_NAME[$ADMIN_NODE]}.command"
+
+	# create the Store user
+	echo "plan create-user -name ${USER_NAME} -password ${USER_PWD} -wait"    >${CREATE_USER_COMMANDFILE}
+	echo "plan grant -role readwrite -user ${USER_NAME} -wait"               >>${CREATE_USER_COMMANDFILE}
+	echo "show user -name ${USER_NAME}"                                      >>${CREATE_USER_COMMANDFILE}
+
+	java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY} < ${CREATE_USER_COMMANDFILE}
+
+	java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar securityconfig pwdfile  create  -file ${STORE_ROOT[0]}/security/${USER_NAME}.pwd
+	java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar securityconfig pwdfile  secret  -file ${STORE_ROOT[0]}/security/${USER_NAME}.pwd -set -alias ${USER_NAME} -secret ${USER_PWD}
+
+	#Root user configuration anlegen
+	echo "oracle.kv.ssl.trustStore=client.trust"               > ${STORE_ROOT[0]}/security/${USER_NAME}_user.security 
+	echo "oracle.kv.transport=ssl"                            >> ${STORE_ROOT[0]}/security/${USER_NAME}_user.security 
+	echo "oracle.kv.ssl.protocols=TLSv1.2,TLSv1.1,TLSv1"      >> ${STORE_ROOT[0]}/security/${USER_NAME}_user.security 
+	echo "oracle.kv.ssl.hostnameVerifier=dnmatch(CN\=NoSQL)"  >> ${STORE_ROOT[0]}/security/${USER_NAME}_user.security 
+	echo "oracle.kv.auth.pwdfile.file=${USER_NAME}.pwd"       >> ${STORE_ROOT[0]}/security/${USER_NAME}_user.security 
+	echo "oracle.kv.auth.username=${USER_NAME}"               >> ${STORE_ROOT[0]}/security/${USER_NAME}_user.security 
+
+	echo "-- Copy the Login Information to the other Nodes"
+	ELEMENT_COUNT=${#STORE_NODE[@]}
+	INDEX=1
+	while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
+		do 
+		scp ${STORE_ROOT[0]}/security/${USER_NAME}_user.security   ${STORE_NODE[$INDEX]}:${STORE_ROOT[$INDEX]}/security/${USER_NAME}_user.security
+		scp ${STORE_ROOT[0]}/security/${USER_NAME}.pwd             ${STORE_NODE[$INDEX]}:${STORE_ROOT[$INDEX]}/security/${USER_NAME}.pwd
+		let "INDEX = $INDEX + 1"
+	done
+
+	printError
+}
+
+dropUser(){
+	printf "Name of the Store User:"
+	read USER_NAME
+	# create the command file for the store user
+	CREATE_USER_COMMANDFILE="${SCRIPTS_DIR}/create_storeuser_${USER_NAME}_${STORE_NAME[$ADMIN_NODE]}.command"
+
+	# create the Store user
+	echo "show user -name ${USER_NAME}"                 >${CREATE_USER_COMMANDFILE}
+	echo "plan drop-user -name ${USER_NAME} -wait"     >>${CREATE_USER_COMMANDFILE}
+
+	java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar runadmin -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY} < ${CREATE_USER_COMMANDFILE}
+
+	echo "-- Delete the login Information from all nodes"
+	COMMAND_TITLE="remove Login Information"
+	COMMAND="rm #KVROOTI#/security/${USER_NAME}*"
+	COMMANDUSR=`whoami`
+	doStore
+	printLine "OK"
+	printError
+}
+
 #################################################
 # define commands used more then one time
 STARTCOMMAND="nohup java -jar #KVHOMEI#/lib/kvstore.jar start -root #KVROOTI#  > /tmp/nohup.out &"
@@ -75,6 +139,7 @@ case "$1" in
 	 console)
         # kvshell
 		printLine "-- Command java -jar $KVHOME/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}"
+		printLine "-- To connect to the store connect with \"connect store -name ${STORE_NAME[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}\""
         java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvcli.jar -host $HOSTNAME -port ${STORE_PORT[$ADMIN_NODE]} -store ${STORE_NAME[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}
         ;;	
      count)
@@ -86,7 +151,15 @@ case "$1" in
         # ping
 		printLine "-- Command java -jar $KVHOME/lib/kvstore.jar ping -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}" 
         java -jar ${STORE_HOME[$ADMIN_NODE]}/lib/kvstore.jar ping -port ${STORE_PORT[$ADMIN_NODE]} -host ${STORE_NODE[$ADMIN_NODE]} ${STORE_CONNECT_SECURITY}   
-        ;;	
+        ;;
+	createUser)
+		#create a store user
+		createUser
+		;;
+	dropUser)
+		#drop a store user
+		dropUser
+		;;	
     status)
         # status of the nodes 
         COMMAND_TITLE="Check Status "
@@ -179,6 +252,8 @@ case "$1" in
 	  echo "       console      -> Start the kvshell console   "
 	  echo "       count        -> Count all entries in the store  "
 	  echo "       ping         -> Ping the Store               "
+	  echo "       createUser   -> Create a user in the store   "
+	  echo "       dropUser     -> Create a user in the store   "
 	  echo "       getStoreSize -> get the Disk size for the store for each node"
 	  echo "       getStoreSizeDetail -> get he Disk size for the store for each node for each SN"
 	  echo "       fwstatus     -> Show the status of the FW as root!  "
