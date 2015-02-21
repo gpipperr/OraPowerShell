@@ -230,7 +230,16 @@ echo "oracle.kv.ssl.hostnameVerifier=dnmatch(CN\=NoSQL)"  >> ${STORE_ROOT[0]}/se
 echo "oracle.kv.auth.pwdfile.file=${ROOT_USER}.pwd"       >> ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security 
 echo "oracle.kv.auth.username=${ROOT_USER}"               >> ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security 
 
+echo "-- Copy the Login Information to the other Nodes"
+INDEX=1
+while [ "${INDEX}" -lt "${ELEMENT_COUNT}" ]
+	do 
+    scp ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security   ${STORE_NODE[$INDEX]}:${STORE_ROOT[$INDEX]}/security/${ROOT_USER}_user.security
+	scp ${STORE_ROOT[0]}/security/${ROOT_USER}_user.security   ${STORE_NODE[$INDEX]}:${STORE_ROOT[$INDEX]}/security/${ROOT_USER}.pwd
+	let "INDEX = $INDEX + 1"
+done
 
+printError
 #
 printError
 waitStart 10
