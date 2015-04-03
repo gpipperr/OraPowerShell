@@ -43,10 +43,11 @@ else
 fi
 
 # set the sqlpath if exits
-if [ -d "/home/oracle/sql" ]; then
-	export SQLPATH=/home/oracle/sql
-elif [ -d "/export/home/oracle/sql" ]; then
-	export SQLPATH=/export/home/oracle/sql
+
+if [ -d "/home/$USER/sql" ]; then
+	export SQLPATH=/home/$USER/sql
+elif [ -d "/export/home/$USER/sql" ]; then
+	export SQLPATH=/export/home/$USER/sql
 else
  printf "\033[31m%s\033[0m\n"  "No SQL direcory found!"	
 fi	
