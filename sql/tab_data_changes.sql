@@ -1,8 +1,8 @@
+--==============================================================================
 ----http://www.oracleangels.com/2011/01/automatic-statistics-gathering-job.html
-
-
-SET linesize 130 pagesize 300 recsep OFF
-SET verify off
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define OWNER    = '&1' 
 

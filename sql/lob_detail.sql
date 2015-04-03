@@ -1,5 +1,9 @@
+--==============================================================================
+--
+--==============================================================================
+
 set verify  off
-set linesize 120 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define OWNER         = '&1' 
 define TABLE_NAME    = '&2' 

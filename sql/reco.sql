@@ -1,11 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Recovery Area settings and size
 -- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle  "Report Recovery Dest Parameter"  SKIP 1 -
        center "Sizes in MB" SKIP 2

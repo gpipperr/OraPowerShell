@@ -1,12 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   check init.ora parameter
 -- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 set verify  off
-set linesize 130 pagesize 4000 recsep OFF
+set linesize 130 pagesize 4000 recsep off
 
 prompt
 prompt Parameter 1 = DB Parameter          => '&1' 

@@ -1,5 +1,7 @@
-
-SET linesize 130 pagesize 100 recsep OFF
+--==============================================================================
+--
+--==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 column input_type               format a30
 column status                   format a12

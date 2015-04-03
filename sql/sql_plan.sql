@@ -1,22 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   get the sql execution plan for this sql id from the AWR Repository
---         You need the Tuning Pack Licence to use the AWR! 
+--
+-- Desc:   get the sql execution plan for this sql id from Cursor Cache
 -- Date:   September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 -- http://psoug.org/reference/dbms_xplan.html
-
-define SQL_ID = &1 
-
-set verify off
-
-SET linesize 190 pagesize 400 recsep OFF
-
-ttitle left  "SQL Plan from Cursor Cache ID:  &SQL_ID." skip 2
-
-column out_put format a190 heading "SQL Plan Output"
-
+--==============================================================================
 
 /*
 
@@ -45,6 +34,16 @@ For finer control on the display output, the following keywords can be added to 
 
 
 */
+
+define SQL_ID = &1 
+
+set verify off
+set linesize 190 pagesize 300 recsep off
+
+ttitle left  "SQL Plan from Cursor Cache ID:  &SQL_ID." skip 2
+
+column out_put format a190 heading "SQL Plan Output"
+
 
 
 select 

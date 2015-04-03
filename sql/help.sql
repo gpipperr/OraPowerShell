@@ -1,8 +1,6 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr
 -- Desc:   SQL Script Overview
--- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
 DOC 
@@ -18,8 +16,13 @@ DOC
 	- date.sql             - get the actual date and time of the DB
 	- instance.sql         - status of the instance where the user is connected
 	- limit.sql            - resource limits since last startup of the instances
+	- dbfiles.sql               - list of all database datafiles
+	
 	- tablespace.sql       - Information about the tablespaces
 	- tablespace_usage.sql - Information usage on a tablespace - Parameter 1 the name of the tablespace
+	- tablespace_ddl.sql   - get the ddl of a tablespace, show default storage options!  - parameter name of the tablespace
+	- tablespace_space.sql - get a overview over the free and used space for a tablespace - parameter name of the tablespace
+
 
 	- sessions.sql             - actual connections to the database 
 	- session_history.sql      - get a summary over the last active sessions 
@@ -139,10 +142,7 @@ DOC
 	
 	- tab_tablespace.sql        - get the tablespaces of the user    - parameter - Owner
 	- tab_tablespace_all.sql    - get the used tablespace overview of this database 
-	
-	- tablespace_ddl.sql        - get the ddl of a tablespace, show default storage options! - parameter name of the tablespace
-	- tablespace_space.sql      - get a overview over the free and used space for a tablespace - parameter name of the tablespace
-	
+
 	- index.sql       - get the information’s over a index            - parameter - Owner, Index name
 	- index_all.sql   - get all indexes of a user                     - parameter - Owner,
 	- index_mon.sql   - check the result of index monitoring   
@@ -153,6 +153,7 @@ DOC
 	- obj_last_ddl.sql - get the last ddl for all objects of a user        - parameter - Owner
 
 	- plsql_info.sql   - information about a plsql function/package
+	- plsql_search.sql - search for a plsql function/procedure also in packages - parameter Search String
 	- plsql_depend.sql - information about the dependencies of a package/procedure  - parameter - Owner, object name
 	- plsql_errors.sql - show the errors of pl/sql objects
 	- plsql_dll.sql    - information about a plsql function/package       - parameter - Owner, object name
@@ -196,8 +197,8 @@ DOC
 	- buffer.sql     - show information about the buffer cache usage / must run as sys
 	- pga.sql        - show information about the pga usage
 	
-	- statistic.sql  - show information over the statistics on the DB 
-                      and stat age on tables and when the stats job runs
+	- statistic.sql  - show information over the statistics on the DB  and stat age on tables and when the stats job runs
+	- statistic_backup.sql - save all statistics of the db in backup tables
 
 	- cursor.sql     - show information about the cursor usage
 
@@ -210,8 +211,11 @@ DOC
 	- sql_kill_session.sql  - create the command to kill all sessions runing this sql at the moment - parameter 1 - SQL ID
 	- sql_purge_cursor.sql  -  purge the cursor out of the cache  - parameter 1 - SQL ID
 
-	- sql_profile.sql       - shwo all profiles in the database
-	- sql_profile_details.sql - get the details of a sql profile - parameter 1 - Profile Name
+	- sql_profile.sql          - show all profiles in the database
+	- sql_profile_details.sql  - get the details of a sql profile - parameter 1 - Profile Name
+	- sql_baseline.sql         - get the defined baseline 
+	- sql_baseline_evolve.sql  -  evolve  and get the details of one  baseline - parameter 1 - the baseline sql_handle name
+	- sql_baseline_plan.sql    - get the details of of a plan in a baseline - parameter 1 - the baseline sql_baseline_plan
 
 	- get_plan.sql  - get the plan of the last "explain plan for"
 
@@ -231,13 +235,16 @@ DOC
 	- awr_act_active_sessions.sql            - get information about the act active Session in the last 90 minutes
 	- awr_act_blocking_sessions.sql          - get information about blocking sessions in the database
 	- awr_session_none_technical_user.sql    - get information about none technical user sessions
+	- awr_changed_plans.sql                  - search for changed plans in a time period - parameter 1 - Startdate  - parameter 2 end date in DE format
+	- awr_resourcelimit.sql					 - display the resouce limits of the last days
+	- awr_os_stat.sql                        - display the OS statistic of the last days  
 	
 	- calibrate_io.sql     - Use io calibrate to analyses io of the database and set the interal i/o views
 	- system_stat.sql      - get the DB interal Systemstat values like workload statistic and i/o calibarate values
 	
 	- ctx.sql              - Oracle Text indexes for a user and ctx settings - parameter 1 - name of the user
 	
-	- rman.sql             - rman settings of this databasr and summary information about the last backups for this database and the block change tracking feature
+	- rman.sql             - rman settings of this database and summary information about the last backups for this database and the block change tracking feature
 	- rman_process.sql     - get information over running rman processes for tracing
 	- rman_status.sql      - get the status of the last backup in the database
 	

@@ -1,4 +1,5 @@
 -- ====================================================================
+-- Author: Gunther Pippèrr 
 -- get Information about the partner disk if redundancy is <> external
 --
 -- ====================================================================
@@ -6,10 +7,10 @@
 -- http://asmsupportguy.blogspot.de/2011/07/how-many-partners.html
 -- http://afatkulin.blogspot.de/2010/07/asm-mirroring-and-disk-partnership.html
 -- Script to Report the Percentage of Imbalance in all Mounted Diskgroups (Doc ID 367445.1)
+--==============================================================================
 
+set linesize 130 pagesize 300 recsep off
 set verify  off
-
-set linesize 130 pagesize 4000 recsep OFF
 
 prompt
 prompt Parameter 1 = DISK_GROUP_NR          => '&1' 

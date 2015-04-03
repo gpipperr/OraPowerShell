@@ -1,12 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   set the sqlplus prompt
 --         try to find out the os of sqlplus and set the title bar of the sql*Plus window if windows
 -- 
 -- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
 SET termout off
 
 -- get the host name
@@ -142,8 +141,9 @@ end;
 --- global Settings
 set trimspool on
 set serveroutput on
-set pagesize 100
+set pagesize 300
 set linesize 130
+set recsep off
 -- suppress scientific notation
 set numwidth  12
 --

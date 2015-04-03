@@ -1,18 +1,16 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc.:   show the partitions of a table
-
 -- Parameter 1: Name of the User
 -- Parameter 2: Name of the Table
 --
 -- Must be run with dba privileges
 -- 
--- Site:   http://orapowershell.codeplex.com
 --
 --==============================================================================
 
-set linesize 140 pagesize 300 recsep off
 set verify off
+set linesize 130 pagesize 300 recsep off
 
 define OWNER    = '&1' 
 define TAB_NAME = '&2' 

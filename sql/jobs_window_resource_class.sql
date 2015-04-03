@@ -2,7 +2,7 @@
 -- Desc:   show all all resource plan to window to job class relation
 --===============================================================================
 
-SET linesize 130 pagesize 100 recsep OFF
+SET linesize 130 pagesize 300 recsep off
 
 column job_class_name    format a25
 column job_class_service format a25

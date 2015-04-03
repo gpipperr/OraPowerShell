@@ -1,15 +1,14 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Object dependencies 
 -- Date:   08.2013
--- Site:   http://orapowershell.codeplex.com
+--
 
 -- http://www.dba-oracle.com/t_tracking_table_constraint_dependencies.htm
 
 --==============================================================================
 
-SET pagesize 300
-SET linesize 250
+set linesize 130 pagesize 300 recsep off
 SET VERIFY OFF
 
 define OWNER    = '&1' 

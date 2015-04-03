@@ -1,12 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr
 -- Desc:   Analyse the SYSAUX Table space and AWR Repository
 -- Date:   08.2013
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
-SET pagesize 300
-SET linesize 250
+set linesize 130 pagesize 300 recsep off
 
 ---
 @space_tablespace.sql SYSAUX

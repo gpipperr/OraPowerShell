@@ -1,11 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Get the Redo Log scn information
 -- Date:   01.November 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 SET SERVEROUTPUT ON SIZE 1000000
 

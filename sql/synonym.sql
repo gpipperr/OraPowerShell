@@ -1,13 +1,13 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get summary over synonyms
 --
 -- Must be run with dba privileges
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-set verify  off
-set linesize 130 pagesize 4000 recsep OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define OWNER     = '&1' 
 define TYPE_NAME = '&2' 

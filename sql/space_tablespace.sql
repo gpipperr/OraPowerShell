@@ -1,15 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr
 -- Desc:   SQL Script to check the size of a table
 --         thanks to Christian Gärber for create alter database file statement  
--- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:sql_groesse_tabelle
 -- Date:   08.2013
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
-SET pagesize 300
-SET linesize 300
-SET VERIFY OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 define TABLESPACE = "%"

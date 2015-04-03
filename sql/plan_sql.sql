@@ -1,16 +1,17 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get the sql execution plan for this sql id from the AWR Repository
 --         You need the Tuning Pack Licence to use the AWR! 
 -- Date:   September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 define SQL_ID = &1 
 
 set verify off
 
-SET linesize 120 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "SQL Plan from Cursor Cache ID:  &SQL_ID." skip 2
 

@@ -1,9 +1,9 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr 
 -- Desc:   show asm balance
 -- Date:   November 2013
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 select a.group_number
       ,a.name

@@ -1,7 +1,8 @@
 --==============================================================================
 -- Desc:   read the alert log of the database over the adrci alert.xml 
 --===============================================================================
-set lines 125 pages 0
+
+set linesize 130 pagesize 300 recsep off pages 0
 
 define SEARCH_TEXT    = '&1' 
 

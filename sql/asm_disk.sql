@@ -1,16 +1,13 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr
 -- Desc:   SQL Script ASM Disk Overview
 -- Date:   2012
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 -- http://jarneil.wordpress.com/2008/04/10/keep-disks-in-your-diskgroup-the-same-size/
 -- http://docs.oracle.com/cd/E24628_01/em.121/e25160/asm_cluster.htm#EMDBM10000
+--==============================================================================
 
-
-
-SET pagesize 300
-SET linesize 250
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "ASM Disk Status and Size" skip 2
 

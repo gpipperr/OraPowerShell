@@ -1,13 +1,15 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   search data dictionary views
 -- Date:   September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 -- FIX IT
 -- umbauen auf REGEXP_SUBSTR(table_name,'_+,') um dba_,all_,user_ anzuzeigen
 --
+
+set linesize 130 pagesize 300 recsep off
 
 set  verify off
 

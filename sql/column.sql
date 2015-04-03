@@ -1,16 +1,16 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   search a column in the database
 -- Parameter 1: Name of the column
 --
 -- Must be run with dba privileges
 -- 
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 
 set verify  off
-set linesize 140 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define COL_NAME = '&1' 
 

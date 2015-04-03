@@ -1,5 +1,8 @@
-SET linesize 130 pagesize 2000 recsep OFF
-SET verify off
+--==============================================================================
+--
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME  = &1
 define TABLE_NAME = &2 

@@ -2,7 +2,7 @@
 -- Create a default user for plsql development
 -- ============================
 
-    create user &&USERNAME.
+create user &&USERNAME.
 identified by &&USERNAME.2013
    default tablespace USERS
  temporary tablespace TEMP

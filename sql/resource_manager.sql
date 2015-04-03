@@ -1,9 +1,8 @@
---
+--==============================================================================
 -- http://docs.oracle.com/cd/E11882_01/server.112/e17120/dbrm.htm#ADMIN027
 -- Script to monitor PX limits from Resource Manager for active sessions (Doc ID 240877.1)
---
-
-SET linesize 130 pagesize 100 recsep OFF
+--==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 prompt .... Viewing Consumer Groups Granted to Users or Roles
 

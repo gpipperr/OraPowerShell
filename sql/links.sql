@@ -1,11 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   DB Links
 -- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET linesize 240 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 prompt
 prompt Link Infos -- The DB Links this user can see

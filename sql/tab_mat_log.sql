@@ -1,6 +1,8 @@
-
-SET pagesize 500
-SET linesize 250
+--==============================================================================
+--
+--==============================================================================
+set verify off
+set linesize 130 pagesize 500 recsep off
 
 column LOG_OWNER             format a10
 column MASTER                format a22

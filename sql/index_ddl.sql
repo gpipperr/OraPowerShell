@@ -1,5 +1,5 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   extract the DDL of index  in the database
 --
 -- Parameter 2: Owner of the table/object
@@ -10,7 +10,7 @@
 --==============================================================================
 
 set verify  off
-set linesize 130 pagesize 4000 recsep OFF
+set linesize 130 pagesize 4000 recsep off
 
 define OWNER    = '&1' 
 define INDEX_NAME = '&2' 

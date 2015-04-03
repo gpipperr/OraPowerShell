@@ -1,11 +1,13 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr
 -- Desc:   show the trace status of the DB
 --==============================================================================
 -- see also Tracing Enhancements Using DBMS_MONITOR (In 10g, 11g and Above) (Doc ID 293661.1)
 --
+--==============================================================================
 
-SET linesize 120 pagesize 500 recsep OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 column trace_type      format a15
@@ -30,37 +32,36 @@ select trace_type
 	  , plan_stats
 	  , instance_name
  from dba_enabled_traces
-order by
-instance_name
+order by instance_name
 /
 
 
 ttitle left  "DB Trace status for all user sessions" skip 2
 
-column inst_id          format 99            heading "Inst|ID"
-column username         format a20           heading "DB User|name"
-column sid              format 99999         heading "SID"
-column serial#          format 99999         heading "Serial"
-column program    format a16    heading "Remote|program"
-column module     format a16    heading "Remote|module"
-column client_info format a15   heading "Client|info"
+column inst_id     format 99        heading "Inst|ID"
+column username    format a20       heading "DB User|name"
+column sid         format 99999     heading "SID"
+column serial#     format 99999     heading "Serial"
+column program     format a16       heading "Remote|program"
+column module      format a16       heading "Remote|module"
+column client_info format a15       heading "Client|info"
 column client_identifier format A15 heading "Client|identifier"
-column action format a30
-column tracefile   format a80  heading "Trace|File"  FOLD_BEFORE
+column action      format a30
+column tracefile   format a80       heading "Trace|File"  FOLD_BEFORE
 column sep FOLD_BEFORE
 
 select  vs.inst_id 
-      , vs.sid
-	   , vs.serial#
-	   , vs.username	
-		--, vs.module
-		, vs.ACTION
-		, to_char(vs.LOGON_TIME,'dd.mm hh24:mi') as LOGON_TIME
-      , vs.client_identifier
-	   , vs.client_info	
-    --,   substr(p.tracefile,length(p.tracefile)-REGEXP_INSTR(reverse(p.tracefile),'[\/|\]')+2,1000) as tracefile
+    , vs.sid
+	 , vs.serial#
+	 , vs.username
+	 , vs.module
+	 , vs.ACTION
+	 , to_char(vs.LOGON_TIME,'dd.mm hh24:mi') as LOGON_TIME
+    , vs.client_identifier
+	 , vs.client_info
+    , substr(p.tracefile,length(p.tracefile)-REGEXP_INSTR(reverse(p.tracefile),'[\/|\]')+2,1000) as tracefile
     , p.tracefile
-	 ,rpad('+',80,'=') as sep
+    , rpad('+',80,'=') as sep
 from gv$session vs
    , gv$process p
 where vs.SQL_TRACE != 'DISABLED'

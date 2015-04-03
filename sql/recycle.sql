@@ -1,13 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   recyle bin informatoins
 -- Date:   02.2014
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
-set pagesize 300
-set linesize 150
 set verify off
+set linesize 130 pagesize 300 recsep off
+
 
 column owner format a15 heading "Owner"
 column TYPE  format a12 heading "Obj|type"

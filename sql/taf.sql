@@ -1,10 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   check the TAF - Transparent Applicatoin Failover Connects to a database
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET linesize 140 pagesize 300 recsep OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 column inst_id         format 99    heading "Inst|ID"
 column username        format a20   heading "DB User|name"
@@ -33,7 +34,7 @@ select  inst_id
 	   , failed_over		
 	   , count(*) as connect_count
  from gv$session
-where username is not null --and username not in ('SYS','DBSNMP') 
+where username not in ('SYS','DBSNMP') 
 group by  inst_id
          , machine
 			, username,status

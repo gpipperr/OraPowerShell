@@ -1,12 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Informations about sga usage in the database
 -- Date:   08.2013
--- Site:   http://orapowershell.codeplex.com
+--
 -- http://docs.oracle.com/cd/B28359_01/server.111/b28320/dynviews_2058.htm#REFRN30463
 --==============================================================================
 
-SET linesize 130 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 -- sga infos
 

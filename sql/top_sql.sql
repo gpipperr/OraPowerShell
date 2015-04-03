@@ -17,7 +17,7 @@ FROM dual
 
 
 set verify off
-SET linesize 130 pagesize 200 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 column sql_text format a35 heading "SQL|Text"
 column sql_id   format a13 heading "SQL|ID"

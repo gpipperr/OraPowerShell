@@ -1,7 +1,10 @@
+--==============================================================================
 --http://docs.oracle.com/cd/B28359_01/appdev.111/b28419/d_networkacl_adm.htm#CHDJFJFF
 --http://www.oracle.com/webfolder/technetwork/de/community/dbadmin/tipps/acl/index.html
 --http://www.oracleflash.com/36/Oracle-11g-Access-Control-List-for-External-Network-Services.html
 --http://www.oracle-base.com/articles/11g/fine-grained-access-to-network-services-11gr1.php
+--==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 column acl       format a40 heading "ACL"
 column host      format a16 

@@ -1,13 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr 
 -- Desc:   Process List of RMAN Oracle sessions
 -- Date:   01.September 2013
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
-
 set verify off
-
-SET linesize 150 pagesize 120
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "Process List of the RMAN Sessions" skip 2
 

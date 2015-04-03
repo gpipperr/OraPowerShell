@@ -31,7 +31,7 @@ set markup html on
 ttitle center "Columns usesd in SQL Queries but not indexed" SKIP 2
 
 set verify off
-SET linesize 130 pagesize 2000 recsep OFF
+SET linesize 130 pagesize 2000 recsep off
 
 column  owner        format a20
 column  object_name  format a30
@@ -73,7 +73,7 @@ select o.owner
 
 ttitle center "Index with more then one Columns" SKIP 2
 
-SET linesize 130 pagesize 2000 recsep OFF
+SET linesize 130 pagesize 2000 recsep off
 
 column   index_owner format a25
 column   index_name  format a25

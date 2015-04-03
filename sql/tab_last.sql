@@ -1,12 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   show change time of a table
 -- Date:   September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
-SET linesize 130 pagesize 300 recsep OFF
-SET verify off
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define OWNER    = '&1' 
 define TAB_NAME = '&2' 

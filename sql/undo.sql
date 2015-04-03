@@ -1,9 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   undo usage
 -- Date:   November 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 show parameter undo
 

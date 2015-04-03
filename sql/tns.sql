@@ -1,13 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   check Services and tns Settings for the services
 -- Date:   09.2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
-set pagesize 300
-set linesize 140
-set recsep off
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 ttitle 'services configured to use load balancing advisory (lba) features| (from dba_services)'

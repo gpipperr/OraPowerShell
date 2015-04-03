@@ -1,7 +1,9 @@
+--==============================================================================
 -- get informations about mat views
 -- http://docs.oracle.com/cd/B19306_01/server.102/b14237/statviews_1105.htm
+--==============================================================================
 
-SET linesize 140 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 column owner             format a10 heading  "Owner"
 column mview_name        format a30 heading "Mview|Name"

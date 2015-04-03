@@ -1,16 +1,13 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr
 -- Desc:   show flash features
 --
 -- Must be run with dba privileges
--- Site:   http://orapowershell.codeplex.com
-
 -- Source 
 --  http://docs.oracle.com/cd/E11882_01/appdev.112/e40758/d_flashb.htm#ARPLS142
-
 --==============================================================================
 
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle  "Report Flashback Feature of the Database"  SKIP 2 -
 

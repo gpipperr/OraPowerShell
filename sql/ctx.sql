@@ -1,15 +1,15 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get the oracle text parameters of one schema user
 -- Parameter 1: Name of the User 
 --
 -- Must be run with dba privileges
 -- 
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 set verify  off
-set linesize 120 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME = &1 
 

@@ -1,3 +1,10 @@
+--==============================================================================
+--
+--==============================================================================
+
+set verify off
+set linesize 130 pagesize 300 recsep off
+
 
 col SPOOL_NAME_COL new_val SPOOL_NAME
  
@@ -7,8 +14,7 @@ SELECT replace(ora_database_name||'_'||SYS_CONTEXT('USERENV','HOST')||'_'||to_ch
 FROM dual
 /
 
-set verify off
-SET linesize 130 pagesize 200 recsep OFF
+
 
 spool &&SPOOL_NAME
 

@@ -2,16 +2,17 @@
 -- Desc:   SQL Script to shrink the tablespace
 -- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:sql_groesse_tabelle
 -- Date:   08.2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET pagesize 300
-SET linesize 150
-SET VERIFY   OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
+
+
 set feedback OFF
 set heading OFF
 set trimspool on
-set recsep off
+
 
 ---------------------------------------
 -- create the spool file

@@ -1,11 +1,14 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   
 -- Date:   November 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 prompt You need the diagnostic pack for this feature
+
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 select to_char (sp.begin_interval_time,'dd.mm.yyyy') "tag"
    , tbstat.tsname tsname

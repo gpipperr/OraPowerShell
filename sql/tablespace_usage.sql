@@ -3,9 +3,8 @@
 -- Date:   Januar 2015
 --==============================================================================
 
-SET pagesize 300
-SET linesize 300
-SET VERIFY OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 define TABLESPACE = "&1"
@@ -24,7 +23,7 @@ column OWNER format a25
 --break on owner SKIP 1
 --COMPUTE SUM OF size_GB ON owner
 
-COLUMN DUMMY NOPRINT;
+column DUMMY NOPRINT;
 COMPUTE SUM OF size_GB ON DUMMY;
 BREAK ON DUMMY;
 

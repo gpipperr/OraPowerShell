@@ -1,11 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   show open transactions in the database
 -- Date:   September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle  "Report active DB transactions"  SKIP 1
       

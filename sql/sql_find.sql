@@ -1,9 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   find the sql statement in the sql cache
 -- Date:   September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --===============================================================================
+set verify off
+set linesize 130 pagesize 800 recsep off
+
 define SQL_STATEMENT = &1 
 
 
@@ -12,8 +15,7 @@ prompt Parameter 1 = SQL_STATEMENT    => &&SQL_STATEMENT.
 prompt
 
 
-set verify off
-SET linesize 130 pagesize 800 recsep OFF
+
 
 ttitle left  "Search SQL from Cursor Cache for this text string :  &SQL_STATEMENT." skip 2
 

@@ -1,18 +1,15 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   analyse chained rows in the database
-
 --
 -- Must be run with dba privileges
 -- 
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
 -- http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_4005.htm#SQLRF01105
 -- http://blog.tanelpoder.com/2009/11/04/detect-chained-and-migrated-rows-in-oracle/
 
-set pagesize 1000
-set linesize 130
+set linesize 130 pagesize 1000 recsep off
 set verify off
 
 define USER_NAME ='GPI'

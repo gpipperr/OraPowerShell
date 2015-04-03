@@ -1,9 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   actual connections to the database
 -- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME   =  &1
 define ALL_PROCESS = '&2'
@@ -14,9 +17,6 @@ prompt Parameter 2 = to Show all use Y => &&ALL_PROCESS.
 prompt
 
 
-set verify off
-
-SET linesize 140 pagesize 300 recsep OFF
 
 ttitle left  "All User Sessions on this DB" skip 2
 
@@ -61,7 +61,7 @@ column cs format 9999
 column program  format A60
 column username format A20
 
-COLUMN DUMMY NOPRINT;
+column DUMMY NOPRINT;
 COMPUTE SUM OF cs ON DUMMY
 BREAK ON DUMMY;
 

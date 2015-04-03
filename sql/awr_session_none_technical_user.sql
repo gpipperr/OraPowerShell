@@ -4,8 +4,7 @@
 --   
 --==============================================================================
 
-SET pagesize 1000
-SET linesize 130
+set linesize 130 pagesize 300 recsep off
 
 define timing= 1800
 
@@ -42,7 +41,7 @@ select count(*)
 		   ah.program like '%plus%' 
 	)
 	--
-	and u.username not in ('DBSNMP','HP_DBSPI') 
+	and u.username not in ('DBSNMP') 
  group by u.username
       ,ah.PROGRAM
 		,ah.MODULE

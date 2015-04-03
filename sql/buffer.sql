@@ -1,12 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Get buffer cache information
 -- Date:   September 2013
 
--- Site:   http://orapowershell.codeplex.com
+--
 
 --==============================================================================
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle  "Buffer Cache Information"  SKIP 1 
 

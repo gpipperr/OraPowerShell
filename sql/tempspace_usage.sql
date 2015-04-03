@@ -1,8 +1,10 @@
+--==============================================================================
 --http://gavinsoorma.com/2009/06/temp-tablespace-usage/
 --
 --
+--==============================================================================
 
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 column inst_id    format 99     heading "Inst|ID"
 column username   format a8     heading "DB User|name"

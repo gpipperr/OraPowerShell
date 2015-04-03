@@ -4,7 +4,7 @@
 -- Must be run with dba privileges
 --==============================================================================
 
-SET linesize 120 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define DB_USER_NAME = &1
 
@@ -29,14 +29,13 @@ select -- to_char(extended_timestamp,'dd.mm hh24')
 to_char(extended_timestamp,'dd.mm hh24')||':'||substr(to_char(extended_timestamp,'mi'),1,1)||'0'
 		, instance_number
 		, count(*) as action_count
-        , username	
+      --, username	
 		, action_name 
-        , userhost		
+      , userhost		
 		,CLIENT_ID
-		,returncode
   from dba_audit_trail 
  where extended_timestamp between sysdate -(1/4) and sysdate
-    and action_name in ('LOGOFF','LOGIN')
+    and action_name like 'LOGOFF'		 
 	 -- and username like '&&DB_USER_NAME.'
 	 -- and USERHOST='srvgpidb01'
 	 -- and extended_timestamp between to_date('14.11.2014 08:00','dd.mm.yyyy hh24:mi') and to_date('14.11.2014 09:00','dd.mm.yyyy hh24:mi')		
@@ -45,11 +44,9 @@ to_char(extended_timestamp,'dd.mm hh24')||':'||substr(to_char(extended_timestamp
 		-- to_char(extended_timestamp,'dd.mm hh24')
 		to_char(extended_timestamp,'dd.mm hh24')||':'||substr(to_char(extended_timestamp,'mi'),1,1)||'0'
 	    , action_name 	
-		, username
         , userhost		
 		, instance_number	
-		, CLIENT_ID		
-		, returncode
+        , CLIENT_ID		
 order by to_char(extended_timestamp,'dd.mm hh24')||':'||substr(to_char(extended_timestamp,'mi'),1,1)||'0'
 
 -- to_char(extended_timestamp,'dd.mm hh24') --,username
@@ -68,7 +65,7 @@ select  to_char(extended_timestamp,'dd.mm hh24')||':'||substr(to_char(extended_t
 		, action_name 				
   from dba_audit_trail 
  where extended_timestamp between sysdate -(1/4) and sysdate
-   and action_name in ('LOGOFF','LOGIN')		 
+    and action_name like 'LOGOFF'		 
 	 -- and username like '&&DB_USER_NAME.'
 	 -- and USERHOST='srvgpidb01'
 	 -- and instance_number=2

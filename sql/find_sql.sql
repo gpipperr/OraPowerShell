@@ -1,15 +1,13 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   find the sql statement in the sql cache
 -- Date:   September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --===============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define SQL_STATEMENT = &1 
-
-set verify off
-SET linesize 130 pagesize 400 recsep OFF
-
 
 ttitle left  "SQL Plan from Cursor Cache ID:  &SQL_ID." skip 2
 

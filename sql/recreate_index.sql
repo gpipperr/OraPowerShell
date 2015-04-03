@@ -1,8 +1,8 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   index recreate script
 -- Date:   2008 - 2014
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 set pagesize 1000
 set linesize 130

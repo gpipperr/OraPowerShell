@@ -1,10 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   show informations about directories in the database
 -- Date:   08.08.2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-SET linesize 130 pagesize 30 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle  "Directories in the database"  SKIP 1 
 

@@ -1,11 +1,9 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr 
 -- Desc:   all files on an ASM disk group
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
-
-SET linesize 73 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define DG_NAME = '&1' 
 
@@ -20,7 +18,7 @@ column file_name   format a30   heading "File|Name"
 column file_number format 99999 heading "File|Nr"
 column mb_bytes    format 999G999G999 heading "File|MB"
 
-COLUMN DUMMY NOPRINT;
+column DUMMY NOPRINT;
 COMPUTE SUM OF MB_BYTES ON DUMMY;
 BREAK ON DUMMY;
 

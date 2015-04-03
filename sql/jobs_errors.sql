@@ -1,8 +1,7 @@
 --==============================================================================
 -- Desc:   show all jobs in the database with an error
 --===============================================================================
-
-SET linesize 150 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ------------------------------------------------------------
 
@@ -47,7 +46,7 @@ order by  job
 ------------------------------------------------------------
 -- What scheduled tasks failed during execution, and why?
 
-TTITLE 'Scheduled Tasks That Failed' skip 2
+ttitle 'Scheduled Tasks That Failed' skip 2
 prompt  Scheduled Tasks That Failed:
 
 column log_date            format a32    heading 'Log Date'
@@ -72,7 +71,7 @@ select log_id
 
 ------------------------------------------------------------
 
-TTITLE 'Scheduled Tasks with out a status' skip 2
+ttitle 'Scheduled Tasks with out a status' skip 2
 prompt  Scheduled Tasks with out a status:
 
 select log_id
@@ -89,7 +88,7 @@ select log_id
 
 
 ------------------------------------------------------------
-TTITLE 'Auto Task with an error' skip 2
+ttitle 'Auto Task with an error' skip 2
 
 column client_name       format a25 heading "Job|Name"
 column job_status        format a10 heading "Job|status"
@@ -109,5 +108,5 @@ order by 1,2
 
 prompt
 prompt
-TTITLE off
+ttitle off
 

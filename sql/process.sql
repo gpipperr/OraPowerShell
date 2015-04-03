@@ -1,9 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Process List of Oracle sessions
 -- Date:   01.September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME   = &1
 define ALL_PROCESS = '&2'
@@ -14,9 +15,6 @@ prompt Parameter 2 = to Show all use Y => &&ALL_PROCESS.
 prompt
 
 
-set verify off
-
-SET linesize 150 pagesize 180
 
 ttitle left  "Process List of the Oracle Sessions" skip 2
 

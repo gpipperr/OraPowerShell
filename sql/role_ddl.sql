@@ -1,11 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get DDL of a role
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
 set verify  off
-set linesize 130 pagesize 4000 recsep OFF
+set linesize 130 pagesize 4000 recsep off
 
 define ROLENAME    = '&1' 
 

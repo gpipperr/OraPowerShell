@@ -1,10 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Status of the login instance
 -- Date:   01.September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "Status of this instances" skip 2
 

@@ -1,12 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get Information over the usage of resources of the database
 -- Date:   November 2013
-
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle  "Resource Limit Informations"  SKIP 2
 

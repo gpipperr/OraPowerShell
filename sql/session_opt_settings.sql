@@ -3,6 +3,8 @@
 -- Desc:   show the  optimizer settings of user sessions
 --
 --==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME = &1 
 
@@ -10,9 +12,7 @@ prompt
 prompt Parameter 1 = User  Name          => &&USER_NAME.
 prompt
 
-set verify off
 
-SET linesize 120 pagesize 400 recsep OFF
 
 column stat_name     format a32    heading "OptFeature|Name" 
 column sql_feature   format a20    heading "SQL|Feature"

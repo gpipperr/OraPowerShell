@@ -4,7 +4,7 @@
 --
 --==============================================================================
 
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 
 column name        format a40 heading  "OptFeature|Name" 

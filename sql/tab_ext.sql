@@ -4,37 +4,37 @@
 --==============================================================================
 
 set verify  off
-set linesize 120 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
-column  OWNER           format a20    heading "Owner"
-column  TABLE_NAME      format a20    heading "Table|Name"
-column  LOCATION        format a30    heading "Location"
-column  DIRECTORY_OWNER format a3     heading "DO"
-column  DIRECTORY_NAME  format a20    heading "Directory|Name"
+column  owner           format a20    heading "Owner"
+column  table_name      format a20    heading "Table|Name"
+column  location        format a30    heading "Location"
+column  directory_owner format a3     heading "DO"
+column  directory_name  format a20    heading "Directory|Name"
 
-select OWNER
-		, TABLE_NAME
-		, LOCATION
-		, DIRECTORY_OWNER
-		, DIRECTORY_NAME
- from DBA_EXTERNAL_LOCATIONS
-order by OWNER
-        ,TABLE_NAME
+select owner
+		, table_name
+		, location
+		, directory_owner
+		, directory_name
+ from dba_external_locations
+order by owner
+        ,table_name
 /		  
 
 prompt 
 prompt Details ...
 prompt 
 
-column  REJECT_LIMIT      format a20  heading "Reject|Limit"
-column  ACCESS_TYPE       format a20  heading "Access|Type"
-column  PROPERTY          format a10  heading "Property"
-column  ACCESS_PARAMETERS format a80  heading "Access|Parameter" Fold_before WORD_WRAPPED
+column  reject_limit      format a20  heading "Reject|Limit"
+column  access_type       format a20  heading "Access|Type"
+column  property          format a10  heading "Property"
+column  access_parameters format a80  heading "Access|Parameter" Fold_before WORD_WRAPPED
 
 
 BREAK ON ROW SKIP 2
 
-TTITLE COL 10 FORMAT 09  'Detail of the external Tables :' SQL.PNO
+ttitle 'Detail of the external Tables :'
 
 set long 64000
 

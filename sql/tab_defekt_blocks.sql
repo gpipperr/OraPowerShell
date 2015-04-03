@@ -1,8 +1,8 @@
---
+--==============================================================================
 --  check for block corruption
---
-
-set linesize 120 pagesize 4000 recsep off
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 
