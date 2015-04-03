@@ -1,9 +1,12 @@
-define USER_NAME = &1 
+--==============================================================================
+--
+--==============================================================================
 
+set linesize 130 pagesize 300 recsep off
 set verify off
 
-SET linesize 120 pagesize 500 recsep OFF
 
+define USER_NAME = &1 
 prompt
 prompt Parameter 1 = USER_NAME  => &&USER_NAME.
 prompt

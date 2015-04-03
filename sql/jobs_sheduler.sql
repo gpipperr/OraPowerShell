@@ -2,7 +2,7 @@
 -- Desc:   show all jobs create over dbms_sheduler in the database
 --===============================================================================
 
-SET linesize 140 pagesize 800 recsep OFF
+SET linesize 130 pagesize 800 recsep off
 
 ttitle "Job Scheduler Information -- Oracle scheduler table " skip 2
 
@@ -111,7 +111,7 @@ order by owner
        , job_name
 /			 
 			 			 
-TTITLE 'Scheduled Tasks duration histroy of the last day - only the first 40'
+ttitle 'Scheduled Tasks duration histroy of the last day - only the first 40'
 
 select * from (
 	select l.job_name
@@ -133,7 +133,7 @@ where rownum < 40
 
 -- What scheduled tasks failed during execution, and why?
 
-TTITLE 'Scheduled Tasks That Failed'
+ttitle 'Scheduled Tasks That Failed'
 prompt  Scheduled Tasks That Failed:
 
 column log_date            format a32    heading 'Log Date'
@@ -157,7 +157,7 @@ select  log_id
 / 
 
 
-TTITLE 'Scheduled Tasks without a Status - may be failed'
+ttitle 'Scheduled Tasks without a Status - may be failed'
 prompt  Scheduled Tasks That Failed:
 
 select log_id
@@ -191,7 +191,7 @@ select window_name
 
 
 
-TTITLE 'Auto Tasks:'
+ttitle 'Auto Tasks:'
 prompt  Auto Task  overview:
 
 column client_name       format a35 heading "Job|Name"

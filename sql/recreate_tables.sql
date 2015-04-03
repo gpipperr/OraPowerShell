@@ -8,10 +8,8 @@
 -- http://www.doag.org/home/aktuelle-news/article/defragmentierung-von-tablespaces-fuer-arme.html
 -- http://www.pythian.com/blog/oracle-file-extent-map-the-old-fashioned-way/
 -- ==============================================================
-
-
 set verify  off
-set linesize 130 pagesize 4000 recsep OFF
+set linesize 130 pagesize 4000 recsep off
 
 define TABLESPACE_NAME = '&1' 
 

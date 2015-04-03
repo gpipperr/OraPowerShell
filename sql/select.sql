@@ -1,15 +1,13 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   query some records from the table as list
 -- Parameter 1: Name of the table
 --
--- Site:   http://orapowershell.codeplex.com
+--
 -- Source see http://docs.oracle.com/cd/B28359_01/appdev.111/b28419/d_sql.htm#i996897
 --==============================================================================
-
 set verify  off
-
-set linesize 120 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define TAB_NAME = '&1' 
 

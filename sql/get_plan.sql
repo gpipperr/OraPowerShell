@@ -1,6 +1,9 @@
-set verify  off
+--==============================================================================
+--
+--==============================================================================
 
-set linesize 170 pagesize 4000 recsep OFF
+set verify  off
+set linesize 170 pagesize 4000 recsep off
 
 --ALLSTATS LAST NOTE
 

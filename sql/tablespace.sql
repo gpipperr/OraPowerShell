@@ -1,9 +1,13 @@
-----------------------------
-----------------------------
+--==============================================================================
+--
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 -- use the default block size as variable
 -- 
+
 col BLOCK_SIZE_COL new_val BLOCK_SIZE
 
 column BLOCK_SIZE_COL format a20 heading "Default DB Blocksize"
@@ -18,8 +22,7 @@ select value as BLOCK_SIZE_COL
 
 
  
-set pages 300 lines 300
-set verify off
+
 
 column tablespace_name     format a25         heading "Tablespace|Name"
 column used_space_gb       format 999G990D999 heading "Used Space|GB"

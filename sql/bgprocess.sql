@@ -1,6 +1,9 @@
+--==============================================================================
+--
+--==============================================================================
+set linesize 130 pagesize 300 recsep off
 set verify off
 
-SET linesize 150 pagesize 180
 
 ttitle left  "Process List of the Oracle BG Processes" skip 2
 

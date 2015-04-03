@@ -1,9 +1,9 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   recreate the statistic of a database
 -- Date:   01.2013
 -- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:statistiken
--- Site:   http://orapowershell.codeplex.com
+--
 -- Src:
 -- http://psoug.org/reference/system_stats.html
 -- http://docs.oracle.com/cd/E11882_01/server.112/e40402/initparams040.htm#REFRN10023

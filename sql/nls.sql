@@ -1,11 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   nls settings of the Session and the database
 -- Date:   September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET linesize 130 pagesize 120
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "Session NLS Lang Values" skip 2
 

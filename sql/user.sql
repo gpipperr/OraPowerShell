@@ -1,15 +1,17 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get the user rights and grants
 -- Date:   September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME = &1 
 
 set verify off
 
-SET linesize 120 pagesize 500 recsep OFF
+SET linesize 120 pagesize 500 recsep off
 
 ttitle left  "User Account status" skip 2
 

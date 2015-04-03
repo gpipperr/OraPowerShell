@@ -24,8 +24,7 @@ actual_latency      Average latency of database-block-sized I/O requests at max_
 --
 --
 
-set pagesize 300
-set linesize 150
+set linesize 130 pagesize 300 recsep off
 
 column name       format a35
 column start_time format a25
@@ -70,12 +69,13 @@ declare
   mbps integer;
 begin
   dbms_resource_manager.calibrate_io (  
-		  num_physical_disks    => 10
+		  num_physical_disks    => 36
 		, max_latency           => 10
 		, max_iops              => iops
 		, max_mbps              => mbps
 		, actual_latency        => lat
 	);
+	
   dbms_output.put_line('max_iops = ' || iops);
   dbms_output.put_line('latency  = ' || lat);
   dbms_output.put_line('max_mbps = ' || mbps);

@@ -1,5 +1,8 @@
-set verify  off
-set linesize 130 pagesize 4000 recsep OFF
+--==============================================================================
+--
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define TABLESPACE_NAME = '&1' 
 

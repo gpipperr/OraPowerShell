@@ -4,6 +4,8 @@
 --   
 --==============================================================================
 
+set linesize 130 pagesize 300 recsep off
+
 define DB_USER_NAME='&1'
 define SERVICE_NAME='%'
 
@@ -12,8 +14,6 @@ prompt Parameter 1 = DB_USER_NAME     => &&DB_USER_NAME.
 prompt Parameter 2 = SERVICE_NAME     => &&SERVICE_NAME.
 prompt
 
-SET pagesize 1000
-SET linesize 250
 
 
 column username        format a10
@@ -46,7 +46,7 @@ select count(*)
  where ass.inst_id = ah.inst_id
     and ass.NAME_HASH = ah.SERVICE_HASH
   --and ass.name like '%&&SERVICE_NAME.%'
-   and u.username like '%&&DB_USER_NAME.%'
+    and u.username like '%&&DB_USER_NAME.%'
    and u.user_id = ah.user_id
    and ah.SAMPLE_TIME > (sysdate - ((1 / (24 * 60)) * 60))
  group by u.username

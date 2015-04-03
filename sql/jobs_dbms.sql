@@ -2,8 +2,7 @@
 -- Desc:   show all jobs create over dbms_job in the database
 -- Date:   01.September 2012
 --===============================================================================
-
-SET linesize 130 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "Job Infos -- Oracle JOB Table " skip 2
 
@@ -17,6 +16,7 @@ column schema_user  format a11     heading "Schema|User"
 column owner        format a11     heading "Owner" 
 column failures     format 99      heading "Fail|Cnt"
 column what         format a10     heading "What|is called" WORD_WRAPPED
+column instance     format 9999    heading "Inst|ID"
 
 
 ttitle left  "Job Infos -- Oracle JOB defined with dbms_job" skip 2
@@ -30,6 +30,7 @@ select job
      , interval
 	  , failures
      , broken
+	  , instance
   from dba_jobs
 order by schema_user
        , job  

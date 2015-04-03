@@ -4,7 +4,7 @@
 -- ==============================================================================
 
 set verify  off
-set linesize 130 pagesize 100 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define OWNER       = '&1' 
 define OBJECT_TYPE = '%' 
@@ -32,7 +32,7 @@ select o.OBJECT_NAME
     and object_type like upper('&&OBJECT_TYPE.')
 order by 4 desc
 )
-where rownum < 31
+where rownum < 100
 /
 
 ttitle off

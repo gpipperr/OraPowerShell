@@ -1,19 +1,19 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   overview over the datafile of the database
 -- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle  "Report Database Files"  SKIP 1 -
        center "Sizes in MB" SKIP 2
 
-COLUMN tablespace_name format a18 heading "Tablespace"
-COLUMN df_size format 999999 heading "Size"
-COLUMN F_ID format 999
-COLUMN FILE_NAME format A53 heading "Filename"
+column tablespace_name format a18 heading "Tablespace"
+column df_size format 999999 heading "Size"
+column F_ID format 999
+column FILE_NAME format A53 heading "Filename"
 column status format A10
 column fragidx format A12 heading "Fragmen. Index"
 

@@ -1,6 +1,8 @@
-----
+--==============================================================================
 -- get the name of a wait statistic
-----
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define SYSSTAT_NAME = &1
 
@@ -9,12 +11,10 @@ prompt
 prompt Parameter 1 = SYSSTAT_NAME     => &&SYSSTAT_NAME.
 prompt
 
-SET pagesize 1000
-SET linesize 250
 
 
 ------------------------------------------------------------
-TTITLE 'Search after all waits statistics with this name &&SYSSTAT_NAME.' skip 2
+ttitle 'Search after all waits statistics with this name &&SYSSTAT_NAME.' skip 2
 
 
 select statistic#
@@ -26,4 +26,4 @@ order by 2
 /
 
 
-TTITLE off
+ttitle off

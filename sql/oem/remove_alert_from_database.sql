@@ -1,5 +1,9 @@
---- http://www.idevelopment.info/data/Oracle/DBA_tips/Advanced_Queuing/AQ_2.shtml#Dequeue Message
-
+--==============================================================================
+--
+--
+--==============================================================================
+-- http://www.idevelopment.info/data/Oracle/DBA_tips/Advanced_Queuing/AQ_2.shtml#Dequeue Message
+--==============================================================================
 
 SET SERVEROUTPUT ON
 

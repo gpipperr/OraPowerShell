@@ -1,11 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Event settings in the database, must be called as SYS
 -- Date:   01.2014
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET linesize 120 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 set feedback off
 set serveroutput on

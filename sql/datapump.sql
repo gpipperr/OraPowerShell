@@ -1,13 +1,13 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Get Information about running data pump jobs
 -- Date:   November 2013
 
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 column owner_name format a10;
 column job_name   format a20

@@ -3,9 +3,10 @@
 -- ======================================================
 -- http://arjudba.blogspot.de/2011/03/scripts-to-monitor-data-guard.html
 -- 
---
+--==============================================================================
 
-SET linesize 130 pagesize 2000 recsep OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 set serveroutput on size 1000000
 

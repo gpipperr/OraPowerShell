@@ -3,8 +3,7 @@
 -- Desc: get more information over the pga usage
 --   
 --==============================================================================
-SET pagesize 500
-SET linesize 250
+set linesize 130 pagesize 300 recsep off
 
 
 

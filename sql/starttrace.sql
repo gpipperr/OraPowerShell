@@ -1,4 +1,4 @@
---
+--==============================================================================
 -- see http://docs.oracle.com/cd/E11882_01/appdev.112/e40758/d_monitor.htm#ARPLS67176
 --
 -- If serial_num is NULL but session_id is specified, a session with a given session_id is traced irrespective of its serial number. If both session_id and serial_num are NULL, the current user session is traced. 
@@ -11,6 +11,9 @@
 -- plan_stat   Frequency at which we dump row source statistics. Value should be 'NEVER', 'FIRST_EXECUTION' (equivalent to NULL) or 'ALL_EXECUTIONS'.
 
 -- Start tracing with session_trace_enable => No entry in dba_enabled_traces but Entry in gv$session column SQL_TRACE != 'DISABLED'
+--==============================================================================
+
+
 begin
  dbms_monitor.session_trace_enable(
     session_id   => null,

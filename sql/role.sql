@@ -1,12 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get DB roles
 -- Date:   November 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
 set verify  off
-set linesize 130 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define ROLENAME    = '&1' 
 

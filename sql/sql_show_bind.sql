@@ -1,3 +1,4 @@
+--==============================================================================
 -- traditional http://tech.e2sn.com/oracle/troubleshooting/how-to-read-errorstack-output
 -- http://tech.e2sn.com/oracle/troubleshooting/oracle-s-real-time-sql-monitoring-feature-v-sql_monitor
 -- http://tech.e2sn.com/oracle/troubleshooting/oracle-s-real-time-sql-monitoring-feature-v-sql_monitor
@@ -5,7 +6,9 @@
 -- only uses if you have  a licence!!
 -- show parameter control_management_pack_access
 -- check also parameter _sqlmon_binds_xml_format
-
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define SQL_ID='&1'
 
@@ -13,8 +16,7 @@ prompt
 prompt Parameter 1 = SQL ID     => &&SQL_ID.
 prompt
 
-set pagesize 100
-set linesize 130
+
 
 column session_info format a30         heading "Session|Info" 
 column inst_id      format 99          heading "In|Id"

@@ -1,12 +1,14 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Get the statistic settings of all tables of a user
 -- Parameter 1: Name of the table
 --
 -- Must be run with dba privileges
 -- 
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME  = &1
 
@@ -14,7 +16,7 @@ prompt
 prompt Parameter 1 = Owner Name => &&USER_NAME.
 prompt
 
-SET linesize 150 pagesize 2000 recsep OFF
+SET linesize 150 pagesize 2000 recsep off
 
 ttitle "Read Statistic Values for all tables of this user &USER_NAME." SKIP 2
 

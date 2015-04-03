@@ -2,7 +2,7 @@
 -- Desc:   show the logs of a job
 --===============================================================================
 
-SET linesize 150 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ------------------------------------------------------------
 
@@ -15,7 +15,7 @@ prompt
 ------------------------------------------------------------
 -- Job Runs
 
-TTITLE 'Job Runs over dba_scheduler_job_run_details' skip 2
+ttitle 'Job Runs over dba_scheduler_job_run_details' skip 2
 
 column log_date            format a32    heading 'Log Date'
 column owner               format a06    heading 'Owner'
@@ -23,6 +23,7 @@ column job_name            format a26    heading 'Job'
 column status              format a10    heading 'Status'
 column actual_start_date   format a32    heading 'Actual|Start|Date'
 column error#              format 999999 heading 'Error|Nbr'
+column instance_id         format 9999    heading "Inst|ID"
 
 select  log_id
       , log_date
@@ -31,13 +32,14 @@ select  log_id
       , status
       , substr(actual_start_date,1,18)||' ...' as actual_start_date
       , error#
+		,instance_id
   from dba_scheduler_job_run_details
  where job_name like upper('%&&JOB_NAME.%')
    and log_date > (sysdate - 7)
  order by log_id desc
 / 
 
-TTITLE 'Log : dba_scheduler_job_log' skip 2
+ttitle 'Log : dba_scheduler_job_log' skip 2
 
 prompt  Scheduled Tasks with out a status:
 
@@ -53,4 +55,4 @@ select  log_id
  order by log_id desc
 / 
 
-TTITLE off
+ttitle off

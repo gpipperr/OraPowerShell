@@ -1,10 +1,10 @@
----
+--==============================================================================
 -- create a table with all ids and rowid's for a not full readable oracle table with lobs
 --
----
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
-SET linesize 130 pagesize 300 recsep OFF
-SET verify off
 set concat off
 set serveroutput on
 

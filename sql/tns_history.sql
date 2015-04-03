@@ -2,9 +2,8 @@
 -- Desc:   History of usage of a service in the last half day
 --==============================================================================
 
-set pagesize 300
-set linesize 140
-set recsep off
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 

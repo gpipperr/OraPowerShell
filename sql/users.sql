@@ -1,9 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get the users of the database
 -- Date:   September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
+
 define USER_NAME = &1 
 
 variable PUSERNAME varchar2(32)
@@ -21,9 +24,7 @@ begin
 end;
 /
 
-set verify off
 
-SET linesize 120 pagesize 400 recsep OFF
 
 ttitle left  "Default Table space" skip 2
 

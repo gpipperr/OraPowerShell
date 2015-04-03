@@ -3,8 +3,7 @@
 -- get Information about the installed java options and security settings
 --
 --==============================================================================
-
-set linesize 130 pagesize 4000 recsep OFF
+set linesize 130 pagesize 4000 recsep off
 
 column KIND     
 column GRANTEE     format a15 

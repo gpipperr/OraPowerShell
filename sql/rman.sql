@@ -1,14 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr 
 -- Desc:   get the RMan settings
 -- Date:   September 2013
--- Site:   http://orapowershell.codeplex.com
 --
 -- Source:  http://docs.oracle.com/cd/E11882_01/backup.112/e10643/rcviews001.htm
 --
 --==============================================================================
-
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle  "RMan non default settings"  SKIP 2
 

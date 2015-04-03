@@ -1,14 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get the tablespaces of all the users
 -- Date:   November 2013
 
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
-
 set verify  off
-set linesize 120 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 column tablespace_name format a20 heading "Tablespace|Name"
 column segment_type    format a20 heading "Segment|Type"

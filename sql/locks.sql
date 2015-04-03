@@ -1,12 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   SQL Script Locks overview
 -- Date:   2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET pagesize 300
-SET linesize 250
+set verify off
+set linesize 130 pagesize 300 recsep off
 set echo off
 
 ttitle left "Lock Overview in the database" skip 2

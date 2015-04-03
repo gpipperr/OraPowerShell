@@ -1,11 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   show the object count of none default users
 -- Date:   October 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET linesize 73 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 column OWNER format a25  
 
@@ -13,7 +13,7 @@ column OWNER format a25
 --break on owner SKIP 1
 --COMPUTE SUM OF size_GB ON owner
 
-COLUMN DUMMY NOPRINT;
+column DUMMY NOPRINT;
 COMPUTE SUM OF size_GB ON DUMMY;
 BREAK ON DUMMY;
 

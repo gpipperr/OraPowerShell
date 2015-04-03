@@ -1,5 +1,5 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   extract the DDL of a object in the database
 --
 -- Parameter 2: Owner of the table/object
@@ -8,9 +8,8 @@
 -- Must be run with dba privileges
 -- 
 --==============================================================================
-
-set verify  off
-set linesize 130 pagesize 4000 recsep OFF
+set verify off
+set linesize 130 pagesize 3000 recsep off
 
 define OWNER    = '&1' 
 define TAB_NAME = '&2' 

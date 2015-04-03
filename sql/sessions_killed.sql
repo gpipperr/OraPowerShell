@@ -5,6 +5,9 @@
 -- see How To Find The Process Identifier (pid, spid) After The Corresponding Session Is Killed? (Doc ID 387077.1)
 --
 
+set verify off
+set linesize 130 pagesize 300 recsep off
+
 ttitle left "Processes without entries in the v$session" skip 2
 
 

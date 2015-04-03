@@ -1,6 +1,8 @@
-SET pagesize 300
-SET linesize 120
-SET VERIFY OFF
+--==============================================================================
+--
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define ENTER_OWNER='&1'
 define ENTER_TABLE='&2'

@@ -1,16 +1,16 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get the profiles of the database
 -- Date:   September 2013
-
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME = &1 
 
 set verify off
 
-SET linesize 120 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 column PROFILE       format a26 heading "Profil"
 column RESOURCE_NAME format a25 heading "Resource Name"

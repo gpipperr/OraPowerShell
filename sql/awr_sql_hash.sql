@@ -5,7 +5,8 @@
 --==============================================================================
 -- see
 -- http://oracleprof.blogspot.de/2011/06/how-to-color-mark-sql-for-awr-snapshots.html
-
+--==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 define SQL_ID='&1'
 
@@ -13,8 +14,7 @@ prompt
 prompt Parameter 1 = SQL ID     => &&SQL_ID.
 prompt
 
-SET pagesize 1000
-SET linesize 250
+
 
 column end_interval_time   format a18 heading "Snap | End"
 column begin_interval_time format a18 heading "Snap | Begin"

@@ -6,6 +6,7 @@
 --  see 
 --  http://www.nocoug.org/download/2008-08/a-tour-of-the-awr-tables.nocoug-Aug-21-2008.abercrombie.html
 -- 
+--==============================================================================
 
 prompt
 prompt ... get the periods with more then 5 active sessions from the database

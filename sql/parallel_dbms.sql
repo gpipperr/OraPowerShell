@@ -1,4 +1,8 @@
-SET linesize 73 pagesize 400 recsep OFF
+--==============================================================================
+--
+--==============================================================================
+set linesize 130 pagesize 300 recsep off
+
 ttitle left  "DBMS_PARALLEL chunks in Work" skip 2
 
 column "Chunks" format a20

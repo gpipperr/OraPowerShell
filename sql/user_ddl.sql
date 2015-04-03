@@ -1,12 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Get DDL of the USEr
 -- Date:   Mai 2014
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 set verify  off
-set linesize 130 pagesize 4000 recsep OFF
+set linesize 130 pagesize 4000 recsep off
 
 define USERNAME    = '&1' 
 

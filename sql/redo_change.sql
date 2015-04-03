@@ -1,13 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   redo Change of a DB User
 -- Date:   November 2013
--- Site:   http://orapowershell.codeplex.com
+--
 -- Src:    http://www.mydbspace.com/?p=173
 --==============================================================================
-
-
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 column mb_day_total   format 999G999G999G999D999
 column change_percent format 999D99

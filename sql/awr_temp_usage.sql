@@ -6,6 +6,9 @@
 -- see 
 -- http://coskan.wordpress.com/2011/01/24/analysing-temp-usage-on-11gr2-temp-space-is-not-released/
 -- alternative from v$active_session_history 
+--==============================================================================
+
+set linesize 130 pagesize 300 recsep off
 
 define START_SNAP='&1'
 define END_SNAP='&2'

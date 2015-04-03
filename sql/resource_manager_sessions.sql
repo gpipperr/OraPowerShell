@@ -1,3 +1,10 @@
+--==============================================================================
+--
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
+
+
 define USER_NAME   =  &1
 
 prompt
@@ -5,9 +12,7 @@ prompt Parameter 1 = Username          => &&USER_NAME.
 prompt
 
 
-set verify off
 
-SET linesize 140 pagesize 300 recsep OFF
 
 column inst_id    format 99     heading "Inst|ID"
 column username   format a14     heading "DB User|name"

@@ -1,8 +1,9 @@
-------------------
+--==============================================================================
+--
+--==============================================================================
 
-set pagesize 300
-set linesize 140
-set recsep off
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 define OWNER    = '&1' 
@@ -41,7 +42,7 @@ where
  --'
  -- and 
  sv.name = s.service_name (+)
- and s.username not in ('SYS','DBSNMP','LPDBA','HP_DBSPI')
+ and s.username not in ('SYS','DBSNMP')
  and upper(s.username)  like ('&&OWNER')
 group by  s.username
 		  , s.machine

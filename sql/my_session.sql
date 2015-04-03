@@ -1,12 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get Information about my session
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 set verify off
 
-SET linesize 150 pagesize 180
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "My Oracle session and his process" skip 2
 

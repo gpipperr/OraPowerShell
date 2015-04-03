@@ -1,12 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   List tables 
 -- Date:   01.September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 set verify  off
-set linesize 120 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define TAB_NAME = '&1' 
 

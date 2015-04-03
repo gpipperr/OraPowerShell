@@ -8,6 +8,8 @@
 --  edit the Intervals Value to check the test intervals
 --  the may spool off should avoid that some messages are not in the log file (Buffer effect! ) !
 --====================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 set serveroutput on
 set feedback off

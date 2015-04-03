@@ -1,6 +1,9 @@
+--==============================================================================
 -- http://kerryosborne.oracle-guy.com/2008/09/flush-a-single-sql-statement/
 -- http://www.oracle.com/webfolder/technetwork/de/community/dbadmin/tipps/cursor_invalidieren/index.html
-
+--==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define SQL_ID='&1'
 

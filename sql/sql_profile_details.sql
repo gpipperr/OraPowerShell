@@ -6,9 +6,8 @@
 --  http://antognini.ch/papers/SQLProfiles_20060622.pdf
 --
 -- ==============================================================================
-
 set verify  off
-set linesize 120 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define PROF_NAME = '&1' 
 

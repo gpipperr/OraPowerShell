@@ -1,3 +1,8 @@
+--==============================================================================
+--
+--==============================================================================
+set linesize 130 pagesize 300 recsep off
+
 column owner        format a20
 column mview_name   format a25 
 column last_refresh_date format a18

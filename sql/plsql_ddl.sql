@@ -3,9 +3,8 @@
 -- Must be run with dba privileges
 -- 
 --==============================================================================
-
 set verify  off
-set linesize 300 pagesize 4000 recsep OFF
+set linesize 300 pagesize 4000 recsep off
 set trimspool on
 
 define OWNER        = '&1' 

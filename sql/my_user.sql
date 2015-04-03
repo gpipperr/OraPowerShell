@@ -1,5 +1,7 @@
---- get my user connection
-SET linesize 130 pagesize 300 recsep OFF
+--==============================================================================
+-- get my user connection
+--==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 column MY_USER_AND_SERVICE format a100 heading "My Connection is"
 

@@ -1,11 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:    Informations about the pga usage in the database
 -- Date:   08.2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-
-SET linesize 120 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 -- sga infos
 

@@ -6,6 +6,8 @@
 -- see 
 -- http://oracleprof.blogspot.de/2011/06/how-to-color-mark-sql-for-awr-snapshots.html
 -- http://mwidlake.wordpress.com/2010/01/08/more-on-command_type-values/ 
+--==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 define START_SNAP='&1'
 define END_SNAP='&2'
@@ -17,8 +19,7 @@ prompt Parameter 1 = START_SNAP     => &&START_SNAP.
 prompt Parameter 2 = END_SNAP       => &&END_SNAP.
 prompt
 
-SET pagesize 500
-SET linesize 250
+
 
 column begin_interval_time format a18 heading "Snap | Begin"
 column plan_hash_value     format 9999999999 heading "Plan | Hash"
@@ -54,7 +55,7 @@ where s.snap_id = ss.snap_id
   and s.begin_interval_time between to_date('&&START_SNAP','dd.mm.yyyy hh24:mi') and to_date('&&END_SNAP','dd.mm.yyyy hh24:mi')
   -- update or delete
   -- and st.COMMAND_TYPE in (6,7)
-  and ss.PARSING_SCHEMA_NAME not in ('SYS','SYSTEM','HP_DBSPI','DBSNMP','LPDBA')
+  and ss.PARSING_SCHEMA_NAME not in ('SYS','SYSTEM','DBSNMP')
 order by ss.sql_id ,s.snap_id, ss.instance_number,ss.PARSING_SCHEMA_NAME, ss.elapsed_time_delta desc
 /
 

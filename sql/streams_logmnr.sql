@@ -1,4 +1,10 @@
-set lines 190 pages 66
+--==============================================================================
+--
+--==============================================================================
+
+set verify off
+set linesize 130 pagesize 300 recsep off
+
 col ROLE format a16
 col SESSION_ID format 99999 head 'Logmr|id' justify c
 col WORK_MICROSEC format 9999990.99 head 'Work(sec)'

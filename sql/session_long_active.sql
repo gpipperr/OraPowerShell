@@ -1,7 +1,7 @@
 --==============================================================================
 -- Author: Gunther Pippèrr 
 -- Desc:   Check for long active sessions longer then one hour
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 column session_info format a20         heading "Session|Info" 
@@ -30,7 +30,7 @@ select inst_id
 from gv$session 
 where status='ACTIVE' 
   and type='USER' 
-  and username not in ('LPDBA','SYS','AQ','STRMADMIN') 
+  and username not in ('SYS','AQ','STRMADMIN') 
   and last_call_et > (60*60) -- longer then one hour
 order by sql_id,inst_id
 /

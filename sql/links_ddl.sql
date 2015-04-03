@@ -1,10 +1,8 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
 -- Desc:   DB Links DDL
-
 --==============================================================================
 
-SET linesize 240 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 set long 1000000
 

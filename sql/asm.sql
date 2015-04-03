@@ -1,12 +1,10 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+-- Author: Gunther Pippèrr 
 -- Desc:   SQL Script ASM Disk Overview
 -- Date:   2012
--- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
-SET pagesize 300
-SET linesize 250
+set linesize 130 pagesize 300 recsep off
 
 spool asm.log
 

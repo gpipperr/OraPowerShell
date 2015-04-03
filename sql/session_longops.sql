@@ -1,17 +1,18 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   get Information about long running sessions
 -- Src:    see http://docs.oracle.com/cd/B19306_01/server.102/b14237/dynviews_2092.htm
 --==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
+
 define USER_NAME   =  &1
 
 prompt
 prompt Parameter 1 = Username          => &&USER_NAME.
 prompt
 
-set verify off
 
-SET linesize 140 pagesize 300 recsep OFF
 
 ttitle left  "All Long Running Sessions on this DB" skip 2
 

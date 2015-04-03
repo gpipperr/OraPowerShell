@@ -1,7 +1,7 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   grants to an object in the database
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 --desc DBA_ROLE_PRIVS
@@ -9,8 +9,7 @@
 --desc DBA_TAB_PRIVS
 
 
-SET pagesize 300
-SET linesize 250
+set linesize 130 pagesize 300 recsep off
 SET VERIFY OFF
 
 define OWNER    = '&1' 

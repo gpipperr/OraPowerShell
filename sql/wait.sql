@@ -1,9 +1,9 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:  show the actual wait of the database 
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle  "Report waiting Sessions"  SKIP 2 
 

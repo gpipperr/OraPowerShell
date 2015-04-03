@@ -4,8 +4,7 @@
 -- =======================================
 -- Master Note: Overview of Database Resident Connection Pooling (DRCP) (Doc ID 1501987.1)
 
-SET pagesize 100
-SET linesize 250
+set linesize 130 pagesize 300 recsep off
 
 
 column CONNECTION_POOL                format a30      heading "CONNECTION|POOL"        

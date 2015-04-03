@@ -6,7 +6,7 @@
 
 
 set verify  off
-set linesize 120 pagesize 4000 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 define OBJ_NAME = '&1' 
 

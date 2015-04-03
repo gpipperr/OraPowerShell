@@ -1,5 +1,5 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Get the statistic settings of the table
 -- Parameter 1: Name of the User
 -- in work
@@ -7,8 +7,9 @@
 --
 -- Must be run with dba privileges
 -- 
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME  = &1
 

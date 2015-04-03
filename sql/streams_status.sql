@@ -1,13 +1,15 @@
---
+--==============================================================================
 -- http://docs.oracle.com/cd/E11882_01/server.112/e10705/toc.htm
 -- http://www.oracle11ggotchas.com/articles/Resolving%20archived%20log%20file%20gaps%20in%20Streams.pdf
 -- http://it.toolbox.com/blogs/oracle-guide/manually-creating-a-logical-change-record-lcr-13838
 -- 
 -- Streams Troubleshooting Guide (Doc ID 883372.1)
 --
+--==============================================================================
 
 
-SET linesize 130 pagesize 2000 recsep OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 set serveroutput on size 1000000
 

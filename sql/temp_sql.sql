@@ -1,9 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   check usage of temp tablespace
 -- Date:   November 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 select s.inst_id
      , s.username

@@ -1,13 +1,14 @@
---------------------------------------------------------------------------------------------------
+--==============================================================================
 -- Source
 -- http://docs.oracle.com/cd/B19306_01/appdev.102/b14258/d_apply.htm
 -- http://docs.oracle.com/cd/B28359_01/appdev.111/b28419/t_lcr.htm#BABGGBHF
 -- http://wedostreams.blogspot.de/2009/09/new-streams-112-sql-generation-facility.html
 -- http://it.toolbox.com/blogs/oracle-guide/manually-creating-a-logical-change-record-lcr-13838
 -- http://www.fadalti.com/oracle/database/Streams.htm
---
---------------------------------------------------------------------------------------------------
-SET linesize 1000 pagesize 800 recsep OFF
+--==============================================================================
+
+set verify off
+set linesize 1000 pagesize 4000 recsep off
 
 set trimspool on
 set serveroutput on

@@ -1,10 +1,11 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
--- Desc:   :   HTML Report for the entries in the audit log
+--
+-- Desc:   HTML Report for the entries in the audit log
 -- see :   http://www.pipperr.de/dokuwiki/doku.php?id=dba:index_column_usage
 -- Date:   September 2013
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+
 /*
 Timeformat differences between audit$ and audit trail!
 select 
@@ -24,7 +25,7 @@ FROM dual
 /
 
 set verify off
-SET linesize 250 pagesize 2000 recsep OFF
+SET linesize 250 pagesize 2000 recsep off
 
 spool &&SPOOL_NAME
 
@@ -70,7 +71,7 @@ select  OS_USERNAME
  ,SQL_TEXT
 -- ,OBJ_EDITION_NAME
  from dba_audit_object
-where timestamp between sysdate-1 and sysdate
+where timestamp between sysdate-21 and sysdate
 order by timestamp
 /
 

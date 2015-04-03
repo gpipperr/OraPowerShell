@@ -1,15 +1,15 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Main statistic information of the database
 -- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
 -- 11g: Scheduler Maintenance Tasks or Autotasks [ID 756734.1]
 -- Why Auto Optimizer Statistics Collection May Appear to be "Stuck"? (Doc ID 1320246.1)
 
 
-SET linesize 130 pagesize 120
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "Workload Statistic Values" skip 2
 
@@ -249,6 +249,36 @@ ttitle left  "How long the DB keeps old statistics" skip 2
 select DBMS_STATS.GET_STATS_HISTORY_RETENTION
   from dual
 /  
+
+ttitle left  "Check Global Stat Settings" skip 2 
+
+column parameter format a30
+column value format a30
+
+select 'AUTOSTATS_TARGET'  as parameter, DBMS_STATS.GET_PREFS ( 'AUTOSTATS_TARGET','GLOBAL') as value from dual
+union
+select 'CASCADE'           as parameter, DBMS_STATS.GET_PREFS ( 'CASCADE','GLOBAL') as value from dual
+union
+select 'DEGREE'            as parameter, DBMS_STATS.GET_PREFS ( 'DEGREE','GLOBAL') as value from dual
+union
+select 'ESTIMATE_PERCENT'  as parameter, DBMS_STATS.GET_PREFS ( 'ESTIMATE_PERCENT','GLOBAL') as value from dual
+union
+select 'METHOD_OPT'        as parameter, DBMS_STATS.GET_PREFS ( 'METHOD_OPT','GLOBAL') as value from dual
+union
+select 'NO_INVALIDATE'     as parameter, DBMS_STATS.GET_PREFS ( 'NO_INVALIDATE','GLOBAL') as value from dual
+union
+select 'GRANULARITY'      as parameter, DBMS_STATS.GET_PREFS ( 'GRANULARITY','GLOBAL') as value from dual
+union
+select 'PUBLISH'          as parameter, DBMS_STATS.GET_PREFS ( 'PUBLISH','GLOBAL') as value from dual
+union
+select 'INCREMENTAL'      as parameter, DBMS_STATS.GET_PREFS ( 'INCREMENTAL','GLOBAL') as value from dual
+union
+select 'STALE_PERCENT'    as parameter, DBMS_STATS.GET_PREFS ( 'STALE_PERCENT','GLOBAL') as value from dual
+/
+
+prompt ... 
+prompt ... to set the global preferences use "exec DBMS_STATS.SET_GLOBAL_PREFS ( pname => ' ', pvalue =>' ');"
+prompt ... 
 
 ttitle off
 

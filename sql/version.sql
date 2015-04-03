@@ -1,13 +1,14 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   version of the database
 -- Date:   01.September 2012
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 -- see Script to Collect DB Upgrade/Migrate Diagnostic Information (dbupgdiag.sql) (Doc ID 556610.1)
 --
+--==============================================================================
 
-SET linesize 240 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "DB Infos -- Version" skip 2
 

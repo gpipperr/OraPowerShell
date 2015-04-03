@@ -3,7 +3,7 @@
 -- Desc: get  the statistic information over a the active sessions of a DB user
 --   
 --==============================================================================
-
+set linesize 130 pagesize 300 recsep off
 
 
 define DB_USER_NAME='&1'
@@ -12,8 +12,6 @@ prompt
 prompt Parameter 1 = DB_USER_NAME     => &&DB_USER_NAME.
 prompt
 
-SET pagesize 1000
-SET linesize 250
 
 column begin_interval_time format a18 heading "Snap | Begin"
 column instance_number     format 99 heading "In|st"

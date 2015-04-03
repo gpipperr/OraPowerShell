@@ -29,7 +29,7 @@ TABLE "WIDTH='90%' BORDER='1'"
 spool &&SPOOL_NAME
 
 set verify off
-SET linesize 180 pagesize 4000 recsep OFF
+SET linesize 180 pagesize 4000 recsep off
 
 ttitle left  "Search SQL from AWR Repository this text string :  &SQL_STATEMENT." skip 2
 
@@ -67,7 +67,7 @@ where s.snap_id = ss.snap_id
 	and t.sql_text not like '%dynamic_sampling(0) no_sql_tune no_monitoring optimizer_features_enable%'
 	and t.sql_text not like '% NO_PARALLEL%'
 	and t.sql_text not like '%NOPARALLEL%'
-	and ss.PARSING_SCHEMA_NAME not in ('SYS','DBSNMP','SYSTEM','LPDBA','HP_DBSPI')
+	and ss.PARSING_SCHEMA_NAME not in ('SYS','DBSNMP','SYSTEM')
 group by ss.parsing_schema_name  
 	    , t.SQL_ID
 	    , ss.plan_hash_value

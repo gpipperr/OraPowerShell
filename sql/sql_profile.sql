@@ -23,6 +23,9 @@
  TASK_REC_ID          	NUMBER
 */
 
+set verify off
+set linesize 130 pagesize 300 recsep off
+
 column name 		 format a30 heading "Profile|Name"
 column category    format a12 heading "Category|Name"
 column description format a12 heading "Description"
@@ -71,6 +74,7 @@ where pf.name=vs.sql_profile
 
 prompt ...
 prompt to delete a profile use  exec DBMS_SQLTUNE.DROP_SQL_PROFILE(name => 'PROFILE NAME');
+prompt to rename a profile use dbms_sqltune.alter_sql_profile (  name => 'SYS_SQLPROF_xxx', attribute_name => 'NAME', VALUE => 'GPI_BUG_1078' );
 prompt ...
 
 ttitle off

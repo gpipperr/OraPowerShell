@@ -3,8 +3,9 @@
 --
 -- =================================================
 -- source see https://asktom.oracle.com/pls/asktom/f?p=100:11:0::::P11_QUESTION_ID:12840327558363
+--==============================================================================
 
-col SPOOL_NAME_COL new_val SPOOL_NAME
+column SPOOL_NAME_COL new_val SPOOL_NAME
  
 SELECT replace(ora_database_name||'_'||SYS_CONTEXT('USERENV','HOST')||'_'||to_char(sysdate,'dd_mm_yyyy_hh24_mi')||'_col_usage.html','\','_') 
 --' resolve syntax highlight bug FROM my editer .-(
@@ -28,7 +29,7 @@ spool &&SPOOL_NAME
 set markup html on
 
 set verify off
-SET linesize 130 pagesize 2000 recsep OFF
+SET linesize 130 pagesize 2000 recsep off
 
 select to_char(sysdate,'dd.mm.yyyy hh24:mi') as anlayse_date from dual
 /

@@ -2,7 +2,8 @@
 -- Desc:   get one LCR of a streams replication 
 --==============================================================================
 
-SET linesize 130 pagesize 2000 recsep OFF
+set verify off
+set linesize 130 pagesize 3000 recsep off
 
 prompt.... Detail Error messages around the actual error
 

@@ -1,5 +1,9 @@
+--==============================================================================
+--
+--==============================================================================
+
 set verify off
-SET linesize 130 pagesize 2000 recsep OFF
+SET linesize 130 pagesize 2000 recsep off
 
 set serveroutput on size 1000000
 

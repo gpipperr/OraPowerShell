@@ -1,12 +1,12 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Get the audit settings of the database
 --
 -- Must be run with dba privileges
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
 
-SET linesize 120 pagesize 400 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 ttitle left  "Audit settings -- init.ora " skip 2
 

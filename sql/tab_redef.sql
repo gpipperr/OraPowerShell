@@ -1,12 +1,13 @@
+--==============================================================================
 -- http://www.dba-oracle.com/t_online_table_reorganization.htm
 -- http://www.dba-oracle.com/t_dbms_redefinition_example.htm
 -- http://docs.oracle.com/cd/E11882_01/appdev.112/e40758/d_redefi.htm#ARPLS67521
 -- http://www.oracle.com/webfolder/technetwork/de/community/dbadmin/tipps/dbms_redefinition/index.html
+--==============================================================================
 
 ---------------------------------------
-set pagesize 1000
-set linesize 130
 set verify off
+set linesize 130 pagesize 300 recsep off
 set echo on
 set timing on
 set time on
@@ -103,8 +104,8 @@ cursor c_comment
 begin
  for rec in c_comment
  loop
-   dbms_output.put_line('INFO -- set COMMENT ON COLUMN '||rec.owner||'.'||rec.table_name||'.'||rec.column_name||' is ''-''');
-	execute immediate 'COMMENT ON COLUMN '||rec.owner||'.'||rec.table_name||'.'||rec.column_name||' is ''-''';
+   dbms_output.put_line('INFO -- set COMMENT ON column '||rec.owner||'.'||rec.table_name||'.'||rec.column_name||' is ''-''');
+	execute immediate 'COMMENT ON column '||rec.owner||'.'||rec.table_name||'.'||rec.column_name||' is ''-''';
  end loop; 
 end;
 /
@@ -396,8 +397,8 @@ declare
 begin
  for rec in c_c_comment
  loop
-		dbms_output.put_line('INFO -- set COMMENT ON COLUMN '||rec.owner||'.'||rec.table_name||'.'||rec.column_name||' is '''||rec.comments||'''');
-		execute immediate 'COMMENT ON COLUMN '||rec.owner||'.'||rec.table_name||'.'||rec.column_name||' is '''||replace(rec.comments,'''','''''')||'''';	
+		dbms_output.put_line('INFO -- set COMMENT ON column '||rec.owner||'.'||rec.table_name||'.'||rec.column_name||' is '''||rec.comments||'''');
+		execute immediate 'COMMENT ON column '||rec.owner||'.'||rec.table_name||'.'||rec.column_name||' is '''||replace(rec.comments,'''','''''')||'''';	
 	end loop; 
  for rec in c_t_comment
  loop

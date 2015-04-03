@@ -1,12 +1,14 @@
 --==============================================================================
--- Author: Gunther Pippèrr ( http://www.pipperr.de )
+--
 -- Desc:   Get the statistic settings of the table
 -- Parameter 1: Name of the table
 --
 -- Must be run with dba privileges
 -- 
--- Site:   http://orapowershell.codeplex.com
+--
 --==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define USER_NAME  = &1
 define TABLE_NAME = &2 
@@ -18,7 +20,7 @@ prompt Parameter 2 = Tab Name   => &&TABLE_NAME.
 prompt
 
 
-set verify off
+
 
 create or replace function show_rawvalue(p_rawval raw, p_dtype varchar2)
   return varchar2 is
@@ -70,22 +72,30 @@ end;
 /
 
 
-SET linesize 150 pagesize 200 recsep OFF
+SET linesize 150 pagesize 200 recsep off
 
 ttitle "Read Statistic Values for this table &TABLE_NAME." SKIP 2
 
 column table_name  format a15
+column PARTITION_NAME format a20
+colum locked format a5 heading "Stat|Lock"
 
-select  table_name
-      , status
-	  , to_char(LAST_ANALYZED,'dd.mm.yyyy hh24:mi') as LAST_ANALYZED
-	  , NUM_ROWS
-	  , AVG_SPACE
-	  , CHAIN_CNT
-	  , AVG_ROW_LEN
- from dba_tables
-where table_name like '&TABLE_NAME.'
-  and  owner      like '&USER_NAME.'
+select t.table_name
+     , ts.PARTITION_NAME
+     , t.status
+	  , to_char(ts.LAST_ANALYZED,'dd.mm.yyyy hh24:mi') as LAST_ANALYZED
+	  , ts.NUM_ROWS
+	  , ts.AVG_SPACE
+	  , ts.CHAIN_CNT
+	  , ts.AVG_ROW_LEN
+	  , ts.stattype_locked as locked
+ from dba_tables t
+    , dba_tab_statistics ts
+where ts.table_name=t.table_name
+  and ts.owner=t.owner
+  and t.table_name like '&TABLE_NAME.'
+  and t.owner      like '&USER_NAME.'
+order by ts.PARTITION_NAME  
 /
 
 prompt ... to anaylse the space Usage use tab.sql

@@ -3,7 +3,7 @@
 --
 --==============================================================================
 
-SET linesize 130 pagesize 300 recsep OFF
+set linesize 130 pagesize 300 recsep off
 
 column total_size                format 999G999G999 heading "Total|size"
 column OLDEST_SAMPLE_TIME        format a18         heading "Oldest|sample"
