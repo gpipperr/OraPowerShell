@@ -1,16 +1,17 @@
 --==============================================================================
--- Oracle Health Monitor abfragen
+-- GPI - Gunther Pippèrr
+-- Desc: Query the Oracle Health Monitor
+-- Work in progress
 --==============================================================================
 -- see http://www.pipperr.de/dokuwiki/doku.php?id=dba:oracle_health_monitor
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 column name format a40
 
 select name 
   from v$hm_check
- where  internal_check='N'
+ where internal_check='N'
 /   
 
 column check_name format a40

@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   analyse chained rows in the database
 --
 -- Must be run with dba privileges
@@ -8,9 +8,9 @@
 --==============================================================================
 -- http://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_4005.htm#SQLRF01105
 -- http://blog.tanelpoder.com/2009/11/04/detect-chained-and-migrated-rows-in-oracle/
-
-set linesize 130 pagesize 1000 recsep off
+--==============================================================================
 set verify off
+set linesize 130 pagesize 1000 recsep off
 
 define USER_NAME ='GPI'
 define TABLE_NAME ='COL_T'

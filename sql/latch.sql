@@ -1,5 +1,6 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr 
+-- Desc: get Information’s about the DB latch usage
 --==============================================================================
 set linesize 130 pagesize 300 recsep off
 
@@ -7,7 +8,6 @@ column name format a32
 column gets format 999G999G999
 column ratio_miss format 90D99
 column spin_gets format 999G999G999
-
 
 select a.name
      , a.gets gets

@@ -1,8 +1,8 @@
 --==============================================================================
--- Author: Gunther Pippèrr 
+-- GPI - Gunther Pippèrr
 -- Desc:   Check for long active sessions longer then one hour
---
 --==============================================================================
+set linesize 130 pagesize 300 recsep off
 
 column session_info format a20         heading "Session|Info" 
 column last_call_et format 999G999G999 heading "Query|Runtime sec"
@@ -20,9 +20,9 @@ break on sql_id
 select inst_id 
 	  , username||'(sid:'||sid||')' as session_info
 	  , sql_id
-     , machine
+      , machine
      --, terminal
-     , program
+      , program
 	  , module
 	  --, client_info
 	  , osuser
@@ -35,8 +35,8 @@ where status='ACTIVE'
 order by sql_id,inst_id
 /
 
-
 prompt ...
 prompt ... use session_longops.sql to see what the session is doing
 prompt ...
 
+clear break

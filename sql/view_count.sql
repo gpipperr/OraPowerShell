@@ -1,10 +1,8 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   count the entries of a table
 -- Date:   01.September 2013
---
 --==============================================================================
-
 set verify  off
 set linesize 130 pagesize 300 recsep off
 

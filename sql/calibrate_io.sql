@@ -1,35 +1,30 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Desc:   SQL Script to check io of the database
 -- Date:   08.2013
+--==============================================================================
 -- Doku:   http://www.oracle.com/webfolder/technetwork/de/community/dbadmin/tipps/io_calibration/index.html
 --         http://docs.oracle.com/cd/E11882_01/appdev.112/e25788/d_resmgr.htm#CJGHGFEA
 --         https://support.oracle.com/epmos/main/downloadattachmentprocessor?attachid=727062.1:CALIBRATEIO&clickstream=yes
----        http://docs.oracle.com/cd/E11882_01/appdev.112/e40758/d_resmgr.htm#ARPLS050
+--         http://docs.oracle.com/cd/E11882_01/appdev.112/e40758/d_resmgr.htm#ARPLS050
+--
+-- num_physical_disks  Approximate number of physical disks in the database storage
+-- max_latency         Maximum tolerable latency in milliseconds for database-block-sized IO requests
+-- max_iops            Maximum number of I/O requests per second that can be sustained. The I/O requests are randomly-distributed, database-block-sized reads.
+-- max_mbps            Maximum throughput of I/O that can be sustained, expressed in megabytes per second. The I/O requests are randomly-distributed, 1 megabyte reads.
+-- actual_latency      Average latency of database-block-sized I/O requests at max_iops rate, expressed in milliseconds
+-- 
 --==============================================================================
-
-
-/*
-
-num_physical_disks  Approximate number of physical disks in the database storage
-max_latency         Maximum tolerable latency in milliseconds for database-block-sized IO requests
-max_iops            Maximum number of I/O requests per second that can be sustained. The I/O requests are randomly-distributed, database-block-sized reads.
-max_mbps            Maximum throughput of I/O that can be sustained, expressed in megabytes per second. The I/O requests are randomly-distributed, 1 megabyte reads.
-actual_latency      Average latency of database-block-sized I/O requests at max_iops rate, expressed in milliseconds
-
-*/
-
-
 --
--- Must be runs as SYS!
+-- Must run as SYS!
 --
 --
-
+--==============================================================================
 set linesize 130 pagesize 300 recsep off
 
 column name       format a35
 column start_time format a25
 column end_time   format a25
-
 
 select * 
   from  sys.RESOURCE_IO_CALIBRATE$
@@ -88,14 +83,13 @@ set time off
 
 
 
-column START_TIME          format a21    heading "Start|time"			
-column END_TIME 			   format a21    heading "End|time"
-column MAX_IOPS 			   format 9999999 heading "Block/s|data block" 
-column MAX_MBPS 			   format 9999999 heading "MB/s|maximum-sized read" 
-column MAX_PMBPS 			   format 9999999 heading "MB/s|largeI/0" 
-column LATENCY 				format 9999999 heading "Latency|data block read" 
-column NUM_PHYSICAL_DISKS  format 999     heading "Disk|Cnt"
-
+column start_time          format a21    heading "Start|time"			
+column end_time 		   format a21    heading "End|time"
+column max_iops 		   format 9999999 heading "Block/s|data block" 
+column max_mbps 		   format 9999999 heading "MB/s|maximum-sized read" 
+column max_pmbps 		   format 9999999 heading "MB/s|largeI/0" 
+column latency 			   format 9999999 heading "Latency|data block read" 
+column num_physical_disks  format 999     heading "Disk|Cnt"
 
 select to_char(START_TIME,'dd.mm.yyyy hh24:mi') as START_TIME
 	,to_char(END_TIME,'dd.mm.yyyy hh24:mi') as END_TIME 			
@@ -107,7 +101,6 @@ select to_char(START_TIME,'dd.mm.yyyy hh24:mi') as START_TIME
   from dba_rsrc_io_calibrate
 /
 
-
 -- START_TIME 			Start time of the most recent I/O calibration 
 -- END_TIME 			End time of the most recent I/O calibration 
 -- MAX_IOPS 			Maximum number of data block read requests that can be sustained per second 
@@ -116,14 +109,11 @@ select to_char(START_TIME,'dd.mm.yyyy hh24:mi') as START_TIME
 -- LATENCY 					Latency for data block read requests 
 -- NUM_PHYSICAL_DISKS 	Number of physical disks in the storage subsystem (as specified by the user) 
 
-
-
 select * 
    from GV$IO_CALIBRATION_STATUS
 /
 
 prompt ... You should see that your IO Calibrate is READY and therefore Auto DOP is ready.
-
 
 select
      d.name

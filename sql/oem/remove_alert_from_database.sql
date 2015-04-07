@@ -1,9 +1,11 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 --
 --==============================================================================
 -- http://www.idevelopment.info/data/Oracle/DBA_tips/Advanced_Queuing/AQ_2.shtml#Dequeue Message
 --==============================================================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 SET SERVEROUTPUT ON
 
@@ -23,7 +25,7 @@ BEGIN
     dequeue_options.NAVIGATION              := DBMS_AQ.NEXT_MESSAGE;
     dequeue_options.VISIBILITY              := DBMS_AQ.IMMEDIATE;
     dequeue_options.WAIT                    := DBMS_AQ.FOREVER;
-    dequeue_options.MSGID                   := '02893F422EFA6619E0531B90C90AAE64';
+    dequeue_options.MSGID                   := 'xxxxxxxxxxxxxxxxxxxxxxx';
     dequeue_options.CORRELATION             := 'TEST MESSAGE';
 
     -- -------------------------------------------------------

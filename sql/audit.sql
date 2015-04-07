@@ -1,11 +1,10 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   Get the audit settings of the database
 --
 -- Must be run with dba privileges
 --
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 ttitle left  "Audit settings -- init.ora " skip 2

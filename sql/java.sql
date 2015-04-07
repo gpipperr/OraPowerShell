@@ -1,7 +1,6 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- get Information about the installed java options and security settings
---
 --==============================================================================
 set linesize 130 pagesize 4000 recsep off
 

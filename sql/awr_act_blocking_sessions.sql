@@ -1,8 +1,12 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc: get Information about the last blocking sessions
 --   
 --==============================================================================
+prompt
+prompt !!!!You need the Tuning Pack for this feature!!!!
+prompt
+
 
 set linesize 130 pagesize 300 recsep off
 define SNAPTIME=10

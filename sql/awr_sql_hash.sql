@@ -1,11 +1,15 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc: get more information about one sql statement from the awr
 --   
 --==============================================================================
 -- see
 -- http://oracleprof.blogspot.de/2011/06/how-to-color-mark-sql-for-awr-snapshots.html
 --==============================================================================
+prompt
+prompt !!!!You need the Tuning Pack for this feature!!!!
+prompt
+
 set linesize 130 pagesize 300 recsep off
 
 define SQL_ID='&1'
@@ -40,9 +44,9 @@ where s.snap_id = ss.snap_id
   and ss.instance_number = s.instance_number
  and ss.sql_id = '&&sql_id.' 
 group by   ss.instance_number
-         , ss.sql_id
-			, ss.plan_hash_value
-			, ss.parsing_schema_name
+        , ss.sql_id
+		, ss.plan_hash_value
+		, ss.parsing_schema_name
 order by 4
 /
 

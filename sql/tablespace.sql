@@ -1,9 +1,9 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
+-- Desc: Information about the tablespaces
 --==============================================================================
 set verify off
 set linesize 130 pagesize 300 recsep off
-
 
 -- use the default block size as variable
 -- 
@@ -18,11 +18,6 @@ select value as BLOCK_SIZE_COL
   from v$parameter 
  where name = 'db_block_size'
  /
-
-
-
- 
-
 
 column tablespace_name     format a25         heading "Tablespace|Name"
 column used_space_gb       format 999G990D999 heading "Used Space|GB"
@@ -69,7 +64,7 @@ select df.tablespace_name
      , df.gb_size as DF_SIZE_GB
 	  , fs.gb_free
 	  , (df.gb_size - fs.gb_free) as used_space_gb	 
-	  , round((100/df.gb_max*(df.gb_size - fs.gb_free)),3)*100  as used_percent
+	  , (case gb_max when 0 then 0 else (round((100/df.gb_max*(df.gb_size - fs.gb_free)),3)*100) end)  as used_percent
 	  , round((100/df.gb_size*(df.gb_size - fs.gb_free)),3)*100 as pct_used_size
 	  , dt.BLOCK_SIZE
 from (select tablespace_name
@@ -106,7 +101,4 @@ order by fs.tablespace_name
 /
  
 ttitle off
-
-set verify on
-
 

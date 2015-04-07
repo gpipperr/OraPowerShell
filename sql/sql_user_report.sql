@@ -2,7 +2,6 @@
 -- Author: Gunther Pippèrr
 -- Desc:   :   HTML Report for SQL queries executed by one user
 --==============================================================================
-
 define DB_USER_NAME = &1
 
 
@@ -21,8 +20,7 @@ FROM dual
 
 
 set verify off
-set linesize 130 pagesize 3000 recsep off
-
+set linesize 250 pagesize 3000 recsep off
 
 column sql_text format a35 heading "SQL|Text"
 column sql_id   format a13 heading "SQL|ID"
@@ -61,7 +59,7 @@ select s.SQL_ID
  where  u.user_id=s.parsing_user_id
     and u.username like upper('&&DB_USER_NAME.')
 	 --and s.LAST_ACTIVE_TIME between to_date('14.11.2014 08:00','dd.mm.yyyy hh24:mi') and to_date('14.11.2014 09:00','dd.mm.yyyy hh24:mi')		
-	 and s.executions>1	 
+	and s.executions>1	 
 order by s.LAST_ACTIVE_TIME desc
 /
 

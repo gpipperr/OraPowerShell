@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   describe a table in the database
 --
 -- Parameter 1: Owner of the table

@@ -1,10 +1,9 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc:   show open transactions in the database
 -- Date:   September 2013
 --
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 ttitle  "Report DB transactions longer open "  SKIP 1
@@ -25,17 +24,17 @@ column name         format a15
 
 select n.inst_id
      , n.sid
-	  , n.serial#
+	 , n.serial#
      , n.username
      , n.osuser
-	  , n.machine
-	  , n.program
-	  , n.action
-	  , to_char(n.logon_time,'dd.mm.yyyy hh24:mi') as logon_time
-	  , n.last_call_et
-	  , n.status
-	  --, t.name
-	  , t.xidusn||'.'||t.xidslot||'.'||t.xidsqn as xid
+	 , n.machine
+	 , n.program
+	 , n.action
+	 , to_char(n.logon_time,'dd.mm.yyyy hh24:mi') as logon_time
+	 , n.last_call_et
+	 , n.status
+	 --, t.name
+	 , t.xidusn||'.'||t.xidslot||'.'||t.xidsqn as xid
   from gv$session n
      , gv$transaction t
 where  n.taddr = t.addr
@@ -44,6 +43,5 @@ where  n.taddr = t.addr
   and sysdate - (n.last_call_et / (60 * 60 * 24)) < sysdate - (2 / 24)
   and n.status != 'ACTIVE'
 /	
-
 
 ttitle off

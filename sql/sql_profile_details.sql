@@ -20,7 +20,7 @@ column hint format a120 WORD_WRAPPED
 SELECT extractValue(value(h),'.') AS hint
   FROM sys.sqlobj$data od
      , sys.sqlobj$ so
-	  , table(xmlsequence(extract(xmltype(od.comp_data),'/outline_data/hint'))) h
+	 , table(xmlsequence(extract(xmltype(od.comp_data),'/outline_data/hint'))) h
  WHERE upper(so.name) like upper('&&PROF_NAME.')
     AND so.signature = od.signature
     AND so.category = od.category

@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   get summary over synonyms
 --
 -- Must be run with dba privileges
@@ -30,7 +30,7 @@ ttitle  "Overview over all Synonyms and types"  SKIP 2 -
 select obj.object_type 
      , syn.owner
      , syn.table_owner
-	  , count(*)  as obj_count
+	 , count(*)  as obj_count
 from  dba_objects obj
     , dba_synonyms syn
 where syn.table_owner=upper('&&OWNER.') 
@@ -38,14 +38,14 @@ where syn.table_owner=upper('&&OWNER.')
   and obj.object_name=syn.table_name
 group by syn.owner
      , syn.table_owner
-	  , obj.object_type
+	 , obj.object_type
 order by obj.object_type  	  
 /  
 
 ttitle  "Detail for this type &&TYPE_NAME."  SKIP 2 -
  
 select syn.owner
-     , syn.synonym_name
+      , syn.synonym_name
 	  , syn.table_owner
 	  , syn.table_name
 	  , syn.db_link

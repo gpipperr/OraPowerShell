@@ -1,9 +1,9 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- get all possible properties of a target Type
 --==============================================================================
-
-SET linesize 240 pagesize 400 recsep OFF
-
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 define TARGET_TYPE  = '&1' 
 

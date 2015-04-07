@@ -1,10 +1,9 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   check init.ora parameter
 -- Date:   01.September 2012
 --
 --==============================================================================
-
 set verify  off
 set linesize 130 pagesize 4000 recsep off
 

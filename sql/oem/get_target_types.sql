@@ -1,8 +1,9 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- desc get all deployed target types in the Repository
 --==============================================================================
-
-SET linesize 240 pagesize 400 recsep OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 prompt
 prompt get all target types in the OEM Repostiory with a target
@@ -12,11 +13,8 @@ column target_type format a40 heading "Target Types"
 column tg_count    format 9G999 heading "Count of|targets"
 
 select target_type
-    ,  count(*) as tg_count
-  from sysman.em_targets 
+     , count(*) as tg_count
+ from sysman.em_targets 
  group by target_type
 /
-
-
-
 

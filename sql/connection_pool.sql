@@ -1,11 +1,10 @@
 -- ======================================
+-- GPI - Gunther Pippèrr
 -- Database Resident Connection Pooling (DRCP)
---
 -- =======================================
 -- Master Note: Overview of Database Resident Connection Pooling (DRCP) (Doc ID 1501987.1)
-
+-- =======================================
 set linesize 130 pagesize 300 recsep off
-
 
 column CONNECTION_POOL                format a30      heading "CONNECTION|POOL"        
 column STATUS                         format a10      heading "STATUS"                 

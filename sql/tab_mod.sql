@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   show the last modifications on a table
 -- Date:   October 2013
 --

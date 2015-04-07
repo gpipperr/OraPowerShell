@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   get the user rights and grants
 -- Date:   September 2012
 --
@@ -16,7 +16,7 @@ SET linesize 120 pagesize 500 recsep off
 ttitle left  "User Account status" skip 2
 
 select username
-     , account_status
+      , account_status
 	  , lock_date
 	  , expiry_date
 	  , default_tablespace

@@ -1,7 +1,7 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
+-- Desc: get the DB internal system stat values like workload statistic and i/o calibrate values
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 ttitle left  "Workload Statistic Values" skip 2

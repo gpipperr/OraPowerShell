@@ -1,7 +1,7 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
+-- Desc: Which objects depends on this pl/sql code
 --==============================================================================
-
 set verify  off
 set linesize 130 pagesize 300 recsep off
 set trimspool on
@@ -21,8 +21,8 @@ column status           format a10 heading "Status"
 select  d.owner
      ,  d.name
      ,  o.object_type
-	  ,  o.last_ddl_time
-	  ,  o.status
+	 ,  o.last_ddl_time
+	 ,  o.status
  from  dba_dependencies d
      , dba_objects o
 where d.referenced_name    = upper('&&PACKAGE_NAME.') 

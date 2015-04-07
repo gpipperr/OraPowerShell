@@ -1,5 +1,6 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
+-- Desc: show information about a index organized table - parameter - Owner, Table name
 --==============================================================================
 set verify off
 set linesize 130 pagesize 300 recsep off
@@ -58,13 +59,13 @@ column lastana           fold_after
 column numrows           fold_after
 
 
-select rpad('Index Name',30,' ')   ||'::'||lpad(index_name,22,' ')                                                             as index_nameMB
-    ,  rpad('Index Size',30,' ')   ||'::'||to_char(round((IndexSize/1024/1024),3),'999G999G999G999D99')                ||' MB' as IndexSizeMB
+select rpad('Index Name',30,' ')    ||'::'||lpad(index_name,22,' ')                                                             as index_nameMB
+     ,  rpad('Index Size',30,' ')   ||'::'||to_char(round((IndexSize/1024/1024),3),'999G999G999G999D99')                ||' MB' as IndexSizeMB
 	 ,  rpad('Overflow Name',30,' ')||'::'||lpad(overflow_table,22,' ')                                                         as overflow_tableMB
 	 ,  rpad('Overflow Size',30,' ')||'::'||to_char(round((OverFlowSize/1024/1024),3),'999G999G999G999D99')             ||' MB' as OverFlowSizeMB
 	 ,  rpad('Total',30,' ')        ||'::'||to_char(round(((IndexSize+OverFlowSize)/1024/1024),3),'999G999G999G999D99') ||' MB' as totalMB
-	  , rpad('Last Analyzed',30,' ')||'::'||to_char(LAST_ANALYZED,'dd.mm.yyyy hh24:mi')                                ||' ' as lastana
-	  , rpad('Num Rows',30,' ')     ||'::'||NUM_ROWS                                                                  ||' ' as numrows 
+	 , rpad('Last Analyzed',30,' ') ||'::'||to_char(LAST_ANALYZED,'dd.mm.yyyy hh24:mi')                                 ||' '   as lastana
+	 , rpad('Num Rows',30,' ')      ||'::'||NUM_ROWS                                                                    ||' '   as numrows 
   from ( 
 	select nvl(i.index_name,'-') as index_name
 		, (select sum(bytes) from dba_segments where segment_name=i.index_name and owner=i.owner) as IndexSize

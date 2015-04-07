@@ -1,11 +1,10 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   Query the audit log entries
 --
 -- Must be run with dba privileges
 --
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 column username    format a20  heading "DB User|name"
@@ -13,8 +12,6 @@ column action_name format a25  heading "Action|name"
 column first_log   format a25  heading "First|entry"
 column last_log    format a25  heading "Last|entry"
 column entries     format 999G999G999 heading "Audit|entries"
-
-
 
 ttitle left  "Audit Trail from time until time" skip 2
 
@@ -26,11 +23,10 @@ order by 1
 /
 
 
-
 ttitle left  "Audit Object Log entries " skip 2
 
 select username
-    , action_name
+     , action_name
 	 , count(*) as entries
 	 , to_char(min(timestamp),'dd.mm.yyyy hh24:mi:ss') as first_log
 	 , to_char(max(timestamp),'dd.mm.yyyy hh24:mi:ss') as last_log
@@ -54,32 +50,30 @@ break on instance_number
 ttitle left  "Audit log summary overview " skip 2
 
 select    count(*) as action_count
-       ,  os_username
-       ,  username
-		 ,  instance_number
-		 ,  to_char(min(extended_timestamp),'dd.mm hh24:mi') as first_log
-		 ,  to_char(max(extended_timestamp),'dd.mm hh24:mi') as last_log
-		 ,  action_name 
+     ,  os_username
+     ,  username
+	 ,  instance_number
+	 ,  to_char(min(extended_timestamp),'dd.mm hh24:mi') as first_log
+	 ,  to_char(max(extended_timestamp),'dd.mm hh24:mi') as last_log
+	 ,  action_name 
   from dba_audit_trail 
  where  extended_timestamp between sysdate -(1/4) and sysdate
        -- extended_timestamp between to_date('13.11.2014 12:19','dd.mm.yyyy hh24:mi') and to_date('13.11.2014 12:21','dd.mm.yyyy hh24:mi')		 
  group by  os_username
-       ,  username
+     ,  username
     -- ,  to_char(extended_timestamp,'dd.mm hh24')
-		 ,  action_name 		 
-		 , instance_number
+	 ,  action_name 		 
+	 , instance_number
 order by  instance_number,username,action_name	 
  /
 	 
 		 
-CLEAR BREAK
-CLEAR COMPUTES		 
-
+clear break
+clear computes		 
 
 prompt
 prompt ... for detail information call:                  "audit_rep.sql"
 prompt ... for the space usage of the audit$ table call: "tab_space.sql aud$"
 prompt
-
 
 ttitle off

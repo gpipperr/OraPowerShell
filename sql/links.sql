@@ -1,10 +1,9 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc:   DB Links
 -- Date:   01.September 2012
 --
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 prompt
@@ -18,9 +17,9 @@ column username format a20
 
 
 select db_link
-      ,host
-	  ,owner 
-	  ,username
+      , host
+	  , owner 
+	  , username
 from all_db_links
  /
 
@@ -28,9 +27,9 @@ from all_db_links
 ttitle left  "Link Infos -- All DB Links in the database" skip 2
 
 select db_link
-	  ,owner 
-	  ,host
-	  ,username
+	  , owner 
+	  , host
+	  , username
 from dba_db_links
  /
 

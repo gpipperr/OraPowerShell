@@ -1,12 +1,9 @@
 --==============================================================================
---
--- Desc:   recyle bin informatoins
+-- GPI - Gunther Pippèrr
+-- Desc:   show the content summary of the dba recyclebin
 -- Date:   02.2014
---
 --==============================================================================
-set verify off
 set linesize 130 pagesize 300 recsep off
-
 
 column owner format a15 heading "Owner"
 column TYPE  format a12 heading "Obj|type"
@@ -17,8 +14,10 @@ column min_DROPTIME   format a14 heading "Min Age|Drop"
 column max_DROPTIME   format a14 heading "Max Age|Drop"
 column SPACE_GB       format 999G999D99 heading "Space|GB"
 
+--
+--fix use DB Block size!!
+--
 define BLOCK_SIZE=8192
-
 
 select owner
 	  , TYPE

@@ -1,13 +1,8 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   search the table in the database
 -- Parameter 1: Name of the table
---
--- Must be run with dba privileges
--- 
---
 --==============================================================================
-
 set verify  off
 set linesize 130 pagesize 300 recsep off
 

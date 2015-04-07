@@ -1,45 +1,43 @@
 -- ======================================
+-- GPI - Gunther Pippèrr
 -- set all server based metrics to empty values
---
 -- =======================================
+set verify off
+set linesize 130 pagesize 300 recsep off
 
-
-SET linesize 130 pagesize 300 recsep OFF
-
-define INSTANCE_NAME = '&1' 
+define INSTANCE_NAME = '&1'
 
 prompt
 prompt Parameter 1 = Instance Name         => &&INSTANCE_NAME.
 prompt
 
 
-
 set serveroutput on size 1000000
 
 declare
+   type metrics_idTab is table of varchar2 (2000)
+                            index by binary_integer;
 
- TYPE metrics_idTab IS TABLE OF VARCHAR2(2000) INDEX BY BINARY_INTEGER;
- cursor c_metrics (p_instance_name varchar2)
-  is
-    select metrics_id
-    , object_type
-    , object_name
-    , instance_name
-    from table(dbms_server_alert.view_thresholds)
-    where instance_name=p_instance_name;
-  
-  v_instance varchar2(32):='&&INSTANCE_NAME.';
-  v_warning_operator binary_integer;
-  v_warning_operator_text varchar2(32);
-  v_warning_value varchar2(32);
-  v_critical_operator binary_integer;
-  v_critical_operator_text varchar2(32);
-  v_critical_value varchar2(32);
-  v_observation_period binary_integer;
-  v_consecutive_occurrences binary_integer;
+   cursor c_metrics (p_instance_name varchar2)
+   is
+      select metrics_id
+           ,  object_type
+           ,  object_name
+           ,  instance_name
+        from table (dbms_server_alert.view_thresholds)
+       where instance_name = p_instance_name;
 
-  v_mid metrics_idTab;
-  
+   v_instance                  varchar2 (32) := '&&INSTANCE_NAME.';
+   v_warning_operator          binary_integer;
+   v_warning_operator_text     varchar2 (32);
+   v_warning_value             varchar2 (32);
+   v_critical_operator         binary_integer;
+   v_critical_operator_text    varchar2 (32);
+   v_critical_value            varchar2 (32);
+   v_observation_period        binary_integer;
+   v_consecutive_occurrences   binary_integer;
+
+   v_mid                       metrics_idTab;
 begin
 
 
@@ -196,79 +194,100 @@ begin
 	v_mid(DBMS_SERVER_ALERT.TABLESPACE_PCT_FULL     ):='Tablespace space usage% full                                                     ';
 	v_mid(DBMS_SERVER_ALERT.TABLESPACE_BYT_FREE     ):='Tablespace bytes space usage Kilobytes free                                      ';
 
- -- read all metrics for the instance and set to null
- 
-  for rec in c_metrics (p_instance_name => upper(v_instance))
-  loop
-    dbms_output.put_line('-- Info '||rpad(' ',80,'-'));
-	 dbms_output.put_line('-- Info - Metric for Instance ::'||rec.instance_name );
-	 dbms_output.put_line('-- Info - Metric ID ('||rec.metrics_id||') O. Type('||rec.object_type||')  O. Name('||rec.object_name||')');
-	 
-	 begin
-	  dbms_output.put_line('-- Info - Metrik Name :: '|| v_mid(rec.metrics_id) );
-	 exception 
-		when others then
-		  dbms_output.put_line('-- Info - Metrik Name not found for :: '|| rec.metrics_id);
-	 end;
-	 
-	 dbms_server_alert.get_threshold( metrics_id => rec.metrics_id 
-      , warning_operator => v_warning_operator 
-      , warning_value => v_warning_value 
-      , critical_operator => v_critical_operator 
-      , critical_value => v_critical_value
-      , observation_period => v_observation_period 
-      , consecutive_occurrences => v_consecutive_occurrences
-      , instance_name => rec.instance_name
-      , object_type => rec.object_type 
-      , object_name => rec.object_name );
-		---
-		select decode(v_warning_operator, 0, 'GT',
-                                       1, 'EQ',
-                                       2, 'LT',
-                                       3, 'LE',
-                                       4, 'GE',
-                                       5, 'CONTAINS',
-                                       6, 'NE',
-                                       7, 'DO_NOT_CHECK',
-                                          'NONE') into  v_warning_operator_text from dual;
-		---											
-		select decode( v_critical_operator , 0, 'GT',
-                                        1, 'EQ',
-                                        2, 'LT',
-                                        3, 'LE',
-                                        4, 'GE',
-                                        5, 'CONTAINS',
-                                        6, 'NE',
-                                        7, 'DO NOT CHECK',
-                                           'NONE') into v_critical_operator_text from dual;
-														 
-	   ---										 
-     dbms_output.put_line('-- Info - Warning OP          :: '|| rpad(v_warning_operator_text   ,20,' ') ||'Warning Value           :: '||  v_warning_value  );
-	  dbms_output.put_line('-- Info - Critical OP         :: '|| rpad(v_critical_operator_text  ,20,' ') ||'Critical Value          :: '||  v_critical_value );
-	  dbms_output.put_line('-- Info - Observation Period  :: '|| rpad(v_observation_period      ,20,' ') ||'Consecutive Occurrences :: '||  v_consecutive_occurrences  );
-	   ---
-	  
-     if v_warning_value is not null then
-         dbms_output.put_line('-- Info -');
-			dbms_output.put_line('-- Info - Unset the thresholds for this Metric : '|| rec.metrics_id);
-			 
-         dbms_server_alert.set_threshold( 
-				  metrics_id => rec.metrics_id 
-				, warning_operator => null 
-				, warning_value => null 
-				, critical_operator => null 
-				, critical_value => null 
-				, observation_period => null 
-				, consecutive_occurrences => null 
-				, instance_name => rec.instance_name 
-				, object_type => rec.object_type 
-				, object_name => rec.object_name 
-			);
-			commit;
-     end if;
-	  
-     dbms_output.put_line('-- Info '||rpad(' ',80,'-'));
-	 
-  end loop;
+   -- read all metrics for the instance and set to null
+
+   for rec in c_metrics (p_instance_name => upper (v_instance))
+   loop
+      dbms_output.put_line ('-- Info ' || rpad (' ', 80, '-'));
+      dbms_output.put_line ('-- Info - Metric for Instance ::' || rec.instance_name);
+      dbms_output.put_line (
+         '-- Info - Metric ID (' || rec.metrics_id || ') O. Type(' || rec.object_type || ')  O. Name(' || rec.object_name || ')');
+
+      begin
+         dbms_output.put_line ('-- Info - Metrik Name :: ' || v_mid (rec.metrics_id));
+      exception
+         when others
+         then
+            dbms_output.put_line ('-- Info - Metrik Name not found for :: ' || rec.metrics_id);
+      end;
+
+      dbms_server_alert.get_threshold (metrics_id  => rec.metrics_id
+                                     ,  warning_operator => v_warning_operator
+                                     ,  warning_value => v_warning_value
+                                     ,  critical_operator => v_critical_operator
+                                     ,  critical_value => v_critical_value
+                                     ,  observation_period => v_observation_period
+                                     ,  consecutive_occurrences => v_consecutive_occurrences
+                                     ,  instance_name => rec.instance_name
+                                     ,  object_type => rec.object_type
+                                     ,  object_name => rec.object_name);
+
+      ---
+      select decode (v_warning_operator
+                   ,  0, 'GT'
+                   ,  1, 'EQ'
+                   ,  2, 'LT'
+                   ,  3, 'LE'
+                   ,  4, 'GE'
+                   ,  5, 'CONTAINS'
+                   ,  6, 'NE'
+                   ,  7, 'DO_NOT_CHECK'
+                   ,  'NONE')
+        into v_warning_operator_text
+        from dual;
+
+      ---
+      select decode (v_critical_operator
+                   ,  0, 'GT'
+                   ,  1, 'EQ'
+                   ,  2, 'LT'
+                   ,  3, 'LE'
+                   ,  4, 'GE'
+                   ,  5, 'CONTAINS'
+                   ,  6, 'NE'
+                   ,  7, 'DO NOT CHECK'
+                   ,  'NONE')
+        into v_critical_operator_text
+        from dual;
+
+      ---
+      dbms_output.put_line (
+            '-- Info - Warning OP          :: '
+         || rpad (v_warning_operator_text, 20, ' ')
+         || 'Warning Value           :: '
+         || v_warning_value);
+      dbms_output.put_line (
+            '-- Info - Critical OP         :: '
+         || rpad (v_critical_operator_text, 20, ' ')
+         || 'Critical Value          :: '
+         || v_critical_value);
+      dbms_output.put_line (
+            '-- Info - Observation Period  :: '
+         || rpad (v_observation_period, 20, ' ')
+         || 'Consecutive Occurrences :: '
+         || v_consecutive_occurrences);
+
+      ---
+
+      if v_warning_value is not null
+      then
+         dbms_output.put_line ('-- Info -');
+         dbms_output.put_line ('-- Info - Unset the thresholds for this Metric : ' || rec.metrics_id);
+
+         dbms_server_alert.set_threshold (metrics_id  => rec.metrics_id
+                                        ,  warning_operator => null
+                                        ,  warning_value => null
+                                        ,  critical_operator => null
+                                        ,  critical_value => null
+                                        ,  observation_period => null
+                                        ,  consecutive_occurrences => null
+                                        ,  instance_name => rec.instance_name
+                                        ,  object_type => rec.object_type
+                                        ,  object_name => rec.object_name);
+         commit;
+      end if;
+
+      dbms_output.put_line ('-- Info ' || rpad (' ', 80, '-'));
+   end loop;
 end;
 /

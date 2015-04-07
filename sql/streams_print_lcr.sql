@@ -1,7 +1,7 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Desc:   get one LCR of a streams replication 
 --==============================================================================
-
 set verify off
 set linesize 130 pagesize 3000 recsep off
 
@@ -16,9 +16,9 @@ select  em.local_transaction_id
     , dba_apply_error ar
 where em.local_transaction_id=ar.local_transaction_id
   and em.transaction_message_number = &LCR_NUM.
-order by em.local_transaction_id
-        ,em.transaction_message_number
-		,em.position
+order by  em.local_transaction_id
+        , em.transaction_message_number
+		, em.position
 /
 
 

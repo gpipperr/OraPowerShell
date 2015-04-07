@@ -1,9 +1,9 @@
 --==============================================================================
---
---
+-- GPI - Gunther Pippèrr
+-- Desc: get all open incidents
 --==============================================================================
-
-SET linesize 130 pagesize 2000 recsep OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 set serveroutput on size 1000000
 

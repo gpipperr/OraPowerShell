@@ -1,12 +1,12 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   search data dictionary views
 -- Date:   September 2012
 --
 --==============================================================================
 
 -- FIX IT
--- umbauen auf REGEXP_SUBSTR(table_name,'_+,') um dba_,all_,user_ anzuzeigen
+-- umbauen auf REGEXP_SUBSTR(table_name,'_+,') um dba_,all_,user_ 
 --
 
 set linesize 130 pagesize 300 recsep off

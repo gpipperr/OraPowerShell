@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   extract the DDL of a object in the database
 --
 -- Parameter 2: Owner of the table/object

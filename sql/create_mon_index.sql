@@ -1,8 +1,7 @@
 -- =================================================
--- create the scripts to enable and disable  
---
+-- GPI - Gunther Pippèrr
+-- Desc: create the scripts to enable and disable  
 -- =================================================
-
 set verify  off
 set linesize 130 pagesize 4000 recsep off
 
@@ -53,25 +52,6 @@ select 'alter index '||owner||'.'||index_name||' monitoring usage;'
  from all_indexes
 where owner=:own
   and table_owner=:own
-  and table_name in (
-  'S_ACT_CONTACT'
-,'S_ACT_EMP'
-,'S_ADDR_PER'
-,'S_CON_CHRCTR'
-,'S_CONTACT'
-,'S_CONTACT_BU'
-,'S_CONTACT_X'
-,'S_CONTACT_XM'
-,'S_EVT_ACT'
-,'S_EVT_ACT_X'
-,'S_EVT_CAL'
-,'S_EVT_MKTG'
-,'S_PARTY'
-,'S_POSTN_CON'
-,'S_SRV_ACT'
-,'S_SRV_REQ'
-,'S_SRV_REQ_BU'
-)  
 order by table_name, index_name
 /
 
@@ -115,26 +95,7 @@ prompt ALTER SESSION SET ddl_lock_timeout=5;
 select 'alter index '||owner||'.'||index_name||' nomonitoring usage;'
  from all_indexes
 where owner=:own
-  and table_owner=:own
-  and table_name in (
-  'S_ACT_CONTACT'
-,'S_ACT_EMP'
-,'S_ADDR_PER'
-,'S_CON_CHRCTR'
-,'S_CONTACT'
-,'S_CONTACT_BU'
-,'S_CONTACT_X'
-,'S_CONTACT_XM'
-,'S_EVT_ACT'
-,'S_EVT_ACT_X'
-,'S_EVT_CAL'
-,'S_EVT_MKTG'
-,'S_PARTY'
-,'S_POSTN_CON'
-,'S_SRV_ACT'
-,'S_SRV_REQ'
-,'S_SRV_REQ_BU'
-)  
+  and table_owner=:own  
 order by table_name, index_name
 /
 
@@ -166,3 +127,4 @@ prompt &&SPOOL_NAME._off.sql
 prompt 
  
 set heading on 
+

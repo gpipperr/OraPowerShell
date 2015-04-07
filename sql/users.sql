@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   get the users of the database
 -- Date:   September 2013
 --
@@ -47,7 +47,7 @@ column created          format a16 heading "Create Date"
 
 select username
 	,  account_status 
-   ,  default_tablespace
+    ,  default_tablespace
 	,  profile
 	,  to_char(CREATED,'dd.mm.yyyy hh24:mi') as created	
  from dba_users

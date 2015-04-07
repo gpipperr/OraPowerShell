@@ -1,7 +1,7 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- replacement for the desc command to search after some columns
 --==============================================================================
-
 set verify  off
 set linesize 130 pagesize 4000 recsep off
 

@@ -1,7 +1,8 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
+-- Desc: show processes using the temp tablespace
+--==============================================================================
 --http://gavinsoorma.com/2009/06/temp-tablespace-usage/
---
---
 --==============================================================================
 
 set linesize 130 pagesize 300 recsep off
@@ -19,15 +20,15 @@ column mb_used 	  format 9G999G999  heading "In USE|MB"
 column statements format 9999   heading "Segments"
 
 select  ses.inst_id
-		, ses.sid
-		, ses.serial# 
+	  , ses.sid
+	  , ses.serial# 
       , ses.username
       , ses.osuser
       , to_char(pro.spid) as spid
       , sum(sou.blocks) * tbs.block_size / 1024 / 1024 mb_used
       , sou.tablespace
       , count(*) statements
-		, ses.module
+	  , ses.module
       , pro.program
   from  gv$sort_usage    sou
       , gv$session       ses
@@ -39,7 +40,7 @@ select  ses.inst_id
 	and pro.inst_id=sou.inst_id
 	and sou.inst_id=ses.inst_id
  group by ses.inst_id
-			, ses.sid
+		 , ses.sid
          ,ses.serial#
          ,ses.username
          ,ses.osuser

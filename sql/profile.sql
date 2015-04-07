@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   get the profiles of the database
 -- Date:   September 2013
 --

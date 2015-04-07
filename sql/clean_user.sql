@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   Script to create a sql script to clean Oracle schema from the all user objects
 -- Parameter 1: Name of the User 
 --

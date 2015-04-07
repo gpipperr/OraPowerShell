@@ -1,10 +1,11 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Desc:   OEM SQL Script Overview
 -- Show the DB internal Alerting Setting + open Alerts
 --==============================================================================
 -- docu
 -- Database metrics, e.g.Tablespace Full(%), not clearing in Grid Control even though they are no longer present in dba_outstanding_alerts (Doc ID 455222.1)
---
+--==============================================================================
 
 
 set linesize 130 pagesize 500 recsep off

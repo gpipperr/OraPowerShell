@@ -1,5 +1,5 @@
 -- ====================================================================
--- Author: Gunther Pippèrr 
+-- GPI - Gunther Pippèrr 
 -- get Information about the partner disk if redundancy is <> external
 --
 -- ====================================================================
@@ -33,33 +33,32 @@ group by grp
 
 ttitle left  "Check for OEM Metric for Imbalance over all disks of the group &&DISK_GROUP_NR." skip 2
 
-select  x.grp grp
-		, x.disk disk
-		, sum(x.active) cnt
-		, greatest(sum(x.total_mb/d.total_mb),0.0001) pspace
-		, x.total_mb
-		, d.total_mb
-		, d.failgroup fgrp
-from	v$asm_disk_stat d
-	,(select y.grp grp
-        ,  y.disk disk
-        ,  z.total_mb*y.active_kfdpartner total_mb
-		  ,  y.active_kfdpartner active
-    from x$kfdpartner y 
-        , v$asm_disk_stat z
-    where y.number_kfdpartner = z.disk_number 
-	   and y.grp = z.group_number and y.grp = &&DISK_GROUP_NR.
-		  ) x
-where  d.group_number = x.grp 
-  and  d.disk_number = x.disk 
-  and  d.group_number <> 0 
-  and  d.state = 'NORMAL' 
-  and  d.mount_status = 'CACHED'
+select x.grp grp
+       ,  x.disk disk
+       ,  sum (x.active) cnt
+       ,  greatest (sum (  x.total_mb / d.total_mb),0.0001)  pspace
+       ,  x.total_mb
+       ,  d.total_mb
+       ,  d.failgroup fgrp
+    from v$asm_disk_stat d
+       ,  (select y.grp grp
+                ,  y.disk disk
+                ,  z.total_mb  * y.active_kfdpartner  total_mb
+                ,  y.active_kfdpartner active
+             from x$kfdpartner y, v$asm_disk_stat z
+            where     y.number_kfdpartner = z.disk_number
+                  and y.grp = z.group_number
+                  and y.grp = &&DISK_GROUP_NR.) x
+   where d.group_number = x.grp
+     and d.disk_number = x.disk
+     and d.group_number <> 0
+     and d.state = 'NORMAL'
+     and d.mount_status = 'CACHED'
 group by x.grp
-       , x.disk
-		 , d.failgroup
-		 ,	x.total_mb
-		 ,d.total_mb	  
+       ,  x.disk
+       ,  d.failgroup
+       ,  x.total_mb
+       ,  d.total_mb
 /
 
 

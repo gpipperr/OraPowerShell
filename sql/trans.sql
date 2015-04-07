@@ -1,10 +1,8 @@
 --==============================================================================
---
--- Desc:   show open transactions in the database
--- Date:   September 2012
---
+-- GPI - Gunther Pippèrr
+-- Desc: running transactions in the database
+-- Date: September 2012
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 ttitle  "Report active DB transactions"  SKIP 1

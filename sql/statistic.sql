@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   Main statistic information of the database
 -- Date:   01.September 2012
 --

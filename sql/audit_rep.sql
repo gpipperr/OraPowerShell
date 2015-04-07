@@ -1,11 +1,10 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   HTML Report for the entries in the audit log
 -- see :   http://www.pipperr.de/dokuwiki/doku.php?id=dba:index_column_usage
 -- Date:   September 2013
 --
 --==============================================================================
-
 /*
 Timeformat differences between audit$ and audit trail!
 select 
@@ -13,7 +12,6 @@ select
     from_tz(ntimestamp#,'UTC') at local,
     from_tz(ntimestamp#,'UTC') at time zone 'Europe/Berlin'
 from sys.aud$;
-
 */
 
 col SPOOL_NAME_COL new_val SPOOL_NAME
@@ -40,36 +38,36 @@ column first_log   format a25  heading "First|entry"
 column last_log    format a25  heading "Last|entry"
 
 
-select  OS_USERNAME
-	, USERNAME
-	, USERHOST
-	, TERMINAL
-    , to_char(TIMESTAMP,'dd.mm.yyyy hh24:mi:ss') as timestamp
-    , OWNER
-    , OBJ_NAME
- ,ACTION_NAME
- ,NEW_OWNER
- ,NEW_NAME
---,SES_ACTIONS
- ,COMMENT_TEXT
- ,SESSIONID
---,ENTRYID
---,STATEMENTID
---,RETURNCODE
---,PRIV_USED
---,CLIENT_ID
--- ,ECONTEXT_ID
--- ,SESSION_CPU
--- ,EXTENDED_TIMESTAMP
--- ,PROXY_SESSIONID
- --,GLOBAL_UID
- --,INSTANCE_NUMBER
- --,OS_PROCESS
- --,TRANSACTIONID
- --,SCN
--- ,SQL_BIND
- ,SQL_TEXT
--- ,OBJ_EDITION_NAME
+select  os_username
+	, username
+	, userhost
+	, terminal
+    , to_char(timestamp,'dd.mm.yyyy hh24:mi:ss') as timestamp
+    , owner
+    , obj_name
+ ,action_name
+ ,new_owner
+ ,new_name
+--,ses_actions
+ ,comment_text
+ ,sessionid
+--,entryid
+--,statementid
+--,returncode
+--,priv_used
+--,client_id
+-- ,econtext_id
+-- ,session_cpu
+-- ,extended_timestamp
+-- ,proxy_sessionid
+ --,global_uid
+ --,instance_number
+ --,os_process
+ --,transactionid
+ --,scn
+-- ,sql_bind
+ ,sql_text
+-- ,obj_edition_name
  from dba_audit_object
 where timestamp between sysdate-21 and sysdate
 order by timestamp

@@ -1,18 +1,15 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Desc:   SQL Script to shrink the tablespace
 -- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:sql_groesse_tabelle
 -- Date:   08.2013
---
 --==============================================================================
-
 set verify off
 set linesize 130 pagesize 300 recsep off
-
 
 set feedback OFF
 set heading OFF
 set trimspool on
-
 
 ---------------------------------------
 -- create the spool file
@@ -56,9 +53,8 @@ spool off
 -- call the script
 @&&SPOOL_NAME
 ---------------------------------------
-
-  
-SET VERIFY    ON
+ 
+set verify    ON
 set feedback  ON
 set heading   ON
 set trimspool OFF

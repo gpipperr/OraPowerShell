@@ -1,14 +1,13 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Desc:  show more informations about a plsql object
 -- Must be run with DBA privileges
--- 
 --==============================================================================
 -- http://docs.oracle.com/cd/B28359_01/server.111/b28320/statviews_2009.htm#REFRN20385
 -- http://docs.oracle.com/cd/B28359_01/server.111/b28320/statviews_2013.htm#REFRN20168
 -- http://www.oracle.com/technetwork/issue-archive/2012/12-nov/o62plsql-1851968.html
 -- http://docs.oracle.com/cd/E16655_01/network.121/e17607/dr_ir.htm#DBSEG658
 --==============================================================================
-
 set verify  off
 set linesize 130 pagesize 300 recsep off
 
@@ -68,13 +67,12 @@ select owner
 where object_name like upper('&&OBJ_NAME.')
 /
 
-
 prompt ... AUTHID - Indicates whether the procedure/function is declared to execute as DEFINER or CURRENT_USER (invoker)
 
 select owner
--- ,  subobject_name
-   ,  object_type
-   ,  to_char(created,'dd.mm.yyyy hh24:mi') as created
+--  ,  subobject_name
+    ,  object_type
+    ,  to_char(created,'dd.mm.yyyy hh24:mi') as created
 	,  to_char(last_ddl_time,'dd.mm.yyyy hh24:mi') as last_ddl_time
 	,  timestamp
 	,  status

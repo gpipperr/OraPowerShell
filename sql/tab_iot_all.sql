@@ -1,10 +1,10 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
+-- Desc: Show all IOT's in the database
 --==============================================================================
 set verify off
 set linesize 130 pagesize 300 recsep off
-
-            
+         
 
 ttitle left  "IOT Name and Table space for Overflow Segments" skip 2
 

@@ -1,5 +1,7 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Desc:   undo  stat
+--==============================================================================
 -- Source:
 -- http://www.dbaref.com/home/dba-routine-tasks/scriptstocheckundotablespacestats
 -- http://docs.oracle.com/cd/B28359_01/server.111/b28320/dynviews_3110.htm#REFRN30295
@@ -15,8 +17,8 @@ show parameter undo
 ttitle "How often and when does -Snapshot too old (ORA-01555) -occur?" skip 2
 
 select Inst_id  
-    ,  to_char(begin_time,'YYYY-MM-DD HH24:MI:SS') "Begin"
-    ,  to_char(end_time,'YYYY-MM-DD HH24:MI:SS') "End "
+     ,  to_char(begin_time,'YYYY-MM-DD HH24:MI:SS') "Begin"
+     ,  to_char(end_time,'YYYY-MM-DD HH24:MI:SS') "End "
 	 ,  undoblks "UndoBlocks"
 	 ,  SSOLDERRCNT "ORA-1555"
 	 ,  MAXQUERYID
@@ -93,7 +95,6 @@ ttitle "Maximal Undo usage (MB) over the last 4 days - but only for this instanc
 
 -- http://docs.oracle.com/cd/E11882_01/server.112/e40402/dynviews_3118.htm#REFRN30295
 -- thanks to may be trivadis ? 
-
 
 column days    format a6       heading "day"
 column m30    format 999999    heading "30m"
@@ -182,8 +183,6 @@ select min(begin_time)begin_time
 	  , max(tuned_undoretention)
  from v$undostat 
 /
-
-
 
 
 ttitle off
