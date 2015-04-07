@@ -1,9 +1,12 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc:   find the sql statement in the sql cache
 -- Date:   September 2013
---
 --===============================================================================
+prompt
+prompt !!!!You need the Tuning Pack for this feature!!!!
+prompt
+
 set linesize 130 pagesize 300 recsep off
 
 define SQL_STATEMENT = &1 
@@ -29,8 +32,8 @@ set long 100
 
 select DBID
 	  , SQL_ID
-     , SQL_TEXT
-     , COMMAND_TYPE
+      , SQL_TEXT
+      , COMMAND_TYPE
 	  /* GPI SQL Analyse */
  from dba_hist_sqltext
 where upper(sql_text) like upper('%&&SQL_STATEMENT.%') 

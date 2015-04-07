@@ -1,22 +1,20 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   show the my optimizer settings
 --
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
-
 column name        format a40 heading  "OptFeature|Name" 
-column SQL_FEATURE format a20 heading  "SQL|Feature"
-column ISDEFAULT   format a4  heading  "DEF|AULT"
-column VALUE       format a20 heading  "Value"
-column SID         format 9999 heading "My|SID"
+column sql_feature format a20 heading  "SQL|Feature"
+column isdefault   format a4  heading  "DEF|AULT"
+column value       format a20 heading  "Value"
+column sid         format 9999 heading "My|SID"
 
-select  o.NAME
-		, o.SQL_FEATURE
-		, o.ISDEFAULT
-		, o.VALUE
+select o.name
+	, o.sql_feature
+	, o.isdefault
+	, o.value
  from gv$ses_optimizer_env o
     , gv$session s
 where s.sid = o.sid
@@ -25,4 +23,3 @@ where s.sid = o.sid
   and s.sid=sys_context('userenv','SID')
 order by o.name
 /
-

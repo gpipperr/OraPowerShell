@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   get the oracle text parameters of one schema user
 -- Parameter 1: Name of the User 
 --

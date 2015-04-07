@@ -1,6 +1,7 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Show all external tables in the database
--- Must be run with dba privileges 
+-- Must be run with dba privileges
 --==============================================================================
 
 set verify  off
@@ -12,43 +13,41 @@ column  location        format a30    heading "Location"
 column  directory_owner format a3     heading "DO"
 column  directory_name  format a20    heading "Directory|Name"
 
-select owner
-		, table_name
-		, location
-		, directory_owner
-		, directory_name
- from dba_external_locations
-order by owner
-        ,table_name
-/		  
+  select owner
+       ,  table_name
+       ,  location
+       ,  directory_owner
+       ,  directory_name
+    from dba_external_locations
+order by owner, table_name
+/
 
-prompt 
+prompt
 prompt Details ...
-prompt 
+prompt
 
 column  reject_limit      format a20  heading "Reject|Limit"
 column  access_type       format a20  heading "Access|Type"
 column  property          format a10  heading "Property"
-column  access_parameters format a80  heading "Access|Parameter" Fold_before WORD_WRAPPED
+column  access_parameters format a80  heading "Access|Parameter" fold_before word_wrapped
 
 
-BREAK ON ROW SKIP 2
+break on row skip 2
 
 ttitle 'Detail of the external Tables :'
 
 set long 64000
 
-select  table_name
-      , reject_limit
-      , access_type
-		, property 
-		, access_parameters
-from dba_external_tables
-order by owner
-        ,table_name
+  select table_name
+       ,  reject_limit
+       ,  access_type
+       ,  property
+       ,  access_parameters
+    from dba_external_tables
+order by owner, table_name
 /
 
 
-clear breaks
+clear break
 
 ttitle off

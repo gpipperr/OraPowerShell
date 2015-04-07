@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc:  get information about the last session in the database
 --   
 --==============================================================================
@@ -7,6 +7,9 @@
 --  http://www.nocoug.org/download/2008-08/a-tour-of-the-awr-tables.nocoug-Aug-21-2008.abercrombie.html
 -- 
 --==============================================================================
+prompt
+prompt !!!!You need the Tuning Pack for this feature!!!!
+prompt
 
 prompt
 prompt ... get the periods with more then 5 active sessions from the database
@@ -24,7 +27,7 @@ select *
 	 where	sample_time > sysdate - 10 --((1/24))
 	 group by sample_id
 	        , sample_time
-			  , inst_id
+			, inst_id
 	 order by sample_id,inst_id
 ) 
 where active_sessions >  32
@@ -58,8 +61,8 @@ from
      where sample_time > sysdate - ((1/24))
 		  --sample_time between to_date('27.03.2014 14:30','MM.DD.YYYY HH24:MI') and to_date('27.03.2014 14:32','MM.DD.YYYY HH24:MI')
      group by sample_id
-	          ,sample_time
-				 ,INSTANCE_NUMBER
+	        ,sample_time
+			,INSTANCE_NUMBER
    ) sub1
 group by round(sub1.sample_time, 'HH24'),instance_number
 order by round(sub1.sample_time, 'HH24'),instance_number

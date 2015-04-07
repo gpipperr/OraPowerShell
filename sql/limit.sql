@@ -1,10 +1,9 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   get Information over the usage of resources of the database
 -- Date:   November 2013
 --
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 ttitle  "Resource Limit Informations"  SKIP 2

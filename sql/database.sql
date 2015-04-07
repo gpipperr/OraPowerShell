@@ -1,10 +1,9 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   Database information
 -- Date:   01.September 2012
 --
 --==============================================================================
-
 
 set linesize 130 pagesize 300 recsep off
 
@@ -84,7 +83,6 @@ SELECT name
     , current_scn 
 FROM  v$database
 /
-
 
 
 ttitle off

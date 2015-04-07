@@ -1,4 +1,5 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 --
 --==============================================================================
 set linesize 130 pagesize 300 recsep off
@@ -118,51 +119,46 @@ column client_info format a15   heading "Client|info"
 column pname       format a8    heading "Process|name"
 column tracefile   format a20   heading "Trace|File"
 column error       format 999999  heading "Error|Number"
-column DESCRIPTION format a35  heading "Description"  WORD_WRAPPED
+column DESCRIPTION format a35  heading "Description"  word_wrapped
 
 
-select p.inst_id  
-   , to_char(p.spid) as process_id
-	, vs.sid
-	, vs.serial#
-	, p.username as osusername
-	, pb.name
-   , pb.DESCRIPTION
-   , pb.error	
-	, vs.machine
-	, nvl(vs.module,' - ') as module
-   , vs.program
-	--, substr(p.tracefile,length(p.tracefile)-REGEXP_INSTR(reverse(p.tracefile),'[\/|\]')+2,1000) as tracefile
-	--, p.tracefile
-from gv$session vs
-   , gv$process p
-	, gv$bgprocess pb
-where vs.paddr=p.addr
-  and vs.inst_id=p.inst_id
-  and pb.PADDR=p.addr
-  and pb.INST_ID=p.inst_id
-  and vs.username is  null
-order by pb.name
-		,  p.inst_id  
-/  
+  select p.inst_id
+       ,  to_char (p.spid) as process_id
+       ,  vs.sid
+       ,  vs.serial#
+       ,  p.username as osusername
+       ,  pb.name
+       ,  pb.DESCRIPTION
+       ,  pb.error
+       ,  vs.machine
+       ,  nvl (vs.module, ' - ') as module
+       ,  vs.program
+    --, substr(p.tracefile,length(p.tracefile)-REGEXP_INSTR(reverse(p.tracefile),'[\/|\]')+2,1000) as tracefile
+    --, p.tracefile
+    from gv$session vs, gv$process p, gv$bgprocess pb
+   where     vs.paddr = p.addr
+         and vs.inst_id = p.inst_id
+         and pb.PADDR = p.addr
+         and pb.INST_ID = p.inst_id
+         and vs.username is null
+order by pb.name, p.inst_id
+/
 
 ttitle left  "Trace File Locations" skip 2
 
 column full_trace_file_loc  format a100  heading "Trace|File"
-select p.inst_id  
-    , pb.name
-	 , to_char(p.spid) as process_id	 
-    , p.tracefile as full_trace_file_loc
-from gv$session vs
-   , gv$process p
-	, gv$bgprocess pb
-where vs.paddr=p.addr
-  and vs.inst_id=p.inst_id
-  and pb.PADDR=p.addr
-  and pb.INST_ID=p.inst_id
-  and vs.username is  null
-order by pb.name
-		,  p.inst_id  
-/  
+
+  select p.inst_id
+       ,  pb.name
+       ,  to_char (p.spid) as process_id
+       ,  p.tracefile as full_trace_file_loc
+    from gv$session vs, gv$process p, gv$bgprocess pb
+   where     vs.paddr = p.addr
+         and vs.inst_id = p.inst_id
+         and pb.PADDR = p.addr
+         and pb.INST_ID = p.inst_id
+         and vs.username is null
+order by pb.name, p.inst_id
+/
 
 ttitle off

@@ -1,7 +1,7 @@
 --==============================================================================
--- Author: Gunther Pippèrr 
--- Desc:   Process List of RMAN Oracle sessions
--- Date:   01.September 2013
+-- GPI -  Gunther Pippèrr 
+-- Desc:  Process List of RMAN Oracle sessions
+-- Date:  01.September 2013
 --==============================================================================
 set verify off
 set linesize 130 pagesize 300 recsep off

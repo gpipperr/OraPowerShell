@@ -1,13 +1,10 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   version of the database
 -- Date:   01.September 2012
---
 --==============================================================================
 -- see Script to Collect DB Upgrade/Migrate Diagnostic Information (dbupgdiag.sql) (Doc ID 556610.1)
---
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 ttitle left  "DB Infos -- Version" skip 2
@@ -81,10 +78,10 @@ column comments    format a35
 column bundle_series  format a6
 
 select to_char(action_time, 'dd.mm.yyyy') as a_time
-      ,action
-      ,namespace
-      ,version
-      ,comments
+      , action
+      , namespace
+      , version
+      , comments
   from sys.registry$history
  order by action_time desc
 /

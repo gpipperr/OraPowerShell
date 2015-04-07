@@ -1,8 +1,7 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   Informations about cursor usage in the database
 -- Date:   08.2013
---
 --==============================================================================
 
 set linesize 130 pagesize 300 recsep off
@@ -12,7 +11,7 @@ column user_name format a25
 ttitle left  "Open Cursor used summary" skip 2
 
 select inst_id
-	  , user_name
+	 , user_name
      , count(*)
  from gv$open_cursor 
 where user_name not in ( 'SYS' )  and user_name is not null

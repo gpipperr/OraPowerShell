@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   search the table in the database
 -- Parameter 1: Name of the sequence
 --

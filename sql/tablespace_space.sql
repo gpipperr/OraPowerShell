@@ -1,4 +1,8 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
+-- Desc: get a overview over the free and used space for a tablespace 
+--       parameter name of the tablespace
+--==============================================================================
 -- http://oraculix.wordpress.com/2010/10/03/ora-01652-und-fragmentierte-tablespaces/
 --==============================================================================
 

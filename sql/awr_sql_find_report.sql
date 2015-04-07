@@ -1,7 +1,12 @@
 --==============================================================================
+-- GPI -  Gunther Pippèrr
 -- Desc:   find the sql statement in the awr repository
 -- Date:   Oktober 2014
 --===============================================================================
+prompt
+prompt !!!!You need the Tuning Pack for this feature!!!!
+prompt
+
 
 define SQL_STATEMENT = &1 
 

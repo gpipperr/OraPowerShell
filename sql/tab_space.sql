@@ -1,11 +1,10 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   SQL Script to check the size of a table
 -- Doku:   http://www.pipperr.de/dokuwiki/doku.php?id=dba:sql_groesse_tabelle
 -- Date:   08.2013
 --
 --==============================================================================
-
 set verify off
 set linesize 130 pagesize 300 recsep off
 
@@ -368,6 +367,5 @@ begin
 end;
 / 
 
-SET VERIFY ON
 ttitle off
 

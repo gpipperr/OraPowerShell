@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc:  get information about the last sql in the database over a time period
 --   
 --==============================================================================
@@ -7,6 +7,10 @@
 -- http://oracleprof.blogspot.de/2011/06/how-to-color-mark-sql-for-awr-snapshots.html
 -- http://mwidlake.wordpress.com/2010/01/08/more-on-command_type-values/ 
 --==============================================================================
+prompt
+prompt !!!!You need the Tuning Pack for this feature!!!!
+prompt
+
 set linesize 130 pagesize 300 recsep off
 
 define START_SNAP='&1'

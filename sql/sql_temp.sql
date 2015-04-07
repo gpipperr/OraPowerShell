@@ -1,12 +1,10 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   check usage of temp tablespace
 -- Date:   November 2013
---
 --==============================================================================
 set verify off
 set linesize 130 pagesize 300 recsep off
-
 
 select s.inst_id
      , s.username

@@ -1,10 +1,8 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   show the object count of none default users
 -- Date:   October 2013
---
 --==============================================================================
-
 set linesize 130 pagesize 300 recsep off
 
 column OWNER format a25  
@@ -20,8 +18,8 @@ BREAK ON DUMMY;
 select  null dummy
      , owner
      , obj_type
-	  , obj_count 
-	  , sum(size_GB) as size_GB
+	 , obj_count 
+	 , sum(size_GB) as size_GB
  from (
 	select count(*) as obj_count, o.object_type as obj_type, o.owner  ,round( sum(s.bytes) /1024/1024/1024 , 3) as size_GB
 	  from dba_objects o, dba_segments s

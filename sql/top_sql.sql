@@ -1,6 +1,6 @@
 --==============================================================================
--- Author: Gunther Pippèrr
--- Desc:   :   HTML Report for SQL queries with the most resource usage
+-- GPI - Gunther Pippèrr
+-- Desc: HTML Report for SQL queries with the most resource usage
 --==============================================================================
 
 col SPOOL_NAME_COL new_val SPOOL_NAME
@@ -10,11 +10,6 @@ SELECT replace(ora_database_name||'_'||SYS_CONTEXT('USERENV','HOST')||'_'||to_ch
   AS SPOOL_NAME_COL
 FROM dual
 /
-
-
-
-
-
 
 set verify off
 set linesize 130 pagesize 300 recsep off

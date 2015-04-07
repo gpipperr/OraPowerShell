@@ -1,16 +1,15 @@
 --==============================================================================
--- get the name of a wait statistic
+-- GPI - Gunther Pippèrr
+-- Desc: get the name of a wait statistic
 --==============================================================================
 set verify off
 set linesize 130 pagesize 300 recsep off
 
 define SYSSTAT_NAME = &1
 
-
 prompt
 prompt Parameter 1 = SYSSTAT_NAME     => &&SYSSTAT_NAME.
 prompt
-
 
 
 ------------------------------------------------------------

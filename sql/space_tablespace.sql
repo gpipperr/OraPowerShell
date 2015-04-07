@@ -1,5 +1,5 @@
 --==============================================================================
--- Author: Gunther Pippèrr
+-- GPI -  Gunther Pippèrr
 -- Desc:   SQL Script to check the size of a table
 --         thanks to Christian Gärber for create alter database file statement  
 -- Date:   08.2013
@@ -32,8 +32,8 @@ select  s.tablespace_name
       , s.bytes / 1024 / 1024 as SIZE_MB
       , (e.max_data_block_id * et.BLOCK_SIZE / 1024 / 1024) as max_used_mb
       , (s.bytes - e.max_data_block_id * et.BLOCK_SIZE) / 1024 / 1024 as freeable_mb
-	   , s.file_id
-	   , '..'||substr(s.file_name,length(s.file_name)-20,20) file_name
+	  , s.file_id
+	  , '..'||substr(s.file_name,length(s.file_name)-20,20) file_name
   from  dba_data_files s
       , (select  file_id
                 , max(block_id + blocks) + 1 max_data_block_id
@@ -95,7 +95,7 @@ select 'alter database datafile ''' || s.file_name || ''' resize ' ||round(e.max
 			  ,tablespace_name
           from dba_extents
 		 where tablespace_name like upper('&TABLESPACE.')
-		  group by file_id,tablespace_name) e
+		 group by file_id,tablespace_name) e
 	 , dba_tablespaces et	 
  where s.FILE_ID = e.file_id
    and s.TABLESPACE_NAME = et.TABLESPACE_NAME
@@ -103,9 +103,7 @@ select 'alter database datafile ''' || s.file_name || ''' resize ' ||round(e.max
    and et.TABLESPACE_NAME like upper('&TABLESPACE.')
    and (s.bytes - e.max_data_block_id * et.BLOCK_SIZE) / 1024 / 1024 > 10
 /
-
-  
-SET VERIFY ON
+ 
 ttitle off
 
  

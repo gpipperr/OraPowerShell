@@ -1,7 +1,7 @@
 --==============================================================================
---
--- Desc:   
--- Date:   November 2013
+-- GPI - Gunther Pippèrr
+-- Desc:  get the tablespaces of the user    - parameter - Owner
+-- Date:  November 2013
 --
 --==============================================================================
 
@@ -21,9 +21,9 @@ column segment_type    format a20 heading "Segment Type"
 column count_          format 99999 heading "Count"
 
 select  tablespace_name
-      , segment_type
-		, '::' as "|"
-		, count(*) as count_ 
+     , segment_type
+	 , '::' as "|"
+	 , count(*) as count_ 
  from dba_segments 
 where owner like upper('&&USER_NAME')
 group by tablespace_name,segment_type

@@ -1,10 +1,9 @@
 --==============================================================================
--- Author: Gunther Pippèrr 
--- Desc:   get the RMan settings
--- Date:   September 2013
---
+-- GPI -  Gunther Pippèrr 
+-- Desc:  get the RMan settings
+-- Date:  September 2013
+--==============================================================================
 -- Source:  http://docs.oracle.com/cd/E11882_01/backup.112/e10643/rcviews001.htm
---
 --==============================================================================
 set linesize 130 pagesize 300 recsep off
 
@@ -42,8 +41,8 @@ where USED_CHANGE_TRACKING = 'YES'
 ttitle "Overview over the last backups of the system tables space" SKIP 2
 
 select completion_time
-    , datafile_blocks
-    , blocks_read
+     , datafile_blocks
+     , blocks_read
 	 , blocks 
 	 , USED_CHANGE_TRACKING 
   from v$backup_datafile w
@@ -58,7 +57,7 @@ select min(completion_time) First_time
     , max(completion_time)  last_time
     , count(*)              total
     , sum(decode(USED_CHANGE_TRACKING,'YES',1,0)) as  USED_CHANGE_TRACKING
-	 , sum(decode(USED_CHANGE_TRACKING,'NO',1,0))  as  NO_CHANGE_TRACKING
+	, sum(decode(USED_CHANGE_TRACKING,'NO',1,0))  as  NO_CHANGE_TRACKING
   from v$backup_datafile w
 where USED_CHANGE_TRACKING = 'YES'  
 order by 1

@@ -1,4 +1,7 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
+-- Desc: get an overview over changes on the tables of a user - parameter - Owner
+--==============================================================================
 ----http://www.oracleangels.com/2011/01/automatic-statistics-gathering-job.html
 --==============================================================================
 set verify off
@@ -11,12 +14,11 @@ prompt Parameter 1 = Owner Name  => &&OWNER.
 prompt 
 
 
-
 select num_rows
      , last_analyzed
-	  , tot_updates
-	  , table_owner
-	  , table_name
+	 , tot_updates
+	 , table_owner
+	 , table_name
 	  --, partition_name
 	  --, subpartition_name
 	  --, inserts

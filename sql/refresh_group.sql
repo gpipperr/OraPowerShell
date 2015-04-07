@@ -1,5 +1,6 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
+-- Desc: Get all refresh groups of the DB for the materialized views
 --==============================================================================
 set verify off
 set linesize 130 pagesize 300 recsep off
@@ -12,7 +13,7 @@ column next_date    format a18
 
 
 select mv.owner
-     , mv.mview_name
+      , mv.mview_name
 	  , to_char(mv.last_refresh_date,'dd.mm.yyyy hh24:mi') as last_refresh_date
 	  , rc.rname
 	  , to_char(rc.next_date,'dd.mm.yyyy hh24:mi') as next_date

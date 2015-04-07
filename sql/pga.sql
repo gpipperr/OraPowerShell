@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc:    Informations about the pga usage in the database
 -- Date:   08.2013
 --
@@ -72,7 +72,5 @@ select pga_target_for_estimate/(1024*1024) c1
 	,  estd_overalloc_count c3
  from v$pga_target_advice
 /
-
-
 
 ttitle off

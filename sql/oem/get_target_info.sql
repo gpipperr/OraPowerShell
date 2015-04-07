@@ -1,8 +1,9 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- get all info over the  properties of one target of this type
 --==============================================================================
-
-SET linesize 240 pagesize 400 recsep OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 define TARGET_TYPE  = '&1' 
@@ -19,7 +20,7 @@ column target_name format a40 heading "Target  Name"
 break on TARGET_GUID
 
 select target_name 	  	 
-	  ,  TARGET_GUID
+	 ,  TARGET_GUID
      ,  property_name
      , property_value      	   
   from mgmt$target_properties 

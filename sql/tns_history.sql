@@ -1,10 +1,10 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Desc:   History of usage of a service in the last half day
 --==============================================================================
 
 set verify off
 set linesize 130 pagesize 300 recsep off
-
 
 
 ttitle 'Past service-level metrics|(from gv$servicemetric)'
@@ -25,17 +25,16 @@ column callspersec     format 99999999     heading '# 0f|user|calls|per|second'
 column dbtimepersec    format 99999999     heading 'dbtime|per|second'
 column flags           format 999999       heading 'flags'
 
-select  
-      sm.inst_id    
+select sm.inst_id    
     , sm.service_name
-	 , ds.service_id
+	, ds.service_id
     , to_char(sm.begin_time,'hh24:mi:ss') beg_hist
     , to_char(sm.end_time,'hh24:mi:ss') end_hist
     , ds.goal
     , sm.dbtimepercall
     , sm.callspersec
     , sm.dbtimepersec
-  from gv$servicemetric_HISTORY sm
+  from gv$servicemetric_history sm
      , dba_services ds
  where sm.service_name=ds.name
    and ds.goal is not null
@@ -55,6 +54,6 @@ prompt...      0x01 - service is blocked from accepting new connections
 prompt...      0x02 - service is violating the set threshold on some metric
 prompt..       0x04 - goodness is unknown
 
-clear breaks
+--clear break
 
 ttitle off

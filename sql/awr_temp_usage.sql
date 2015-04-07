@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc:  get information about the temp Usage in the DB history
 --   
 --==============================================================================
@@ -7,6 +7,10 @@
 -- http://coskan.wordpress.com/2011/01/24/analysing-temp-usage-on-11gr2-temp-space-is-not-released/
 -- alternative from v$active_session_history 
 --==============================================================================
+prompt
+prompt !!!!You need the Tuning Pack for this feature!!!!
+prompt
+
 
 set linesize 130 pagesize 300 recsep off
 

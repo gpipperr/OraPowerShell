@@ -1,5 +1,7 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
+-- Desc: set the threshold of a metric
+-- Work in Progress
 --==============================================================================
 
 /*
@@ -54,51 +56,55 @@ DBMS_SERVER_ALERT.SET_THRESHOLD(
 */
 
 declare
-  cursor c_metrics (p_instance_name varchar2)
-  is
-    select metrics_id
-    , object_type
-    , object_name
-    , instance_name
-    from table(dbms_server_alert.view_thresholds)
-    where instance_name=p_instance_name;
-  v_instance varchar2(32);
-  v_warning_operator binary_integer;
-  v_warning_value varchar2(32);
-  v_critical_operator binary_integer;
-  v_critical_value varchar2(32);
-  v_observation_period binary_integer;
-  v_consecutive_occurrences binary_integer;
+   cursor c_metrics (p_instance_name varchar2)
+   is
+      select metrics_id
+           ,  object_type
+           ,  object_name
+           ,  instance_name
+        from table (dbms_server_alert.view_thresholds)
+       where instance_name = p_instance_name;
+
+   v_instance                  varchar2 (32);
+   v_warning_operator          binary_integer;
+   v_warning_value             varchar2 (32);
+   v_critical_operator         binary_integer;
+   v_critical_value            varchar2 (32);
+   v_observation_period        binary_integer;
+   v_consecutive_occurrences   binary_integer;
 begin
-  select instance_name into v_instance from v$instance;
-  for rec in c_metrics (p_instance_name => 'TSTPBLM1')
-  loop
-     sys.dbms_output.put_line('-- Info - read the Metric : '|| rec.metrics_id);
-	 dbms_server_alert.get_threshold( metrics_id => rec.metrics_id 
-      ,warning_operator => v_warning_operator 
-      ,warning_value => v_warning_value 
-      ,critical_operator => v_critical_operator 
-      ,critical_value => v_critical_value
-      , observation_period => v_observation_period 
-      ,consecutive_occurrences => v_consecutive_occurrences
-      , instance_name => rec.instance_name
-      , object_type => rec.object_type 
-      , object_name => rec.object_name );
-    
-      if v_warning_value != null then
-          sys.dbms_output.put_line('-- Info - unset the Metric : '|| rec.metrics_id);
-          dbms_server_alert.set_threshold( metrics_id => rec.metrics_id 
-          , warning_operator => null 
-          , warning_value => null 
-          , critical_operator => null 
-          , critical_value => null 
-          , observation_period => null 
-          , consecutive_occurrences => null 
-          , instance_name => rec.instance_name 
-          , object_type => rec.object_type 
-          , object_name => rec.object_name );
+   select instance_name into v_instance from v$instance;
+
+   for rec in c_metrics (p_instance_name => 'TSTPBLM1')
+   loop
+      sys.dbms_output.put_line ('-- Info - read the Metric : ' || rec.metrics_id);
+      dbms_server_alert.get_threshold (metrics_id  => rec.metrics_id
+                                     ,  warning_operator => v_warning_operator
+                                     ,  warning_value => v_warning_value
+                                     ,  critical_operator => v_critical_operator
+                                     ,  critical_value => v_critical_value
+                                     ,  observation_period => v_observation_period
+                                     ,  consecutive_occurrences => v_consecutive_occurrences
+                                     ,  instance_name => rec.instance_name
+                                     ,  object_type => rec.object_type
+                                     ,  object_name => rec.object_name);
+
+      if v_warning_value != null
+      then
+         sys.dbms_output.put_line ('-- Info - unset the Metric : ' || rec.metrics_id);
+         dbms_server_alert.set_threshold (metrics_id  => rec.metrics_id
+                                        ,  warning_operator => null
+                                        ,  warning_value => null
+                                        ,  critical_operator => null
+                                        ,  critical_value => null
+                                        ,  observation_period => null
+                                        ,  consecutive_occurrences => null
+                                        ,  instance_name => rec.instance_name
+                                        ,  object_type => rec.object_type
+                                        ,  object_name => rec.object_name);
       end if;
-    commit;
-  end loop;
+
+      commit;
+   end loop;
 end;
 /

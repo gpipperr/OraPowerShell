@@ -1,4 +1,5 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Desc:   show the object count and size of a tablespace
 -- Date:   Januar 2015
 --==============================================================================
@@ -23,16 +24,16 @@ column OWNER format a25
 --break on owner SKIP 1
 --COMPUTE SUM OF size_GB ON owner
 
-column DUMMY NOPRINT;
-COMPUTE SUM OF size_GB ON DUMMY;
-BREAK ON DUMMY;
+column dummy noprint;
+compute sum of size_gb on dummy;
+break on dummy;
 
 
 select  null dummy
      , owner
      , obj_type
-	  , obj_count 
-	  , sum(size_GB) as size_GB
+	 , obj_count 
+	 , sum(size_GB) as size_GB
  from (
 	select count(*) as obj_count
 	    , o.object_type as obj_type
@@ -78,3 +79,5 @@ where rang < 25
 /
 	 
 ttitle off
+
+clear break

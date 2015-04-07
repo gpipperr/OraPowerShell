@@ -1,8 +1,9 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- get the upload status of the target on a host
 --==============================================================================
-
-SET linesize 240 pagesize 400 recsep OFF
+set verify off
+set linesize 130 pagesize 300 recsep off
 
 
 define HOST_NAME  = '&1' 

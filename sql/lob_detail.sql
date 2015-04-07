@@ -1,7 +1,8 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
+-- Desc - Get the details for the lob data type for this table 
+--          Parameter owner and table name
 --==============================================================================
-
 set verify  off
 set linesize 130 pagesize 300 recsep off
 

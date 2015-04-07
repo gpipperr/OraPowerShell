@@ -1,7 +1,7 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
+-- Desc: On which objects this pl/sql code depends
 --==============================================================================
-
 set verify  off
 set linesize 130 pagesize 300 recsep off
 set trimspool on

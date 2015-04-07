@@ -1,4 +1,7 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
+-- Desc: start a trace in this session
+--==============================================================================
 -- see http://docs.oracle.com/cd/E11882_01/appdev.112/e40758/d_monitor.htm#ARPLS67176
 --
 -- If serial_num is NULL but session_id is specified, a session with a given session_id is traced irrespective of its serial number. If both session_id and serial_num are NULL, the current user session is traced. 

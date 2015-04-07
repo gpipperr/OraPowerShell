@@ -1,10 +1,8 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   Get the Redo Log scn information
 -- Date:   01.November 2013
---
 --==============================================================================
-
 set verify off
 set linesize 130 pagesize 300 recsep off
 
@@ -26,11 +24,10 @@ ttitle  "Report Redo Log SCN History per Day"  SKIP 1  -
 column min_sqn format 999999999999999
 column max_sqn format 999999999999999
 			 
-select 
-       trunc(FIRST_TIME) as days
+select  trunc(FIRST_TIME) as days
 	  , thread#
-     , min(SEQUENCE#) as min_sqn
-     , max(SEQUENCE#) as max_sqn
+      , min(SEQUENCE#) as min_sqn
+      , max(SEQUENCE#) as max_sqn
 	  , count(*)       as archive_count		  
  from V$LOG_HISTORY 
 where FIRST_TIME > trunc(sysdate - 14)
@@ -38,10 +35,7 @@ group by trunc(FIRST_TIME),thread#
 order by 1,2
 /
 
-ttitle off
-
 ttitle  "Report LOGS with this SQN"  SKIP 1  - 
-
 
 ACCEPT SQN prompt "search for SQN:"
 
@@ -49,10 +43,10 @@ column NAME      format a40    heading "Archivelog|Name"
 column THREAD_NR format a2     heading "I"
 column SEQUENCE# format 999999 heading "Arch|seq"
 
-set NUMWIDTH  14
+set numwidth  14
 
-select to_char(THREAD#) as  THREAD_NR
-     , SEQUENCE#
+select  to_char(THREAD#) as  THREAD_NR
+      , SEQUENCE#
 	  , NAME
 	  , to_char(FIRST_TIME,'dd.mm hh24:mi') as first_time
 	  , NEXT_TIME
@@ -64,3 +58,4 @@ order by THREAD#,SEQUENCE#
 /
 
 undefine SCN
+ttitle off

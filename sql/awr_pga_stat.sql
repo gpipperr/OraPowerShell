@@ -1,8 +1,11 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc: get more information over the pga usage
---   
 --==============================================================================
+prompt
+prompt !!!!You need the Tuning Pack for this feature!!!!
+prompt
+
 set linesize 130 pagesize 300 recsep off
 
 

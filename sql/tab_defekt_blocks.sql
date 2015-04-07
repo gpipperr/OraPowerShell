@@ -1,10 +1,9 @@
 --==============================================================================
---  check for block corruption
+-- GPI - Gunther Pippèrr
+-- Desc: check for block corruption
 --==============================================================================
 set verify off
 set linesize 130 pagesize 300 recsep off
-
-
 
 column segment_name    format a16 heading "Segment|Name"
 column tablespace_name format a16 heading "Tablespace|Name"
@@ -31,7 +30,7 @@ prompt Check which tables are affected
 prompt
 
 select ext.owner
-     , ext.segment_name
+      , ext.segment_name
 	  , ext.segment_type
 	  , ext.relative_fno
 	  , ext.partition_name

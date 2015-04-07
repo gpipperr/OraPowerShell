@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc.:   show the partitions of a table
 -- Parameter 1: Name of the User
 -- Parameter 2: Name of the Table
@@ -38,8 +38,8 @@ select    p.partition_position
        ,  p.partition_name
        ,  p.subpartition_count
        ,  p.tablespace_name
-		 ,  (p.initial_extent/1024/1024) as inital_ex_size_mb
-		 ,  round((s.bytes/1024/1024),0) as size_on_disk	  
+	   ,  (p.initial_extent/1024/1024) as inital_ex_size_mb
+	   ,  round((s.bytes/1024/1024),0) as size_on_disk	  
   from dba_tab_partitions p, dba_segments s  
 where p.table_owner like upper('&&OWNER.')
   and p.table_name like upper('&&TAB_NAME.')

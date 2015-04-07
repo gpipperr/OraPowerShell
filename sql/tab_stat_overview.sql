@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   Get the statistic settings of all tables of a user
 -- Parameter 1: Name of the table
 --

@@ -1,11 +1,15 @@
 --==============================================================================
---
+-- GPI -  Gunther Pippèrr
 -- Desc: get more information about one sql statement from the awr
 --   
 --==============================================================================
 -- see
 -- http://oracleprof.blogspot.de/2011/06/how-to-color-mark-sql-for-awr-snapshots.html
 --==============================================================================
+prompt
+prompt !!!!You need the Tuning Pack for this feature!!!!
+prompt
+
 
 set linesize 130 pagesize 300 recsep off
 
@@ -29,9 +33,9 @@ column PARSING_SCHEMA_NAME format a20                heading "Parsing|User"
 
 
 select ss.instance_number
-     , ss.sql_id
+      , ss.sql_id
 	  , to_char(s.begin_interval_time,'dd.mm.yyyy hh24:mi') as begin_interval_time
-     , ss.plan_hash_value
+      , ss.plan_hash_value
 	  , case when ss.executions_delta = 0 then -1 else ss.elapsed_time_delta/ss.executions_delta end as  execution_time
 	  , ss.executions_delta
 	  , ss.cpu_time_delta

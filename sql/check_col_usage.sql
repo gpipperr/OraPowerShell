@@ -1,4 +1,5 @@
 --==============================================================================
+-- GPI - Gunther Pippèrr
 -- Desc:   HTML Report column usage for SQL queries and indexes
 --
 -- HTML Report - Table column used in SQL Statements but not indexed and 

@@ -1,5 +1,6 @@
 --==============================================================================
 -- in work
+-- Desc: get the statistic information of a session
 --==============================================================================
 set verify off
 set linesize 130 pagesize 300 recsep off

@@ -1,5 +1,5 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   get the proxy user settings
 -- Date:   Oktober 2013
 --
@@ -12,8 +12,6 @@ define USER_NAME = &1
 prompt
 prompt Parameter 1 = User Name      => &&USER_NAME.
 prompt
-
-
 
 ttitle left  "Proxy Settings for this database" skip 2
 

@@ -1,4 +1,5 @@
 --===============================================================================
+-- GPI - Gunther Pippèrr
 --http://docs.oracle.com/cd/B28359_01/appdev.111/b28419/d_networkacl_adm.htm#CHDJFJFF
 --http://www.oracle.com/webfolder/technetwork/de/community/dbadmin/tipps/acl/index.html
 --http://www.oracleflash.com/36/Oracle-11g-Access-Control-List-for-External-Network-Services.html
@@ -18,17 +19,17 @@ column upper_port format a12 heading "Upper Port"
 set lines 1000
 
 select acl
-      ,host
-      ,to_char(lower_port) lower_port
-      ,to_char(upper_port) upper_port
-  from DBA_NETWORK_ACLS 
+     ,  host
+     ,  to_char (lower_port) lower_port
+     ,  to_char (upper_port) upper_port
+  from DBA_NETWORK_ACLS
 /
 
 select acl
-      ,principal
-      ,privilege
-      ,is_grant
- from DBA_NETWORK_ACL_PRIVILEGES 
+     ,  principal
+     ,  privilege
+     ,  is_grant
+  from DBA_NETWORK_ACL_PRIVILEGES
 /
 
 /*
@@ -41,13 +42,13 @@ select acl
     principal    => 'GPI',
     is_grant     => TRUE, 
     privilege    => 'connect');   
-	 
-	DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE(
-		acl       => 'my_test_acl.xml',
+     
+    DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE(
+        acl       => 'my_test_acl.xml',
       principal => 'GPI',
       is_grant  => true,
       privilege => 'resolve');
-		
+        
   COMMIT;
 END;
 /
@@ -60,29 +61,30 @@ begin
     lower_port  => 1,
     upper_port  => 9999); 
 
--- ony one server	 
+-- ony one server     
  DBMS_NETWORK_ACL_ADMIN.ASSIGN_ACL(
-	acl  => 'my_test_acl.xml',
+    acl  => 'my_test_acl.xml',
    host => 'www-proxy.us.oracle.com');
 
 COMMIT;
 
 end;
-/	 
+/     
 
 -- delete one acl
 begin
  DBMS_NETWORK_ACL_ADMIN.UNASSIGN_ACL (
-	 acl         => 'localhost-permissions.xml',
+     acl         => 'localhost-permissions.xml',
     host        => 'pbupcb1.pbprd.lprz.com', 
-    lower_port  => 9080,	 
+    lower_port  => 9080,     
     upper_port  => 9080)
-	 ; 
+     ; 
 end;
-/		
+/        
 
-DECLARE
-  l_url            VARCHAR2(50) := 'http://www.goggle.de;
+declare
+   l_url   varchar2 (50)
+      := 'http://www.goggle.de;
   l_http_request   UTL_HTTP.req;
   l_http_response  UTL_HTTP.resp;
 BEGIN

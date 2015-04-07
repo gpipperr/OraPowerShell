@@ -1,12 +1,8 @@
 --==============================================================================
---
+-- GPI - Gunther Pippèrr
 -- Desc:   Get Information about running data pump jobs
 -- Date:   November 2013
-
---
 --==============================================================================
-
-
 set linesize 130 pagesize 300 recsep off
 
 column owner_name format a10;
@@ -40,8 +36,8 @@ column OBJECT_NAME  format a25
 
 select o.status 
      , o.object_id
-	  , o.object_type
-	  , o.owner||'.'||object_name as OBJECT_NAME
+	 , o.object_type
+	 , o.owner||'.'||object_name as OBJECT_NAME
 from dba_objects o
    , dba_datapump_jobs j
 where o.owner=j.owner_name 
