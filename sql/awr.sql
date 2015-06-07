@@ -64,6 +64,9 @@ DOC
                                               , high_snap_id => <max_snap_id>);                                         
  end;
  / 
+ 
+ To get more Information you can use also @?/rdbms/admin/awrinfo.sql
+
 -------------------------------------------------------------------------------
 #
 

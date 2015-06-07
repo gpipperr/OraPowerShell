@@ -60,6 +60,7 @@ DOC
 	- tns_history.sql      - show services statistics for the last 12 hours (only services with some traffic)
 	- taf.sql              - Check TAF settings of the connections
 	- connection_pool.sql  - Show the Database Resident Connection Pooling (DRCP) Settings
+	- ssl.sql			   - check the  sql*net connection if ssl or encryption is in use
 
 	- locks.sql            - locks in the database - mode 6 is the blocker!
 	- ddl_locks.sql        - check for DDL Locks
