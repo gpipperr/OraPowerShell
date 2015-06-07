@@ -9,7 +9,7 @@ set verify off
 set linesize 130 pagesize 300 recsep off
 
 
-define TABLESPACE = "%"
+define TABLESPACE = "&1"
 
 
 prompt

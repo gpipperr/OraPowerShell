@@ -65,6 +65,70 @@ prompt... if last analyzed is empty there are some tables witout statistics in t
 prompt... check especially for none sys user
 prompt...
 
+
+ttitle left  "Stale Statistics overview - Table with more then 10% modifications" skip 2
+
+
+column owner format a20
+column table_name format a30
+
+select t.owner
+	,  t.table_name
+	,  t.last_analyzed
+	,  m.TIMESTAMP as last_accessed
+	,  m.deletes + m.updates + m.inserts as changes
+	,  round ( (m.deletes + m.updates + m.inserts) / t.num_rows * 100) stale_percent
+	,  num_rows
+from   dba_tables t
+    ,  dba_tab_modifications m
+where  t.owner = m.table_owner
+  and  t.table_name = m.table_name
+  and t.num_rows > 0 
+  and round ( (m.deletes + m.updates + m.inserts) / t.num_rows * 100) >= 10 
+  and owner not in ('SYS'
+                    ,'SYSTEM'
+                    ,'SYSMAN'
+                    ,'APEX_030200'
+                    ,'XDB'
+                    ,'ORDDATA'
+                    ,'MDSYS'
+                    ,'OLAPSYS'
+                    ,'CTXSYS'
+                    ,'SYSMAN_MDS'
+                    ,'EXFSYS'
+                    ,'DBSNMP'
+                    ,'ORDSYS'
+                    ,'WMSYS'
+                    ,'APEX_030200'
+                    ,'PEFSTAT')
+order by 1,2
+/
+
+
+set serveroutput on
+
+declare
+	v_list dbms_stats.objecttab;
+	v_owner varchar2(32):='NULL';
+begin
+	dbms_stats.gather_database_stats( objlist => v_list
+									, options => 'LIST STALE');
+	dbms_output.put_line('--Info - List of stale Objects with dbms_stats.gather_database_stats'); 									
+	for i in v_list.first..v_list.last
+	loop
+		if v_list(i).ownname != v_owner then
+			dbms_output.put_line('--Info '||rpad('-',30,'-'));
+		end if;
+		if v_list(i).ownname != 'SYS' then
+			dbms_output.put_line('--Info Object:: ' || rpad(v_list(i).ownname || '.' || v_list(i).objname,42,' ') ||  rpad(' Type:: ' || v_list(i).objtype ,20,' ')|| ' Partition:: ' || v_list(i).partname);
+		end if;			
+		v_owner:=v_list(i).ownname;
+	end loop;
+end;
+/
+
+prompt...
+
  
 ttitle left  "Overview histogram statistic usage for none system user in the database" skip 2
  
@@ -235,10 +299,11 @@ select client_name
       ,job_error
       --, job_info 
   from dba_autotask_job_history
+ where job_start_time > sysdate - 14
+order by job_start_time
 /  
 
 ---------------------------- Check the Statistic Settings for this database -------------------------------
-ttitle left  "Check Auto tasks history" skip 2 
 
 prompt 
 prompt if empty no  history!!

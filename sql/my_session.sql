@@ -66,6 +66,14 @@ select value as full_trace_file_loc
 --       , p.inst_id
 --/
 
+ttitle left  "Check if this Session is connected via TCP with SSL TCPS or TCP" skip 2
+
+
+SELECT SYS_CONTEXT('USERENV','NETWORK_PROTOCOL') AS connect_protocol 
+  FROM dual
+/  
+
+
 ttitle left  "TAF Setting" skip 2
 column inst_id    format 99       heading "Inst|ID"
 column username   format a14      heading "DB User|name"
