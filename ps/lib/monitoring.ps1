@@ -382,8 +382,8 @@ function local-send-status-file {
 	 
 		# Message Subject
 		$hostname=@( hostname )
-		$mail.Subject = ( "Host::{0} Status from ::{1:d}" -f $hostname,(get-date))
-	 
+		$mail.Subject = ( "Host::{0} Status from ::{1:d}" -f $hostname[0],(get-date))
+			 
 		# Message Body
 		# read content from status file
 		$mailtext = get-content $status_file
@@ -416,7 +416,7 @@ function local-send-status-file {
 		local-print -ErrorText "Error --",  $error_txt
 		
 		$error_txt=" If you get this Error :"+$CLRF
-		$error_txt+=" Ausnahme beim Aufrufen von Send mit 1 Argument(en):  Postfach nicht verfügbar. Die Serverantwort war: Please use a fully-qualified domain name for HELO/EHLO"+$CLRF
+		$error_txt+=" The server answer was: Please use a fully-qualified domain name for HELO/EHLO"+$CLRF
 		local-print -ErrorText "Error --",  $error_txt
 		
 		$error_txt=" check for this possible reason"+$CLRF
@@ -505,7 +505,9 @@ function local-send-status {
 		local-print -Text "Info -- Send the status mail with:  -smtpServer $smtpServer -port $port -to $to -from $from -status_file $log_file  -username $username -password xxxxx"
 				
 		if ("true".equals( $mailconfig.mail.smpt_server_needs_fqdn.toString())) {
-			local-print -Text "Warning -- Sending e-mail via telnet not jet implemented"  -ForegroundColor "yellow"
+			local-print -Text "Warning -- Parameter <smpt_server_needs_fqdn> in mail_config.xml is set to true"  -ForegroundColor "yellow"
+			local-print -Text "Warning -- Parameter <smpt_server_needs_fqdn> = true only works with servers in a domain!"  -ForegroundColor "yellow"
+			local-print -Text "Warning -- Sending e-mail via telnet not implemented"  -ForegroundColor "yellow"
 		}
 		else {
 			# use the .net classes to send the e-mail
