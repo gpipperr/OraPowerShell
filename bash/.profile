@@ -593,4 +593,9 @@ else
 	export TNS_ADMIN=${ORACLE_HOME}/network/admin
 fi
 
+#################################################
+trace(){
+cd $ADR_BASE
+adrci exec="show homes"
+}
 #################### END ##############################
