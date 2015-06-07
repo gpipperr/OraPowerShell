@@ -105,10 +105,10 @@ function local-clear-logfile {
 }
 
 #==============================================================================
-# Helper Funktion to write log file and display message
+# Helper Function to write log file and display message
 ##
 function local-print{
-	# Parametes
+	# Parameters
 	Param( 
 		  [String]   $ForegroundColor = 'White'
 		, [String[]] $text 
@@ -126,12 +126,12 @@ function local-print{
 		$log_message = (Get-Date -Format "yyyy-MM-dd HH:mm:ss") +":: " +$text 
 		try {
 			write-host -ForegroundColor $ForegroundColor $text  
-			 # check if the file is accesible
+			 # check if the file is accessible
 			 try{
 				$log_message  | Out-File -FilePath "$backup_log" -Append
 			 }
 			 catch {
-			    write-host -ForegroundColor "red" "Error -- Logfile not accessible see text above"
+			    write-host -ForegroundColor "red" "Error -- Log file not accessible see text above"
 			 }
 		} 
 		catch {
@@ -143,7 +143,7 @@ function local-print{
 }
 
 #==============================================================================
-# if you like to log to the eventlog you have to register the event id
+# if you like to log to the event log you have to register the event id
 # This must be done as Administrator!
 # http://msdn.microsoft.com/de-de/library/system.diagnostics.eventlog.aspx
 #
@@ -205,7 +205,7 @@ function local-log-event {
 			$log = New-Object System.Diagnostics.EventLog($event_log,".")
 			$log.set_source($log_source) 
 			
-			# write Log entriy
+			# write Log entry
 			$log.WriteEntry($logText,$logtype) 
 			$log.Close()
 		}
@@ -323,8 +323,8 @@ function local-encryptXMLPassword {
 
 #==============================================================================
 # delete old files from the backup location
-# this is helpfull for the copy of the rman backups to for a example 
-# a nas file to clean later the enviroment
+# this is helpful for the copy of the rman backups 
+# from a NAS to clean later the environment
 # if delete_old_files_days null or 999 do nothing
 #
 function local-delte-oldFiles {
@@ -486,12 +486,12 @@ function local-check-file-open {
  	$file_handle= New-Object System.IO.FileInfo $filename
 	try {
 		$file_stream = $file_handle.Open( [System.IO.FileMode]::OpenOrCreate, [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None )
-		# close is successfull
+		# close is successful
 		if ($file_stream) {
 			$file_stream.close();
 			$file_stream.dispose()
-			# wait a short moment that the file is realy closed!
-			# reason => execption when after the test remove-item is called with out a short break
+			# wait a short moment that the file is really closed!
+			# reason => exception when after the test remove-item is called with out a short break
 			sleep 2
 		}
 	}

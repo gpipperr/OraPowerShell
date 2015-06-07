@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- oracle backup configuration Created: 08.2012 : Gunther Pippèrr (c) http://www.pipperr.de -->
 <backup version="0.2">
-	<!-- configuration of the asm enviroment -->
+	<!-- configuration of the asm environment -->
 	<asm>
 		<!-- set to true if ASM Option of the Database is in use -->
 		<asm_in_use>false</asm_in_use>
@@ -9,16 +9,16 @@
 		<asm_backup_dest>d:\oracle\flash_recovery_area</asm_backup_dest>
 		<!-- ASM instance SID - if RAC check for the NODE ID like +ASM1! -->
 		<asm_instancesid>+ASM</asm_instancesid>
-		<!-- if default - try to get from the oralce installation repository the locatoin -->
+		<!-- if default - try to get from the oracle installation repository the location -->
 		<asm_oracle_home>default</asm_oracle_home>  
 	</asm>
-	<!-- configuration of the grid enviroment -->
+	<!-- configuration of the grid environment -->
 	<grid>
 		<!-- set to true if RAC Option of the Database is in use -->
 		<grid_in_use>false</grid_in_use>
 		<backup_grid>true</backup_grid>
 		<grid_backup_dest>d:\oracle\flash_recovery_area</grid_backup_dest>
-		<!-- if default - try to get from the oralce installation repository the locatoin -->
+		<!-- if default - try to get from the oracle installation repository the location -->
 	<grid_oracle_home>default</grid_oracle_home>
 	</grid>
 	<!--- configuration of the db's to backup -->
@@ -63,16 +63,20 @@
 	<!-- Backup Policy - how many backups to store on disk -->
 	<db_backup_count_of>1</db_backup_count_of>
 	
-	<!--IF EE Edition you can use the pattern to define the leveles for each day (Day 1 = Monday, Day 7 = Sunday) -->
+	<!--IF EE Edition you can use the pattern to define the levels for each day (Day 1 = Monday, Day 7 = Sunday) -->
 	<!-- 0,0,0,0,0,0,0 = every day one full backup -->
 	<!-- 1,1,2,1,1,2,0 = only Sunday full backup  -->
 	<db_backup_incremental_policy>0,0,0,0,0,0,0</db_backup_incremental_policy>
+	
 	<!-- if EE Edition parallel can be used 1-4 -->
 	<db_backup_channels>1</db_backup_channels>
-	<!-- if EE and BIG Tablespace portions if data for multiple channels parameter can be false or a value like 5000M  -->
+	
+	<!-- if EE and BIG Table space portions if data for multiple channels parameter can be false or a value like 5000M  -->
 	<db_backup_section_size>false</db_backup_section_size>
-	<!-- if EE using Backup Compressoin -->
-	<db_backup_compress>true</db_backup_compress>
+	
+	
+	<!-- if you like to use Backup Compression - typical in EE Edition! Check your licence!-->
+	<db_backup_compress>false</db_backup_compress>
 
 	<!-- Backup the Metainformation like the controlfile trace etc. -->
 	<!-- attribute use_dot_net= false => use sqlplus and sql spool , true => use .net Dll to create csv file -->
@@ -88,7 +92,7 @@
 	<db_check_alert_log listner_summary="false" print_lines_after_match="7" use_adrci="true">true</db_check_alert_log>
 
 	<!-- Parameter for the archive only backup -->
-	<!-- if backup script is started wiht the parameter ARCHIVE - save only archivelogs if true-->
+	<!-- if backup script is started with the parameter ARCHIVE - save only archivelogs if true-->
 	<db_archive>true</db_archive>
 	 <!-- if true - use the flash /fast recovery parameter as location for the backup , if false use parameter archive_backup_dest -->
 	<archive_use_flash>true</archive_use_flash>
@@ -108,8 +112,8 @@
 		<export_policy>0,1,0,1,0,1,2</export_policy>
 		<!-- the user to export -->
 		<user>
-			<!-- if encrypt=false the password will be encrypted wiht MS secure String , only readable on local Maschine -->
-			<!-- if use_sys_account = false we will use the useracount to export the data, if true wie use the nls_settings of the DB section -->
+			<!-- if encrypt=false the password will be encrypted with MS secure String , only readable on local machine -->
+			<!-- if use_sys_account = false we will use the user account to export the data, if true use the nls_settings of the DB section -->
 			<!-- filter not jet implemented - expdump filter to include/exclude objects -->
 			<!-- tns_alias TNSnames.ora entry to connect to the database if use_sys_account = false -->
 			<username filter="*" password="tiger" encrypt="false" use_sys_account="true" tns_alias="gpi" certificate="false" >scott</username>    

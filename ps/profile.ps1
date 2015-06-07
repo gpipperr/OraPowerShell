@@ -20,7 +20,7 @@
 	}
 	else 
 	{
-		(get-host).UI.RawUI.BackgroundColor = "DarkMagenta"    
+		(get-host).UI.RawUI.BackgroundColor = "DarkBlue"    
 	}
 	(get-host).UI.RawUI.ForegroundColor = "white"
 	clear-host

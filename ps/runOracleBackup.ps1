@@ -38,7 +38,7 @@
 
 #>
 
-# Enviroment
+# Environment
 Set-Variable CONFIG_VERSION "0.2" -option constant
 
 $Invocation = (Get-Variable MyInvocation -Scope 0).Value
@@ -70,7 +70,7 @@ if ( $backupconfig.backup.HasAttribute("version") ) {
 	}
  }
 else {
-	throw "Configuration xml file version info missing, please check the xml template from the  new version and add the version attribte to <backup> !"
+	throw "Configuration xml file version info missing, please check the xml template from the  new version and add the version attribute to <backup> !"
 }
 
 # read if exist the mail configuration
@@ -131,7 +131,7 @@ local-print  -Text "Info -- Check for unencrypted passwords"
 # encrypt the password and change the xml config
 $result=local-encryptXMLPassword $backupconfig
 
-# Store Configuration (needed if passwort was not encrypted!)
+# Store Configuration (needed if password was not encrypted!)
 if ($result.equals(1)) { 
     local-print  -Text "Info -- Save XML Configuration with encrypted password"
 	$backupconfig.Save("$config_xml")
@@ -142,10 +142,10 @@ else {
 
 # check for password in the mail_xml
 
-# encrypt the password and change the xml config
+# encrypt the password and change the xml configuration
 $result=local-encryptXMLPassword $mailconfig
 
-# Store Configuration (needed if passwort was not encrypted!)
+# Store Configuration (needed if password was not encrypted!)
 if ($result.equals(1)) { 
     local-print  -Text "Info -- Save XML Configuration with encrypted password"
 	$mailconfig.Save("$mailconfig_xml")
@@ -349,13 +349,13 @@ Process {
 						local-backup-db-archive -db $db -sql_connect_string $sql_connect_string -rman_connect_string $rman_connect_string
 					}
 					else {
-						local-print -Text "Error-- Archvielog backup was not enableed (db_archive=false) for this instance::",$ORACLE_SID   -ForegroundColor "red"
+						local-print -Text "Error-- Archive Log backup was not enabled (db_archive=false) for this instance::",$ORACLE_SID   -ForegroundColor "red"
 					}
 				}
 			} 
 			catch {
-					local-print -Text "Error-- Failed to create Archvielog backup: The error was: $_."	 -ForegroundColor "red"
-					local-log-event -logtype "Error" -logText "Error- -- Failed to create Archvielog backup: The error was: $_."
+					local-print -Text "Error-- Failed to create Archive Log backup: The error was: $_."	 -ForegroundColor "red"
+					local-log-event -logtype "Error" -logText "Error- -- Failed to create Archive Log backup: The error was: $_."
 			}
 		}
 	}
@@ -391,12 +391,12 @@ try{
 		else {
 			local-print -Text "Error -- Backup Script wrong Parameter::",$argument1  -ForegroundColor "red"
 			local-print -Text "Error -- Valid Parameter for the Database is:: DB"  -ForegroundColor "red"
-			local-print -Text "Error -- Valid Parameter for the Archivelogs of the Database is:: ARCHIVE"  -ForegroundColor "red"
+			local-print -Text "Error -- Valid Parameter for the archive log of the Database is:: ARCHIVE"  -ForegroundColor "red"
 			exit
 		}
 	}
 	else {
-		# if no parameter backup the complete DB enviroment
+		# if no parameter backup the complete DB environment
 		$argument1='DB'
 		local-print -Text "Warning -- Backup Script called without parameter" -ForegroundColor "Yellow"
 		local-print -Text "Info -- Backup Script started with default parameter::",$argument1
@@ -424,16 +424,16 @@ finally {
 				$sem.Release() |  out-null
 			}
 			catch {
-				local-print -Text "Error -- Faild to release  the emaphore ORALCE_BACKUP - not set or Backup not started?" -ForegroundColor "red"
+				local-print -Text "Error -- Failed to release  the semaphore ORALCE_BACKUP - not set or Backup not started?" -ForegroundColor "red"
 			}
 			local-print  -Text "Info ------------------------------------------------------------------------------------------------------"
 			#==============================================================================
 
 			#==============================================================================
-			# Check the logfiles and create summary text for check mail
+			# Check the log files and create summary text for check mail
 			
 			$last_byte_pos=local-get-file_from_position -filename (local-get-logfile) -byte_pos 0 -search_pattern (local-get-error-pattern -list "oracle") -log_file (local-get-statusfile)
-			# send the result of the check to a mail reciptant 
+			# send the result of the check to a mail recipient 
 			# only if configured!
 			local-send-status -mailconfig $mailconfig -log_file (local-get-statusfile)
 			

@@ -1,6 +1,6 @@
 #==============================================================================
 # Author: Gunther Pippèrr ( http://www.pipperr.de )
-# Desc:   Run this Scripts as administrator to register the event souce in the event log
+# Desc:   Run this Scripts as administrator to register the event source in the event log
 # Date:   01.September 2012
 # Site:   http://orapowershell.codeplex.com
 #==============================================================================
@@ -16,7 +16,7 @@ $config_xml="$scriptpath\backup_config.xml"
 
 #==============================================================================
 
-#check on Administator
+#check on Administrator
 $wid=[System.Security.Principal.WindowsIdentity]::GetCurrent()
 $prp=new-object System.Security.Principal.WindowsPrincipal($wid)
 $adm=[System.Security.Principal.WindowsBuiltInRole]::Administrator
