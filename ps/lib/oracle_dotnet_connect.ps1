@@ -25,11 +25,11 @@
 
 #>
 #==============================================================================
-# set dot.net enviroment 
+# set dot.net environment 
 #
 ####
 #
-# !! think on the powershell behavior to return ANY Object from a function  !!
+# !! think on the powershell behaviour to return ANY Object from a function  !!
 # the first Object is the Reflection.Assembly the second the oracle Object !!
 # to use the [1]! as result
 #
@@ -194,7 +194,7 @@ function local-db_read_sql {
 	}
 	
 	# write the last results
-	# save the generated db Content to disk
+	# save the generated DB Content to disk
 	add-Content -Path "$result_file" -value $csv
 
 	##-------------------------

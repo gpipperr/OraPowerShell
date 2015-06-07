@@ -134,7 +134,7 @@ function local-check-connect{
 	try {
 			local-print  -Text "Info -- check if Oracle SID is accessible ::" , $env:ORACLE_SID
 		
-			# test Connect to the datbase
+			# test Connect to the database
 			# must be on first line
 $check_db=@'
 set pagesize 0 
@@ -144,7 +144,7 @@ quit
 '@| & "$env:ORACLE_HOME\bin\sqlplus" -s "$sql_connect_string"
 
 			# if check_db is not a string is is mostly a error return from sql*plus
-			# trim on [] will cause the exection
+			# trim on [] will cause the exception
 			try{
 				$check_db=$check_db.trim()
 				local-print  -Text "Info -- check successful for  SID ::" , $env:ORACLE_SID
@@ -201,20 +201,22 @@ quit
 	local-print  -Text "Info -- check DB Version - Get 1 for EE and 0 for SE - Found ::" ,$isenterprise
 
 	# Optimize the backup for Enterprise features
-	#
+	# Also enable compression user like to use this with standard edition
+	# FIX Check Licence Guide for this feature!!
 	$compression=""
+	## compression
+	$use_compression=$dB.db_backup_compress.toString();
+	if ($use_compression.equals("true")) {
+		$compression="AS COMPRESSED BACKUPSET"
+	}
+	
 	# sectionsize for big tablespace
 	$sectionsize=""
 	#PARALLELISM
 	$parallelism=""
 	
 	if ($isenterprise -eq 1) {
-		#read the EE parameter section
-		## compression
-		$use_compression=$dB.db_backup_compress.toString();
-		if ($use_compression.equals("true")) {
-			$compression="AS COMPRESSED BACKUPSET"
-		}
+		#read the EE parameter section	
 		$sectionsize=$dB.db_backup_section_size.toString();
 		# sectionsize for big tablespace
 		if ( ! $use_compression.equals("false")) {
@@ -939,7 +941,7 @@ function local-backup-db-user {
 						Remove-Item -path $export_os_dir -include *.DMP
 					}
 					catch {
-						local-print     -Text    "Error -- Compessing Export not succesfull reason::",$_   -ForegroundColor "red"
+						local-print     -Text    "Error -- Compressing Export not successful reason::",$_   -ForegroundColor "red"
 					}
 
 					local-print  -Text ( "Result -- Export the user $db_user - size of uncompressed export {0:n} MB - compressed {1:0} MB" -f ($size_before/1MB),($size_after/1MB) )
@@ -964,7 +966,7 @@ function local-backup-db-user {
 }
 
 #==============================================================================
-# backup the metadata of the asm enviroment
+# backup the metadata of the asm environment
 ##
 function local-backup-asm-metainfo {
 Param ( $asm )
@@ -1006,7 +1008,7 @@ Param ( $asm )
 	
 	# check the md5 hash from the sqlplus script
 	$md5_sql_file_hash=local-getMD5Hash -file "$scriptpath\sql\infoASM.sql"
-	# Problem with different path on customerside
+	# Problem with different path on customer side
 	# Need to be fixed?
 	$md5_hash_db=local-getDB_MD5Hash -file "infoASM.sql"
 	
@@ -1028,7 +1030,7 @@ Param ( $asm )
 	cp "$ORACLE_HOME\database\PWD$ORACLE_SID.ora" "$pwd_backup"
 	
 	
-	#Save Disk and Directroy Configuration
+	#Save Disk and Directory Configuration
 	#
 	$disk_config_backup=$backup_path+"\asm_configuration_disk_conf_"+$ORACLE_SID+"_"+$DAY_OF_WEEK+".trc"
 	
@@ -1056,7 +1058,7 @@ Param ( $asm )
 }
 
 #==============================================================================
-# backup the metadata of the grid enviroment
+# backup the metadata of the grid environment
 ##
 function local-backup-grid-metainfo {
 Param ( $grid )

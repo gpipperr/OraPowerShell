@@ -346,14 +346,14 @@ function local-send-status-file {
 		$ip=local-get-IpAdress -hostname $smtpServer 
 		local-print  -Text "Info -- the hostname of the smtpServer $smtpServer can be resolved to the IP adress::$ip"
 		
-		# check if the connect to the port is possilbe
+		# check if the connect to the port is possible
 		# see http://www.toms-blog.com/powershell-emulate-telnet-session-and-test-output/
 		$socket = new-object System.Net.Sockets.TcpClient($smtpServer , $port)  
 		if($socket -eq $null) {  
 			throw "Can not connect to the smtpServer $smtpServer on port $port"
 		}
 		else {
-			local-print  -Text "Info -- Smtp Connect to the smtpServer $smtpServer estabisched on port::$port"
+			local-print  -Text "Info -- Smtp Connect to the smtpServer $smtpServer established on port::$port"
 		}	
 		$socket.close()	
 	}
@@ -451,7 +451,7 @@ function local-send-status-file {
 
 #==============================================================================
 # local-get-IpAdress
-# get the first IP Adress of a hostname
+# get the first IP Address of a host name
 #
 ##
 function local-get-IpAdress {
