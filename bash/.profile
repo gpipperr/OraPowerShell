@@ -590,7 +590,7 @@ export ORACLE_HOME=${DEFAULT_ORACLE_HOME}
 if [ "${ASM_ENV}" = "true" ]; then
 	export TNS_ADMIN=${CRS_ASM_HOME}/network/admin
 else
-	export TNS_ADMIN=${ORACLE_HOME}/network/admin
+	export TNS_ADMIN=${ORACLE_HOME}/network/admin	
 fi
 
 #################################################
