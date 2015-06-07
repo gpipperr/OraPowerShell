@@ -1093,8 +1093,8 @@ Param ( $grid )
 	local-print  -Text "Warning -- !!! in this version only the local ocr backup will be saved !!!" -ForegroundColor "yellow"
 	
 	$hostname=@( hostname )
-	local-check-dir -lcheck_path "$backup_path\$hostname" -dir_name "Grid Note OCR Files"
-	cp "$ORACLE_HOME\cdata\$cluster_name\*.ocr"  "$backup_path\$hostname" 2>&1 | foreach-object { local-print -text "copy OUT::",$_.ToString() }
+	local-check-dir -lcheck_path "$backup_path\$hostname[0]" -dir_name "Grid Note OCR Files"
+	cp "$ORACLE_HOME\cdata\$cluster_name\*.ocr"  "$backup_path\$hostname[0]" 2>&1 | foreach-object { local-print -text "copy OUT::",$_.ToString() }
 	
 	
 	<#  Bash version ---------------------------------------------
