@@ -473,7 +473,7 @@ function local-backup-db-metainfo {
 			
 			# Check if tns alias usage is configured
 			if ($db.nls_settings.use_direct_connnect_for_sys.equals("true")){
-				local-print  -ErrorText "Error -- need sys user over tnsalias connection to use .net feature"
+				#local-print  -ErrorText "Error -- need sys user over tnsalias connection to use .net feature"
 				$use_dot_net=$false	
 			} 
 			else {

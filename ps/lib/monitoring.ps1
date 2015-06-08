@@ -324,14 +324,168 @@ function local-send-status-file {
 	param (
 		 $smtpServer 
 		,$port
+		,$useSSL
 		,$to
 		,$from
 		,$status_file
 		,$username
 		,$password	
+		,$fqdn
 	)
 	
-	# check the parameter
+#Load the class for the mail transfer
+#Overload SmtpClient to set the local host name for the smtp protocol
+#
+#
+###########################################
+$source = @"
+using System;
+using System.Net.Mail;
+using System.Net.NetworkInformation;
+using System.Reflection;
+
+/// See this forum for the https://social.msdn.microsoft.com/Forums/en-US/77f45c5f-76be-400c-a529-a1e49d6d8e62/systemnetmailsmtpclient-fqdn-required?forum=netfxnetcom
+/// thanks to https://social.msdn.microsoft.com/profile/doctor hilarius/
+///
+/// <summary>
+/// An extended <see cref="SmtpClient"/> which sends the
+/// FQDN of the local machine in the EHLO/HELO command.
+/// </summary>
+namespace gpi.tools
+{ 
+    public class SmtpClientEx : SmtpClient
+    {
+        #region Private Data
+       
+        private static readonly FieldInfo localHostName = GetLocalHostNameField();
+       
+        #endregion
+       
+        #region Constructor
+       
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SmtpClientEx"/> class
+        /// that sends e-mail by using the specified SMTP server and port.
+        /// </summary>
+        /// <param name="host">
+        /// A <see cref="String"/> that contains the name or
+        /// IP address of the host used for SMTP transactions.
+        /// </param>
+        /// <param name="port">
+        /// An <see cref="Int32"/> greater than zero that
+        /// contains the port to be used on host.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="port"/> cannot be less than zero.
+        /// </exception>
+        public SmtpClientEx(string host, int port) : base(host, port)
+        {
+            Initialize();
+        }
+       
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SmtpClientEx"/> class
+        /// that sends e-mail by using the specified SMTP server.
+        /// </summary>
+        /// <param name="host">
+        /// A <see cref="String"/> that contains the name or
+        /// IP address of the host used for SMTP transactions.
+        /// </param>
+        public SmtpClientEx(string host) : base(host)
+        {
+            Initialize();
+        }
+       
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SmtpClientEx"/> class
+        /// by using configuration file settings.
+        /// </summary>
+        public SmtpClientEx()
+        {
+            Initialize();
+        }
+       
+        #endregion
+       
+        #region Properties
+       
+        /// <summary>
+        /// Gets or sets the local host name used in SMTP transactions.
+        /// </summary>
+        /// <value>
+        /// The local host name used in SMTP transactions.
+        /// This should be the FQDN of the local machine.
+        /// </value>
+        /// <exception cref="ArgumentNullException">
+        /// The property is set to a value which is
+        /// <see langword="null"/> or <see cref="String.Empty"/>.
+        /// </exception>
+        public string LocalHostName
+        {
+            get
+            {
+                if (null == localHostName) return null;
+                return (string)localHostName.GetValue(this);
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentNullException("value");
+                }
+                if (null != localHostName)
+                {
+                    localHostName.SetValue(this, value);
+                }
+            }
+        }
+       
+        #endregion
+       
+        #region Methods
+       
+        /// <summary>
+        /// Returns the price "localHostName" field.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="FieldInfo"/> for the private
+        /// "localHostName" field.
+        /// </returns>
+        private static FieldInfo GetLocalHostNameField()
+        {
+            //BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            //return typeof(SmtpClient).GetField("localHostName", flags);
+			const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+			FieldInfo result = typeof(SmtpClient).GetField("clientDomain", flags);
+			if (null == result) result = typeof(SmtpClient).GetField("localHostName", flags);
+			return result;
+        }
+       
+        /// <summary>
+        /// Initializes the local host name to
+        /// the FQDN of the local machine.
+        /// </summary>
+        private void Initialize()
+        {
+            IPGlobalProperties ip = IPGlobalProperties.GetIPGlobalProperties();
+            if (!string.IsNullOrEmpty(ip.HostName) && !string.IsNullOrEmpty(ip.DomainName))
+            {
+                this.LocalHostName = ip.HostName + "." + ip.DomainName;
+            }		
+        }
+       
+        #endregion
+    }
+}
+"@
+
+#Add the class 
+Add-Type -TypeDefinition $source
+
+	
+	#################################################################################################################
+
+	#check the parameter
 	try{
 		# check the file name with the mail text
 		if (-not (Get-ChildItem $status_file -ErrorAction silentlycontinue) ){
@@ -344,7 +498,7 @@ function local-send-status-file {
 		
 		# check the name resolution
 		$ip=local-get-IpAdress -hostname $smtpServer 
-		local-print  -Text "Info -- the hostname of the smtpServer $smtpServer can be resolved to the IP adress::$ip"
+		local-print  -Text "Info -- the hostname of the smtpServer $smtpServer can be resolved to the IP address::$ip"
 		
 		# check if the connect to the port is possible
 		# see http://www.toms-blog.com/powershell-emulate-telnet-session-and-test-output/
@@ -353,9 +507,11 @@ function local-send-status-file {
 			throw "Can not connect to the smtpServer $smtpServer on port $port"
 		}
 		else {
-			local-print  -Text "Info -- Smtp Connect to the smtpServer $smtpServer established on port::$port"
+			local-print  -Text "Info -- SMTP Connect to the smtpServer $smtpServer established on port::$port"
 		}	
-		$socket.close()	
+		$socket.close()			
+			
+		
 	}
 	catch {
 		local-print  -ErrorText "Error --",$_
@@ -379,35 +535,78 @@ function local-send-status-file {
 	 
 		# Recipient Address
 		$mail.To.Add($to);
-	 
-		# Message Subject
-		$hostname=@( hostname )
-		$mail.Subject = ( "Host::{0} Status from ::{1:d}" -f $hostname[0],(get-date))
-			 
-		# Message Body
+		
+			
 		# read content from status file
+		# for the subject line
 		$mailtext = get-content $status_file
+		$errorcnt= @($mailtext | ? { $_ -match "Error" }).Count
+		$warncnt = @($mailtext | ? { $_ -match "Warning" }).Count
 		
-		$mail.Body = $mailtext;
+			
+		# Message Body
+		# CLRF are removed??
+		#Encoding
+		$mail.BodyEncoding = ([System.Text.Encoding]::UTF8)
 		
+		$nl = [Environment]::NewLine
+		$newmailtext="";
+		foreach ($line in $mailtext){
+	    		$newmailtext += $line + $nl;
+	    }		
+				
+		$mail.Body= $newmailtext
+				
+		#Attachment
+		#$attachment = new-object Net.Mail.Attachment($status_file);
+		#$mail.Attachments.Add($attachment);
+	
+		# Message Subject
+		$mail.SubjectEncoding = ([System.Text.Encoding]::UTF8)
+		$hostname=@( hostname )	
+		$mail.Subject = ( "Oracle Backup Status - Host::{0} at ::{1:g} - Errors::{2:D}  Warnings::{3:D}" -f $hostname[0],(get-date),$errorcnt,$warncnt )
+			
+		local-print  -Text "Info -- Mail Subject is::",  $mail.Subject.toString()
+				
 		# Connect to your mail server
-		$smtp = New-Object System.Net.Mail.SmtpClient($smtpServer);
+		
+		#Use the original Class
+		# Not possible in a MS NONE domain environment
+		#
+		#$smtp = New-Object System.Net.Mail.SmtpClient($smtpServer);
 	    
-		# only if nessesary
+		#Use the overloaded class
+		$smtp = New-Object gpi.tools.SmtpClientEx($smtpServer);
+		
+		#set the Local Host name if not empty
+		if ($fqdn) {
+			$smtp.LocalHostName=$fqdn;
+		}
+			
+		# only if necessary
 		if ($username) {
 			$smtp.Credentials = New-Object System.Net.NetworkCredential($username, $password);
+			if ("true".equals($useSSL)) {
+				$smtp.EnableSsl = $true;
+			}
 		}
-	 
+		
+		#Debug
+		#$smtp
+		
+	    #Debug
+		#$mail
+		
 		# Send Email
 		$smtp.Send($mail);
 		
 	
 	}
 	catch {
-
+    
 		$error_txt+=@()
 		
-		$error_txt+=($error[0].Exception | fl * -force)
+		$error_txt+=($error[0].Exception ) # | fl * -force => getting Format Exception Error!!
 		
 		local-print -ErrorText "Error --",  $error_txt
 		
@@ -430,7 +629,7 @@ function local-send-status-file {
 	}
 	finally {
 		# close the connection
-		#$smtp.Dispose()
+		$smtp.Dispose()
 	}
 	
 	
@@ -439,12 +638,14 @@ function local-send-status-file {
 			$smtpServer = "smtp.pipperr.de"
 			$to			= "gunther@pipperr.de"
 			$from		= "gunther@pipperr.de"
+			$useSSL     = "true"
 			$port		= 25
 			$username	= "gunther@pipperr.de"
 			$status_file= "D:\OraPowerShellCodePlex\log\STATUS.txt"
 			$password	= Read-Host "Mail-Password:"
+			$fqdn_name  = "mail.pipperr.de"
 			
-			local-send-status-file -smtpServer $smtpServer -port $port -to $to -from $from -status_file $status_file -username $username -password $password
+			local-send-status-file -smtpServer $smtpServer -port $port -useSSL $useSSL -to $to -from $from -status_file $log_file  -username $username -password $password -fqdn $fqdn_name
 	
 	#>
 }
@@ -486,6 +687,17 @@ function local-send-status {
 		# Server
 		$smtpServer = $mailconfig.mail.smtpServer.toString()
 		$port		= $mailconfig.mail.port.toString()
+		
+		#SSL
+		#Check if exits!
+		$useSSL  = "";
+		if ($mailconfig.mail.ssl -ne $null) {
+			$useSSL  = $mailconfig.mail.ssl.toString()		
+		}
+		else {
+			$useSSL  = "true";
+			local-print -ErrorText "Error -- no SSL mail parameter in configuration file set so default true will be used!"
+		}
 			
 		# user
 		if ("true".equals($mailconfig.mail.use_credential.toString()) ) {
@@ -501,18 +713,29 @@ function local-send-status {
 		# Mail
 		$to			= $mailconfig.mail.to.toString()
 		$from		= $mailconfig.mail.from.toString()		
+		
+		#Check if exits!
+		$fqdn_name  = "";
+		if ($mailconfig.mail.fqdn -ne $null) {
+			$fqdn_name  = $mailconfig.mail.fqdn.toString()		
+		}
+		else {
+			$fqdn_name  = "";
+			local-print -ErrorText "Error -- no fqdn_name in use!"
+		}
+
 			
 		local-print -Text "Info -- Send the status mail with:  -smtpServer $smtpServer -port $port -to $to -from $from -status_file $log_file  -username $username -password xxxxx"
 				
-		if ("true".equals( $mailconfig.mail.smpt_server_needs_fqdn.toString())) {
-			local-print -Text "Warning -- Parameter <smpt_server_needs_fqdn> in mail_config.xml is set to true"  -ForegroundColor "yellow"
-			local-print -Text "Warning -- Parameter <smpt_server_needs_fqdn> = true only works with servers in a domain!"  -ForegroundColor "yellow"
-			local-print -Text "Warning -- Sending e-mail via telnet not implemented"  -ForegroundColor "yellow"
-		}
-		else {
+		#if ("true".equals( $mailconfig.mail.smpt_server_needs_fqdn.toString())) {
+		#	local-print -Text "Warning -- Parameter <smpt_server_needs_fqdn> in mail_config.xml is set to true"  -ForegroundColor "yellow"
+		#	local-print -Text "Warning -- Parameter <smpt_server_needs_fqdn> = true only works with servers in a domain!"  -ForegroundColor "yellow"
+		#	local-print -Text "Warning -- Sending e-mail via telnet not implemented"  -ForegroundColor "yellow"
+		#}
+		#else {
 			# use the .net classes to send the e-mail
-			local-send-status-file -smtpServer $smtpServer -port $port -to $to -from $from -status_file $log_file  -username $username -password $password
-		}
+			local-send-status-file -smtpServer $smtpServer -port $port -useSSL $useSSL -to $to -from $from -status_file $log_file  -username $username -password $password -fqdn $fqdn_name
+		#}
 	}
 	else {
 		local-print -Text "Warning -- Sending status report via E-Mail is not configured"  -ForegroundColor "yellow"
