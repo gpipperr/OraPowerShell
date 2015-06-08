@@ -4,7 +4,7 @@
 	<use_mail>false</use_mail>
 	
 	<!-- SMTP Server Details -->
-	<smtpServer>smtp.myserver.de</smtpServer>
+	<smtpServer>smtp.mymailserver.de</smtpServer>
 	<port>25</port>
 	
 	<!-- Default -->
@@ -16,7 +16,7 @@
 	<ssl>true</ssl>
   
   
-	<!-- if you need username / password = true -->
+	<!-- if you need user name / password = true -->
 	<!-- if false  => no credentials            -->
 	<!-- if os    => use the actual user        -->
 	<use_credential>true</use_credential>
@@ -26,13 +26,14 @@
 	<to>admin@mail.local</to>
 	<from>admin@mail.local</from>
 	
-	<!-- if the smtp server needs the fqdn and your local maschine -->
+	<!-- if the SMTP server needs the fqdn and your local machine -->
 	<!-- has no domain configured it is not possible to use the easy .net class -->
-	<!-- Hostname with a domain if not send from a server with a windos domain account! -->
+	<!-- Host name with a domain if not send from a server with a windows domain account! -->
 	<!-- to avoid error with System.Net.Mail.SmtpClient uses the NetBIOS name of the computer in the HELO / EHLO  commands -->
-	<fqdn>mail.pipperr.de</fqdn>
+	<fqdn>mail.mail.de</fqdn>
 	
 	<!-- if true => telnet must used -->
+	<!-- deprecated - not in use any more -->
 	<smpt_server_needs_fqdn>false</smpt_server_needs_fqdn>
 	
 </mail>
