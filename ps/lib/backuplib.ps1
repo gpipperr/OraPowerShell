@@ -285,7 +285,7 @@ function local-check-dir {
 
 #==============================================================================
 # search in XML the password and decrypt the password
-# for this local maschine
+# for this local machine
 # return 0 if nothing has changed
 ##
 
