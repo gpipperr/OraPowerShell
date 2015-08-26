@@ -12,7 +12,8 @@
 	<!-- SSL -->
 	<port>465</port>
 	
-	<!-- use SSL for mail transport-->
+	<!-- use SSL for mail transport- false if not -->
+	<!-- if true set the port for SSL! -->
 	<ssl>true</ssl>
   
   
