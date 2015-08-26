@@ -95,6 +95,8 @@ DOC
 	- user_history.sql     - get some static information for the login behavior of this user -  Parameter 1 - Name of the user
 	- user_objects.sql     - show the counts of objects from none default users
 	
+	- vpd.sql              - show the VPD - Virtual Private Database Settings
+	
 	- user_tab.sql         - get all the tables and views of a user - parameter 1 - part of the table name
 	- ls.sql               - gets all the tables and shows the size of the user tab
 	
@@ -186,7 +188,7 @@ DOC
 	- flash.sql       - show the flash back information’s 
 	- reco.sql        - recovery area settings and size
 	
-	- redo.sql        - redo log information
+	- redo.sql        - redo log information (use redo10g.sql for 10g/9i)
 	- redo_change.sql - who create how much redo per day last 7 in the database
 	- scn.sql         - scn in the archive log history 
 	- sqn.sql         - sequence log
