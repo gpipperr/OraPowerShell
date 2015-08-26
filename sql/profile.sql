@@ -8,10 +8,6 @@ set linesize 130 pagesize 300 recsep off
 
 define USER_NAME = &1 
 
-set verify off
-
-set linesize 130 pagesize 300 recsep off
-
 column PROFILE       format a26 heading "Profil"
 column RESOURCE_NAME format a25 heading "Resource Name"
 column RESOURCE_TYPE format a10 heading "Resourcen | Type"
@@ -26,7 +22,7 @@ order by PROFILE,RESOURCE_TYPE
 /
 
 prompt ...
-prompt ... example to change: "ALTER PROFILE DEFAULT   LIMIT FAILED_LOGIN_ATTEMPTS 50  PASSWORD_LIFE_TIME UNLIMITED;"
+prompt ... example to change: "ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS 50 PASSWORD_LIFE_TIME UNLIMITED;"
 prompt ...
 
 ttitle left  "Which Profile is in user" skip 2
@@ -43,4 +39,4 @@ order by profile,account_status
 
 ttitle off
 
-prompt ... to set the profile of the user : alter user <name> profile <profile>;
+prompt ... to set the profile of the user: alter user <name> profile <profile>;
