@@ -179,7 +179,7 @@ function local-get-file_from_position{
 								}
 							}
 							if ($print_line){
-								# if byte pos is 0 - read from start of file - we can use the line nummber
+								# if byte pos is 0 - read from start of file - we can use the line number
 								if ($byte_pos -eq 0) {
 									
 									# print the one line before the match
@@ -566,7 +566,8 @@ Add-Type -TypeDefinition $source
 		$hostname=@( hostname )	
 		$mail.Subject = ( "Oracle Backup Status - Host::{0} at ::{1:g} - Errors::{2:D}  Warnings::{3:D}" -f $hostname[0],(get-date),$errorcnt,$warncnt )
 			
-		local-print  -Text "Info -- Mail Subject is::",  $mail.Subject.toString()
+		#debug
+		#local-print  -Text "Info -- Mail Subject is::",  $mail.Subject.toString()
 				
 		# Connect to your mail server
 		
