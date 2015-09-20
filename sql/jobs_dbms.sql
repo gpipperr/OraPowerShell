@@ -8,9 +8,9 @@ set linesize 130 pagesize 300 recsep off
 ttitle left  "Job Infos -- Oracle JOB Table " skip 2
 
 column job          format 9999999 heading "Job|Name"
-column last_date    format a11     heading "Last|date"
-column this_date    format a11     heading "This|date"
-column next_date    format a11     heading "Next|date"
+column last_date    format a14     heading "Last|date"
+column this_date    format a14     heading "This|date"
+column next_date    format a14     heading "Next|date"
 column interval     format a30     heading "Interval"       word_wrapped
 column broken       format a3      heading "Is|Brocken"
 column schema_user  format a11     heading "Schema|User"
@@ -25,9 +25,9 @@ ttitle left  "Job Infos -- Oracle JOB defined with dbms_job" skip 2
   select job
        ,  schema_user
        ,  substr (what, 1, 20) as what
-       ,  to_char (last_date, 'dd.mm hh24:mi') as last_date
-       ,  to_char (this_date, 'dd.mm hh24:mi') as this_date
-       ,  to_char (next_date, 'dd.mm hh24:mi') as next_date
+       ,  to_char (last_date, 'dd.mm.yy hh24:mi') as last_date
+       ,  to_char (this_date, 'dd.mm.yy hh24:mi') as this_date
+       ,  to_char (next_date, 'dd.mm.yy hh24:mi') as next_date
        ,  interval
        ,  failures
        ,  broken
@@ -53,9 +53,9 @@ column what         format a10     heading "What|is called" word_wrapped
 select job
      ,  schema_user
      ,  substr (what, 1, 20) as what
-     ,  to_char (last_date, 'dd.mm hh24:mi') as last_date
-     ,  to_char (this_date, 'dd.mm hh24:mi') as this_date
-     ,  to_char (next_date, 'dd.mm hh24:mi') as next_date
+     ,  to_char (last_date, 'dd.mm.yy hh24:mi') as last_date
+     ,  to_char (this_date, 'dd.mm.yy hh24:mi') as this_date
+     ,  to_char (next_date, 'dd.mm.yy hh24:mi') as next_date
      ,  interval
      ,  failures
      ,  broken

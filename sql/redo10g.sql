@@ -58,7 +58,7 @@ select to_char(FIRST_TIME,'dd.mm.yyyy hh24:mi:ss') as first_time_log
 	  , THREAD#
 	  , SEQUENCE#
   from (select * from v$log_history order by recid desc) 
-where rownum <=20
+where rownum <=40
 order by first_time_log asc
 /
 
