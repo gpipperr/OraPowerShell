@@ -111,6 +111,7 @@ DOC
 	
 	- desc.sql             - describe a table - parameter 1 Table name - 2 - part of the column name
 	- tab.sql              - search a table or views in the database       - parameter 1 - part of the table
+	- tab_overview_report.sql - report over all none default tables in the database
 	- tab_cat.sql          - get the tables and views of the current user 
 	- tab_count.sql        - count the entries in a table                 - parameter 1 - name of the table
 	- tab_space.sql        - space usage of a table
@@ -120,7 +121,7 @@ DOC
 	- tab_last.sql         - get the change date of a record in the table - parameter - Owner, Table name
 	- tab_mod.sql          - get the last modifications of the table      - parameter - Owner, Table name
 	- tab_data_changes.sql - get an overview over changes on the tables of a user - parameter - Owner
-	
+		
 	- tab_usage.sql        - check if the table is used in the last time - parameter - Owner, Table name
 	- tab_part.sql         - get the partition information of a table     - parameter - Owner, Table name
 	- partition.sql        - Analyse the partitions of the tables of a user
@@ -163,9 +164,10 @@ DOC
 	- index_mon.sql   - check the result of index monitoring   
 	- index_ddl.sql   - get the DDL of an index
 	
-	- obj_dep.sql      - get the dependencies of a object in the database - parameter - Owner, object name
-	- obj_grants.sql   - get the grants for this object in the database    - parameter - Owner, object name
-	- obj_last_ddl.sql - get the last DDL for all objects of a user        - parameter - Owner
+	- obj_dep.sql         - get the dependencies of a object in the database - parameter - Owner, object name
+	- obj_deps_report.sql - get a overview of dependencies in a database as HTML Report
+	- obj_grants.sql      - get the grants for this object in the database    - parameter - Owner, object name
+	- obj_last_ddl.sql    - get the last DDL for all objects of a user        - parameter - Owner
 
 	- plsql_info.sql      - information about a pl/sql function/package
 	- plsql_search.sql    - search for a pl/sql function/procedure also in packages - parameter Search String
@@ -174,6 +176,7 @@ DOC
 	- plsql_errors.sql    - show the errors of pl/sql objects
 	- plsql_dll.sql       - information about a pl/sql function/package       - parameter - Owner, object name
 	- my_plsql.sql        - show all package of the current user
+	- plsql_usage.sql     - which package are used in the last time and how often over the SGA Cache
 	
 	- select.sql      - select first 3 records of the table as list - parameter 1 - name of the table
 	- view_count.sql  - count entries in a view                     - parameter 1 - name of the view
@@ -199,6 +202,7 @@ DOC
 	- my_directory.sql  - show directories of the actual connect user  in the database
 	- links.sql         - show the DB Links in the database
 	- links_ddl.sql     - get the DDL of all DB links in the database
+	- links_usage.sql   - get the sourcecode that use the DB links
 	
 	- audit.sql         - show the audit settings 
 	- audit_sum.sql     - audit log summary
@@ -265,17 +269,17 @@ DOC
 	
 	- ctx.sql              - Oracle Text indexes for a user and ctx settings - parameter 1 - name of the user
 	
-	- rman.sql             - rman settings of this database and summary information about the last backups for this database and the block change tracking feature
-	- rman_process.sql     - get information over running rman processes for tracing
-	- rman_status.sql      - get the status of the last backup in the database
+	- rman.sql                - rman settings of this database and summary information about the last backups for this database and the block change tracking feature
+	- rman_process.sql        - get information over running rman processes for tracing
+	- rman_status.sql         - get the status of the last backup in the database
 	
-	- datapump.sql         - show datapump sessions
+	- datapump.sql            - show datapump sessions
 	
-	- standby_status.sql   - status of a standby / DG environment
+	- standby_status.sql      - status of a standby / DG environment
 	
-	- streams_status.sql   - status of streams replication
-	- streams_config.sql   - streams configuration
-	- streams_logs.sql     - show the streams archive logs - which can be deleted 
+	- streams_status.sql      - status of streams replication
+	- streams_config.sql      - streams configuration
+	- streams_logs.sql        - show the streams archive logs - which can be deleted 
 	- streams_print_error.sql - print the SQL Statements for all LCRS in a transaction if a streams error occurs
 	- streams_print_lcr.sql   - print the LCR of one Message
 	- streams_logmnr.sql      - information about the log miner process

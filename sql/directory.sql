@@ -29,7 +29,7 @@ ttitle  "Grants to this directories"  SKIP 1
 select t.table_name as directory_name
 	 , t.grantor
      , t.grantee
-	 , listagg(t.privilege,':') WITHIN GROUP (ORDER BY t.privilege )  AS privilege_list      
+	 --, listagg(t.privilege,':') WITHIN GROUP (ORDER BY t.privilege )  AS privilege_list      
   from dba_tab_privs t
      , dba_directories  d
  where t.table_name = d.directory_name

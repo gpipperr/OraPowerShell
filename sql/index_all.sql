@@ -43,9 +43,11 @@ select i.COMPRESSION
     from dba_indexes i, dba_segments s, DBA_OBJECTS o
    where s.owner = i.owner
      and s.SEGMENT_NAME = i.index_name
+	 and nvl(s.partition_name,'n/a')=nvl(o.subobject_name,'n/a')
      and o.object_name = i.index_name
      and o.owner = i.owner
--- and i.owner like upper ('GPI')
--- and o.LAST_DDL_TIME  between sysdate-14 and sysdate
+	-- and i.owner like upper ('&&OWNER.')
+	and o.owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT','PUBLIC','TSMSYS')
+	-- and o.LAST_DDL_TIME  between sysdate-14 and sysdate
 order by o.LAST_DDL_TIME
 /

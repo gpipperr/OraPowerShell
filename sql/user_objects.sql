@@ -11,25 +11,56 @@ column OWNER format a25
 --break on owner SKIP 1
 --COMPUTE SUM OF size_GB ON owner
 
+ttitle "MegaByte DB Objects total" SKIP 2
+
 column DUMMY NOPRINT;
 COMPUTE SUM OF size_GB ON DUMMY;
 BREAK ON DUMMY;
 
 select  null dummy
-     , owner
-     , obj_type
-	 , obj_count 
-	 , sum(size_GB) as size_GB
+     , u.username
+     , o.obj_type
+	 , o.obj_count 
+	 , sum(o.size_GB) as size_GB
  from (
-	select count(*) as obj_count, o.object_type as obj_type, o.owner  ,round( sum(s.bytes) /1024/1024/1024 , 3) as size_GB
+	select count(*) as obj_count, s.segment_type as obj_type, o.owner  ,round( sum(s.bytes) /1024/1024/1024 , 3) as size_GB
 	  from dba_objects o, dba_segments s
 	 where s.owner=o.owner
-	   and s.segment_name =o.object_name(+)
-	 group by o.object_type,o.owner
- ) 
-where owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT')
-and obj_type in ('TABLE','INDEX','LOB')
+	   and s.segment_name=o.object_name
+	   and nvl(s.partition_name,'n/a')=nvl(o.subobject_name,'n/a')
+	 group by s.segment_type,o.owner
+ ) o
+ , dba_users u
+where o.owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT','PUBLIC','TSMSYS')
+--and o.obj_type in ('TABLE','INDEX','LOB','TABLE PARTITION','INDEX PARTITION','MATERIALIZED VIEW')
+  and o.obj_type in ('INDEX','INDEX PARTITION')
 --GROUP BY rollup (owner,obj_type,obj_count)
-group by owner,obj_type,obj_count
-order by owner,obj_type
+  and u.username = o.owner (+)
+group by u.username,o.obj_type,o.obj_count
+order by u.username,o.obj_type
 /
+
+ttitle "MegaByte DB Objects in Trash" SKIP 2
+
+select null dummy
+     , owner
+	 , round( sum(s.bytes) /1024/1024/1024 , 3) as size_GB 
+  from dba_segments s 
+ where owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT','PUBLIC','TSMSYS')
+   and segment_name like 'BIN%'
+ group by owner
+/
+
+ttitle "MegaByte DB Objects declared as Temporary" SKIP 2
+
+select null dummy
+    , owner
+    , round( sum(s.bytes) /1024/1024/1024 , 3) as size_GB 
+ from dba_segments s where owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT','PUBLIC','TSMSYS')
+and segment_type = 'TEMPORARY'
+group by owner
+/
+
+ttitle off
+
+clear BREAK

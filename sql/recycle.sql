@@ -17,15 +17,23 @@ column SPACE_GB       format 999G999D99 heading "Space|GB"
 --
 --fix use DB Block size!!
 --
-define BLOCK_SIZE=8192
+--define BLOCK_SIZE=8192
+define BLOCK_SIZE=16384
 
-select owner
+
+column DUMMY NOPRINT;
+COMPUTE SUM OF SPACE_GB ON DUMMY;
+BREAK ON DUMMY;
+
+
+select null dummy
+      , owner
 	  , TYPE
 	  , substr(min(CREATETIME),1,13)  as min_CREATETIME
 	  , substr(max(CREATETIME),1,13)  as max_CREATETIME
 	  , substr(min(DROPTIME),1,13)    as min_DROPTIME
 	  , substr(max(DROPTIME),1,13)    as max_DROPTIME
-	  , round((sum(space)/1024/1024/1024)*&&BLOCK_SIZE,2) as SPACE_GB
+	  , round(((sum(space)*&&BLOCK_SIZE)/1024/1024/1024),2) as SPACE_GB
  from DBA_RECYCLEBIN
 group by owner
        , type
@@ -33,5 +41,5 @@ order by 1,2
 /		 
 
 prompt .....
-prompt ..... to clean all:  PURGE DBA_RECYCLEBIN; ( as sys user!)
+--prompt ..... to clean all:  PURGE DBA_RECYCLEBIN; ( as sys user!)
 prompt .....

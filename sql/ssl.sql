@@ -45,19 +45,19 @@ select   s.inst_id
        , s.machine
        , s.terminal
        , s.program
-       , i.OSUSER
+       , s.OSUSER
        , s.module
-       , s.to_char (LOGON_TIME, 'dd.mm hh24:mi') as LOGON_TIME
+       --, s.to_char (LOGON_TIME, 'dd.mm hh24:mi') as LOGON_TIME
        , s.client_identifier
        , s.client_info
        , c.network_service_banner 
-	   , c.client_charset
-       , c.client_oci_library
+	   --, c.client_charset
+      -- , c.client_oci_library
        , c.authentication_type
   from gv$session_connect_info c 
      , gv$session s 
  where c.sid = s.sid 
-   and c.serial#=s.serial# 
+  -- and c.serial#=s.serial# 
    and c.inst_id=s.inst_id
    and s.username is not null
   order by 1

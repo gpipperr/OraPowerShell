@@ -69,7 +69,8 @@ ttitle "MegaByte DB Objects in use" SKIP 2
 column mb_obj format 999G999G999D00 heading "MegaByte DB Objects"
 
 select round(sum(bytes)/1024/1024,3) as mb_obj 
-  from dba_segments
+  from dba_segments 
+ --where segment_type!='TEMPORARY'
 /
 
 SET UNDERLINE '-'
