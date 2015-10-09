@@ -73,6 +73,20 @@ where timestamp between sysdate-21 and sysdate
 order by timestamp
 /
 
+ttitle left  "Audit log summary last 12 hours " skip 2
+ select  -- to_char(extended_timestamp,'dd.mm hh24')
+          to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0'
+       ,  instance_number
+       ,  username
+       ,  action_name
+       ,  userhost
+       ,  CLIENT_ID
+	   ,  action_name
+    from dba_audit_trail
+   where  extended_timestamp between   sysdate - (  1 / 4) and sysdate
+ order by extended_timestamp  
+/   
+   
 set markup html off
 
 spool off

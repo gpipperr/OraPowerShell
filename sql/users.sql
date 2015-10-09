@@ -65,4 +65,4 @@ prompt ... to set the tablespace : alter user <name> default tablespace <tablesp
 undefine PUSERNAME 
 
 ---------------------
-
+set verify on

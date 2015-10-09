@@ -31,6 +31,14 @@ declare
        where     index_name = upper ('&&INDEX_NAME.')
              and TABLE_OWNER = upper ('&&OWNER.');
 begin
+-- set the transformation attributes
+	dbms_metadata.set_transform_param( DBMS_METADATA.SESSION_TRANSFORM, 'PRETTY',             true );
+	dbms_metadata.set_transform_param( DBMS_METADATA.SESSION_TRANSFORM, 'SQLTERMINATOR',      true );
+	dbms_metadata.set_transform_param( DBMS_METADATA.SESSION_TRANSFORM, 'REF_CONSTRAINTS',    false);
+	dbms_metadata.set_transform_param( DBMS_METADATA.SESSION_TRANSFORM, 'OID',                false);
+	dbms_metadata.set_transform_param( DBMS_METADATA.SESSION_TRANSFORM, 'SEGMENT_ATTRIBUTES', false);
+	dbms_metadata.set_transform_param( DBMS_METADATA.SESSION_TRANSFORM, 'TABLESPACE',         true );
+
    --
    :ddllob := '-- call Index DLL for Index &&OWNER..&&INDEX_NAME.';
    dbms_output.put_line (:ddllob);

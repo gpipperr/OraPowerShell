@@ -43,7 +43,7 @@ column what         format a110 heading "What|is called" word_wrapped
 
   select job, WHAT as what
     from dba_jobs
-order by schema_user, job
+order by job
 /
 
 ttitle left  "Job Infos -- Oracle JOB Table Jobs with failures " skip 2

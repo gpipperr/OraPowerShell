@@ -3,7 +3,25 @@
 -- Desc:   show the object count of none default users
 -- Date:   October 2013
 --==============================================================================
+set verify off
 set linesize 130 pagesize 300 recsep off
+
+define USER_NAME = &1 
+
+variable PUSERNAME varchar2(32)
+
+prompt
+prompt Parameter 1 = User  Name          => &&USER_NAME.
+prompt
+
+begin
+ if length('&&USER_NAME.') < 1 then
+   :PUSERNAME:='%';
+ else
+   :PUSERNAME:='&&USER_NAME.'||'%';
+ end if;
+end;
+/
 
 column OWNER format a25  
 
@@ -32,11 +50,12 @@ select  null dummy
  ) o
  , dba_users u
 where o.owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT','PUBLIC','TSMSYS')
---and o.obj_type in ('TABLE','INDEX','LOB','TABLE PARTITION','INDEX PARTITION','MATERIALIZED VIEW')
-  and o.obj_type in ('INDEX','INDEX PARTITION')
---GROUP BY rollup (owner,obj_type,obj_count)
-  and u.username = o.owner (+)
+  and o.obj_type in ('TABLE','INDEX','LOB','TABLE PARTITION','INDEX PARTITION','MATERIALIZED VIEW')
+  --and o.obj_type in ('INDEX','INDEX PARTITION')
+   and u.username = o.owner (+)
+  and u.username like upper(:PUSERNAME)
 group by u.username,o.obj_type,o.obj_count
+--GROUP BY rollup (owner,obj_type,obj_count)
 order by u.username,o.obj_type
 /
 
@@ -48,19 +67,30 @@ select null dummy
   from dba_segments s 
  where owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT','PUBLIC','TSMSYS')
    and segment_name like 'BIN%'
+   and owner like upper(:PUSERNAME)
  group by owner
 /
+
 
 ttitle "MegaByte DB Objects declared as Temporary" SKIP 2
 
 select null dummy
     , owner
     , round( sum(s.bytes) /1024/1024/1024 , 3) as size_GB 
- from dba_segments s where owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT','PUBLIC','TSMSYS')
-and segment_type = 'TEMPORARY'
+ from dba_segments s 
+where owner not in ('SYS','MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','XDB','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','SYSTEM','FLOWS_FILES','PUBLIC','SYSMAN','OLAPSYS','OWBSYS','OWBSYS_AUDIT','PUBLIC','TSMSYS')
+  and segment_type = 'TEMPORARY'
+  and owner like upper(:PUSERNAME)
 group by owner
 /
 
 ttitle off
 
 clear BREAK
+
+--undef variables ---
+
+undefine PUSERNAME 
+
+---------------------
+set verify on

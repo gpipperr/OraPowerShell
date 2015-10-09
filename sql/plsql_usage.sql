@@ -20,6 +20,7 @@ select count(*)
     , obj.owner
     , obj.object_type
     , obj.object_name
+	--, s.PROGRAM_LINE# 
     --, obj.subobject_name
     , min(to_date(s.first_load_time,'YYYY-MM-DD/HH24:MI:SS')) as min_first_load
     , max(to_date(s.first_load_time,'YYYY-MM-DD/HH24:MI:SS')) as max_first_load    
@@ -31,5 +32,7 @@ select count(*)
         , obj.object_type
         , obj.object_name
         , obj.subobject_name   
+	--  , s.PROGRAM_LINE# 
+    --  , obj.subobject_name
 order by obj.owner  
 /
