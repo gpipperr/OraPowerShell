@@ -10,7 +10,7 @@
 
 
 set verify  off
-set linesize 1§0 pagesize 4000 recsep off
+set linesize 100 pagesize 4000 recsep off
 
 define USER_NAME = &1 
 
@@ -110,7 +110,7 @@ select 'alter table ' || c.OWNER || '."' || c.TABLE_NAME || '" drop CONSTRAINT "
    and upper(c.owner) in (upper('&&USER_NAME.'))
 / 
 
--- drop all indexes
+-- drop all indexes not primary key  will be dropped with the table
 -- May be unnecessary  - will be dropped also with the table
 
 select 'drop index ' || i.owner || '."' || i.index_name || '";'
@@ -156,8 +156,9 @@ order by decode (o.object_type
 
 prompt -- !Attention
 prompt -- delete the ALL RECYCLEBIN's in the database
-prompt -- please comment if you don't like it 
-prompt PURGE DBA_RECYCLEBIN 
+prompt -- please comment if you don't like it as DBA
+--prompt PURGE DBA_RECYCLEBIN 
+prompt PURGE RECYCLEBIN 
 prompt /
 --
 

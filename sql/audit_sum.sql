@@ -42,6 +42,7 @@ column action_count format 999G9999 heading "Action|Count"
 column os_username  format a16 heading "User|Name"
 column username     format a15  heading "DB User|name"
 column action_name format a20  heading "Action|name"
+column instance_number format 99 heading "In|st"
 
 break on instance_number
 --COMPUTE SUM OF action_count ON first_log

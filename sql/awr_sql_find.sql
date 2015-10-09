@@ -22,7 +22,7 @@ SET linesize 130 pagesize 800 recsep off
 
 ttitle left  "Search SQL from AWR Repository this text string :  &SQL_STATEMENT." skip 2
 
-column sql_text        format a50 heading "SQL|Text"
+column sql_text        format a2000 heading "SQL|Text"
 column sql_id          format a13 heading "SQL|ID"
 column DBID            format 99999999999 heading "DB|Id"
 column COMMAND_TYPE    format 99 heading "CMD|Typ"

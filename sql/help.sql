@@ -88,6 +88,7 @@ DOC
 	- java.sql             - java access rights
 
 	- invalid.sql          - show all invalid objects
+	- invalid_synoyms.sql  - delete Script for invalid synonym
 
 	- user.sql             - rights and roles of a user and object grants - parameter 1 - Name of the user
 	- users.sql            - overview over the DB users - parameter 1 - Name of the user 	
@@ -305,7 +306,7 @@ DOC
 	
 	- create_mon_index.sql      - Script to create index enable or disable monitoring scripts for a user - parameter 1 - user name
 	
-	- create_all_statistic.sql  - Recreate the statistic of the database
+	- create_all_statistic.sql  - Recreate the statistic of the databset_audit_minimal_settings.sqlase
 	
 	#Reports
 	=================
@@ -322,12 +323,14 @@ DOC
 	#Setup
 	=================
 
-	- 01-db-setup/create_global_errorlog.sql    - create a global error table and error trigger + maintain job
-
-	- 01-db-setup/delete_global_errorlog.sql    - delete the global error trigger + error table
-
-	- 01-db-setup/create_audit_log_database.sql - create own table space for auditlog, move audit log to this table pace - create clean job
-
+	- 01-db-setup/create_global_errorlog.sql     - create a global error table and error trigger + maintain job
+	- 01-db-setup/delete_global_errorlog.sql     - delete the global error trigger + error table
+	
+	- 01-db-setup/create_audit_log_database.sql  - create own table space for auditlog, move audit log to this table pace - create clean job
+	- 01-db-setup/set_audit_minimal_settings.sql - set minimal audit parameter
+	
+	- 01-db-setup/monitor_user_sessions.sql      - create a log table to monitor user connection over some time
+	
 	#The OEM Query Scripts
 	=================
 	- get the the help of the OEM scripts use oem/help_oem.sql

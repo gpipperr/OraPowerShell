@@ -25,6 +25,7 @@ select t.owner
      ,  t.table_name
      ,  'table' as otype
      ,  nvl (c.comments, 'n/a') as comments
+	 , t.tablespace_name
   from dba_tables t, dba_tab_comments c
  where     upper (t.table_name) like upper ('%&&tab_name.%')
        and c.table_name(+) = t.table_name
@@ -35,6 +36,7 @@ select v.owner
      ,  v.view_name
      ,  'view' as otype
      ,  nvl (c.comments, 'n/a') as comments
+	 , 'n/a'
   from dba_views v, dba_tab_comments c
  where     upper (v.view_name) like upper ('%&&tab_name.%')
        and c.table_name(+) = v.view_name
