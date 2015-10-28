@@ -50,6 +50,8 @@ alter table system.ora_errors add constraint pk_ora_errpr primary key (id) enabl
 create index system.idx_ora_errors_date on system.ora_errors(log_date) tablespace sysaux; 
   
 grant select on system.ora_errors to public;
+grant delete on system.ora_errors to public;
+
 
 -----------
 
