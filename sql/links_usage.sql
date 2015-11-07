@@ -18,15 +18,18 @@ SET linesize 250 pagesize 2000 recsep off
 
 spool &&SPOOL_NAME
 
-
 ---set markup html ON ENTMAP OFF
+
+define SEARCH_HOST='GPI'
 
 
 declare
    cursor c_links
    is
       select owner,db_link
-        from dba_db_links order by 1;
+        from dba_db_links  
+	   where upper(HOST) like '%&&SEARCH_HOST%'
+	order by 1;
 
 	v_count pls_integer:=0;	 
 		
@@ -40,6 +43,8 @@ begin
                         || 'TYPE'
                         || ' </td><td>'
                         || 'Object Name'
+						|| ' </td><td>'
+                        || 'Line'
                         || ' </td><td>'
                         || 'CODE'
 						||'</td>');
@@ -52,13 +57,15 @@ begin
 	  dbms_output.put_line ('<td colspan=2>');	  
 	  dbms_output.put_line ('Owner:' || upper (rec.owner));
 	  dbms_output.put_line ('</td>');
-	  dbms_output.put_line ('<td colspan=2>');	  
+	  dbms_output.put_line ('<td colspan=3>');	  
 	  dbms_output.put_line ('DB Link Usage for Link:' || upper (rec.db_link));
 	  dbms_output.put_line ('</td>');
 	  dbms_output.put_line ('</tr>');
-      for srec in (select owner
+      -- check source code
+	  for srec in (select owner
                         , name
                         , type
+						, line
                         , text
                      from dba_source
                     where upper (text) like '%' || upper (rec.db_link) || '%' order by owner, name ,line)
@@ -70,6 +77,8 @@ begin
                                || srec.type
                                || ' </td><td>'
                                || srec.name
+							   || ' </td><td>'
+                               || srec.line
                                || ' </td><td>'
                                || substr (srec.text
                                         , 1
@@ -79,7 +88,35 @@ begin
         v_count:=v_count+1;
 		dbms_output.put_line ('</tr>');										 
       end loop;	  
-	  dbms_output.put_line ('<tr>');
+	  
+	  -- check materialsed views
+	  for srec in (  select owner
+	                     ,  mview_name as name 
+						 , 'MV' as type
+						 , 'n/a' as line
+						 , query as text
+	                 from dba_mviews v 
+					where upper(master_link)=upper (rec.db_link) order by owner,mview_name )
+		loop
+		dbms_output.put_line ('<tr>');
+        dbms_output.put_line (   ' <td>'
+                               || srec.owner
+                               || ' </td><td>'
+                               || srec.type
+                               || ' </td><td>'
+                               || srec.name
+							   || ' </td><td>'
+                               || srec.line
+                               || ' </td><td>'
+                               || substr (srec.text
+                                        , 1
+                                        , 250
+                                         )
+							    ||'</td>');
+        v_count:=v_count+1;
+		dbms_output.put_line ('</tr>');										 
+      end loop;	      	  
+	  dbms_output.put_line ('<tr>');	    
 	  dbms_output.put_line ('<td colspan=4>');
 	  dbms_output.put_line ('DB Link Usage for this link:' || to_char(v_count));
 	  dbms_output.put_line ('</td>');

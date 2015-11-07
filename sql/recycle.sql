@@ -28,6 +28,7 @@ BREAK ON DUMMY;
 
 select null dummy
       , owner
+	  , count(*) as anzahl
 	  , TYPE
 	  , substr(min(CREATETIME),1,13)  as min_CREATETIME
 	  , substr(max(CREATETIME),1,13)  as max_CREATETIME
@@ -41,5 +42,6 @@ order by 1,2
 /		 
 
 prompt .....
---prompt ..... to clean all:  PURGE DBA_RECYCLEBIN; ( as sys user!)
+prompt ..... -- to clean all:  PURGE DBA_RECYCLEBIN ( as sys user!)
+prompt ..... -- to clean your bin : PURGE RECYCLEBIN; 
 prompt .....

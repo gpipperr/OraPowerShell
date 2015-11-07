@@ -28,17 +28,17 @@ column owner        format a10
        ,  interval
        ,  failures
        ,  broken
-    from dba_jobs
-   where failures > 0
-order by job
+     from dba_jobs
+ where (failures > 0 or broken = 'Y')
+order by schema_user, job
 /
 
 column what format a100
 
   select job, WHAT as what
     from dba_jobs
-   where failures > 0
-order by job
+ where (failures > 0 or broken = 'Y')
+order by schema_user, job
 /
 
 

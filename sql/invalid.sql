@@ -5,8 +5,11 @@
 --
 --==============================================================================
 set linesize 130 pagesize 300 recsep off
+set verify off
 
 ttitle center "Invalid Objects in the database" skip 2
+
+define IGNORE_SCHEMA='''PROWA_INT1'''
 
 column owner format a15
 column object_type format a18
@@ -15,45 +18,31 @@ break on report
 compute sum of anzahl on report
 
   select owner, object_type, count (*) as anzahl
-    from all_objects
+    from dba_objects
    where status != 'VALID'
+     and object_type!='MATERIALIZED VIEW'
+   --and owner not in (&IGNORE_SCHEMA)
 --group by rollup(owner, object_type)
 group by owner, object_type
+order by owner
 /
 
 
-clear breaks
-
-
-ttitle "List of invalid indexes" skip 2
-
+ttitle "count of invalid materialized view" skip 2
 select owner
-     ,  index_name
-     ,  status
-     ,  'no partition'
-  from dba_indexes
- where status not in ('VALID', 'N/A')
-union
-select index_owner
-     ,  index_name
-     ,  status
-     ,  partition_name
-  from dba_ind_partitions
- where status not in ('VALID', 'N/A', 'USABLE')
+    , count (*) as anzahl 
+	, compile_state
+	, staleness
+ from dba_mviews
+where compile_state != 'VALID' or staleness !='FRESH'
+ --and owner not in (&IGNORE_SCHEMA)
+group by owner,compile_state,staleness
+order by owner,compile_state
 /
 
-ttitle "List of not validated or invalid constraints" skip 2
+ttitle "Count of not validated or invalid constraints" skip 2
 
-column owner                format a20
-column table_name            format a30
-column constraint_name     format a30
-column validated             format a20
-
-select owner
-       ,  table_name
-       ,  constraint_name
-       ,  status
-       ,  validated
+select owner,count(*) as anzahl,validated,status
     from dba_constraints
    where     (   validated != 'VALIDATED'
        or status != 'ENABLED')
@@ -81,8 +70,36 @@ select owner
         ,  'OLAPSYS'
         ,  'OWBSYS'
         ,  'OWBSYS_AUDIT')
+group by validated,status,owner
 order by owner
 /
+prompt ... 
+prompt ... for more details use invalid_constraints.sql
+prompt ... 
+
+clear breaks
+
+
+
+
+ttitle "List of invalid indexes" skip 2
+
+select owner
+     ,  index_name
+     ,  status
+     ,  'no partition'
+  from dba_indexes  
+ where status not in ('VALID', 'N/A')
+union
+select index_owner
+     ,  index_name
+     ,  status
+     ,  partition_name
+  from dba_ind_partitions
+ where status not in ('VALID', 'N/A', 'USABLE')
+order by owner 
+/
+
 
 
 ttitle "List of invalid Objects" skip 2
@@ -90,30 +107,35 @@ break on owner skip 2
 column owner noprint
 
   select object_type || '-> ' || decode (owner, 'PUBLIC', '', owner || '.') || object_name as Overview, owner
-    from all_objects
+    from dba_objects
    where status != 'VALID'
-order by owner
+    and owner not in (&IGNORE_SCHEMA)
+    and object_type!='MATERIALIZED VIEW'   
+order by owner,object_type
 /
 
 clear breaks
 column owner print
 
-ttitle "command to touch the  Objects" skip 2
+ttitle "-- Command to touch the  Objects" skip 2
+set pagesize 4000 
 
-select 'desc ' || decode (owner, 'PUBLIC', '', owner || '.') || object_name as TOUCH_ME
-  from all_objects
- where status != 'VALID'
+spool desc_invalid.log
+
+select 'desc ' || decode (owner, 'PUBLIC', '', owner || '.') || object_name as "-- TOUCH_ME"
+  from dba_objects
+ where status != 'VALID' 
+   and owner not in (&IGNORE_SCHEMA)
+   and object_type!='MATERIALIZED VIEW'
+order by owner,object_type  
 /
 
---ttitle "delete Script for invalid synonym - synonym points on an not existing object" SKIP 2
+spool off
 
---select 'drop ' || decode(s.owner, 'PUBLIC', 'PUBLIC SYNONYM ', 'SYNONYM ' || s.owner || '.') || s.synonym_name || ';' as DELETE_ME
---  from dba_synonyms s
--- where table_owner not in ('SYSTEM', 'SYS')
---   and (db_link is null or db_link = 'PUBLIC')
---   and not exists (select 1
---          from dba_objects o
---         where decode(s.table_owner, 'PUBLIC', o.owner, s.table_owner) = o.owner
---           and s.table_name = o.object_name);
---
+prompt ... 
+prompt ... to describe all invalid objects call desc_invalid.log
+prompt ... 
+
+set pagesize 300
+
 ttitle off

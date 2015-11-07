@@ -52,6 +52,7 @@ select username
 	,  to_char(CREATED,'dd.mm.yyyy hh24:mi') as created	
  from dba_users
 where username like upper(:PUSERNAME)
+  --and account_status='LOCKED'
 order by username
 /
 
