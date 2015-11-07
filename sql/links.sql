@@ -6,6 +6,27 @@
 --==============================================================================
 set linesize 130 pagesize 300 recsep off
 
+set verify off
+
+define LINKHOST = &1 
+
+variable PLINKHOST varchar2(32)
+
+prompt
+prompt Parameter 1 = Link Host => &&LINKHOST.
+prompt
+
+begin
+ if length('&&LINKHOST.') < 1 then
+   :PLINKHOST:='%';
+ else
+   :PLINKHOST:='&&LINKHOST.'||'%';
+ end if;
+end;
+/
+
+
+
 prompt
 prompt Link Infos -- The DB Links this user can see
 prompt 
@@ -20,7 +41,8 @@ select db_link
       , host
 	  , owner 
 	  , username
-from all_db_links
+ from all_db_links 
+where lower(host) like lower(:PLINKHOST)
  /
 
 
@@ -30,10 +52,10 @@ select db_link
 	  , owner 
 	  , host
 	  , username
-from dba_db_links
+ from dba_db_links 
+where lower(host) like lower(:PLINKHOST)
  /
 
- 
  
 
 
@@ -63,3 +85,10 @@ SELECT * FROM V$DBLINK
 /
 
 ttitle off
+
+--undef variables ---
+
+undefine PUSERNAME 
+
+---------------------
+set verify on

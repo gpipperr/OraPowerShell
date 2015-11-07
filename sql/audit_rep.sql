@@ -69,9 +69,60 @@ select  os_username
  ,sql_text
 -- ,obj_edition_name
  from dba_audit_object
-where timestamp between sysdate-21 and sysdate
+where timestamp between sysdate- 1 and sysdate
 order by timestamp
 /
+ttitle left  "Audit log summary Login/Logoff last 12 hours " skip 2
+
+select    to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0'
+       ,  instance_number
+       ,  count (*) as action_count
+       , username
+       ,  action_name
+       ,  userhost
+       ,  CLIENT_ID
+    from dba_audit_trail
+   where extended_timestamp between   sysdate - (  1 / 4) and sysdate
+     and action_name like 'LOG%'
+group by                                                                                                               -- username
+         to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0'
+	   ,  username
+       ,  action_name
+       ,  userhost
+       ,  instance_number
+       ,  CLIENT_ID
+order by to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0'
+/
+
+
+break on instance_number
+compute sum of action_count on instance_number
+
+ttitle left  "Audit log summary Login/Logoff last 12 hours over 10 minutes " skip 2
+
+  select to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0'
+       ,  instance_number
+       ,  count (*) as action_count
+       ,  username
+       ,  os_username
+       ,  action_name
+    from dba_audit_trail
+   where     extended_timestamp between   sysdate - (  1/ 4) and sysdate
+         and action_name like 'LOG%'
+group by to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0'
+       ,  instance_number
+       ,  username
+       ,  os_username
+       ,  action_name
+order by to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0', username
+/
+
+
+
+clear break
+clear computes
+
+
 
 ttitle left  "Audit log summary last 12 hours " skip 2
  select  -- to_char(extended_timestamp,'dd.mm hh24')
@@ -83,7 +134,7 @@ ttitle left  "Audit log summary last 12 hours " skip 2
        ,  CLIENT_ID
 	   ,  action_name
     from dba_audit_trail
-   where  extended_timestamp between   sysdate - (  1 / 4) and sysdate
+   where  extended_timestamp between   sysdate - (  1 / 2) and sysdate
  order by extended_timestamp  
 /   
    

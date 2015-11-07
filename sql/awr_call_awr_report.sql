@@ -49,18 +49,24 @@ set heading on
 set termout on
 
 set verify off
-SET linesize 250 pagesize 2000 recsep off
+SET linesize 500 pagesize 9000 recsep off
 set long 64000
 
 accept snapshot_id_begin number prompt 'Enter Frist Snapshot Begin ID    : '
 accept snapshot_id_end   number prompt 'Enter Snapshot End Id to compare : '
 
+set heading off
+set feedback off
 spool &&SPOOL_NAME
 
 select * from table(sys.dbms_workload_repository.awr_report_html(&&databaseid,&&inst_nr,&&snapshot_id_begin,&&snapshot_id_end));
 
 spool off
+set heading on
+set feedback on
 
 prompt ... check the created report  &&SPOOL_NAME
 
 host &&SPOOL_NAME
+
+set linesize 130 pagesize 300 recsep off

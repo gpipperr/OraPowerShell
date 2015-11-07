@@ -60,7 +60,8 @@ select job
      ,  failures
      ,  broken
   from dba_jobs
- where failures > 0
+ where (failures > 0 or broken = 'Y')
+order by schema_user, job
 /
 
 ttitle off

@@ -89,6 +89,8 @@ DOC
 
 	- invalid.sql          - show all invalid objects
 	- invalid_synoyms.sql  - delete Script for invalid synonym
+	- invalid_obj_report.sql  - get report for development for invalid objects in the database
+	- invalid_constraints.sql - get all invalid constraints
 
 	- user.sql             - rights and roles of a user and object grants - parameter 1 - Name of the user
 	- users.sql            - overview over the DB users - parameter 1 - Name of the user 	
@@ -152,7 +154,9 @@ DOC
 	
 	- lob.sql            - show the lob settings of the tables of the user - parameter - Owner
 	- lob_detail.sql     -Get the details for the lob data type for this table - parameter owner and table name
-		
+	
+	- dimension_ddl.sql - Get the DDL of a oracle dimension object in the database 
+	
 	- sequence.sql       - search a sequence in the database parameter 1 - name of the sequence
 		
 	- recycle.sql        - show the content summary of the dba recyclebin
@@ -256,14 +260,19 @@ DOC
 	- awr_temp_usage.sql      - get the SQL that use temp tablespace from the awr for this time - parameter 1 - Start date  - parameter 2 end date in DE format
 	- awr_pga_stat.sql        - statistic of the pga usage
 	- awr_sys_stat.sql        - statistic of system historical statistics information
+
 	- awr_session_stat.sql    - statistic of the sessions of a user
 	- awr_session_resource_plan_historie.sql - Show the consumer group of all history active sessions of a user
 	- awr_act_active_sessions.sql            - get information about the act active Session in the last 90 minutes
+	- awr_ash_top_sql.sql					 - select the last top sql statements from the active session history
 	- awr_act_blocking_sessions.sql          - get information about blocking sessions in the database
 	- awr_session_none_technical_user.sql    - get information about none technical user sessions
 	- awr_changed_plans.sql                  - search for changed plans in a time period - parameter 1 - Start date  - parameter 2 end date in DE format
 	- awr_resourcelimit.sql					 - display the resource limits of the last days
 	- awr_os_stat.sql                        - display the OS statistic of the last days  
+	- awr_call_awr_report.sql                - create AWR Report of the database
+	- awr_call_ash_report.sql                - create ASH Report of the database
+
 	
 	- calibrate_io.sql     - Use I/O calibrate to analyses io of the database and set the internal I/O views
 	- system_stat.sql      - get the DB internal system stat values like workload statistic and I/O calibrate values

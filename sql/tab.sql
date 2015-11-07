@@ -16,10 +16,11 @@ prompt
 prompt Parameter 1 = Tab Name          => &&TAB_NAME.
 prompt
 
-column owner      format a15 heading "Qwner" 
+column owner      format a15 heading "Owner" 
 column table_name format a30 heading "Table/View Name"
-column otype      format a5 heading "Type"
-column comments   format a60 heading "Comment on this table/view"
+column otype      format a5  heading "Type"
+column comments   format a30 heading "Comment on this | table/view"
+column tablespace_name format a40 heading "Tablespace|Name"
 
 select t.owner
      ,  t.table_name

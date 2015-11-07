@@ -16,7 +16,9 @@ compute sum of anzahl on report
 select count(*) as anzahl
      ,  table_owner 
   from dba_synonyms 
-where table_owner not in (select username from dba_users) group  by table_owner;
+where table_owner not in (select username from dba_users) 
+ and (db_link is null or db_link = 'PUBLIC')
+group  by table_owner;
 
 clear breaks
  
