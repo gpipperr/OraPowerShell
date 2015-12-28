@@ -285,6 +285,7 @@ DOC
 	- rman_status.sql         - get the status of the last backup in the database
 	
 	- datapump.sql            - show datapump sessions
+	- datapump_filter.sql     - show all possible filter values für the INCLUDE/EXCLUDE parameter of datapump
 	
 	- standby_status.sql      - status of a standby / DG environment
 	
