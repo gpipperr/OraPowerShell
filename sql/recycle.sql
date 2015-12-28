@@ -22,17 +22,12 @@ column SPACE_GB       format 999G999D999 heading "Space|GB"
 --define BLOCK_SIZE=8192
 --define BLOCK_SIZE=16384
 set termout off
-
-
 col BLOCK_SIZE_COL new_val BLOCK_SIZE
- 
 SELECT value as BLOCK_SIZE_COL
   FROM v$parameter
  WHERE name = 'db_block_size';
 /
-
 set termout  on
-
 --
 show parameter recyclebin
 

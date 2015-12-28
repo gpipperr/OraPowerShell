@@ -9,7 +9,7 @@ set verify off
 
 ttitle center "Invalid Objects in the database" skip 2
 
-define IGNORE_SCHEMA='''PROWA_INT1'''
+define IGNORE_SCHEMA='''GPI'''
 
 column owner format a15
 column object_type format a18
