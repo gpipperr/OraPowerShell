@@ -32,6 +32,29 @@ select acl
   from DBA_NETWORK_ACL_PRIVILEGES
 /
 
+
+-- from https://docs.oracle.com/database/121/ARPLS/d_networkacl_adm.htm#ARPLS67214
+select host
+       , lower_port
+	   , upper_port
+	   , ace_order
+	   , principal
+	   , principal_type
+	   , grant_type
+	   , inverted_principal
+	   , privilege
+	   , start_date
+	   , end_date
+  from (select aces.*,
+dbms_network_acl_utility.contains_host('*',
+                                                      host) precedence
+          from dba_host_aces aces)
+ where precedence is not null
+ order by precedence desc,
+          lower_port nulls last,
+          upper_port nulls last,
+          ace_order;
+/
 /*
  test entry:
  

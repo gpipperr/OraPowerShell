@@ -80,6 +80,7 @@ DOC
 	- init.sql             - init.ora entries
 	- init_rac.sql         - show init.ora parameter in a RAC Environment to check if same parameters on each node
 	- db_events.sql        - test if some events are set in the DB environment
+	- db_properties.sql    - get the database properties 
 
 	- xmldb.sql            - show configuration of the XML DB
 	- acl.sql              - show the acls of the Database (for security)

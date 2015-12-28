@@ -92,11 +92,16 @@ order by owner,table_name,	PRIVILEGE
 
 ttitle left  "User Quota Settings for the user &&USER_NAME." skip 2
 
+column tablespace_name format a20 heading "Tablespace|Name"
+column username        format a20 heading "User|Name"
+column m_bytes         format 999G999D99 heading "Bytes"
+column max_bytes_mb    format 999G999D99 heading "Max|Bytes"
+
 
 select tablespace_name
      , username
-	  , bytes
-	  , round(max_bytes /1024/1024,0) as max_bytes_mb
+	  , round(bytes /1024/1024,2) as m_bytes
+	  , round(max_bytes /1024/1024,2) as max_bytes_mb
 from dba_ts_quotas
 where username like upper('&&USER_NAME.')
 /
