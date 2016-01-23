@@ -14,22 +14,17 @@ column max_CREATETIME format a14 heading "Min|Create"
 column min_CREATETIME format a14 heading "Max|Create"
 column min_DROPTIME   format a14 heading "Min Age|Drop"
 column max_DROPTIME   format a16 heading "Max Age|Drop"
-column SPACE_GB       format 999G999D999 heading "Space|GB"
+column SPACE_GB       format 999G999D99 heading "Space|GB"
 
 --
---get first the blocksize
+--fix use DB Block size!!
 --
 --define BLOCK_SIZE=8192
---define BLOCK_SIZE=16384
-set termout off
-col BLOCK_SIZE_COL new_val BLOCK_SIZE
-SELECT value as BLOCK_SIZE_COL
-  FROM v$parameter
- WHERE name = 'db_block_size';
-/
-set termout  on
+define BLOCK_SIZE=16384
+
 --
 show parameter recyclebin
+
 
 ---
 column DUMMY NOPRINT;
@@ -45,7 +40,7 @@ select null dummy
 	  , substr(max(CREATETIME),1,13)  as max_CREATETIME
 	  , substr(min(DROPTIME),1,13)    as min_DROPTIME
 	  , substr(max(DROPTIME),1,16)    as max_DROPTIME
-	  , round(((sum(space)*&&BLOCK_SIZE)/1024/1024/1024),3) as SPACE_GB
+	  , round(((sum(space)*&&BLOCK_SIZE)/1024/1024/1024),2) as SPACE_GB
  from DBA_RECYCLEBIN
 group by owner
        , type

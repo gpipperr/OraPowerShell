@@ -33,7 +33,9 @@ DOC
 	- session_killed.sql       - get the process information for killed sessions
 	- ses_statistic.sql        - get the statistic information of a session
 	- my_opt_settings.sql      - Optimizer settings in my session
+	- my_ses_stat.sql          - Satistic of my session
 	- session_opt_settings.sql - Optimizer settings in a session - parameter 1 username
+	- session_user_env.sql     - show all sys context values in a user session
 
 	- starttrace.sql      - start a trace of my session
 	- stoptrace.sql       - stop trace of my session
@@ -155,9 +157,8 @@ DOC
 	
 	- lob.sql            - show the lob settings of the tables of the user - parameter - Owner
 	- lob_detail.sql     -Get the details for the lob data type for this table - parameter owner and table name
-	
 	- dimension_ddl.sql - Get the DDL of a oracle dimension object in the database 
-	
+		
 	- sequence.sql       - search a sequence in the database parameter 1 - name of the sequence
 		
 	- recycle.sql        - show the content summary of the dba recyclebin
@@ -302,6 +303,8 @@ DOC
 	- health_mon.sql          - call the health monitoring in 11g - get the parameter 
 		
 	- login.sql               - set the login prompt
+	
+	- http_ftp_port.sql       - get the port settings of the database
 	
 	#Create Scripts
 	=================

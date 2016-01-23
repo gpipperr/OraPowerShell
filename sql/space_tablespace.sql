@@ -28,6 +28,7 @@ column freeable_mb     format 99G999G999D99 heading "Size MB|freeable"
 column file_id         format 99 heading  "File|id"
 column file_name       format a23 heading "File|name"
 
+select sum(freeable_mb)from (
 select  s.tablespace_name
       , s.bytes / 1024 / 1024 as SIZE_MB
       , (e.max_data_block_id * et.BLOCK_SIZE / 1024 / 1024) as max_used_mb
@@ -46,6 +47,7 @@ select  s.tablespace_name
    and s.TABLESPACE_NAME = et.TABLESPACE_NAME
    and e.TABLESPACE_NAME =et.TABLESPACE_NAME
    and et.TABLESPACE_NAME like upper('&TABLESPACE.')   
+)   
 /
 
 -- to slow .....
