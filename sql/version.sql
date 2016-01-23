@@ -86,6 +86,8 @@ select to_char(action_time, 'dd.mm.yyyy') as a_time
  order by action_time desc
 /
 
+prompt ... check for 12c also DBA_REGISTRY_SQLPATCH
+
 ttitle left  "DB Infos -- Timezone" skip 2
 column version format 99
 SELECT version from v$timezone_file;
