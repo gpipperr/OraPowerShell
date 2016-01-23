@@ -62,7 +62,7 @@ DOC
 	- tns_history.sql      - show services statistics for the last 12 hours (only services with some traffic)
 	- taf.sql              - Check TAF settings of the connections
 	- connection_pool.sql  - Show the Database Resident Connection Pooling (DRCP) Settings
-	- ssl.sql			   - check the  sql*net connection if ssl or encryption is in use
+	- ssl.sql              - check the  sql*net connection if ssl or encryption is in use
 
 	- locks.sql            - locks in the database - mode 6 is the blocker!
 	- ddl_locks.sql        - check for DDL Locks
@@ -127,7 +127,7 @@ DOC
 	- tab_last.sql         - get the change date of a record in the table - parameter - Owner, Table name
 	- tab_mod.sql          - get the last modifications of the table      - parameter - Owner, Table name
 	- tab_data_changes.sql - get an overview over changes on the tables of a user - parameter - Owner
-		
+	
 	- tab_usage.sql        - check if the table is used in the last time - parameter - Owner, Table name
 	- tab_part.sql         - get the partition information of a table     - parameter - Owner, Table name
 	- partition.sql        - Analyse the partitions of the tables of a user
@@ -140,7 +140,7 @@ DOC
 	- tab_mat_log.sql      - Information about materialized views Logs
 	- refresh_group.sql    - Get all refresh groups of the DB for the materialized views
 	- my_refresh_group.sql - Get all refresh groups of your Schema
-		
+	
 	- tab_defekt_blocks.sql           - check for corrupted blocks
 	- tab_defekt_blocks_bad_table.sql - create rowid table for all readable data for a table with a defect lob segment
 	
@@ -158,9 +158,9 @@ DOC
 	- lob.sql            - show the lob settings of the tables of the user - parameter - Owner
 	- lob_detail.sql     -Get the details for the lob data type for this table - parameter owner and table name
 	- dimension_ddl.sql - Get the DDL of a oracle dimension object in the database 
-		
+	
 	- sequence.sql       - search a sequence in the database parameter 1 - name of the sequence
-		
+	
 	- recycle.sql        - show the content summary of the dba recyclebin
 	
 	- tab_tablespace.sql        - get the tablespaces of the user    - parameter - Owner
@@ -188,7 +188,6 @@ DOC
 	- select.sql      - select first 3 records of the table as list - parameter 1 - name of the table
 	- view_count.sql  - count entries in a view                     - parameter 1 - name of the view
 	
-	
 	- asm.sql         - asm disk status and filling degree of the asm disks
 	- asm_disk.sql    - asm disk space
 	- asm_balance.sql - asm disk disk balance 
@@ -202,7 +201,6 @@ DOC
 	- redo_change.sql - who create how much redo per day last 7 in the database
 	- scn.sql         - scn in the archive log history 
 	- sqn.sql         - sequence log
-	
 	
 	- ext/tsc.sql       - table space size information
 	- directory.sql     - show directories in the database
@@ -266,11 +264,11 @@ DOC
 	- awr_session_stat.sql    - statistic of the sessions of a user
 	- awr_session_resource_plan_historie.sql - Show the consumer group of all history active sessions of a user
 	- awr_act_active_sessions.sql            - get information about the act active Session in the last 90 minutes
-	- awr_ash_top_sql.sql					 - select the last top sql statements from the active session history
+	- awr_ash_top_sql.sql			 - select the last top sql statements from the active session history
 	- awr_act_blocking_sessions.sql          - get information about blocking sessions in the database
 	- awr_session_none_technical_user.sql    - get information about none technical user sessions
 	- awr_changed_plans.sql                  - search for changed plans in a time period - parameter 1 - Start date  - parameter 2 end date in DE format
-	- awr_resourcelimit.sql					 - display the resource limits of the last days
+	- awr_resourcelimit.sql			 - display the resource limits of the last days
 	- awr_os_stat.sql                        - display the OS statistic of the last days  
 	- awr_call_awr_report.sql                - create AWR Report of the database
 	- awr_call_ash_report.sql                - create ASH Report of the database
@@ -301,7 +299,7 @@ DOC
 	- db_alerts_set.sql       - set the threshold of a metric
 	
 	- health_mon.sql          - call the health monitoring in 11g - get the parameter 
-		
+	
 	- login.sql               - set the login prompt
 	
 	- http_ftp_port.sql       - get the port settings of the database
@@ -312,7 +310,7 @@ DOC
 	- clean_user.sql            - create the DDL to delete every object in the schema - parameter 1 - user name
 	
 	- space_tablespace.sql      - create the DDL to shrink a table space - parameter 1 - Name of the table space (%) for all
-	- space_tablespace_auto.sql - shrink each possible tablespace without asking 								
+	- space_tablespace_auto.sql - shrink each possible tablespace without asking 				
 	
 	- recreate_index.sql        - Script to create a index recreation script 
 	- recreate_table.sql        - Script to reorganize all small tables in a tablespace, off-line with !alter Table move!
