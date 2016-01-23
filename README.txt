@@ -26,10 +26,13 @@ bash\
 	
 * SQL Scripts
 SQL*Plus Scripts for the Windows and the Linux enviroment
-Please copy these script to the sql folder in your windows or linux home enviroment
+Please copy these script to the sql folder (Enviroment variable SQLPATH) in your Windows or Linux home enviroment
 
 sql\
 
+to get an overview over all SQL scripts see help.sql 
+
+#==============================================================================
 Usage:
 
 Windows

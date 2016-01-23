@@ -80,6 +80,8 @@ certScripts.ps1			=> Helper Script to create certificates and the global securit
 --
 checkDiscAligment.ps1   => Check Alignment of internal and SAN Disks 
 --
+setBGColor.ps1			=> set the background color of the console
+
 
 #SQL Script library:
 
