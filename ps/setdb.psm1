@@ -116,7 +116,16 @@ function setdb {
 		write-host  -ForegroundColor "red" "Error -- Configuration of the tns_admin is wrong - directory not extis :: $tns_admin"
 	}		
 	
-
+	#========= NLS_LANG
+	
+	$nls_lang=$oraconfig.oracle_homes.nls_lang.toString()
+	try {
+		set-item -path env:NLS_LANG -value $nls_lang
+	}
+	catch {
+		new-item -path env: -name NLS_LANG -value $nls_lang
+	}
+	
 	#======== The Oracle Homes 
 	
 	# Array handling http://ss64.com/ps/syntax-arrays.html

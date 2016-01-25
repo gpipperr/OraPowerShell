@@ -187,6 +187,7 @@ DOC
 	
 	- select.sql      - select first 3 records of the table as list - parameter 1 - name of the table
 	- view_count.sql  - count entries in a view                     - parameter 1 - name of the view
+	- view_getsql.sql - get the real SQL statement behind the call of a view - parameter - Owner, view name
 	
 	- asm.sql         - asm disk status and filling degree of the asm disks
 	- asm_disk.sql    - asm disk space
