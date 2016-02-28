@@ -10,4 +10,9 @@ select  'Instance :: '||SYS_CONTEXT('USERENV', 'INSTANCE_NAME')||' ++ Service ::
   from dual
 /
 
+select dbms_debug_jdwp.current_session_id sid
+     , dbms_debug_jdwp.current_session_serial serial
+from dual
+/
+
 prompt

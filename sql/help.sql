@@ -100,6 +100,7 @@ DOC
 	- user_ddl.sql         - get the script to create a user - parameter 1 - Name of the user
 	- user_history.sql     - get some static information for the login behavior of this user -  Parameter 1 - Name of the user
 	- user_objects.sql     - show the counts of objects from none default users
+	- user_oracle_default.sql  - define the list of the default oracle db schemas
 	
 	- vpd.sql              - show the VPD - Virtual Private Database Settings
 	
@@ -273,6 +274,7 @@ DOC
 	- awr_os_stat.sql                        - display the OS statistic of the last days  
 	- awr_call_awr_report.sql                - create AWR Report of the database
 	- awr_call_ash_report.sql                - create ASH Report of the database
+	- awr_call_sqlmonitor_report.sql         - call a sql Monitor Report
 
 	
 	- calibrate_io.sql     - Use I/O calibrate to analyses io of the database and set the internal I/O views
