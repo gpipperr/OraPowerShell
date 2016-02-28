@@ -22,7 +22,7 @@ column index_size   format 999G990D000  heading "Size Index|MB"
 	   , round(s.bytes/1024/1024,3) as size_MB 
   from user_tables t
      , user_segments s
-  where t.table_name = s.segment_name
+  where t.table_name = s.segment_name(+)
 order by t.table_name
 / 
 prompt
