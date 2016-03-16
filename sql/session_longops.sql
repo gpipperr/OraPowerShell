@@ -25,6 +25,7 @@ column TIMESTAMP        format a16     heading "Timestamp"
 column ELAPSED_SECONDS  format 99G999  heading "Elapsed|Seconds"
 column TIME_REMAINING   format 99G999  heading "Time|Renaming"
 column MESSAGE          format a80     heading "Message"  FOLD_BEFORE   
+column MESSAGE          format 9G999D00 heading "% Done"
 
   select inst_id
        ,  sid
@@ -36,8 +37,10 @@ column MESSAGE          format a80     heading "Message"  FOLD_BEFORE
        ,  ELAPSED_SECONDS
        ,  TIME_REMAINING
        ,  message
+	   , (sofar/totalwork)*100 as DONE   
     from gv$session_longops
    where username like upper ('%&&USER_NAME.%') and username not in ('SYS')
    -- and TIME_REMAINING > 0
+   -- and TOTALWORK > SOFAR
 order by username, inst_id, TIME_REMAINING desc
 /
