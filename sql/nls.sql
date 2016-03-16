@@ -46,7 +46,7 @@ column parameter format a24 heading "NLS DB Character Set"
 
 select PARAMETER, value
     from nls_database_parameters
-   where parameter in ('NLS_CHARACTERSET', 'NLS_NCHAR_CHARACTERSET', 'NLS_LENGTH_SEMANTICS')
+   where parameter in ('NLS_CHARACTERSET', 'NLS_NCHAR_CHARACTERSET', 'NLS_LENGTH_SEMANTICS','NLS_LANGUAGE','NLS_TERRITORY')
 order by 2
 /
 
