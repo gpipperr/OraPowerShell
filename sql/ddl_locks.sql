@@ -11,7 +11,7 @@ define OBJECTNAME    = '&2'
 
 prompt
 prompt Parameter 1 = Owner Name => &&OWNER.
-prompt Parameter 2 = Owner Name => &&OBJECTNAME.
+prompt Parameter 2 = Object Name => &&OBJECTNAME.
 prompt
 
 
