@@ -443,7 +443,7 @@ function local-backup-db-metainfo {
 	#PatchLevel of the database
 	$software_inventory_backup=$backup_path+"\software_lsinventory_"+$dbname+"_"+$day_of_week+".log"
 	
-	local-print  -Text "Info -- call $ORACLE_HOME/OPatch/opatch lsinventory to get the installed software version"
+	local-print  -Text "Info -- call $ORACLE_HOME\OPatch\opatch lsinventory to get the installed software version"
 	
 	## if Error with no set Oracle Home check this code!
 	& cmd /c "set ORACLE_HOME=$ORACLE_HOME&&$ORACLE_HOME\OPatch\opatch lsinventory > $software_inventory_backup" 2>&1 | foreach-object { local-print -text "OPATCH OUT::",$_.ToString() }
