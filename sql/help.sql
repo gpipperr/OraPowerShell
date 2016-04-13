@@ -24,6 +24,7 @@ DOC
 	- tablespace_space.sql       - get a overview over the free and used space for a tablespace - parameter name of the tablespace
 	- awr_tablespace_history.sql - get the historical Size of a tablespace from the AWR
 	- tablespace_tab_storage.sql - show all tables on a tablespace
+	- tablespace_autoextend.sql  - set all datafile of a tablespace to autoextend
 
 
 	- sessions.sql             - actual connections to the database 
@@ -321,7 +322,7 @@ DOC
 	
 	- create_mon_index.sql      - Script to create index enable or disable monitoring scripts for a user - parameter 1 - user name
 	
-	- create_all_statistic.sql  - Recreate the statistic of the databset_audit_minimal_settings.sqlase
+	- create_all_statistic.sql  - Recreate the statistic of the database
 	
 	#Reports
 	=================

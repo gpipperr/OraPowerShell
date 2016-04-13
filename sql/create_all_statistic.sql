@@ -19,6 +19,7 @@ set pagesize 200
 set echo on
 set serveroutput on
 
+define degree  = "1"
 -----------------------------------------------
 
 column last format a14
@@ -35,9 +36,9 @@ order by owner, to_char (LAST_ANALYZED, 'YYYYDDMM') desc
 -----------------------------------------------
 -- delete all old statistics if necessary
 --
-exec DBMS_STATS.DELETE_DATABASE_STATS;
-exec DBMS_STATS.DELETE_DICTIONARY_STATS;
-exec DBMS_STATS.DELETE_FIXED_OBJECTS_STATS;
+--exec DBMS_STATS.DELETE_DATABASE_STATS;
+--exec DBMS_STATS.DELETE_DICTIONARY_STATS;
+--exec DBMS_STATS.DELETE_FIXED_OBJECTS_STATS;
 -----------------------------------------------
 
 -----------------------------------------------
@@ -51,7 +52,7 @@ exec  DBMS_STATS.gather_fixed_objects_stats;
 
 -----------------------------------------------
 --
-exec DBMS_STATS.GATHER_DICTIONARY_STATS (estimate_percent  => 100, degree  => 24,options  => 'GATHER')
+exec DBMS_STATS.GATHER_DICTIONARY_STATS (estimate_percent  => 100, degree  => &&degree ,options  => 'GATHER')
 
 
 -----------------------------------------------
@@ -67,7 +68,7 @@ declare
       -- and  owner not in ('MDSYS','SI_INFORMTN_SCHEMA','ORDPLUGINS','ORDDATA','ORDSYS','EXFSYS','XS$NULL','CTXSYS','WMSYS','APPQOSSYS','DBSNMP','ORACLE_OCM','DIP','OUTLN','FLOWS_FILES','OLAPSYS','OWBSYS','OWBSYS_AUDIT')
       group by owner;
 
-   v_parallel   number := 16;
+   v_parallel   number := &&degree;
 begin
    dbms_output.put_line (
       '-- Info Start Anlegen der neuen Statisiken für die DB User um ::' || to_char (sysdate, 'dd.mm.yyyy hh24:mi'));
@@ -118,7 +119,7 @@ end;
 
 -----------------------------------------
 -- Falls etwas fehlt
-exec DBMS_STATS.GATHER_DATABASE_STATS (degree=>8,options=>'GATHER AUTO' );
+exec DBMS_STATS.GATHER_DATABASE_STATS (degree=>&&degree,options=>'GATHER AUTO' );
 
 -----------------------------------------
 -- end system statistic
