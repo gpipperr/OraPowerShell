@@ -12,6 +12,7 @@ select a.group_number
   from v$asm_alias a
       ,v$asm_file  b
  where a.group_number = b.group_number
+   and b.group_number=6
    and a.file_number = b.file_number
    and a.file_incarnation = b.incarnation
 /

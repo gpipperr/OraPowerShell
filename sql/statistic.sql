@@ -36,8 +36,38 @@ prompt .... MBRC	      Average multiblock read count sequentially in blocks
 prompt .... MREADTIM	   Average time for a multi-block read request in milliseconds
 prompt .... SLAVETHR	   Average parallel slave I/O throughput in bytes/second
 prompt .... SREADTIM	   Average time for a single-block read request in milliseconds
+prompt ....
+prompt
 
+ttitle left  "I/O Statistic Values" skip 2
 
+column start_time          format a21    heading "Start|time"			
+column end_time 		   format a21    heading "End|time"
+column max_iops 		   format 9999999 heading "Block/s|data block" 
+column max_mbps 		   format 9999999 heading "MB/s|maximum-sized read" 
+column max_pmbps 		   format 9999999 heading "MB/s|largeI/0" 
+column latency 			   format 9999999 heading "Latency|data block read" 
+column num_physical_disks  format 999     heading "Disk|Cnt"
+
+select to_char(START_TIME,'dd.mm.yyyy hh24:mi') as START_TIME
+	,to_char(END_TIME,'dd.mm.yyyy hh24:mi') as END_TIME 			
+	,MAX_IOPS 			
+	,MAX_MBPS 			
+	,MAX_PMBPS 			
+	,LATENCY 				
+	,NUM_PHYSICAL_DISKS
+  from dba_rsrc_io_calibrate
+/
+
+prompt .... START_TIME 			Start time of the most recent I/O calibration 
+prompt .... END_TIME 			End time of the most recent I/O calibration 
+prompt .... MAX_IOPS 			Maximum number of data block read requests that can be sustained per second 
+prompt .... MAX_MBPS 			Maximum megabytes per second of maximum-sized read requests that can be sustained 
+prompt .... MAX_PMBPS 			Maximum megabytes per second of large I/O requests that can be sustained by a single process 
+prompt .... LATENCY 					Latency for data block read requests 
+prompt .... NUM_PHYSICAL_DISKS 	Number of physical disks in the storage subsystem (as specified by the user) 
+prompt ....
+prompt
 
 ttitle left  "Last analysed Tables Overview" skip 2
 

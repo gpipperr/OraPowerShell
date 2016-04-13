@@ -32,6 +32,13 @@ from gv$encryption_wallet
 /
 
 
+ttitle left  "Get the Master Keys " skip 2 
+column key_id format a60
+select key_id
+      ,to_char(activation_time,'dd.mm.yyyy hh24:mi') as activation_time
+ from v$encryption_keys
+/
+
 
 column name format a40
 column masterkeyid_base64 format a60
