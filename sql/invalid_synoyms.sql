@@ -4,7 +4,7 @@
 -- Date:   01.Oktober 2015
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 900 recsep off
 
 
 ttitle center "Count of synonyms without an existing owner in the database" skip 2
@@ -39,7 +39,12 @@ where table_owner not in ('SYSTEM', 'SYS')
 	
 ttitle center "Delete Script" skip 2	
 
-select 'drop ' || decode(s.owner, 'PUBLIC', 'PUBLIC SYNONYM ', 'SYNONYM ' || s.owner || '.') || s.synonym_name || ';' as DELETE_ME
+set pagesize 4000 
+
+spool delete_synonym_invalid.log
+
+
+select 'drop ' || decode(s.owner, 'PUBLIC', 'PUBLIC SYNONYM ', 'SYNONYM ' || s.owner || '.') ||'"'|| s.synonym_name || '";' as DELETE_ME
  from dba_synonyms s
 where table_owner not in ('SYSTEM', 'SYS')
   and (db_link is null or db_link = 'PUBLIC')
@@ -48,5 +53,14 @@ where table_owner not in ('SYSTEM', 'SYS')
         where decode(s.table_owner, 'PUBLIC', o.owner, s.table_owner) = o.owner
           and s.table_name = o.object_name)
 /		  
+
+spool off
+
+prompt ... 
+prompt ... to drop all invalid synonyms you can call delete_synonym_invalid.log
+prompt ... 
+
+set pagesize 300
+
 
 ttitle off

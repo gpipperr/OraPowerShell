@@ -25,6 +25,7 @@ DOC
 	- awr_tablespace_history.sql - get the historical Size of a tablespace from the AWR
 	- tablespace_tab_storage.sql - show all tables on a tablespace
 	- tablespace_autoextend.sql  - set all datafile of a tablespace to autoextend
+	- tablespace_set_size.sql    - set all datafile of a tablespace to the same size
 
 
 	- sessions.sql             - actual connections to the database 
