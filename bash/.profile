@@ -343,7 +343,7 @@ if [ "${OVERWRITE_PROFIL}" = "YES" ]; then
 					for ORAHOMESID in $ORADB_LIST
 					do
 						if [ "${RAC_ENV}" = "true" ]; then
-							ORADBNAME=`echo ${ORAHOMESID} | sed 's/[0-9]*//g'`
+							ORADBNAME=`echo ${ORAHOMESID} | sed 's/[0-9]$//g'`
 							echo "DATABASE_ENV[${ORA_HOME_COUNTER}]=\"${LOC_PATH} ${ORAHOMESID} ${ORADBNAME} .UTF8\""  >> ~/.profile_conf		
 						else
 							echo "DATABASE_ENV[${ORA_HOME_COUNTER}]=\"${LOC_PATH} ${ORAHOMESID} ${ORAHOMESID} .UTF8\""  >> ~/.profile_conf		
