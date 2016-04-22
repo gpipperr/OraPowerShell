@@ -23,16 +23,16 @@ ttitle "Database Information" SKIP 2
 SET UNDERLINE '='
 
 select  v.inst_id
-	  , v.instance_name as inst_name
-	  , v.status
-	  , v.host_name 
-	  , to_char(d.dbid) as dbid
+                  , v.instance_name as inst_name
+                  , v.status
+                  , v.host_name 
+                  , to_char(d.dbid) as dbid
       , d.name
       , to_char(d.created,'dd.mm.yyyy hh24:mi') as created 
       , (select banner from v$version where banner like 'Oracle%') as edition
   from gv$database d
       ,gv$instance v
- where d.inst_id=v.inst_id	  
+where d.inst_id=v.inst_id            
  order by v.instance_name 
 /
 
@@ -50,18 +50,24 @@ ttitle "Block Change Tracking" SKIP 2
 column filename format a60
 select filename
      , status
-	  , bytes
+                  , bytes
    from   v$block_change_tracking
 /
 
 ttitle "MegaByte total DB Size for all files" SKIP 2
 
-column mb_total format 999G999G999D00 heading "MegaByte total"
+column mb_total format 999G999G999D00 heading "MegaByte |Total used on disk"
+column mb_data  format 999G999G999D00 heading "MegaByte |Data + Undo"
+column mb_temp  format 999G999G999D00 heading "MegaByte |Temporary"
+column mb_redo  format 999G999G999D00 heading "MegaByte |Redo logs"
 
-select round((a.data_size + b.temp_size + c.redo_size)/1024/1024,3) as  mb_total
+select  round((a.data_size+b.temp_size+c.redo_size)/1024/1024,3) as  mb_total 
+      , round((a.data_size )/1024/1024,3) as  mb_data
+                  , round((b.temp_size)/1024/1024,3)  as  mb_temp
+                  , round((c.redo_size)/1024/1024,3)  as mb_redo
 from ( select sum(bytes) data_size        from dba_data_files ) a
-	,( select nvl(sum(bytes),0) temp_size from dba_temp_files ) b
-	,( select sum(bytes) redo_size         from sys.v_$log ) c
+                ,( select nvl(sum(bytes),0) temp_size from dba_temp_files ) b
+                ,( select sum(bytes) redo_size        from sys.v_$log     ) c
 /
 
 ttitle "MegaByte DB Objects in use" SKIP 2
