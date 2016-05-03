@@ -8,12 +8,13 @@
 	<port>25</port>
 	
 	<!-- Default -->
+	<!-- nony one XML Element is valid! -->
 	<!--port>25</port-->
 	<!-- SSL -->
 	<port>465</port>
 	
 	<!-- use SSL for mail transport- false if not -->
-	<!-- if true set the port for SSL! -->
+	<!-- if true set the port for SSL! -->	
 	<ssl>true</ssl>
   
   
