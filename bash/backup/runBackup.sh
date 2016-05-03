@@ -112,16 +112,17 @@ if [ -f "/usr/sbin/oracleasm" ]; then
 	fi
 fi
 
-if [ -f "/usr/sbin/sanlun" ]; then
- sudo -l  | grep "/usr/sbin/sanlun" > /dev/null
- if [ "$?" -ne "0" ]; then 
-   echo "sudo right on /usr/sbin/sanlun missing, please add with visudo" 
-   exit 4 
- fi
-  echo "Netapp Tools installed on this server - OK " 
-else
-  echo "Netapp Tools not installed on this server  - WRONG(test =>  usr/sbin/sanlun missing, please install" 
-fi
+#check for netapp tools
+#if [ -f "/usr/sbin/sanlun" ]; then
+# sudo -l  | grep "/usr/sbin/sanlun" > /dev/null
+# if [ "$?" -ne "0" ]; then 
+#   echo "sudo right on /usr/sbin/sanlun missing, please add with visudo" 
+#   exit 4 
+# fi
+#  echo "Netapp Tools installed on this server - OK " 
+#else
+#  echo "Netapp Tools not installed on this server  - WRONG(test =>  /usr/sbin/sanlun missing, please install)" 
+#fi
 
 if [ -a ${LOCKFILE} ]; then
  echo "Backup may be still running - found lock file ${LOCKFILE} checking ..."

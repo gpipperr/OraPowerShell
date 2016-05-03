@@ -41,7 +41,7 @@ Cmnd_Alias ORACLE = /u01/app/11.2.0.3/grid/bin/ocrcheck, /u01/app/11.2.0.3/grid/
 %dba ALL = NOPASSWD: ORACLE
 ..
 
- 
+ ---------------------------
 3. Cronjob
 	
 - Set the cronjob
@@ -54,3 +54,16 @@ Cmnd_Alias ORACLE = /u01/app/11.2.0.3/grid/bin/ocrcheck, /u01/app/11.2.0.3/grid/
 #backup and delete archivelog every two hours
 0 */2 * * * /home/oracle/backup/runArchivelogBackup.sh	
 	
+
+---------------------------
+
+4. For Oracle 12c Cluster create a diag home for asmcmd wiht the correct read right like:
+
+[grid@gpidb02:~ ]$ mkdir /opt/oracle/diag/asmcmd
+[grid@gpidb02:~ ]$ cd /opt/12.1.0.2/grid/log/diag
+[grid@gpidb02:diag ]$ ln -s /opt/oracle/diag/asmcmd asmcmd
+[grid@gpidb02:diag ]$ chmod g+w /opt/oracle/diag/asmcmd
+
+On each Host of the cluster!
+
+---------------------------

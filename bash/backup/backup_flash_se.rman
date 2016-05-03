@@ -1,0 +1,7 @@
+#copy backup from +asm to file location
+backup backupset all format '&1/rman_%U';
+
+#Backup controlfile and spfile
+backup current controlfile tag "controlfile_backup_disk" format '&1/control_%U';
+backup spfile tag "spfile_backup_disk" format '&1/spfile_%U';
+

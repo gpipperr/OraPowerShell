@@ -22,6 +22,8 @@
 CONFFILE=${SCRIPTS}/default.conf
 . ${CONFFILE}
 
+# Load ora init defaults
+. ${SCRIPTS}/initora.conf
 
 # read default db configuration file 
 . ~/.profile
@@ -381,6 +383,8 @@ echo "S_DB_EDITON=${DB_EDITON}"  			    	>>  ${CONFFILE}
 echo "S_DATABASE_SCANLISTNER=${SCAN_LISTNER}"  		>>  ${CONFFILE}
 echo "S_FILE_DATA_LOCATION=${ORACLE_BASE}/oradata"  >>  ${CONFFILE}
 
+echo "S_ASM_HOME=${ASM_HOME}"  			    		>>  ${CONFFILE}
+
 if [ "${ASM_ENV}" = "true" ]; then
 	echo "S_ASM_DATA_LOCATION=${S_ASM_DATA_LOCATION}"  >>  ${CONFFILE}
 	echo "S_ASM_REDOLOG_DEST1=${REDOLOG_DEST1}" 			 >>  ${CONFFILE}
@@ -567,8 +571,11 @@ else
 fi
 
 printLine
+printList  "Main Character Set"     "22" ":"    ${CHARACTER_SET} 
+printLine
+printList  "Compatible Parameter"    "22" ":"   ${S_COMPATIBLE}
+printList  "Blocksize  Parameter"    "22" ":"   ${S_DB_BLOCK_SIZE}  
 
-printList  "Main Character Set"     "22" ":"     ${CHARACTER_SET} 
 printLine
 printList  "System Tablespace"      "22" ":"	 ${SYSTEM_TAB_LOC} 
 printList  "Sysaux Tablespace"      "22" ":"	 ${SYSAUX_TAB_LOC} 
@@ -598,8 +605,7 @@ PATH=${ORACLE_HOME}/bin:$PATH; export PATH
 
  
 #############  create the init.ora #############
-# Load ora init defaults
-. ${SCRIPTS}/initora.conf
+
 
 # calculate memoray size
 #
@@ -621,10 +627,12 @@ if [ "${MEMORY_TARGET}" -lt "750" ]; then
 fi
 
 # Check if the shared memory is configured properly
-#
-SHARED_MEMORY=$(df -k | grep tmpfs | awk '{print($2)/1024;}')
-
-if [ "${SHARED_MEMORY}" -lt "${MEMORY_TARGET}" ]; then
+# get only the first value
+SHARED_MEMORY=$(df -k | grep tmpfs | head -1 | awk '{print($2)/1024;}')
+#round
+SHARED_MEMORY=$(echo $SHARED_MEMORY | awk '{print int($1)}')
+#Check
+if [[ "${SHARED_MEMORY}" -lt "${MEMORY_TARGET}" ]]; then
   printError
   printError "Your current size of the shared memory (${SHARED_MEMORY} MB) is smaller than the allocated memory target (${MEMORY_TARGET} MB) for the Oracle DB instance."
   printError "Possible solution : As root, increase the shared memory /dev/shm mountpoint size (also set the size in /etc/fstab), then remount (tmpfs)"
@@ -632,12 +640,11 @@ if [ "${SHARED_MEMORY}" -lt "${MEMORY_TARGET}" ]; then
   exit 1
 fi
 
-
 echo "log_archive_format=%t_%s_%r.dbf"  >  ${SCRIPTS}/init.ora
 echo "db_block_size=${S_DB_BLOCK_SIZE}"	>> ${SCRIPTS}/init.ora
-echo "open_cursors=${S_OPEN_CURSORS}"		>> ${SCRIPTS}/init.ora
-echo "db_domain=\"\""										>> ${SCRIPTS}/init.ora
-echo "db_name=\"${ORACLE_DBNAME}\""			>> ${SCRIPTS}/init.ora
+echo "open_cursors=${S_OPEN_CURSORS}"	>> ${SCRIPTS}/init.ora
+echo "db_domain=\"\""					>> ${SCRIPTS}/init.ora
+echo "db_name=\"${ORACLE_DBNAME}\""		>> ${SCRIPTS}/init.ora
 
 if [ "${ASM_ENV}" = "true" ]; then
 	echo "control_files=(\"${REDOLOG_DEST1}/${ORACLE_DBNAME}/control01.ctl\",\"${REDOLOG_DEST2}/${ORACLE_DBNAME}/control02.ctl\",\"${SYSTEM_TAB_LOC}/${ORACLE_DBNAME}/control03.ctl\")"  >> ${SCRIPTS}/init.ora
@@ -649,12 +656,12 @@ echo "db_recovery_file_dest=\"${FLASH_RECO_LOC}\"" 	    >> ${SCRIPTS}/init.ora
 
 echo "db_recovery_file_dest_size=${FLASH_RECO_SIZE}" 	>> ${SCRIPTS}/init.ora
 
-echo "compatible='11.2.0.0.0'" 							>> ${SCRIPTS}/init.ora
+echo "compatible=${S_COMPATIBLE}" 						>> ${SCRIPTS}/init.ora
 echo "diagnostic_dest=\"${ORACLE_BASE}\"" 		        >> ${SCRIPTS}/init.ora
 
-echo "memory_target=${MEMORY_TARGET}M"				     >> ${SCRIPTS}/init.ora
-echo "processes=${S_PROCESSES}" 								      >> ${SCRIPTS}/init.ora
-echo "sessions=${S_SESSIONS}" 									      >> ${SCRIPTS}/init.ora
+echo "sga_target=${MEMORY_TARGET}M"				        >> ${SCRIPTS}/init.ora
+echo "processes=${S_PROCESSES}" 					    >> ${SCRIPTS}/init.ora
+echo "sessions=${S_SESSIONS}" 						    >> ${SCRIPTS}/init.ora
 
 echo "audit_file_dest=\"${ORACLE_BASE}/admin/${ORACLE_DBNAME}/adump\"" >> ${SCRIPTS}/init.ora
 echo "audit_trail=db" 													>> ${SCRIPTS}/init.ora
@@ -679,10 +686,10 @@ if [ ${RAC_ENV} = 'true' ]; then
 		echo "${ORACLE_DBNAME}${RAC_COUNTER}.instance_number=${RAC_COUNTER}" 				>> ${SCRIPTS}/init.ora
 		echo "${ORACLE_DBNAME}${RAC_COUNTER}.thread=${RAC_COUNTER}"									>> ${SCRIPTS}/init.ora
 		echo "${ORACLE_DBNAME}${RAC_COUNTER}.undo_tablespace=UNDOTBS${RAC_COUNTER}"	>> ${SCRIPTS}/init.ora
-		
-		echo "${ORACLE_DBNAME}${RAC_COUNTER}.instance_groups=IGroup${ORACLE_DBNAME}${RAC_COUNTER}"					>> ${SCRIPTS}/init.ora
-		echo "${ORACLE_DBNAME}${RAC_COUNTER}.parallel_instance_group=IGroup${ORACLE_DBNAME}${RAC_COUNTER}"	>> ${SCRIPTS}/init.ora
-		
+		if [ "${DB_EDITON}" = 'EE' ]; then
+			echo "${ORACLE_DBNAME}${RAC_COUNTER}.instance_groups=IGroup${ORACLE_DBNAME}${RAC_COUNTER}"					>> ${SCRIPTS}/init.ora
+			echo "${ORACLE_DBNAME}${RAC_COUNTER}.parallel_instance_group=IGroup${ORACLE_DBNAME}${RAC_COUNTER}"	>> ${SCRIPTS}/init.ora
+		fi;
 		let "RAC_COUNTER+=1"
 	done
 else

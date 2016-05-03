@@ -225,7 +225,14 @@ echo ------------- Finish Rman Backup at "`date`" ------------------
 
 if [  ${BACKUP_FLASH_TO_DISK} = "true" ]; then
 	echo ------------- Start Backup Flash Recovery Area at "`date`" ------------------
-	${ORACLE_HOME}/bin/rman target / nocatalog @${SCRIPTS}/backup_flash.rman USING "'${BACKUP_DEST}/${ORACLE_DBNAME}'"
+	if [ ${ISENTERISE} -eq 1 ] 
+	then
+		#use backup OPTIMIZATION 
+		${ORACLE_HOME}/bin/rman target / nocatalog @${SCRIPTS}/backup_flash.rman USING "'${BACKUP_DEST}/${ORACLE_DBNAME}'"
+	else
+		#not use backup OPTIMIZATION 
+		${ORACLE_HOME}/bin/rman target / nocatalog @${SCRIPTS}/backup_flash_se.rman USING "'${BACKUP_DEST}/${ORACLE_DBNAME}'"
+	fi
 	echo ------------- Finish Backup Flash Recovery Area at "`date`" ------------------
 fi
 
