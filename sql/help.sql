@@ -26,6 +26,7 @@ DOC
 	- tablespace_tab_storage.sql - show all tables on a tablespace
 	- tablespace_autoextend.sql  - set all datafile of a tablespace to autoextend
 	- tablespace_set_size.sql    - set all datafile of a tablespace to the same size
+	- tablespace_create.sql      - print the ddl to create a uniform tablespace - Parameter Name of the tablespace
 
 
 	- sessions.sql             - actual connections to the database 
