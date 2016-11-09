@@ -35,14 +35,14 @@
 define SQL_ID = &1 
 
 set verify off
-set linesize 190 pagesize 300 recsep off
+set linesize 190 pagesize 300 
 
 ttitle left  "SQL Plan from Cursor Cache ID:  &SQL_ID." skip 2
 
 column out_put format a190 heading "SQL Plan Output"
 
 select PLAN_TABLE_OUTPUT as out_put
- from TABLE(DBMS_XPLAN.DISPLAY_CURSOR('&SQL_ID.',null,'ALL'))
+ from TABLE(DBMS_XPLAN.DISPLAY_CURSOR('&SQL_ID.',null,'TYPICAL'))
 / 
 
 ttitle off

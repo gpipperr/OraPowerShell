@@ -6,7 +6,7 @@
 -- http://www.dba-oracle.com/t_tracking_table_constraint_dependencies.htm
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define OWNER    = '&1' 
 define TAB_NAME = '&2' 

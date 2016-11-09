@@ -9,7 +9,7 @@ prompt !!!!You need the Tuning Pack for this feature!!!!
 prompt
 
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define MINUTES_SINCE="( 1/24/60 * 120)"
 

@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc:   read the alert log of the database over the adrci alert.xml
 --===============================================================================
-set linesize 130 pagesize 300 recsep off pages 0
+set linesize 130 pagesize 300  pages 0
 
 define SEARCH_TEXT    = '&1'
 

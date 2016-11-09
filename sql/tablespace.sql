@@ -3,7 +3,7 @@
 -- Desc: Information about the tablespaces
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 -- use the default block size as variable
 -- 

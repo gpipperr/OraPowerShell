@@ -9,7 +9,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column SQL_TEXT format a23
 column SQL_HANDLE format a20

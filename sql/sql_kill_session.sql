@@ -4,7 +4,7 @@
 --       parameter 1 - SQL ID 
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define SQL_ID='&1'
 

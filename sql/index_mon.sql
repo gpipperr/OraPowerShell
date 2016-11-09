@@ -35,7 +35,7 @@ spool &&SPOOL_NAME
 set markup html on
 
 set verify off
-set linesize 130 pagesize 2000 recsep off
+set linesize 130 pagesize 2000 
 
 select to_char (sysdate, 'dd.mm.yyyy hh24:mi') as anlayse_date from dual
 /

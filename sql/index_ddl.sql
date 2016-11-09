@@ -6,7 +6,7 @@
 -- Parameter 1: Name of the index
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 define OWNER    = '&1'
 define INDEX_NAME = '&2'

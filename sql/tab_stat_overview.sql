@@ -8,7 +8,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define USER_NAME  = &1
 
@@ -16,7 +16,7 @@ prompt
 prompt Parameter 1 = Owner Name => &&USER_NAME.
 prompt
 
-SET linesize 150 pagesize 2000 recsep off
+SET linesize 150 pagesize 2000 
 
 ttitle "Read Statistic Values for all tables of this user &USER_NAME." SKIP 2
 

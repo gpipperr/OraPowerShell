@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc:  show the actual wait of the database 
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "Report waiting Sessions"  skip 2
 

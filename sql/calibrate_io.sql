@@ -20,7 +20,7 @@
 --
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column name       format a35
 column start_time format a25

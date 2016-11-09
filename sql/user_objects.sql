@@ -4,7 +4,7 @@
 -- Date:   October 2013
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define USER_NAME = &1 
 

@@ -42,3 +42,4 @@ sql\wiki\*
 sql\work\*
 .hg_archival*
 header.txt
+python

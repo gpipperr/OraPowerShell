@@ -3,7 +3,7 @@
 -- Desc:   Status of the login instance
 -- Date:   01.September 2013
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "Status of this instances" skip 2
 

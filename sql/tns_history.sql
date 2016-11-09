@@ -4,7 +4,7 @@
 --==============================================================================
 
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 
 ttitle 'Past service-level metrics|(from gv$servicemetric)'

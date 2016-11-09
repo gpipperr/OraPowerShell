@@ -6,7 +6,7 @@ prompt
 prompt !!!!You need the Tuning Pack for this feature!!!!
 prompt
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 select ss.instance_number
        ,  to_char (s.begin_interval_time, 'dd.mm.yyyy hh24:mi') as begin_interval_time

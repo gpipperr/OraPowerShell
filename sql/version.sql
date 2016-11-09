@@ -5,7 +5,7 @@
 --==============================================================================
 -- see Script to Collect DB Upgrade/Migrate Diagnostic Information (dbupgdiag.sql) (Doc ID 556610.1)
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "DB Infos -- Version" skip 2
 

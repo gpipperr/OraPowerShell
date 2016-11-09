@@ -5,7 +5,7 @@
 -- Must be run with dba privileges
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column username    format a20  heading "DB User|name"
 column action_name format a25  heading "Action|name"

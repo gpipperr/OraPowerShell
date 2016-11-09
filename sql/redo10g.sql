@@ -5,7 +5,7 @@
 -- Site:   http://orapowershell.codeplex.com
 --==============================================================================
 
-SET linesize 130 pagesize 300 recsep OFF
+SET linesize 130 pagesize 300 
 
 ttitle  "Report Redo Log Configuration "  SKIP 1  - 
 left "Sizes in MB" SKIP 2

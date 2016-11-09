@@ -7,7 +7,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define USERNAME = &1
 
@@ -16,7 +16,7 @@ prompt Parameter 1 = User Name   => &&USERNAME.
 prompt
 
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "Tables and Views for this user &&USERNAME." skip 2
 

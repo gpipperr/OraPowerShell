@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc: get the status of the last backup in the database
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column input_type               format a30
 column status                   format a12

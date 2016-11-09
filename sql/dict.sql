@@ -9,7 +9,7 @@
 -- umbauen auf REGEXP_SUBSTR(table_name,'_+,') um dba_,all_,user_ 
 --
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 set  verify off
 

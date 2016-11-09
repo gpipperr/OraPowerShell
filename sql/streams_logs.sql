@@ -3,7 +3,7 @@
 -- Desc: show the streams archive logs - which can be deleted 
 --==============================================================================
 set verify off
-set linesize 130 pagesize 2000 recsep off
+set linesize 130 pagesize 2000 
 
 set serveroutput on size 1000000
 

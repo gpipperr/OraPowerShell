@@ -3,7 +3,7 @@
 -- Desc:  get the script to create a user - parameter 1 - Name of the user
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 define USERNAME    = '&1'
 

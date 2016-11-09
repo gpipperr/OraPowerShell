@@ -4,7 +4,7 @@
 --          Parameter owner and table name
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define OWNER         = '&1' 
 define TABLE_NAME    = '&2' 

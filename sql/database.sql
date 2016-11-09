@@ -5,8 +5,7 @@
 --
 --==============================================================================
 
-set linesize 130 pagesize 300 recsep off
-
+set linesize 130 pagesize 300 
 
 column inst_id   format 99  heading "Inst|Id"
 column status    format A8  heading "Inst|Status"
@@ -23,10 +22,10 @@ ttitle "Database Information" SKIP 2
 SET UNDERLINE '='
 
 select  v.inst_id
-                  , v.instance_name as inst_name
-                  , v.status
-                  , v.host_name 
-                  , to_char(d.dbid) as dbid
+       , v.instance_name as inst_name
+       , v.status
+       , v.host_name 
+      , to_char(d.dbid) as dbid
       , d.name
       , to_char(d.created,'dd.mm.yyyy hh24:mi') as created 
       , (select banner from v$version where banner like 'Oracle%') as edition
@@ -35,7 +34,6 @@ select  v.inst_id
 where d.inst_id=v.inst_id            
  order by v.instance_name 
 /
-
 
 ttitle "DB Log Mode" SKIP 2
 

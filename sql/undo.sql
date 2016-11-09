@@ -5,7 +5,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 show parameter undo
 
@@ -32,3 +32,10 @@ select a.name
                         from dba_segments
                        where tablespace_name like 'UNDO%')
 /	 
+
+
+select DBMS_UNDO_ADV.longest_query(sysdate-1,sysdate)  as best_undo_time from dual
+/
+
+select DBMS_UNDO_ADV.required_retention(sysdate-30,sysdate)  as longst_query_30_days from dual;
+/

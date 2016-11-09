@@ -3,7 +3,7 @@
 -- Desc: get the name of a wait statistic
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define SYSSTAT_NAME = &1
 

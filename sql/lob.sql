@@ -3,7 +3,7 @@
 -- Desc: show the lob settings of the tables of the user - parameter - Owner
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define OWNER    = '&1' 
 

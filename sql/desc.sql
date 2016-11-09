@@ -3,7 +3,7 @@
 -- replacement for the desc command to search after some columns
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 define TAB_NAME    = '&1' 
 define COL_NAME    = '&2' 

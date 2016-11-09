@@ -3,7 +3,7 @@
 -- Desc:   get DDL of a role
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 define ROLENAME    = '&1'
 

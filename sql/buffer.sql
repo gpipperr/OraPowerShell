@@ -3,7 +3,7 @@
 -- Desc:   Get buffer cache information
 -- Date:   September 2013
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "Buffer Cache Information"  SKIP 1 
 

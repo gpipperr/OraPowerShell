@@ -3,7 +3,7 @@
 -- Desc:   show the actual date of the database
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column DBTIMEZONE      format a15     heading "Database|Time Zone" 
 column SESSIONTIMEZONE format a15     heading "Session|Time Zone" 

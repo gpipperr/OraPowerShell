@@ -8,7 +8,7 @@
 -- http://www.pythian.com/blog/oracle-file-extent-map-the-old-fashioned-way/
 -- ==============================================================
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 define TABLESPACE_NAME = '&1'
 

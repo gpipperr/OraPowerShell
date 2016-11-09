@@ -3,37 +3,36 @@
 -- Desc:   show asm balance
 -- Date:   November 2013
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 
-define GROUP_NUMBER = &1 
+define DG_NAME = '&1'
 
 prompt
-prompt Parameter 1 = Group Number       => &&GROUP_NUMBER.
+prompt Parameter 1 = Data Group Name          => &&DG_NAME.
 prompt
 
-define dnum = "format 999G999G999G999D99"
-define lnum = "format 9G999G999"
-define num  = "format 99G999"
-define snum  = "format 9G999"
-
-column bytes format &&dnum heading "Bytes|total"  
-column group_number format 999 heading "Grp|Nr"
-column name format a20 heading "Disk|Name"
-column doublecount  format 99 "File|Count"
+column bytes        format 999G999G999G999  heading "Bytes|total"  
+column group_number format 999     heading "Grp|Nr"
+column file_name    format a50     heading "File|Name"
+column doublecount  format 99      heading "File|Count"
+column GROUP_NAME   format A20     heading "Group|name"
 
 ttitle left  "ASM Disk Status and Size" skip 2
 
-select a.group_number
-      ,a.name
-      ,b.bytes
-      ,count(*) over(partition by a.group_number, a.file_number, a.file_incarnation) doublecount
-  from v$asm_alias a
-      ,v$asm_file  b
- where a.group_number = b.group_number
-   and b.group_number=&&GROUP_NUMBER.
-   and a.file_number = b.file_number
+select  g.name as GROUP_NAME
+      , a.name as file_name
+      , b.bytes 
+      , count(*) over(partition by a.group_number, a.file_number, a.file_incarnation) doublecount
+  from  v$asm_alias a
+      , v$asm_file  b
+	  , v$asm_diskgroup g
+where  g.name like upper ('&&DG_NAME')
+   and g.group_number     = b.group_number
+   and a.group_number     = b.group_number
+   and a.file_number      = b.file_number
    and a.file_incarnation = b.incarnation
 /
 
 ttitle off
+

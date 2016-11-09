@@ -8,7 +8,7 @@
 --==============================================================================
 
 
-set linesize 130 pagesize 500 recsep off
+set linesize 130 pagesize 500 
 
 column metrics_name      format a35  heading "Metric|Name"
 column instance_name     format a13  heading "Instance|Name"

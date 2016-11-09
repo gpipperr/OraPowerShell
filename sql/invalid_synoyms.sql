@@ -4,7 +4,7 @@
 -- Date:   01.Oktober 2015
 --
 --==============================================================================
-set linesize 130 pagesize 900 recsep off
+set linesize 130 pagesize 900 
 
 
 ttitle center "Count of synonyms without an existing owner in the database" skip 2

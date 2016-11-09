@@ -3,7 +3,7 @@
 -- Desc: Show the resource manager settings of the running sessions
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define USER_NAME   =  &1
 

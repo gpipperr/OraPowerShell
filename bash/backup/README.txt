@@ -5,9 +5,24 @@
 #
 #
 
+Check that this directories are exits in the script directory
+./lck
+./log
+
+!
+
+
+
 Prepare Backup
 
 1. Configuration
+
+If you use this script to backup a real applicatoin cluster environment:
+
+Check that you have definied a snapshot controlfile name located on the ASM that can be read from both nodes!
+
+like RMAN> CONFIGURE SNAPSHOT CONTROLFILE NAME TO '+RECO/snapcf_GPIDBIP.f';
+
 
 - Edit the ~/backup/initbackup.conf file
 		- set the BACKUP_DEST Parameter
@@ -34,7 +49,7 @@ as user root do "visudo", check  carefully the directories:
 ..
 ## Alias Section (on one Line!)
 ## ORACLE
-Cmnd_Alias ORACLE = /u01/app/11.2.0.3/grid/bin/ocrcheck, /u01/app/11.2.0.3/grid/bin/ocrcheck.bin, /u01/app/11.2.0.3/grid/bin/ocrconfig, /u01/app/11.2.0.3/grid/bin/ocrconfig.bin, /u01/app/11.2.0.3/grid/bin/ocrdump , /u01/app/11.2.0.3/grid/bin/ocrdump.bin,/usr/bin/scp,/usr/sbin/oracleasm, /usr/sbin/sanlun
+Cmnd_Alias ORACLE = /u01/app/11.2.0.3/grid/bin/ocrcheck, /u01/app/11.2.0.3/grid/bin/ocrcheck.bin, /u01/app/11.2.0.3/grid/bin/ocrconfig, /u01/app/11.2.0.3/grid/bin/ocrconfig.bin, /u01/app/11.2.0.3/grid/bin/ocrdump , /u01/app/11.2.0.3/grid/bin/ocrdump.bin,/usr/bin/scp,/usr/sbin/oracleasm, /usr/sbin/sanlun, /usr/sbin/blkid,/usr/bin/lsblk
 ...
 #Command Section
 # Allow Oracle DBA run root related stuff

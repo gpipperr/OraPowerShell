@@ -12,7 +12,7 @@ prompt !!!!You need the Tuning Pack for this feature!!!!
 prompt
 
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define START_SNAP='&1'
 define END_SNAP='&2'

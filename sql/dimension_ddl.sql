@@ -2,7 +2,7 @@
 -- GPI -  Gunther Pippèrr
 -- Desc:   DB Links DDL
 --==============================================================================
-set linesize 250 pagesize 3000 recsep off
+set linesize 250 pagesize 3000 
 
 define USER_NAME = &1 
 

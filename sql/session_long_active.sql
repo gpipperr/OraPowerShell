@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc:   Check for long active sessions longer then one hour
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column session_info format a20         heading "Session|Info" 
 column last_call_et format 999G999G999 heading "Query|Runtime sec"

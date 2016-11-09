@@ -4,7 +4,7 @@
 -- Must be run with dba privileges
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 set trimspool on
 
 column owner format a30 heading "Owner"

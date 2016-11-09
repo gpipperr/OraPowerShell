@@ -7,7 +7,7 @@
 --
 -- ==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define PROF_NAME = '&1' 
 

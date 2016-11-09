@@ -27,7 +27,7 @@ DOC
 	- tablespace_autoextend.sql  - set all datafile of a tablespace to autoextend
 	- tablespace_set_size.sql    - set all datafile of a tablespace to the same size
 	- tablespace_create.sql      - print the ddl to create a uniform tablespace - Parameter Name of the tablespace
-
+    - tablespace_last_objects.sql  - get the last 5 objects in a tablespace
 
 	- sessions.sql             - actual connections to the database 
 	- session_history.sql      - get a summary over the last active sessions 
@@ -39,6 +39,7 @@ DOC
 	- my_ses_stat.sql          - Satistic of my session
 	- session_opt_settings.sql - Optimizer settings in a session - parameter 1 username
 	- session_user_env.sql     - show all sys context values in a user session
+	- session_user_nls_lang.sql - get the NLS Lang  User session setting (only SYS !)
 
 	- starttrace.sql      - start a trace of my session
 	- stoptrace.sql       - stop trace of my session
@@ -91,7 +92,8 @@ DOC
 	- acl.sql              - show the acls of the Database (for security)
 	- my_acl.sql           - show my rights
 	
-	- java.sql             - java access rights
+	- java.sql                    - java access rights
+	- java_recomplie_invalid.sql  - compile invalid (resolve) java classes in a user schema 
 
 	- invalid.sql          - show all invalid objects
 	- invalid_synoyms.sql  - delete Script for invalid synonym
@@ -194,10 +196,18 @@ DOC
 	- view_getsql.sql - get the real SQL statement behind the call of a view - parameter - Owner, view name
 	
 	- asm.sql         - asm disk status and filling degree of the asm disks
-	- asm_disk.sql    - asm disk space
-	- asm_balance.sql - asm disk disk balance 
-	- asm_partner.sql - Information about asm partner disk
-	- asm_files.sql   - All files on an ASM disk group
+	
+	- asm_disk.sql     - asm disk groups space
+	- asm_all_disks.sql - show the disk infos
+	- asm_balance.sql  - asm disk disk balance  - Parameter 1 - name of the disk group
+	- asm_partner.sql  - Information about asm partner disk
+	- asm_files.sql    - All files on an ASM disk group
+	
+	- asm_failgroup.sql - Show the failgroup information of a disk group - Parameter 1 - name of the disk group
+	- asm_offline_failgroup.sql - create the script to offline all disks in a failgroup - Parameter 1 over the nameing convention of the disk!
+	- asm_online_failgroup.sql  - create the script to online all failgroup with offline disks
+	- asm_rebalance.sql - Show the rebalance information of a asm resync of disks
+	- asm_attribute.sql - Show the parameter of a ASM Diskgroup - parameter 1 Diskgroup Name - parameter 2 - parameter name
 	
 	- flash.sql       - show the flash back information’s 
 	- reco.sql        - recovery area settings and size
@@ -279,6 +289,7 @@ DOC
 	- awr_call_ash_report.sql                - create ASH Report of the database
 	- awr_call_sqlmonitor_report.sql         - call a sql Monitor Report
 
+	- statspack_delete_job.sql               - create a job to clean the statspack repository
 	
 	- calibrate_io.sql     - Use I/O calibrate to analyses io of the database and set the internal I/O views
 	- system_stat.sql      - get the DB internal system stat values like workload statistic and I/O calibrate values

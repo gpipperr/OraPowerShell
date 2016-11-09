@@ -4,7 +4,7 @@
 -- Desc: show all tables on a tablespace
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define TABLESPACE_NAME = '&1'
 

@@ -7,7 +7,7 @@
 --  http://docs.oracle.com/cd/E11882_01/appdev.112/e40758/d_flashb.htm#ARPLS142
 --==============================================================================
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "Report Flashback Feature of the Database"  skip 2 -
 

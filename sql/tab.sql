@@ -8,7 +8,7 @@
 --
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define TAB_NAME = '&1' 
 

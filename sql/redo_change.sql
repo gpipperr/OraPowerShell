@@ -7,7 +7,7 @@
 prompt
 prompt !!!!You need the Tuning Pack for this feature!!!!
 prompt
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column mb_day_total   format 999G999G999G999D999
 column change_percent format 999D99

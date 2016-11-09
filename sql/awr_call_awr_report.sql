@@ -49,7 +49,7 @@ set heading on
 set termout on
 
 set verify off
-SET linesize 500 pagesize 9000 recsep off
+SET linesize 500 pagesize 9000 
 set long 64000
 
 accept snapshot_id_begin number prompt 'Enter Frist Snapshot Begin ID    : '
@@ -69,4 +69,4 @@ prompt ... check the created report  &&SPOOL_NAME
 
 host &&SPOOL_NAME
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 

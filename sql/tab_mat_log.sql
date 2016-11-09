@@ -3,7 +3,7 @@
 -- Desc: Information about materialized views Logs
 --==============================================================================
 set verify off
-set linesize 130 pagesize 500 recsep off
+set linesize 130 pagesize 500 
 
 column log_owner             format a10
 column master                format a22

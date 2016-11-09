@@ -5,7 +5,7 @@
 --==============================================================================
 
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column  owner           format a20    heading "Owner"
 column  table_name      format a20    heading "Table|Name"

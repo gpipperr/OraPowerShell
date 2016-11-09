@@ -2,7 +2,7 @@
 -- GPI -  Gunther Pippèrr 
 -- Desc: get Information’s about the DB latch usage
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column name format a32
 column gets format 999G999G999

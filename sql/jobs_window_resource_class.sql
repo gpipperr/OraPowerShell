@@ -2,7 +2,7 @@
 -- GPI -  Gunther Pippèrr 
 -- Desc:  Show the relation between job windows , job classes and resource plans
 --===============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column job_class_name    format a25
 column job_class_service format a25

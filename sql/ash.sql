@@ -3,7 +3,7 @@
 --==============================================================================
 -- see  Metalink Node Active Session History (ASH) Performed An Emergency Flush Messages In The Alert Log (Doc ID 1385872.1)
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column total_size                format 999G999G999 heading "Total|size"
 column OLDEST_SAMPLE_TIME        format a18         heading "Oldest|sample"

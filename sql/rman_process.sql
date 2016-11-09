@@ -4,7 +4,7 @@
 -- Date:  01.September 2013
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "Process List of the RMAN Sessions" skip 2
 

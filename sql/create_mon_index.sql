@@ -3,7 +3,7 @@
 -- Desc: create the scripts to enable and disable  
 -- =================================================
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 define OWNER    = '&1' 
 

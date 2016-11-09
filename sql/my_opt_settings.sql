@@ -3,7 +3,7 @@
 -- Desc:   show the my optimizer settings
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column name        format a40 heading  "OptFeature|Name" 
 column sql_feature format a20 heading  "SQL|Feature"
