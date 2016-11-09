@@ -5,7 +5,7 @@
 -- Date:   08.2013
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 set feedback OFF
 set heading OFF

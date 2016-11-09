@@ -5,7 +5,7 @@
 --==============================================================================
 -- see http://www.pipperr.de/dokuwiki/doku.php?id=dba:oracle_health_monitor
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column name format a40
 

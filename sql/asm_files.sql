@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr 
 -- Desc:   all files on an ASM disk group
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define DG_NAME = '&1'
 
@@ -10,7 +10,7 @@ prompt
 prompt Parameter 1 = Data Group Name          => &&DG_NAME.
 prompt
 
-ttitle left  "ASM Files on Storage" skip 2
+ttitle left  "ASM Files on Disk group &&DG_NAME. " skip 2
 
 column file_name   format a30   heading "File|Name"
 column file_number format 99999 heading "File|Nr"

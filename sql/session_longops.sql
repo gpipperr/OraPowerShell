@@ -4,7 +4,7 @@
 -- Src:    see http://docs.oracle.com/cd/B19306_01/server.102/b14237/dynviews_2092.htm
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define USER_NAME   =  &1
 

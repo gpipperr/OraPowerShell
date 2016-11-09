@@ -2,7 +2,7 @@
 -- desc: information about the log miner process
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column ROLE format a16
 column SESSION_ID format 99999 head 'Logmr|id'

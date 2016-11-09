@@ -5,7 +5,7 @@
 -- http://docs.oracle.com/cd/B19306_01/server.102/b14237/statviews_1105.htm
 --==============================================================================
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column owner             format a10 heading  "Owner"
 column mview_name        format a30 heading "Mview|Name"

@@ -4,7 +4,7 @@
 -- Date:   01.September 2012
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "Status all Instances" skip 2
 

@@ -4,7 +4,7 @@
 -- Date:   November 2013
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column tablespace_name format a20 heading "Tablespace|Name"
 column segment_type    format a20 heading "Segment|Type"

@@ -5,7 +5,7 @@
 --
 -- http://docs.oracle.com/cd/B28359_01/server.111/b28320/dynviews_2058.htm#REFRN30463
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 -- sga infos
 

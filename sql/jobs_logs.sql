@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc:   show the logs of a job
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ------------------------------------------------------------
 

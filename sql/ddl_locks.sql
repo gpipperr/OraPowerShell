@@ -4,7 +4,7 @@
 --==============================================================================
 
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 define OWNER    = '&1' 
 define OBJECTNAME    = '&2' 

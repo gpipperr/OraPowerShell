@@ -6,7 +6,7 @@
 --http://www.oracle-base.com/articles/11g/fine-grained-access-to-network-services-11gr1.php
 --===============================================================================
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column acl       format a40 heading "ACL"
 column host      format a30

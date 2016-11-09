@@ -6,7 +6,7 @@
 -- Source see http://docs.oracle.com/cd/B28359_01/appdev.111/b28419/d_sql.htm#i996897
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define TAB_NAME = '&1'
 

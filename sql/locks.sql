@@ -5,7 +5,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 set echo off
 
 ttitle left "Lock Overview in the database" skip 2

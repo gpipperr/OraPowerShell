@@ -26,7 +26,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column name        format a30 heading "Profile|Name"
 column category    format a12 heading "Category|Name"

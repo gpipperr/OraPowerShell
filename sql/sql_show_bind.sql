@@ -15,7 +15,7 @@ prompt !!!!You need the Tuning Pack for this feature!!!!
 prompt
 
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define SQL_ID='&1'
 

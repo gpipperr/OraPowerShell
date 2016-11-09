@@ -153,7 +153,7 @@ set trimspool on
 set serveroutput on
 set pagesize 300
 set linesize 130
-set recsep off
+set 
 -- suppress scientific notation
 set numwidth  12
 --

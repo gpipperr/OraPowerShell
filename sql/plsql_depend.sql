@@ -3,7 +3,7 @@
 -- Desc: On which objects this pl/sql code depends
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 set trimspool on
 
 define OWNER        = '&1' 

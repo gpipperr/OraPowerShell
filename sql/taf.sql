@@ -4,7 +4,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column inst_id         format 99    heading "Inst|ID"
 column username        format a20   heading "DB User|name"

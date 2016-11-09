@@ -10,7 +10,7 @@
 
 ---------------------------------------
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 set echo on
 set timing on
 set time on

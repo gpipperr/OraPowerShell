@@ -3,7 +3,7 @@
 -- Desc: get statistics from running session for this SQL
 -- Work in progress
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define SQL_STATEMENT = &1
 

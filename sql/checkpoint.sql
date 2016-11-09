@@ -1,7 +1,7 @@
 --==============================================================================
 -- GPI - Gunther Pippèrr
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 @select v$instance_recovery;
 

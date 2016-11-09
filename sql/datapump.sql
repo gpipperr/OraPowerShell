@@ -3,7 +3,7 @@
 -- Desc:   Get Information about running data pump jobs
 -- Date:   November 2013
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column owner_name format a10;
 column job_name   format a20

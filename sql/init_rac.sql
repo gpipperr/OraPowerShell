@@ -3,7 +3,7 @@
 -- Desc: show init.parameter in a RAC Environment to check if same parameters on each node
 -- Date: 01.September 2012
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "Check Rac init.ora non default parameter if equal" skip 2
 

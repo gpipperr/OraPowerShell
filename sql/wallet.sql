@@ -5,7 +5,7 @@
 -- Must be run with dba privileges
 -- Source see Step by Step Troubleshooting Guide for TDE Error ORA-28374 (Doc ID 1541818.1)
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "The Path to the Wallet" skip 2 
 

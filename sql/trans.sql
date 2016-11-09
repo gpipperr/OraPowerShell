@@ -3,7 +3,7 @@
 -- Desc: running transactions in the database
 -- Date: September 2012
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "Report active DB transactions"  SKIP 1
       

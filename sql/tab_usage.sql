@@ -3,7 +3,7 @@
 -- Desc: check if the table is used in the last time - parameter - Owner, Table name
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define USER_NAME  = &1
 define TABLE_NAME = &2 

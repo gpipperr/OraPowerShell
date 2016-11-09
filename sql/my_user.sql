@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- get my user connection
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column MY_USER_AND_SERVICE format a100 heading "My Connection is"
 

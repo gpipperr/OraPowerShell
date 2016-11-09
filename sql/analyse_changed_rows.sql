@@ -10,7 +10,7 @@
 -- http://blog.tanelpoder.com/2009/11/04/detect-chained-and-migrated-rows-in-oracle/
 --==============================================================================
 set verify off
-set linesize 130 pagesize 1000 recsep off
+set linesize 130 pagesize 1000 
 
 define USER_NAME ='GPI'
 define TABLE_NAME ='COL_T'

@@ -5,7 +5,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 
 ttitle 'services configured to use load balancing advisory (lba) features| (from dba_services)'

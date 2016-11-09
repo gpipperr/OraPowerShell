@@ -10,7 +10,7 @@
 -- DBA_POLICY_CONTEXTS   Describes all driving contexts in the database. Its columns are the same as those in ALL_POLICY_CONTEXTS.
 -- DBA_SEC_RELEVANT_COLS Describes the security relevant columns of all security policies in the database
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "VPD Informations"  SKIP 2
 

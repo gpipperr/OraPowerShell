@@ -6,7 +6,7 @@
 -- http://www.oracle.com/webfolder/technetwork/de/community/dbadmin/tipps/cursor_invalidieren/index.html
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define SQL_ID='&1'
 

@@ -3,7 +3,7 @@
 -- Desc: show information about a index organized table - parameter - Owner, Table name
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define ENTER_OWNER='&1'
 define ENTER_TABLE='&2'

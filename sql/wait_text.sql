@@ -5,7 +5,7 @@
 -- http://alexzeng.wordpress.com/2013/07/16/enqueue-waits-in-oracle-database-10g/
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define WAITNAME='&1'
 

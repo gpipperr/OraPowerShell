@@ -34,7 +34,7 @@ TABLE "WIDTH='90%' BORDER='1'"
 spool &&SPOOL_NAME
 
 set verify off
-SET linesize 180 pagesize 4000 recsep off
+SET linesize 180 pagesize 4000 
 
 ttitle left  "Search SQL from AWR Repository this text string :  &SQL_STATEMENT." skip 2
 

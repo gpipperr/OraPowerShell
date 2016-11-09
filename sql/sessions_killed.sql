@@ -7,7 +7,7 @@
 -- ===================================================================
 
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left "Processes without entries in the v$session" skip 2
 

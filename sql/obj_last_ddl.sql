@@ -3,7 +3,7 @@
 -- Desc:  get the last DDL Changes from a user 
 -- ==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define OWNER       = '&1' 
 define OBJECT_TYPE = '%' 

@@ -15,7 +15,7 @@ FROM dual
 /
 
 set verify off
-SET linesize 250 pagesize 2000 recsep off
+SET linesize 250 pagesize 2000 
 
 spool &&SPOOL_NAME
 

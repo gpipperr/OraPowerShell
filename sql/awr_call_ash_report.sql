@@ -39,7 +39,7 @@ set termout on
 -- =====
 set verify off
 
-SET linesize 120 pagesize 300 recsep off
+SET linesize 120 pagesize 300 
 
 define TIME_FORMAT='dd.mm.yyyy hh24:mi'  
 
@@ -69,7 +69,7 @@ accept l_etime date prompt 'Enter end time   (format &&TIME_FORMAT): '
 -- =====	
 
 
-SET linesize 500 pagesize 9000 recsep off
+SET linesize 500 pagesize 9000 
 set long 64000
 set feedback off
 set heading off
@@ -93,4 +93,4 @@ prompt ... check the created report  &&SPOOL_NAME
 
 host &&SPOOL_NAME
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 

@@ -6,7 +6,7 @@
 --  can be found at: https://support.oracle.com/epmos/faces/DocumentDisplay?id=444164.1
 --  https://docs.oracle.com/cd/E18283_01/server.112/e16541/parallel006.htm#CIHGJFFC
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 
 column username     format a12

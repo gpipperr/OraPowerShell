@@ -4,7 +4,7 @@
 -- Date:   2012
 --==============================================================================
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 spool asm.log
 
@@ -68,16 +68,15 @@ prompt ----------------------
 column diskpath format A15
 column name format A12
 
-select d.GROUP_NUMBER 
-      ,g.name
-      ,d.name 
-      ,d.path as diskpath  
-		,d.type
-      ,d.TOTAL_MB 
-      ,d.FREE_MB 
-      ,d.total_mb - d.free_mb as used 
-  from v$asm_disk  d 
-     , v$asm_diskgroup g 
+select  d.GROUP_NUMBER 
+      , g.name
+      , d.name 
+      , d.path as diskpath  
+      , d.TOTAL_MB 
+      , d.FREE_MB 
+      , d.total_mb - d.free_mb as used 
+  from  v$asm_disk  d 
+     ,  v$asm_diskgroup g 
 where g.GROUP_NUMBER = d.GROUP_NUMBER	   
 order by 1   
 /

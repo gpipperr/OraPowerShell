@@ -5,7 +5,7 @@
 --
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 prompt
 prompt Parameter 1 = DB Parameter          => '&1' 

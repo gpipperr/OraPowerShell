@@ -4,7 +4,7 @@
 -- Date:   November 2013
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 select s.inst_id
      , s.username

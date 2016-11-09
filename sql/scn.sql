@@ -3,7 +3,7 @@
 -- Desc:   Get the Redo Log scn information
 -- Date:   01.November 2013
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 set serveroutput on size 1000000
 

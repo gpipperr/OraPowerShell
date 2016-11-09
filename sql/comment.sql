@@ -4,7 +4,7 @@
 -- Parameter 1: Name of the table
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define COMMENTTXT = '&1' 
 

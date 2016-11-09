@@ -4,7 +4,7 @@
 -- Date:   08.2013
 --==============================================================================
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column user_name format a25
 

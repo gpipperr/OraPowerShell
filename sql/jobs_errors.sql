@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc:   show all jobs in the database with an error
 --===============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ------------------------------------------------------------
 

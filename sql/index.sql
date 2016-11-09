@@ -9,7 +9,7 @@
 --
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 define OWNER = '&1'
 define INDEX_NAME = '&2'
@@ -50,7 +50,7 @@ group by index_owner, index_name, status
 
 ttitle center "Index &&OWNER..&&INDEX_NAME.  Columns" skip 2
 
-set linesize 130 pagesize 2000 recsep off
+set linesize 130 pagesize 2000 
 
 column  index_name  format a16 heading "Index|Name"
 column  table_name  format a13 heading "Table|Name"

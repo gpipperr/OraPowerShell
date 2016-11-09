@@ -8,7 +8,7 @@ prompt !!!!You need the Tuning Pack for this feature!!!!
 prompt
 
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 define SNAPTIME=10
 
 prompt
@@ -45,7 +45,7 @@ column BLOCKING_INST_ID  format 999 heading "Block|Inst"
 ttitle "Get all sessions blocked by this Sessions"   skip 2
 
 set verify off
-SET linesize 130 pagesize 4000 recsep off
+SET linesize 130 pagesize 4000 
 
 select count(*)
       ,u.username

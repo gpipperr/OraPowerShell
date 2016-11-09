@@ -6,7 +6,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define lnum  = "format 9G999G999D99"
 define num   = "format 99G999"

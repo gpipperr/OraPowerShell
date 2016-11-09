@@ -8,7 +8,7 @@
 --
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define DP_TYPE = '&1'
 define DP_PATH = '&2'

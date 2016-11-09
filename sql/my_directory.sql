@@ -3,7 +3,7 @@
 -- Desc:   show informations about directories in the database
 -- Date:   08.08.2013
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "Directories in the database"  SKIP 1 
 

@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc:   show all jobs create over dbms_sheduler in the database
 --==============================================================================
-set linesize 130 pagesize 800 recsep off
+set linesize 130 pagesize 800 
 
 ttitle "Job Scheduler Information -- Oracle scheduler table " skip 2
 

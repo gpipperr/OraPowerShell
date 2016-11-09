@@ -5,7 +5,7 @@
 --       Path of the datafiles
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 define TABLESPACE_NAME = '&1' 
 define DATA_FILE_PATH  = '&2' 

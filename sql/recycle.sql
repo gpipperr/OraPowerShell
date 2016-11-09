@@ -3,7 +3,7 @@
 -- Desc:   show the content summary of the dba recyclebin
 -- Date:   02.2014
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 set verify off
 

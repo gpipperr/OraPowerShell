@@ -5,7 +5,7 @@
 --
 --===============================================================================
 set verify off
-set linesize 130 pagesize 800 recsep off
+set linesize 130 pagesize 800 
 
 define SQL_STATEMENT = &1 
 

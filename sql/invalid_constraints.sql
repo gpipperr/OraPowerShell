@@ -4,7 +4,7 @@
 -- Date:   10 2015
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 
 ttitle "List of not validated or invalid constraints" skip 2

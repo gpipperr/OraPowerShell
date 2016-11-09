@@ -9,7 +9,7 @@
 -- http://docs.oracle.com/cd/E16655_01/network.121/e17607/dr_ir.htm#DBSEG658
 --==============================================================================
 set verify  off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define OBJ_NAME = '&1' 
 

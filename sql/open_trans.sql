@@ -4,7 +4,7 @@
 -- Date:   September 2013
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "Report DB transactions longer open "  SKIP 1
       

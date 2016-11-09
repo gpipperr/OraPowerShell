@@ -5,7 +5,7 @@
 --==============================================================================
 -- Source:  http://docs.oracle.com/cd/E11882_01/backup.112/e10643/rcviews001.htm
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "RMan non default settings"  SKIP 2
 

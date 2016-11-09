@@ -3,7 +3,7 @@
 -- Desc:   Event settings in the database, must be called as SYS
 -- Date:   01.2014
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 set feedback off
 set serveroutput on

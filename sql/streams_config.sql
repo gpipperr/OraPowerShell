@@ -5,7 +5,7 @@
 -- http://docs.oracle.com/cd/E11882_01/server.112/e10705/man_gen_rep.htm#STREP013
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column capture_name             heading 'capture|process|name' format a20
 column rule_set_owner           heading 'positive|rule owner'  format a15

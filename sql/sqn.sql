@@ -4,7 +4,7 @@
 -- Date:   01.November 2013
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 SET SERVEROUTPUT ON SIZE 1000000
 

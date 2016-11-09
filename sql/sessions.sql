@@ -4,7 +4,7 @@
 -- Date:   01.September 2012
 --==============================================================================
 set verify off
-set linesize 140 pagesize 300 recsep off
+set linesize 140 pagesize 300 
 
 define USER_NAME   =  &1
 define ALL_PROCESS = '&2'

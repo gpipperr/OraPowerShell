@@ -3,7 +3,7 @@
 -- Desc: check for block corruption
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column segment_name    format a16 heading "Segment|Name"
 column tablespace_name format a16 heading "Tablespace|Name"

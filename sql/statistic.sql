@@ -9,7 +9,7 @@
 -- Why Auto Optimizer Statistics Collection May Appear to be "Stuck"? (Doc ID 1320246.1)
 
 
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "Workload Statistic Values" skip 2
 

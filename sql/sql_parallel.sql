@@ -5,7 +5,7 @@
 --  https://docs.oracle.com/cd/E18283_01/server.112/e16541/parallel006.htm#CIHGJFFC
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define SQL_ID='&1'
 

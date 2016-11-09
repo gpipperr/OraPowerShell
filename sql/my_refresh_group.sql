@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc: Get all refresh groups of your Schema
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column owner        format a20
 column mview_name   format a25 

@@ -3,7 +3,7 @@
 -- Desc:   show all jobs create over dbms_job in the database
 -- Date:   01.September 2012
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "Job Infos -- Oracle JOB Table " skip 2
 

@@ -33,6 +33,7 @@ if [ ! -d ${BACKUP_DEST}/${ORACLE_DBNAME} ]; then
    echo "Backup Directory ${BACKUP_DEST}/${ORACLE_DBNAME} not exist"
    echo ".. creating directory "
    mkdir ${BACKUP_DEST}/${ORACLE_DBNAME}
+   chmod 776 ${BACKUP_DEST}/${ORACLE_DBNAME}
 fi
 
 if [ ! "$3" = "+ASM" ]; then
@@ -59,7 +60,22 @@ $ORACLE_HOME/OPatch/opatch lsinventory > ${BACKUP_DEST}/${ORACLE_DBNAME}/softwar
 
 #Save Password File
 #
-cp ${ORACLE_HOME}/dbs/orapw${ORACLE_SID} ${BACKUP_DEST}/${ORACLE_DBNAME}/orapw${ORACLE_DBNAME}_${DAY_OF_WEEK}
+if [ -f "${ORACLE_HOME}/dbs/orapw${ORACLE_SID}" ]; then
+	echo "-- Info : save PWD file from File => ${ORACLE_HOME}/dbs/orapw${ORACLE_SID}"
+	cp ${ORACLE_HOME}/dbs/orapw${ORACLE_SID} ${BACKUP_DEST}/${ORACLE_DBNAME}/orapw${ORACLE_DBNAME}_${DAY_OF_WEEK}
+fi
+# Fix PWD file from ASM!
+
+# get the ASM PWD NAME
+ASM_PWD_NAME=`${ORACLE_HOME}/bin/asmcmd pwget --asm`
+echo "-- Info : save PWD file from ASM => ${ASM_PWD_NAME}"
+
+# fist remove
+rm -f ${BACKUP_DEST}/${ORACLE_DBNAME}/orapw_ASM_${DAY_OF_WEEK}
+
+# debug 
+# echo "-- Info : try to copy PWD file from ASM with ${ORACLE_HOME}/bin/asmcmd pwcopy --asm ${ASM_PWD_NAME} ${BACKUP_DEST}/${ORACLE_DBNAME}/orapw_ASM_${DAY_OF_WEEK}"
+${ORACLE_HOME}/bin/asmcmd pwcopy --asm ${ASM_PWD_NAME} ${BACKUP_DEST}/${ORACLE_DBNAME}/orapw_ASM_${DAY_OF_WEEK}
 
 #Save Disk and Directroy Configuration
 #
@@ -93,8 +109,17 @@ echo "---=== LUN Mapping ===---" >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lu
 #for netapp
 
 if [ ! -f "/usr/sbin/sanlun" ]; then
-  echo "Netapp Tools not exist"
-  echo " "   
+  #echo "Netapp Tools not exist"
+  #echo " "   
+  # check the ASM Disks
+  echo "---=== spool blkid ===---" >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
+  sudo /usr/sbin/blkid | grep asm >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
+  echo "---=== spool lsblk ===---" >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
+  sudo /usr/bin/lsblk -o TYPE,MAJ:MIN,WWN,HCTL,NAME,SIZE | grep disk   >> ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log
 else
   sudo /usr/sbin/sanlun lun show -p >>  ${BACKUP_DEST}/${ORACLE_DBNAME}/asmdisks_lun_config_${ORACLE_DBNAME}_${DAY_OF_WEEK}.log	 
 fi
+
+
+
+

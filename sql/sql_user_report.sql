@@ -20,7 +20,7 @@ FROM dual
 
 
 set verify off
-set linesize 250 pagesize 3000 recsep off
+set linesize 250 pagesize 3000 
 
 column sql_text format a35 heading "SQL|Text"
 column sql_id   format a13 heading "SQL|ID"

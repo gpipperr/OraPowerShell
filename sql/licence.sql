@@ -3,7 +3,7 @@
 -- Desc: HTML Report - License Report Overview - Feature Usage
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 col SPOOL_NAME_COL new_val SPOOL_NAME
 

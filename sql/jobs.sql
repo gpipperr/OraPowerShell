@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc : Information about jobs in the database
 --==============================================================================
-SET linesize 130 pagesize 300 recsep off
+SET linesize 130 pagesize 300 
 
 @jobs_dbms.sql
 

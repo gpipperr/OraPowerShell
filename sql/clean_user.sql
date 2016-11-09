@@ -10,7 +10,7 @@
 
 
 set verify  off
-set linesize 100 pagesize 4000 recsep off
+set linesize 100 pagesize 4000 
 
 define USER_NAME = &1 
 
@@ -125,34 +125,42 @@ select 'drop index ' || i.owner || '."' || i.index_name || '";'
    and upper(i.owner) in (upper('&&USER_NAME.'))
 / 
 
--- drop all other objects in the right order
 
-select 'drop ' || o.object_type || ' ' || o.owner || '."' || object_name || '" ' ||
+--- drop materialised views
+select 'drop MATERIALIZED VIEW ' || m.owner || '."' || m.MVIEW_NAME || '" ' || ';' as command
+from dba_mviews m
+where upper(m.owner) in (upper('&&USER_NAME.'))
+/
+
+-- drop all other objects in the right order
+select 'drop ' || o.object_type || ' ' || o.owner || '."' || o.object_name || '" ' ||
        decode(o.object_type, 'TABLE', 'CASCADE CONSTRAINTS PURGE', '') || ';' as command
   from dba_objects o
- where o.object_type in
+where o.object_type in
        ('SEQUENCE', 'JAVA DATA', 'PROCEDURE', 'PACKAGE', 'PACKAGE BODY', 'TYPE BODY', 'JAVA RESOURCE', 'DIRECTORY',
         'TABLE', 'SYNONYM', 'VIEW', 'FUNCTION', 'JAVA CLASS', 'JAVA SOURCE', 'TYPE')
    and upper(o.owner) in (upper('&&USER_NAME.'))
-   and o.object_name not in (select q.QUEUE_TABLE from DBA_QUEUES q where q.owner = o.owner)
+   and o.object_name not in (select oi.MVIEW_NAME from dba_mviews oi where oi.owner = o.owner) 
+   and o.object_name   not in (select q.QUEUE_TABLE from DBA_QUEUES q where q.owner = o.owner)
 order by decode (o.object_type
-					,'SEQUENCE',20
-					,'JAVA DATA',10
-					,'PROCEDURE',21
-					,'PACKAGE',24
-					,'PACKAGE BODY',23
-					,'TYPE BODY',41
-					,'JAVA RESOURCE',11
-					,'DIRECTORY',80
-					,'TABLE',35
-					,'SYNONYM',40
-					,'VIEW',20
-					,'FUNCTION',22
-					,'JAVA CLASS',11
-					,'JAVA SOURCE',12
-					,'TYPE',42
-					,99)
+                                                                              ,'SEQUENCE',20
+                                                                              ,'JAVA DATA',10
+                                                                              ,'PROCEDURE',21
+                                                                              ,'PACKAGE',24
+                                                                              ,'PACKAGE BODY',23
+                                                                              ,'TYPE BODY',41
+                                                                              ,'JAVA RESOURCE',11
+                                                                              ,'DIRECTORY',80
+                                                                              ,'TABLE',35
+                                                                              ,'SYNONYM',40
+                                                                              ,'VIEW',20
+                                                                              ,'FUNCTION',22
+                                                                              ,'JAVA CLASS',11
+                                                                              ,'JAVA SOURCE',12
+                                                                              ,'TYPE',42
+                                                                              ,99)
 /
+
 
 prompt -- !Attention
 prompt -- delete the ALL RECYCLEBIN's in the database

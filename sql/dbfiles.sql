@@ -4,7 +4,7 @@
 -- Date:   01.September 2012
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "Report Database Files"  SKIP 1 -
        center "Sizes in MB" SKIP 2

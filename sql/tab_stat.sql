@@ -8,7 +8,7 @@
 --
 --==============================================================================
 set verify off
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define USER_NAME  = &1
 define TABLE_NAME = &2
@@ -75,7 +75,7 @@ end;
 /
 
 
-set linesize 150 pagesize 200 recsep off
+set linesize 150 pagesize 200 
 
 ttitle "Read Statistic Values for this table &TABLE_NAME." skip 2
 

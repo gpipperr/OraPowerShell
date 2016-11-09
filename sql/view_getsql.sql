@@ -9,7 +9,7 @@
 -- Source : https://oracle-base.com/articles/12c/expand-sql-text-12cr1
 --==============================================================================
 set verify off
-set linesize 130 pagesize 3000 recsep off
+set linesize 130 pagesize 3000 
 
 define OWNER    = '&1' 
 define VIEW_NAME = '&2' 

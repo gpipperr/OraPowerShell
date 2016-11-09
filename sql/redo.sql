@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc:   redo
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle  "Report Redo Log Configuration "  skip 1  -
 left "Sizes in MB" skip 2

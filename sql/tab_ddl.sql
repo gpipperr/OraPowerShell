@@ -9,7 +9,7 @@
 -- 
 --==============================================================================
 set verify off
-set linesize 130 pagesize 3000 recsep off
+set linesize 130 pagesize 3000 
 
 define OWNER    = '&1' 
 define TAB_NAME = '&2' 

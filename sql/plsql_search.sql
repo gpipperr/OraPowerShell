@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc: search for a plsql function/procedure also in packages - parameter Search String
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 column object_name    format a25
 column procedure_name format a25

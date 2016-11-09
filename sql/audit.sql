@@ -5,7 +5,7 @@
 -- Must be run with dba privileges
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 ttitle left  "Audit settings -- init.ora " skip 2
 

@@ -3,7 +3,7 @@
 -- Desc:   get the xml DB Configuration
 -- Date:   November 2013
 --==============================================================================
-set linesize 130 pagesize 4000 recsep off
+set linesize 130 pagesize 4000 
 
 ttitle  "XML DB Configuration"  SKIP 2
 

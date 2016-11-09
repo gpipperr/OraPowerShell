@@ -11,7 +11,7 @@
 --==============================================================================
 
 set verify off
-set linesize 1000 pagesize 4000 recsep off
+set linesize 1000 pagesize 4000 
 
 set trimspool on
 set serveroutput on

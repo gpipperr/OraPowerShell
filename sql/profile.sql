@@ -4,7 +4,7 @@
 -- Date:   September 2013
 --
 --==============================================================================
-set linesize 130 pagesize 300 recsep off
+set linesize 130 pagesize 300 
 
 define USER_NAME = &1 
 
