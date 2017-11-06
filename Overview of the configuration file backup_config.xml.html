@@ -1,0 +1,748 @@
+<div class="wikidoc">
+<table border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="73" valign="top">
+<p><strong><span style="color:#888888"><span lang="EN-US">Section</span></span></strong></p>
+</td>
+<td width="209" valign="top">
+<p><strong><span style="color:#888888">Parameter</span></strong></p>
+</td>
+<td width="141" valign="top">
+<p><strong><span style="color:#888888">Description</span></strong></p>
+</td>
+<td width="196" valign="top">
+<p><strong><span style="color:#888888">Values</span></strong></p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>ASM</strong></p>
+</td>
+<td width="209" valign="top">
+<p>asm_in_use</p>
+</td>
+<td width="141" valign="top">
+<p>Is ASM in use</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>asm_meta_info</p>
+</td>
+<td width="141" valign="top">
+<p>Backup the ASM meta files and information like the disk header description</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>asm_backup_dest</p>
+</td>
+<td width="141" valign="top">
+<p>&nbsp;Location for the backup.</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;path</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>asm_instancesid</p>
+</td>
+<td width="141" valign="top">
+<p>SID of the ASM Instance</p>
+</td>
+<td width="196" valign="top">
+<p>&#43;ASM | &#43;ASM[n]</p>
+<p>Like &#43;ASM or &#43;ASM1 for RAC</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>asm_oracle_home</p>
+</td>
+<td width="141" valign="top">
+<p>ORACLE_HOME ASM Instance</p>
+</td>
+<td width="196" valign="top">
+<p>Default | Path</p>
+<p>If set to &bdquo;Default&ldquo; the path will be read from the Oracle inventory</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;</p>
+</td>
+<td width="141" valign="top">
+<p>&nbsp;</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>GRID</strong></p>
+</td>
+<td width="209" valign="top">
+<p>grid_in_use</p>
+</td>
+<td width="141" valign="top">
+<p>RAC in use</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>backup_grid</p>
+</td>
+<td width="141" valign="top">
+<p>Backup the RAC meta files and information like the voting disks</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>grid_backup_dest</p>
+</td>
+<td width="141" valign="top">
+<p>&nbsp;Location of&nbsp; the backjup</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;Path</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>grid_oracle_home</p>
+</td>
+<td width="141" valign="top">
+<p>ORACLE_HOME of the RAC/Grid installation</p>
+</td>
+<td width="196" valign="top">
+<p>Default | Path</p>
+<p>If set to &bdquo;Default&ldquo; the path will be read from the Oracle inventory</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;</p>
+</td>
+<td width="141" valign="top">
+<p>&nbsp;</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>DB</strong></p>
+</td>
+<td width="209" valign="top">
+<p>dbname</p>
+</td>
+<td width="141" valign="top">
+<p>Name of the DB</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;NAME of the DB&gt;</p>
+<p>The name of the DB is mostly the same like the SID, if RAC is in use SID and ID of the node!</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>sid</p>
+</td>
+<td width="141" valign="top">
+<p>SID of the DB</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;SID&gt;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>oracle_home</p>
+</td>
+<td width="141" valign="top">
+<p>ORACLE_HOME for this DB</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;PATH&gt;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p><strong>nls_settings</strong></p>
+</td>
+<td width="141" valign="top">
+<p>&nbsp;</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>use_direct_connnect_for_sys</p>
+</td>
+<td width="141" valign="top">
+<p>if &bdquo;true&ldquo; the connection to the DB will be done as &bdquo;/ as sysdba&ldquo;</p>
+<p>&nbsp;</p>
+<p>if &ldquo;false&rdquo; the parameter username and tns_alias will be used.</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; tns_alias</p>
+</td>
+<td width="141" valign="top">
+<p>SQL*Net Alias</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;sql_net alias&gt;</p>
+<p>This value must be in the file TNSNames.ora</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp;&nbsp; tns_admin</p>
+</td>
+<td width="141" valign="top">
+<p>&nbsp;if the value is &quot;default&quot; the Oracle Home Path is used, else the path</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;Path to the tnsnames.ora configuration</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; username</p>
+</td>
+<td width="141" valign="top">
+<p>Attribute:</p>
+<p><strong>password</strong></p>
+<p>Use this password to write down the password</p>
+<p><strong>encrypt</strong></p>
+<p>if &bdquo;false&ldquo; the password will be encrypted by the first call of the script</p>
+<p><strong>certificate</strong></p>
+<p>if &bdquo; true&ldquo; the s SQL*Net Feature &bdquo;Certificate autorisierung&ldquo; will be used.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;name of the backup user&gt;</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; nls_lang</p>
+</td>
+<td width="141" valign="top">
+<p>NLS Settings for this Session</p>
+</td>
+<td width="196" valign="top">
+<p>Example: GERMAN_GERMANY.UTF8</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;</p>
+</td>
+<td width="141" valign="top">
+<p>&nbsp;</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; db_backup_dest</p>
+</td>
+<td width="141" valign="top">
+<p>Location for the backup.</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;path&gt;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; db_backup_use_flash</p>
+</td>
+<td width="141" valign="top">
+<p>Use for the RMAN Backup the Flash Recovery Parameter</p>
+<p>If false the Location under db_backup_dest will be used only for meta data and user exports</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>backup_flash_to_disk</p>
+</td>
+<td width="141" valign="top">
+<p>If &bdquo; true&rdquo;, save the complete Flash Recovery Area ( ASM Disk!) to the File system location (Parameter db_backup_dest )</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>db_backup</p>
+</td>
+<td width="141" valign="top">
+<p>If true, save the DB</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>db_backup_count_of</p>
+</td>
+<td width="141" valign="top">
+<p>Count of Backups, to store on disk</p>
+</td>
+<td width="196" valign="top">
+<p>[1&hellip;9]</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>db_backup_incremental_policy</p>
+</td>
+<td width="141" valign="top">
+<p>EE feature, if EE you can implement a incremental policy</p>
+<p>The pattern have 7 positions, one position for each day, first position is Monday.</p>
+</td>
+<td width="196" valign="top">
+<p>[0|1|2], [0|1|2], [0|1|2], [0|1|2], [0|1|2], [0|1|2], [0|1|2]</p>
+<p>&nbsp;</p>
+<p>For each day of the week. incremental level from 0 until 2</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>db_backup_channels</p>
+</td>
+<td width="141" valign="top">
+<p>Amount of channels (only if EE edition )</p>
+</td>
+<td width="196" valign="top">
+<p>[1&hellip;9]</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>db_backup_section_size</p>
+</td>
+<td width="141" valign="top">
+<p>EE feature to read in parallel Big Table spaces</p>
+</td>
+<td width="196" valign="top">
+<p>For example 5M</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>db_backup_compress</p>
+</td>
+<td width="141" valign="top">
+<p>EE feature : Compress the backup</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>db_meta_info</p>
+</td>
+<td width="141" valign="top">
+<p>Save the meta data of the DB like the control file and spfile</p>
+<p>Attribute:</p>
+<p><strong>use_dot_net</strong></p>
+<p>if true use .net connection to the db</p>
+<p>if true:</p>
+<p><strong>dot_net_orcle_home</strong></p>
+<p>Oracle Home Directory with the .net library (only the Home Path!)</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>true | false</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Oracle Home Path</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;db_check_alert_log</p>
+</td>
+<td width="141" valign="top">
+<p>check the Alert log for errors<br>
+Attributes:<br>
+<strong>listner_summary</strong><br>
+if true create also a summary of entries in the listener log</p>
+<p><strong>print_lines_after_match</strong><br>
+How many lines should be printed in the status log AFTER a match to see the complete error message</p>
+<p><br>
+<strong>use_adrci</strong><br>
+if true use the adrci tool of oracle to check for ORA- errors</p>
+<p>&nbsp;</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>db_archive</p>
+</td>
+<td width="141" valign="top">
+<p>If the main backup script is called with the parameter &bdquo;ARCHIVE &bdquo;the backup for the archives will be done.</p>
+<p>Used for hourly archive backup</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>archive_use_flash</p>
+</td>
+<td width="141" valign="top">
+<p>Use the flash recovery area for the backup</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>archive_backup_dest</p>
+</td>
+<td width="141" valign="top">
+<p>Location for the Archives if archive_use_flash is false.</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;path&gt;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p><strong>db_user_export</strong></p>
+</td>
+<td width="141" valign="top">
+<p>&nbsp;</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; export</p>
+</td>
+<td width="141" valign="top">
+<p>Export the schemata&rsquo;s from the database</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; compress_export</p>
+</td>
+<td width="141" valign="top">
+<p>Zip the export (if zip is installed!)</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; export_dir_db</p>
+</td>
+<td width="141" valign="top">
+<p>DB Directory Name for the DataPump Export</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;NAME&gt;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; export_dir_os</p>
+</td>
+<td width="141" valign="top">
+<p>Directory in the operation system (Path) to that the pointer export_dir_db</p>
+<p>&nbsp;</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;Path&gt;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; export_policy</p>
+</td>
+<td width="141" valign="top">
+<p>Pattern has 7 positions, one Position for the week day. First position is Monday.</p>
+<p>The no. will be added to the name of the export.</p>
+<p>&nbsp;</p>
+</td>
+<td width="196" valign="top">
+<p>[0..7], [0..7], [0..7], [0..7], [0..7], [0..7], [0..7]</p>
+<p>&nbsp;</p>
+<p>Example:</p>
+<p>0,1,0,1,0,1,2</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>&nbsp;&nbsp; user</p>
+</td>
+<td width="141" valign="top">
+<p>Attribute:</p>
+<p>Attribute:</p>
+<p><strong>password</strong></p>
+<p>Use this password to write down the password</p>
+<p><strong>encrypt</strong></p>
+<p>if &bdquo;false&ldquo; the password will be encrypted by the first call of the script</p>
+<p><strong>certificate</strong></p>
+<p>if &bdquo; true&ldquo; the s SQL*Net Feature &bdquo;Certificate autorisierung&ldquo; will be used.</p>
+<p><strong>use_sys_account</strong></p>
+<p>Not use the schema owner (Parameter username ) us the SYS Account or the backup user</p>
+<p><strong>tns_alias</strong></p>
+<p>use this connection</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;Schema owner&gt;</p>
+<p>&nbsp;</p>
+<p>The Schema that hast to be exported.</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>files</strong></p>
+</td>
+<td width="209" valign="top">
+<p>copyfiles</p>
+</td>
+<td width="141" valign="top">
+<p>Copy the files if &bdquo;true&ldquo;</p>
+</td>
+<td width="196" valign="top">
+<p>true | false</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p><strong>pair</strong></p>
+</td>
+<td width="141" valign="top">
+<p>Tuple of directory</p>
+</td>
+<td width="196" valign="top">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>source_dir</p>
+</td>
+<td width="141" valign="top">
+<p>Source Dir.</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;Path&gt;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>target_dir</p>
+</td>
+<td width="141" valign="top">
+<p>Target Dir</p>
+</td>
+<td width="196" valign="top">
+<p>&lt;Path&gt;</p>
+</td>
+</tr>
+<tr>
+<td width="73" valign="top">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td width="209" valign="top">
+<p>robocopy_parameter</p>
+</td>
+<td width="141" valign="top">
+<p>Feature set for robocopy</p>
+</td>
+<td width="196" valign="top">
+<p>Like:</p>
+<p>&lt;![CDATA[/S /W:0 /R:0 /NP]]&gt;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div id="_mcePaste" style="width:1px; height:1px; overflow:hidden; top:798px; left:-10000px">
+&#65279;</div>
+</div><div class="ClearBoth"></div>
