@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mail version="0.2">
+	<!-- if true use the mail feature -->
+	<use_mail>false</use_mail>
+	
+	<!-- SMTP Server Details -->
+	<smtpServer>smtp.mymailserver.de</smtpServer>
+	<port>25</port>
+	
+	<!-- Default -->
+	<!-- nony one XML Element is valid! -->
+	<!--port>25</port-->
+	<!-- SSL -->
+	<port>465</port>
+	
+	<!-- use SSL for mail transport- false if not -->
+	<!-- if true set the port for SSL! -->	
+	<ssl>true</ssl>
+  
+  
+	<!-- if you need user name / password = true -->
+	<!-- if false  => no credentials            -->
+	<!-- if os    => use the actual user        -->
+	<use_credential>true</use_credential>
+	<username password="mypassword" encrypt="false">user@mail.com</username>
+
+	<!-- Mail -->
+	<to>admin@mail.local</to>
+	<from>admin@mail.local</from>
+	
+	<!-- if the SMTP server needs the fqdn and your local machine -->
+	<!-- has no domain configured it is not possible to use the easy .net class -->
+	<!-- Host name with a domain if not send from a server with a windows domain account! -->
+	<!-- to avoid error with System.Net.Mail.SmtpClient uses the NetBIOS name of the computer in the HELO / EHLO  commands -->
+	<fqdn>mail.mail.de</fqdn>
+	
+	<!-- if true => telnet must used -->
+	<!-- deprecated - not in use any more -->
+	<smpt_server_needs_fqdn>false</smpt_server_needs_fqdn>
+	
+</mail>

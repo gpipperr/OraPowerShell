@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<oracle_homes version="0.2">
+	<!-- Language Settings -->
+	<nls_lang>AMERICAN_AMERICA.UTF8</nls_lang>
+	<!-- Path for SQL*Plus to sql Scripts -->
+	<sqlpath>D:\OraPowerShellCodePlex\sql</sqlpath>	
+	<!-- use this global tns_admin -->
+	<tns_admin>D:\oracle\product\11.2.0.3\dbhome_1\network\admin</tns_admin>
+	<!-- first Oracle Hombe -->
+	<oracle_home>
+		<!-- Path to the Oracle Home -->
+		<path>D:\oracle\11.2.0.3\grid</path>
+		<!-- Name of the Oracle Home -->
+		<oraname>ASM</oraname>
+		<!-- add to selection list -->
+		<enabled>false</enabled>
+		<!-- SID List of databases in this home -->
+		<db>
+			<sid>+ASM</sid>		 
+		</db>		
+	</oracle_home>	
+	<!-- next Oracle Home -->
+	<oracle_home>
+		<!-- Path to the Oracle Home -->
+		<path>D:\oracle\product\11.2.0.3\dbhome_1</path>
+		<!-- Name of the Oracle Home -->
+		<oraname>Local DB Home</oraname>
+		<!-- add to selection list -->
+		<enabled>true</enabled>
+		<!-- SID List of databases in this home -->
+		<!-- if no db in this home set one to the value false -->
+		<db>
+			<!-- if you set the SID to false you get a configuation to set only the oracle home -->
+			<sid>false</sid>
+			<sid>ORCL</sid>
+		</db>		
+	</oracle_home>
+	<!-- next Oracle Home -->
+	
+	<!-- copy section above -->
+	
+</oracle_homes>	
+

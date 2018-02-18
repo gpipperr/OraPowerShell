@@ -1,0 +1,35 @@
+***********************************************************************
+
+Fatal NI connect error 12545, connecting to:
+ (LOCAL=NO)
+
+  VERSION INFORMATION:
+	TNS for 64-bit Windows: Version 11.2.0.3.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 64-bit Windows: Version 11.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 64-bit Windows: Version 11.2.0.3.0 - Production
+  Time: 03-SEP-2012 16:24:02
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12545
+    
+TNS-12545: CONNECT nicht erfolgreich, da Ziel-Host oder -Objekt nicht vorhanden
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+opiodr aborting process unknown ospid (6408) as a result of ORA-609
+  Time: 03-SEP-2012 16:24:02
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12545
+    
+TNS-12545: CONNECT nicht erfolgreich, da Ziel-Host oder -Objekt nicht vorhanden
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+opiodr aborting process unknown ospid (6400) as a result of ORA-609
+Mon Sep 03 16:24:17 2012
+
+
+***********************************************************************
