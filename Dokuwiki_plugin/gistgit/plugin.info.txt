@@ -1,0 +1,7 @@
+base   gistgit
+author Gunther Pippèrr
+email  gunther@pipperr.de
+date   2018-02-07
+name   gistgit plugin
+desc   Show sourcecode from github inside the wiki page
+url    https://github.com/gpipperr/Dokuwiki_plugin/gistgit
