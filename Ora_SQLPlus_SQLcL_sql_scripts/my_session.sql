@@ -44,6 +44,13 @@ column tracefile   format a20   heading "Trace|File"
 order by vs.username, p.inst_id, p.spid
 /
 
+ttitle left  "My SID and my Serial over dbms_debug_jdwp" skip 2
+
+SELECT dbms_debug_jdwp.current_session_id sid
+     , dbms_debug_jdwp.current_session_serial serial
+FROM dual
+/
+
 ttitle left  "Trace File Locations" skip 2
 
 column full_trace_file_loc  format a100  heading "Trace|File"
@@ -92,5 +99,21 @@ select inst_id
  where     sid = sys_context ('userenv', 'SID')
        and inst_id = sys_context ('userenv', 'INSTANCE')
 /
+ttitle left  "Session NLS Lang Values" skip 2
+
+select sys_context ('USERENV', 'LANGUAGE') as NLS_LANG_Parameter from dual;
+
+ttitle left  "Session NLS Values" skip 2
+
+column parameter format a24 heading "NLS Session Parameter"
+column value     format a30 heading "Setting"
+
+select PARAMETER, value
+    from nls_session_parameters
+order by 1
+/
+
+
+
 
 ttitle off

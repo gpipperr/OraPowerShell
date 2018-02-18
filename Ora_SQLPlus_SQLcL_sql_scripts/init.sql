@@ -68,6 +68,7 @@ column name          format a40 heading "Parameter"
 
 select a.ksppinm  as name
      , b.ksppstvl as value_session
+	 , b.addr
 	 , c.ksppstvl as value
 	 , decode(b.ksppstdf,'TRUE','Y','FALSE','-',b.ksppstdf)  as isdefault
 	 , decode(bitand(a.ksppiflg/256,3),1, 'Y', '-')          as isses_modifiable

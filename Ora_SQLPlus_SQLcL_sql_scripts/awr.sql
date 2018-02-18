@@ -44,7 +44,7 @@ ttitle left  "AWR Usage Overview" skip 2
 column occupant_name  format a25
 column schema_name    format a18
 column move_procedure format a40
-column space_usage    format 9G999 heading "Space | Usage (M)"
+column space_usage    format 9G999G999 heading "Space | Usage (M)"
 
 select   occupant_name
        , round( space_usage_kbytes/1024) as space_usage  

@@ -35,6 +35,10 @@ column DUMMY NOPRINT;
 COMPUTE SUM OF size_GB ON DUMMY;
 BREAK ON DUMMY;
 
+column username format a22
+column OBJ_TYPE format a22
+column size_GB format 9G999G999G990D999
+
 select  null dummy
      , u.username
      , o.obj_type

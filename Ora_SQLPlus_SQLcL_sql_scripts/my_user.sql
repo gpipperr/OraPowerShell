@@ -16,3 +16,15 @@ from dual
 /
 
 prompt
+
+
+prompt ... will show you are privileges on the database.
+
+select * from session_privs
+/
+
+select * from session_roles
+/
+
+
+prompt

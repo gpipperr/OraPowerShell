@@ -1,46 +1,63 @@
 syntax: glob
 
+########################
 # no old logfiles
-*.log
-STATUS.txt
-*.0
 
-# no auto generated files
+*.log
+*.0
+STATUS.txt
+*.out
+
+###########################
+# no auto generated files 
 generated_*
 vss_generated_*
+adrci_alert_spool.out
 
-# no zip lib
+###########################
+# no zip lib - please download sepeart 
 *.dll
 PowershellZip.dll-help.xml
 
-# not my local test configuration
+###################################
+# not my local configuration
 oracle_homes.xml
 backup_config.xml
 backup_file_config.xml
 last_config_status.xml
-scratch.txt
 mail_config.xml
+md5_hash.xml_*
+
+#################################
+# No Test/dev Files
+
+scratch.txt
 *.pfx
 *.cer
 *.pvk
-md5_hash.xml_*
-export
-db_creation
-db_info
-adrci_alert_spool.out
-Overview-oraPowerShell.pptx
-sql\src\*
-sql\streams\*
-sql\src\*.txt
-tsc.sql
-sqldx.sql
-sqlhc*.sql
-used_options_details.sql
-resetOMSMetrik.sql
-sql\ext\*
-sql\wiki\*
-sql\work\*
-.hg_archival*
+Phy_simple_ImageLoader_script/.idea/
 header.txt
-python
-ext\*
+
+
+##############################
+# unfinished stuff and playgrounds
+# Libs/scripts not part of this library
+callScript.ps1
+
+#export
+#db_creation
+#db_info
+#Overview-oraPowerShell.pptx
+#sql\src\*
+#sql\streams\*
+#sql\src\*.txt
+#tsc.sql
+#sqldx.sql
+#sqlhc*.sql
+#used_options_details.sql
+#resetOMSMetrik.sql
+#sql\ext\*
+#sql\wiki\*
+#sql\work\*
+#python
+#ext\*

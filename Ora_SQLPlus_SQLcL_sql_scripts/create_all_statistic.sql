@@ -23,8 +23,12 @@ define degree  = "1"
 -----------------------------------------------
 
 column last format a14
+column owner format a20
+column table_name format a30
 
 spool recreate_stat.log
+
+
 
 select count (*), owner, to_char (LAST_ANALYZED, 'dd.mm.yyyy') as last
     from dba_tables
@@ -134,3 +138,8 @@ order by owner, to_char (LAST_ANALYZED, 'YYYYDDMM') desc
 /
 
 spool off;
+
+
+set echo off
+set timing off
+

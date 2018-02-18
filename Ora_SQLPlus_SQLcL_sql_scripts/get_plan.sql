@@ -37,6 +37,6 @@ For finer control on the display output, the following keywords can be added to 
 
 */
 
-SELECT * FROM TABLE( dbms_xplan.display( NULL, NULL, 'ALL', NULL ))
+SELECT * FROM TABLE( dbms_xplan.display( NULL, NULL, 'ALL,COST', NULL ))
 /
 

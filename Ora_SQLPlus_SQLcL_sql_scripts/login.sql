@@ -3,7 +3,6 @@
 -- Desc:   set the sqlplus prompt
 --         try to find out the os of sqlplus and set the title bar of the sql*Plus window if windows
 -- 
--- Date:   01.September 2012
 --
 --==============================================================================
 set termout off
@@ -161,5 +160,11 @@ set numwidth  12
 alter session set nls_date_format='dd.mm.rr hh24:mi';
 --
 --
-set termout on
+
 --
+set verify off
+column SQLPLUS_VERSION format a20
+select decode(substr('&&_SQLPLUS_RELEASE',0,1), '0','SQLCL','SQLPLUS') as SQLPLUS_VERSION from dual;
+set verify on
+
+set termout on

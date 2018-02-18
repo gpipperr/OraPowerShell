@@ -6,8 +6,8 @@
 DOC 
 -------------------------------------------------------------------------------
  
-#The daily scripts
-=================
+#The daily scripts for the DBA
+===============================
 
 	- dict.sql             - query the data dictionary - parameter 1 - part of the comments text
 
@@ -133,6 +133,7 @@ DOC
 	- tab_last.sql         - get the change date of a record in the table - parameter - Owner, Table name
 	- tab_mod.sql          - get the last modifications of the table      - parameter - Owner, Table name
 	- tab_data_changes.sql - get an overview over changes on the tables of a user - parameter - Owner
+	- tab_umlaut.sql       - check for tables/views if umlauts are used for the naming of tables and columns 
 	
 	- tab_usage.sql        - check if the table is used in the last time - parameter - Owner, Table name
 	- tab_part.sql         - get the partition information of a table     - parameter - Owner, Table name
@@ -211,6 +212,7 @@ DOC
 	
 	- flash.sql       - show the flash back information’s 
 	- reco.sql        - recovery area settings and size
+	- archive_log_status.sql - status of the archivelog files
 	
 	- redo.sql        - redo log information (use redo10g.sql for 10g/9i)
 	- redo_change.sql - who create how much redo per day last 7 in the database
@@ -235,9 +237,10 @@ DOC
 	- jobs_window_resource_class.sql - show the relation between job windows , job classes and resource plans
 	- jobs_logs.sql     - Details of a job
 	
-	- sga.sql        - show information about the oracle sga usage 
-	- buffer.sql     - show information about the buffer cache usage / must run as sys
-	- pga.sql        - show information about the PGA usage
+	- sga.sql          - show information about the oracle sga usage 
+	- buffer.sql       - show information about the buffer cache usage / must run as sys
+	- buffer_cache.sql - show information about objects in the buffer cache
+	- pga.sql          - show information about the PGA usage
 	
 	- statistic.sql  - show information over the statistics on the DB  and stat age on tables and when the stats job runs
 	- statistic_backup.sql - save all statistics of the DB in backup tables
@@ -321,6 +324,8 @@ DOC
 	
 	- http_ftp_port.sql       - get the port settings of the database
 	
+	- ords.sql                - get the ORDS REST service definitions
+	
 	#Create Scripts
 	=================
 	
@@ -359,6 +364,7 @@ DOC
 	- 01-db-setup/set_audit_minimal_settings.sql - set minimal audit parameter
 	
 	- 01-db-setup/monitor_user_sessions.sql      - create a log table to monitor user connection over some time
+	- 01-db-setup/ create-logon-trigger-user-handling.sql - create logon trigger to restrict access to the database
 	
 	#The OEM Query Scripts
 	=================

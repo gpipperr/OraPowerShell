@@ -137,6 +137,9 @@ select null, null, 'time computed: ' || min (time_computed) from v$dataguard_sta
 
 
 ------- Check if that works -------
+
+prompt ------- works only with logical or open physical standby -------
+prompt ------- or oracle streams --------------------------------------
 prompt ...
 prompt ... check if gap exists
 
