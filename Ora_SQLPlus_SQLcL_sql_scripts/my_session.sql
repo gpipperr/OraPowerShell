@@ -1,12 +1,15 @@
 --==============================================================================
 -- GPI - Gunther Pippèrr
+-- 
 -- Desc:   get Information about my session
 --
 --==============================================================================
+
 set verify off
+
 set linesize 130 pagesize 300 
 
-ttitle left  "My Oracle session and his process" skip 2
+ttitle left  "My Oracle session and the process to this session" skip 2
 
 column process_id format a8     heading "Process|ID"
 column inst_id    format 99     heading "Inst|ID"
@@ -53,7 +56,7 @@ FROM dual
 
 ttitle left  "Trace File Locations" skip 2
 
-column full_trace_file_loc  format a100  heading "Trace|File"
+column full_trace_file_loc  format a70 heading "Trace|File"
 
 select value as full_trace_file_loc
   from v$diag_info
@@ -99,9 +102,12 @@ select inst_id
  where     sid = sys_context ('userenv', 'SID')
        and inst_id = sys_context ('userenv', 'INSTANCE')
 /
+
+
 ttitle left  "Session NLS Lang Values" skip 2
 
 select sys_context ('USERENV', 'LANGUAGE') as NLS_LANG_Parameter from dual;
+
 
 ttitle left  "Session NLS Values" skip 2
 

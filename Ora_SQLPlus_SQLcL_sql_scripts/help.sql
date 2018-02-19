@@ -191,6 +191,7 @@ DOC
 	- plsql_dll.sql       - information about a pl/sql function/package       - parameter - Owner, object name
 	- my_plsql.sql        - show all package of the current user
 	- plsql_usage.sql     - which package are used in the last time and how often over the SGA Cache
+	- plsql_running.sql   - actual running pl/sql in the database
 	
 	- select.sql      - select first 3 records of the table as list - parameter 1 - name of the table
 	- view_count.sql  - count entries in a view                     - parameter 1 - name of the view
