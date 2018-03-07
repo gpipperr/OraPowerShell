@@ -112,11 +112,12 @@ DOC
 	- user_tab.sql         - get all the tables and views of a user - parameter 1 - part of the table name
 	- ls.sql               - gets all the tables and shows the size of the user tab
 	
-	- role.sql             - roles in the database - parameter 1 part of the role name
+	- roles.sql            - roles in the database - parameter 1 part of the role name
 	- role_ddl.sql         - get the dll of one role in the database - parameter 1 the role name
 
 	- profile.sql          - profiles for the user of this database
 	- proxy.sql            - proxy settings in the database
+	- proxy_to.sql         - All schemas that can be switch to this schema with proxy rights - parameter 1 name of the schema
 	- proxy_client.sql     - from which user you can connect to this user - parameter 1 the user
 
 	- comment.sql          - search over all comments                    - parameter 1 - part of the comment text
