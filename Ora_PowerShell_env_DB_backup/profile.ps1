@@ -38,8 +38,9 @@ $scriptpath=Split-Path $Invocation.MyCommand.Path
 
 Import-Module "$scriptpath\setdb.psm1"
 
-####
-cd $scriptpath
+#### Switch to the working directory
+#old cd $scriptpath
+setWorkingDir
 
 ####
 $wcount = @(Get-Process | Where-Object {$_.MainWindowTitle -like "OraPowerShell*"} | Select-Object MainWindowTitle ).Length + 1 

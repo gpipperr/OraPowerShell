@@ -254,7 +254,27 @@ function setdb {
 
 
 
+function setWorkingDir {
+	[CmdletBinding()]
+	param(
+		 [int]    $dbnr
+		,[String] $menue_mode = "false"
+	)
+    #======== Helper
+	$liner= "---------------------------------------------------------"
+ 
+	#======== Read the configuration file 
 
+	$Invocation = (Get-Variable MyInvocation -Scope 0).Value
+	$scriptpath=$Invocation.MyCommand.Module.ModuleBase
+	$config_xml="$scriptpath\conf\oracle_homes.xml"
+	
+	$oraconfig= [xml] ( get-content $config_xml)
+	
+	$workingDirectory=$oraconfig.oracle_homes.work_directory.toString()
+	
+	cd $workingDirectory
+}
 
 
 
