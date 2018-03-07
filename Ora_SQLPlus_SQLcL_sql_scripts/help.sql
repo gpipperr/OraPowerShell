@@ -112,7 +112,8 @@ DOC
 	- user_tab.sql         - get all the tables and views of a user - parameter 1 - part of the table name
 	- ls.sql               - gets all the tables and shows the size of the user tab
 	
-	- roles.sql            - roles in the database - parameter 1 part of the role name
+	- roles.sql            - all roles in the database - parameter 1 part of the role name
+	- role.sql             - get the rights on a role
 	- role_ddl.sql         - get the dll of one role in the database - parameter 1 the role name
 
 	- profile.sql          - profiles for the user of this database
