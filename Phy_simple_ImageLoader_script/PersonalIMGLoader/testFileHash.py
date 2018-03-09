@@ -1,18 +1,18 @@
 __author__ = 'gpipperr'
-import time
-import os
-
 # Hashing
 import hashlib
+import os
+import time
 
 # graph
+#  C:\Python34> .\python -m pip install matplotlib --upgrade
 import matplotlib.pyplot as plt
 
 # check the possible hash libs
 print(hashlib.algorithms_available)
 
 # add your testfile here
-file = 'D:\\temp\\20140818\\DSCN0025.TIF'
+file = 'D:\\temp\\12cR2Upgrade\\catupgrd0.log'
 size = os.path.getsize(file)
 
 # size of the file buffer

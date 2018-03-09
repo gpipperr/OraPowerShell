@@ -55,7 +55,7 @@ base_dir = "C:\\data\\info-archiv"
 #
 
 print("--" + 40 * "=")
-print("-- Info :: start to read base directory {0} )".format(base_dir)
+print("-- Info :: start to read base directory {0} )".format(base_dir))
 print("--" + 40 * "=")
 print("--")
 
@@ -71,7 +71,7 @@ for folder, subFolders, files in os.walk(base_dir):
 progress_points = int(fileRead / progress_width)
 #check if 0 
 if progress_points == 0:
-	progress_points =1;
+	progress_points =1
 
 print("--" + 40 * "=")
 print("-- Info :: After the read of base directory {0} found {1} files (progress :: each x for {2} files)".format(base_dir,
