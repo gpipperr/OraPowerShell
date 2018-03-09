@@ -8,6 +8,7 @@ syntax: glob
 STATUS.txt
 *.out
 
+
 ###########################
 # no auto generated files 
 generated_*
@@ -27,6 +28,7 @@ backup_file_config.xml
 last_config_status.xml
 mail_config.xml
 md5_hash.xml_*
+ORACLE_CREDENTIAL.xml
 
 #################################
 # No Test/dev Files

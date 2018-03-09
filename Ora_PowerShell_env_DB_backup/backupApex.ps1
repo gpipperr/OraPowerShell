@@ -48,10 +48,27 @@ $git_repos     = "C:\work\apexRepos"
 $database="10.10.10.1:1521:GPI"
 
 
-#PWD
-# FIX PWD encrpytion!!
+# PWD
 $db_user     = "system"
-$db_password = "xxxxxxxx" #  next version will encrypt PWD local-read-secureString -text $db_password_encrypt
+$oracle_credential = "$scriptpath\ORACLE_CREDENTIAL.xml"
+
+#
+# To store the password we use  the PSCredential object
+# if the serialized object of the password not exists
+# prompt the user to enter the password
+#
+
+if (!(test-path -path $oracle_credential)) {
+	$user_credential=GET-CREDENTIAL -credential "$db_user"  
+	export-clixml -InputObject $user_credential -Path $oracle_credential
+}
+else {
+   $user_credential=Import-Clixml -Path $oracle_credential
+}
+
+#get the clear type password
+
+$db_password=$user_credential.GetNetworkCredential().Password 
 
 # set the environment
 
@@ -119,5 +136,9 @@ $datum = Get-Date
 #& "$ENV:GIT_HOME\cmd\git.exe" push
 # Optimize database to avoid a too large db
 & "$ENV:GIT_HOME\cmd\git.exe" gc
+
+#  go back home
+
+Set-Location $scriptpath
 
 ################### END ############################
