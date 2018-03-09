@@ -65,7 +65,7 @@ set-item -path env:JAVA_HOME   -value "$java_home"
 
 $repos_workspace="$git_repos\workspace"
 if (!(test-path -path $repos_workspace)) {new-item -path $repos_workspace -itemtype directory}
-cd $repos_workspace
+Set-Location $repos_workspace
  
 # Export all Workspaces 
 & "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExport  -db $database -user $db_user -password $db_password -expWorkspace
@@ -73,7 +73,7 @@ cd $repos_workspace
 
 $repos_report="$git_repos\interactiveReport"
 if (!(test-path -path $repos_report)) {new-item -path $repos_report -itemtype directory}
-cd $repos_report
+Set-Location $repos_report
 
 # -expSavedReports 
 # & "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExport  -db $database -user $db_user -password $db_password -expPubReports
@@ -81,7 +81,7 @@ cd $repos_report
 
 $repos_instance="$git_repos\instance"
 if (!(test-path -path $repos_instance)) {new-item -path $repos_instance -itemtype directory}
-cd $repos_instance
+Set-Location $repos_instance
 
 # Export the Instance
 
@@ -109,7 +109,7 @@ for ($i=0; $i -lt $sqlfiles.Count; $i++) {
 #==============================================================================
 # GIT
 
-cd "$git_repos"
+Set-Location "$git_repos"
 
 $datum = Get-Date
  
