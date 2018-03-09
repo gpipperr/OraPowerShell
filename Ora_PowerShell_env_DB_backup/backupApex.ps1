@@ -117,5 +117,7 @@ $datum = Get-Date
 & "$ENV:GIT_HOME\cmd\git.exe" commit -m "Commit done by $env:UserName at $datum"
 # Push to remote if exists
 #& "$ENV:GIT_HOME\cmd\git.exe" push
+# Optimize database to avoid a too large db
+& "$ENV:GIT_HOME\cmd\git.exe" gc
 
 ################### END ############################
