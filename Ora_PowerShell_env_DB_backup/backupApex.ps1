@@ -129,7 +129,7 @@ if (!(test-path -path $repos_workspace)) {new-item -path $repos_workspace -itemt
 Set-Location $repos_workspace
  
 # Export all Workspaces 
-& "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExport  -db $database -user $db_user -password $db_password -expWorkspace 2>&1 | foreach-object { local-print -text "JAVA OUT::",$_.ToString() }
+& "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExport  -db $database -user $db_user -password $db_password -expWorkspace 
 
 
 $repos_report="$git_repos\interactiveReport"
@@ -153,7 +153,7 @@ Set-Location $repos_instance
 
 
 # Split the Code 
-local-print -text  "Info -- Split the files in $git_repos\instance"  -ForegroundColor "green"	
+local-print -text  "Info -- Split the files in $git_repos\instance"
 
 # Loop over all sql Files 
 $sqlfiles = Get-ChildItem -Path "$git_repos\instance" -filter f*.sql 
@@ -161,8 +161,9 @@ $sqlfiles = Get-ChildItem -Path "$git_repos\instance" -filter f*.sql
 for ($i=0; $i -lt $sqlfiles.Count; $i++) {
    # remove old not necessary
    # Remove-Item -Path $sqlfiles[$i].BaseName -Recurse -Force
-   # Split the files
-   write-host "Info -- Split App :: " $sqlfiles[$i].BaseName
+   # Split the files   
+   $appname=$sqlfiles[$i].BaseName
+   local-print -text "Info -- Split App :: $appname"
    & "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExportSplitter -update  $sqlfiles[$i].FullName 2>&1 | foreach-object { local-print -text "JAVA OUT::",$_.ToString() }
 }
 
@@ -181,6 +182,8 @@ $datum = Get-Date
 # Optimize database to avoid a too large db
 & "$ENV:GIT_HOME\cmd\git.exe" gc 2>&1 | foreach-object { local-print -text "GIT OUT::",$_.ToString() }
 
+
+local-print -text "Info -- Finish at :: $datum with user $env:UserName"
 #  go back home
 
 Set-Location $scriptpath
