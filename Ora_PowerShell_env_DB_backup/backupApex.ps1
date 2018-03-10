@@ -29,12 +29,56 @@
 
 #==============================================================================
 
+
+
+#==============================================================================
+# Helper Function to write log file and display message
+##
+
+function local-print{
+	# Parameters
+	Param( 
+		  [String]   $ForegroundColor = 'White'
+		, [String[]] $text 
+		, [String[]] $errortext
+		
+	)
+	# End param
+	Begin {}
+	Process {
+		$backup_log = $log_file
+		# Message for the log
+		if ($errortext){
+			$text=$errortext 
+			$ForegroundColor = "red"
+		}
+		$log_message = (Get-Date -Format "yyyy-MM-dd HH:mm:ss") +":: " +$text 
+		try {
+			write-host -ForegroundColor $ForegroundColor $text  
+			 # check if the file is accessible
+			 try{
+				$log_message  | Out-File -FilePath "$backup_log" -Append
+			 }
+			 catch {
+			    write-host -ForegroundColor "red" "Error -- Log file not accessible see text above"
+			 }
+		} 
+		catch {
+				throw "Error -- Failed to create log entry in: $backup_log. The error was: $_."
+		}
+	}
+	
+	End {}
+}
+
 # Environment
 
 $Invocation = (Get-Variable MyInvocation -Scope 0).Value
 $scriptpath=Split-Path $Invocation.MyCommand.Path
 
-write-host "Info -- start the Script in the path $scriptpath"  -ForegroundColor "green"	
+$log_file="C:\work\apex_backup.log"
+
+local-print -text  "Info -- start the Script in the path $scriptpath" 
 
 # Runtime Parameter
 
@@ -85,7 +129,7 @@ if (!(test-path -path $repos_workspace)) {new-item -path $repos_workspace -itemt
 Set-Location $repos_workspace
  
 # Export all Workspaces 
-& "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExport  -db $database -user $db_user -password $db_password -expWorkspace
+& "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExport  -db $database -user $db_user -password $db_password -expWorkspace 2>&1 | foreach-object { local-print -text "JAVA OUT::",$_.ToString() }
 
 
 $repos_report="$git_repos\interactiveReport"
@@ -102,14 +146,14 @@ Set-Location $repos_instance
 
 # Export the Instance
 
-& "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExport  -db $database -user $db_user -password $db_password -instance
+& "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExport  -db $database -user $db_user -password $db_password -instance 2>&1 | foreach-object { local-print -text "JAVA OUT::",$_.ToString() }
 
 #  alternativ Source Code exportieren only of one application
 # java  oracle.apex.APEXExport  -db 10.10.10.1:1521:GPI -user system -password xxxxxx -applicationid 100
 
 
 # Split the Code 
-write-host "Info -- Split the files in $git_repos\instance"  -ForegroundColor "green"	
+local-print -text  "Info -- Split the files in $git_repos\instance"  -ForegroundColor "green"	
 
 # Loop over all sql Files 
 $sqlfiles = Get-ChildItem -Path "$git_repos\instance" -filter f*.sql 
@@ -119,7 +163,7 @@ for ($i=0; $i -lt $sqlfiles.Count; $i++) {
    # Remove-Item -Path $sqlfiles[$i].BaseName -Recurse -Force
    # Split the files
    write-host "Info -- Split App :: " $sqlfiles[$i].BaseName
-   & "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExportSplitter -update  $sqlfiles[$i].FullName
+   & "$ENV:JAVA_HOME\bin\java"  oracle.apex.APEXExportSplitter -update  $sqlfiles[$i].FullName 2>&1 | foreach-object { local-print -text "JAVA OUT::",$_.ToString() }
 }
 
 
@@ -130,12 +174,12 @@ Set-Location "$git_repos"
 
 $datum = Get-Date
  
-& "$ENV:GIT_HOME\cmd\git.exe" add .
-& "$ENV:GIT_HOME\cmd\git.exe" commit -m "Commit done by $env:UserName at $datum"
+& "$ENV:GIT_HOME\cmd\git.exe" add .  2>&1 | foreach-object { local-print -text "GIT OUT::",$_.ToString() }
+& "$ENV:GIT_HOME\cmd\git.exe" commit -m "Commit done by $env:UserName at $datum" 2>&1 | foreach-object { local-print -text "GIT OUT::",$_.ToString() }
 # Push to remote if exists
 #& "$ENV:GIT_HOME\cmd\git.exe" push
 # Optimize database to avoid a too large db
-& "$ENV:GIT_HOME\cmd\git.exe" gc
+& "$ENV:GIT_HOME\cmd\git.exe" gc 2>&1 | foreach-object { local-print -text "GIT OUT::",$_.ToString() }
 
 #  go back home
 
