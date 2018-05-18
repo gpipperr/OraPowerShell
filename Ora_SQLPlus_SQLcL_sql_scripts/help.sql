@@ -132,6 +132,7 @@ DOC
 	- tab_stat.sql         - get the statics of the table                 - parameter - Owner, Table name
 	- tab_desc.sql         - describe the columns of the table            - parameter 1 - part of the table
 	- tab_ddl.sql          - get the create script of a table             - parameter - Owner, Table name
+	- tab_priv.sql         - get the priviliges on a tab                  - parameter - Owner, Table name
 	- tab_last.sql         - get the change date of a record in the table - parameter - Owner, Table name
 	- tab_mod.sql          - get the last modifications of the table      - parameter - Owner, Table name
 	- tab_data_changes.sql - get an overview over changes on the tables of a user - parameter - Owner
@@ -232,6 +233,7 @@ DOC
 	- audit.sql         - show the audit settings 
 	- audit_sum.sql     - audit log summary
 	- audit_login.sql   - audit the logins of users
+	- audit_failed_login.sql - check for failed logins in the last time
 	
 	- jobs.sql          - jobs in the database job$ and scheduler tasks info
 	- jobs_dbms.sql     - jobs declared with dbms_job - old style jobs
