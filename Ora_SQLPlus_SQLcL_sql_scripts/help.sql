@@ -13,6 +13,7 @@ DOC
 
 	- database.sql         - name and age of the database
 	- status.sql           - status of the instance/cluster
+	- cdb.sql              - check this DB (12c onwards) for plugable configuration
 	- date.sql             - get the actual date and time of the DB
 	- instance.sql         - status of the instance where the user is connected
 	- limit.sql            - resource limits since last startup of the instances
@@ -137,6 +138,7 @@ DOC
 	- tab_mod.sql          - get the last modifications of the table      - parameter - Owner, Table name
 	- tab_data_changes.sql - get an overview over changes on the tables of a user - parameter - Owner
 	- tab_umlaut.sql       - check for tables/views if umlauts are used for the naming of tables and columns 
+	- tab_identity_col.sql - get the sequence of a ID Column from the database  - parameter - Owner, Table name
 	
 	- tab_usage.sql        - check if the table is used in the last time - parameter - Owner, Table name
 	- tab_part.sql         - get the partition information of a table     - parameter - Owner, Table name

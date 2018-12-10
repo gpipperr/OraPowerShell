@@ -72,7 +72,7 @@ ttitle left  "DB Infos -- last Patches" skip 2
 column a_time      format a10
 column action      format a16
 column namespace   format a8
-column version     format a10
+column version     format a15
 column id          format a20
 column comments    format a35
 column bundle_series  format a6
@@ -81,9 +81,9 @@ select to_char(action_time, 'dd.mm.yyyy') as a_time
       , action
       , namespace
       , version
-      , comments
+      , comments	  
   from sys.registry$history
- order by action_time desc
+ order by action_time desc NULLS LAST
 /
 
 prompt ... check for 12c also DBA_REGISTRY_SQLPATCH

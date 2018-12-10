@@ -22,7 +22,7 @@ ttitle left  "ORDS Modules" skip 2
 select id
      , name
 	 , uri_prefix
- from  all_ords_modules
+ from  user_ords_modules
 order by name
 /
  
@@ -30,7 +30,7 @@ ttitle left  "ORDS Templates" skip 2
 select id
      , module_id
 	 , uri_template
-from all_ords_templates
+from user_ords_templates
 order by module_id
 /
  
@@ -40,7 +40,7 @@ select id
      , template_id
 	 , source_type
 	 , method, source
-from  all_ords_handlers
+from  user_ords_handlers
 order by id
 /
 
