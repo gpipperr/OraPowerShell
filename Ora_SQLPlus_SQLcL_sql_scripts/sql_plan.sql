@@ -29,7 +29,8 @@
 -- 	REMOTE - if relevant, shows the information for distributed query (for example, remote from serial distribution and remote SQL)
 -- 	NOTE - if relevant, shows the note section of the explain plan
 -- 
--- 
+-- For RAC see https://carlos-sierra.net/2013/06/17/using-dbms_xplan-to-display-cursor-plans-for-a-sql-in-all-rac-nodes/
+--
 --==============================================================================
 
 define SQL_ID = &1 

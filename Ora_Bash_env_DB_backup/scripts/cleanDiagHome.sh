@@ -52,6 +52,11 @@ do
 	echo "Info - Owner of ${a} is ${FILE_OWNER}"            >> $LOG_FILE
   
     if [[ ${USER} = ${FILE_OWNER} ]]; then
+	
+	   #   set the Long policy and check
+       #    adrci exec="set home ${a}; set control \( LONGP_POLICY=4392 \) ;"   >> $LOG_FILE  2>&1
+       #    adrci exec="set home ${a}; select SHORTP_POLICY,LONGP_POLICY,LAST_AUTOPRG_TIME from ADR_CONTROL ;"   >> $LOG_FILE  2>&1
+      
 	  
 		adrci exec="set home ${a}; purge -age ${MINUTES} ;"   >> $LOG_FILE  2>&1
 
