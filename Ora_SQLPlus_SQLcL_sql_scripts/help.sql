@@ -68,6 +68,7 @@ DOC
 	- taf.sql              - Check TAF settings of the connections
 	- connection_pool.sql  - Show the Database Resident Connection Pooling (DRCP) Settings
 	- ssl.sql              - check the  sql*net connection if ssl or encryption is in use
+	- sqlnet.sql           - get SQL*Net Informations
 
 	- locks.sql            - locks in the database - mode 6 is the blocker!
 	- ddl_locks.sql        - check for DDL Locks
@@ -333,6 +334,7 @@ DOC
 	- http_ftp_port.sql       - get the port settings of the database
 	
 	- ords.sql                - get the ORDS REST service definitions
+	- apex_version.sql        - get the ORDS and APEX Version in this DB
 	
 	#Create Scripts
 	=================

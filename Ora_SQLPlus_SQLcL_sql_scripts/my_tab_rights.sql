@@ -6,11 +6,9 @@
 --==============================================================================
 set linesize 130 pagesize 300 
 
-column table_schema format a20
-column table_name  format  a30
-column privilege    format a20
-
-
+column table_schema  format a20
+column table_name    format  a30
+column privilege     format a15
 
 
 prompt ... will show you all table privileges on the database.
