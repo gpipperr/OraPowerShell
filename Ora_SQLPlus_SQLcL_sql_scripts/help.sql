@@ -369,6 +369,7 @@ DOC
 
 	- 01-db-setup/create_global_errorlog.sql     - create a global error table and error trigger + maintain job
 	- 01-db-setup/delete_global_errorlog.sql     - delete the global error trigger + error table
+	- 01-db-setup/report_global_errorlog.sql	 - template to create HTML report over all errors in the sql error log
 	
 	- 01-db-setup/create_audit_log_database.sql  - create own table space for auditlog, move audit log to this table pace - create clean job
 	- 01-db-setup/set_audit_minimal_settings.sql - set minimal audit parameter
