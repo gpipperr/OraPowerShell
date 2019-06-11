@@ -2,7 +2,7 @@
 -- GPI - Gunther Pippèrr
 -- Desc:   HTML Report for the entries in the audit log
 -- see :   https://www.pipperr.de/dokuwiki/doku.php?id=dba:oracle_sqlfehler_protokoll
--- Date:   September 2019
+-- Date:   Juni 2019
 --
 --==============================================================================
 
@@ -72,20 +72,40 @@ ttitle left  "SQL Error Log  All Entries " skip 2
 
 set long 64000
 
-SELECT  COUNT (*) AS anzahl
-        ,to_char(min(log_date),'dd.mm.yyyy hh24:mi') first_log_entry
-        ,to_char(max(log_date),'dd.mm.yyyy hh24:mi') last_log_entry		
-        ,nvl(LOG_USR,'n/a') AS LOG_USR
-        ,ERR_NR
-        ,substr(ERR_MSG,1,300) mesg
-		,to_char(STMT) as stmt
-    FROM SYSTEM.ora_errors
-    WHERE nvl(log_usr,'n/a') NOT IN ('SYS','SYSMAN','DBSNMP')
-GROUP BY nvl(LOG_USR,'n/a')
-        ,ERR_NR
-        ,substr(ERR_MSG,1,300)
-		,to_char(stmt)
-ORDER BY 2,1 
+
+
+with ErrorLog as 
+  ( select   stmt
+           , log_date
+		   , LOG_USR
+		   , ERR_NR
+		   , substr(ERR_MSG,1,300) mesg
+		   , dbms_lob.getlength(STMT) len 
+	FROM SYSTEM.ora_errors 
+   WHERE nvl(log_usr,'n/a') NOT IN ('SYS','SYSMAN','DBSNMP')
+	)
+  select
+		COUNT (*) AS anzahl
+	  , to_char(min(log_date),'dd.mm.yyyy hh24:mi') first_log_entry
+	  , to_char(max(log_date),'dd.mm.yyyy hh24:mi') last_log_entry		
+	  , LOG_USR
+	  , ERR_NR
+	  , mesg
+	  , dbms_lob.substr(stmt,4000,1) sql_part1
+	  , case when len > 4000 then dbms_lob.substr(stmt,4000,4001)    end sql_part2
+	  , case when len > 8000 then dbms_lob.substr(stmt,4000,8001)    end sql_part3
+	  , case when len > 12000 then dbms_lob.substr(stmt,4000,12001)  end sql_part4
+	  , case when len > 16000 then dbms_lob.substr(stmt,4000,165001) end sql_part5
+  FROM ErrorLog
+ GROUP BY LOG_USR
+	  , ERR_NR
+	  , mesg
+	  , dbms_lob.substr(stmt,4000,1) 
+	  , case when len > 4000 then dbms_lob.substr(stmt,4000,4001)    end 
+	  , case when len > 8000 then dbms_lob.substr(stmt,4000,8001)    end 
+	  , case when len > 12000 then dbms_lob.substr(stmt,4000,12001)  end 
+	  , case when len > 16000 then dbms_lob.substr(stmt,4000,165001) end 
+ORDER BY 1 
 /
 
 set markup html off
@@ -95,5 +115,5 @@ ttitle off
 
 -- works only in a ms windows environment
 -- auto start of the result in a browser window
-host &&SPOOL_NAME
+--host &&SPOOL_NAME
 
