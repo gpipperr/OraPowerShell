@@ -238,6 +238,7 @@ DOC
 	- audit_sum.sql     - audit log summary
 	- audit_login.sql   - audit the logins of users
 	- audit_failed_login.sql - check for failed logins in the last time
+	- audit_logoff_cleanup.sql - check for dropped Sessions in the last time
 	
 	- jobs.sql          - jobs in the database job$ and scheduler tasks info
 	- jobs_dbms.sql     - jobs declared with dbms_job - old style jobs

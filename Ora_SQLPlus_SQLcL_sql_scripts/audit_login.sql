@@ -22,12 +22,14 @@ column entries     format 999G999G999 heading "Audit|entries"
 column action_count format 999G9999 heading "Action|Count"
 column os_username  format a16 heading "User|Name"
 column userhost     format a20 heading "User |Host"
+column timestamp    format a18  heading "Time"
+column  CLIENT_ID  format a18  heading "DB User|Client Id"
 
 
 ttitle left  "Audit log summary Logins last 12 hours " skip 2
 
   select                                                                               -- to_char(extended_timestamp,'dd.mm hh24')
-        to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0'
+        to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0' as timestamp
        ,  instance_number
        ,  count (*) as action_count
        --, username
@@ -36,7 +38,7 @@ ttitle left  "Audit log summary Logins last 12 hours " skip 2
        ,  CLIENT_ID
     from dba_audit_trail
    where     extended_timestamp between   sysdate - (  1 / 4) and sysdate
-         and action_name like 'LOGOFF'
+         and action_name like 'LOGOFF%'
 -- and username like '&&DB_USER_NAME.'
 -- and USERHOST='xxxxxx'
 -- and extended_timestamp between to_date('14.11.2014 08:00','dd.mm.yyyy hh24:mi') and to_date('14.11.2014 09:00','dd.mm.yyyy hh24:mi')
@@ -59,7 +61,7 @@ compute sum of action_count on instance_number
 
 ttitle left  "Audit log summary Logins last 12 hours over 10 minutes " skip 2
 
-  select to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0'
+  select to_char (extended_timestamp, 'dd.mm hh24') || ':' || substr (to_char (extended_timestamp, 'mi'), 1, 1) || '0' as timestamp
        ,  instance_number
        ,  count (*) as action_count
        ,  username
@@ -67,7 +69,7 @@ ttitle left  "Audit log summary Logins last 12 hours over 10 minutes " skip 2
        ,  action_name
     from dba_audit_trail
    where     extended_timestamp between   sysdate - (  1/ 4) and sysdate
-         and action_name like 'LOGOFF'
+         and action_name like 'LOGOFF%'
 -- and username like '&&DB_USER_NAME.'
 -- and USERHOST='srvgpidb01'
 -- and instance_number=2

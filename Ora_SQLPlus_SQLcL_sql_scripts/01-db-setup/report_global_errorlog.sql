@@ -115,5 +115,5 @@ ttitle off
 
 -- works only in a ms windows environment
 -- auto start of the result in a browser window
---host &&SPOOL_NAME
+host &&SPOOL_NAME
 
