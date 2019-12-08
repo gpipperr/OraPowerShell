@@ -128,7 +128,7 @@ checkEnv () {
 			echo "Scripts Directory ${SCRIPTS} not exist"
 			echo "May be script not start in bash or over symlink?? "
 			exit 1
-  	fi
+		fi
 		# check of existens and readabitlity of installation files
      
 		if [ ! -f "${SCRIPTS}/CreateDB.sql" ]; then
@@ -142,6 +142,12 @@ checkEnv () {
 			echo "GPI Oracle default are not installed - setdb in .profile is missing - please read the Oracle install manual" 
 		  exit 1 
 		fi	
+		
+		#check the password lib
+	   #if ! [ -x "$(pwscore oracle 1)" ]; then
+	   # echo "Password Checker not installed! Use to install: yum install libpwquality" 
+       # exit 1
+	   #fi
 }
 	 
 # check if you can connect as sys to the database
@@ -440,12 +446,26 @@ askPassword() {
 	USER_ALTERNATIV_PWD=$4
 	USER_PROMPT=$5
 	
+	#why not a big rex ? I'm to stupid ....
+	#min 8 signs
+	LENGTH_PW_REGEX="(^.{8,255}$)"
+	PWD_LENGTH=false
+	# min a number
+	NUMBER_PW_REGEX="(.*[0-9])"
+	PWD_NUMBER=false
+	# min a spezial char
+	SPEZIAL_PW_REGEX="(.*\W)"
+	PWD_SPEZIAL=false
+	
+	
 	if [ ! -n "${USER_DEFAULT_PWD}" ]; then
 	 USER_DEFAULT_PWD=$USER_ALTERNATIV_PWD
 	fi
 	
 	LIMIT=10             
 	ANSWER_COUNTER=1
+	
+	printError "Use a strong Password, at least 8 char , at least one digit , at least 1 special char"
 	
 	while [ "$ANSWER_COUNTER" -le $LIMIT ]
 	do
@@ -457,6 +477,38 @@ askPassword() {
 		if [ ! -n "${USER_PWD_ANSWER}" ]; then
 			printError "Please enter a password for ${USER_NAME}!"
 		else
+		    # if new password (no CHECK Or ASMCHECK PWD)
+			if [ "${USER_CHECK}" != 'CHECK' ] && [ "${USER_CHECK}" != 'ASMCHECK' ] ; then
+			  
+				if [[ "${USER_PWD_ANSWER}" =~ ${LENGTH_PW_REGEX} ]]; then
+					printf "Password Length > 8           - check OK\n"
+					PWD_LENGTH=true
+				else
+					printf "Use a strong Password, at least 8 char Password to short\n"
+				fi
+
+				if [[ "${USER_PWD_ANSWER}" =~ ${NUMBER_PW_REGEX} ]]; then
+					printf "Password contains number       - check OK\n"
+					PWD_NUMBER=true
+				else
+					printf "Use a strong Password, at least 1 number!\n"
+				fi
+
+				if [[ "${USER_PWD_ANSWER}" =~ ${SPEZIAL_PW_REGEX} ]]; then
+					printf "Password contains special Char  - check OK\n"
+					PWD_SPEZIAL=true
+				else
+					printf "Use a strong Password, at least one special char < ASCII 127!\n"
+				fi
+
+
+				if [ "${PWD_LENGTH}" = "true" ] && [ "${PWD_NUMBER}" = "true" ] && [ "${PWD_SPEZIAL}" = "true" ]; then
+					printf "Password is ok and can be used!\n"
+					break
+				else
+					printf "Use a strong Password, this password not fit!\n"
+				fi 		
+			fi
 			if [ "${USER_CHECK}" = 'CHECK' ]; then
 				checkUserDBPassword "${USER_NAME}" "${USER_PWD_ANSWER}"
 				if [ "${CAN_CONNECT}" = "true" ]; then
@@ -468,10 +520,8 @@ askPassword() {
 					if [ "${CAN_CONNECT}" = "true" ]; then
 						break
 					fi
-				else
-			   break
-				fi 
-      fi			
+			  fi 
+           fi			
 		fi	
 		echo -n "$ANSWER_COUNTER "
 		let "ANSWER_COUNTER+=1"

@@ -9,4 +9,12 @@ shutdown immediate;
 connect "SYS"/"&&SYSUSER_PWD" as SYSDBA
 startup
 
+select 'utlrp_begin: ' || to_char(sysdate, 'HH:MI:SS') from dual;
+
+@$ORACLE_HOME/rdbms/admin/utlrp.sql;
+
+select 'utlrp_end: ' || to_char(sysdate, 'HH:MI:SS') from dual;
+
+select comp_id, status from dba_registry;
+
 exit;

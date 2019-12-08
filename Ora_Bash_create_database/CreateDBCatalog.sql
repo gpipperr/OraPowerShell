@@ -6,6 +6,7 @@ connect "SYS"/"&&SYSUSER_PWD" as SYSDBA
 set echo on
 spool $SCRIPTS/CreateDBCatalog.log append
 
+
 SET VERIFY OFF
 @$ORACLE_HOME/rdbms/admin/catalog.sql
 @$ORACLE_HOME/rdbms/admin/catblock.sql
@@ -24,6 +25,7 @@ spool $SCRIPTS/sqlPlusHelp.log append
 
 SET VERIFY OFF
 @$ORACLE_HOME/sqlplus/admin/pupbld.sql
+@$ORACLE_HOME/sqlplus/admin/pupdel.sql
 SET VERIFY ON
 
 connect "SYSTEM"/"&&SYSTEMUSER_PWD"

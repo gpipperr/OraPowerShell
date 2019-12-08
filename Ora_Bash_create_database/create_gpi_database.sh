@@ -2,11 +2,13 @@
 #
 # Part of the Gunther Pippèrr 
 #  GPI Oracle Script Library
-#  for more information see:   http://orapowershell.codeplex.com
+#
+#  for more information see:   https://github.com/gpipperr/OraPowerShell
 #
 #####################################################################
 #  Database Installer for a new Database
-# Version $Rev:$
+#  
+#  Version 19
 #
 ####################################################################
 
@@ -32,7 +34,7 @@ unset SQLPATH
 
 ###################################################################
 printLine  "-------------------------------------------------"
-printLine  "Welcome to the installation of the Database v2.2"
+printLine  "Welcome to the installation of the Database v19"
 printLine  "-------------------------------------------------"
 
 # check primary configuration
@@ -68,10 +70,10 @@ printLine
 
 ###############################################################################
 
-printLine  "Check on installed ASM enviroment"
+printLine  "Check on installed ASM environment"
 
 if [ "${ASM_ENV}" = "true" ]; then
-	printLine  "ASM Enviroment dedected - DB will be installed in ASM modus"
+	printLine  "ASM Environment detected - DB will be installed in ASM modus"
 	setdb 1 
 	printLine  "Please enter the password of the SYS user of the ASM instance"
 	askPassword "ASMCHECK" "SYS" "${S_SYSASM_USER_PWD}" "" "for ASM"
@@ -118,7 +120,7 @@ EOScipt`
 
 	if [ "${checkDBexists}" -gt "0" ]; then
 		printError
-		printError "DB Files in ASM for the ${ORACLE_DBNAME} exits - Check Naming or clean enviroment!"
+		printError "DB Files in ASM for the ${ORACLE_DBNAME} exits - Check Naming or clean environment!"
 		printError
    exit 1
   fi
@@ -184,7 +186,7 @@ if [ -f "${ORACLE_HOME}/bin/lsnrctl" ]; then
 		fi 	
 	fi
 else
-  printError "Listener Control for ${ORACLE_HOME}/bin/lsnrctl not found - Configure enviroment!"	
+  printError "Listener Control for ${ORACLE_HOME}/bin/lsnrctl not found - Configure environment!"	
   exit 1
 fi
 
@@ -208,7 +210,7 @@ fi
 #FIX Check for the DB edition needs to be implemented over the software
 
 printLine	
-printLine   "Environment"
+printLine  "Environment"
 printList  "Database" "20"  ":" 	"${ORACLE_DBNAME}"
 
 if [ ${RAC_ENV} = 'true' ]; then
@@ -238,6 +240,12 @@ fi
 
 printList   "DB Version" "20"  ":" 	"${DB_VERSION}"
 printList   "DB Edition" "20"  ":" 	"${DB_EDITON}"
+
+# DB Release
+# FIX read this form the Oracle HOME
+DB_RELEASE="${S_DB_RELEASE}"
+
+printList   "DB Release" "20"  ":" 	"${DB_RELEASE}"
 
 
 if [ "${ASM_ENV}" = "true" ]; then
@@ -379,6 +387,7 @@ echo "S_CHARACTER_SET=${CHARACTER_SET}"				>>   ${CONFFILE}
 echo "S_ORACLE_BASE=${ORACLE_BASE}"  				>>  ${CONFFILE}
 echo "S_ORACLE_HOME=${ORACLE_HOME}"  				>>  ${CONFFILE}
 echo "S_DB_EDITON=${DB_EDITON}"  			    	>>  ${CONFFILE}
+echo "S_DB_RELEASE=${DB_RELEASE}"  			    	>>  ${CONFFILE}
 
 echo "S_DATABASE_SCANLISTNER=${SCAN_LISTNER}"  		>>  ${CONFFILE}
 echo "S_FILE_DATA_LOCATION=${ORACLE_BASE}/oradata"  >>  ${CONFFILE}
@@ -519,7 +528,7 @@ if [ "${ASM_ENV}" = "false" ]; then
 	else
 	  if [ -f "${REDOLOG_DEST1}/${ORACLE_DBNAME}/control01.ctl" ]; then
 			printError
-			printError "controlfile ${REDOLOG_DEST1}/${ORACLE_DBNAME}/control01.ctl for this DB still exists! Check for old DB and cleanup enviroment!"
+			printError "controlfile ${REDOLOG_DEST1}/${ORACLE_DBNAME}/control01.ctl for this DB still exists! Check for old DB and cleanup environment!"
 			printError
 			exit -1
 		fi
@@ -536,7 +545,7 @@ if [ "${ASM_ENV}" = "false" ]; then
 	else
 	  if [ -f "${REDOLOG_DEST2}/${ORACLE_DBNAME}/control02.ctl" ]; then
 			printError
-			printError "controlfile ${REDOLOG_DEST2}/${ORACLE_DBNAME}/control02.ctl for this DB still exists! Check for old DB and cleanup enviroment!"
+			printError "controlfile ${REDOLOG_DEST2}/${ORACLE_DBNAME}/control02.ctl for this DB still exists! Check for old DB and cleanup environment!"
 			printError
 			exit -1
 		fi
@@ -544,7 +553,7 @@ if [ "${ASM_ENV}" = "false" ]; then
 	
   if [ -f "${ORACLE_BASE}/oradata/${ORACLE_DBNAME}/control03.ctl" ]; then
 			printError
-			printError "controlfile ${ORACLE_BASE}/oradata/${ORACLE_DBNAME}/control03.ctl for this DB still exists! Check for old DB and cleanup enviroment!"
+			printError "controlfile ${ORACLE_BASE}/oradata/${ORACLE_DBNAME}/control03.ctl for this DB still exists! Check for old DB and cleanup environment!"
 			printError
 			exit -1
 		fi	
@@ -567,7 +576,7 @@ if [ ${RAC_ENV} = 'true' ]; then
 		let "RAC_COUNTER+=1"
 	done
 else
- printList "Oracle Rac" "22" ":" "No RAC Enviroment"
+ printList "Oracle Rac" "22" ":" "No RAC Environment"
 fi
 
 printLine
@@ -621,7 +630,7 @@ else
  MEMORY_TARGET="24000"
 fi
 
-# if Enviroment very small (example VM test env.) use min 800M
+# if Environment very small (example VM test env.) use min 800M
 if [ "${MEMORY_TARGET}" -lt "750" ]; then
 	MEMORY_TARGET="800"
 fi
@@ -708,7 +717,7 @@ if [ ${RAC_ENV} = "true" ]; then
  for NODE in $VIPNODES
   do 
 	  # to fix the "Unable to find error file." message with call oracle orapwd over ssh, set ORACLE_HOME 
-		ssh ${NODE} "export ORACLE_HOME=${ORACLE_HOME}; ${ORACLE_HOME}/bin/orapwd file=${ORACLE_HOME}/dbs/orapw${ORACLE_DBNAME}${cnode} force=y	 password=${SYS_USER_PWD}"
+		ssh ${NODE} "export ORACLE_HOME=${ORACLE_HOME}; ${ORACLE_HOME}/bin/orapwd file=${ORACLE_HOME}/dbs/orapw${ORACLE_DBNAME}${cnode} force=y	 password=${SYS_USER_PWD} format=12"
 		cnode=cnode+1
 	done
 else
@@ -720,7 +729,7 @@ printLine
 
 # ASM setting for user rights and grep all storage locations
 printLine
-printLine  "Generate the ASM settings if nessesary"
+printLine  "Generate the ASM settings if necessary"
 
 if [ "${ASM_ENV}" = "true" ]; then
 	${ASM_HOME}/bin/setasmgidwrap o=${ORACLE_HOME}/bin/oracle
@@ -735,7 +744,7 @@ printLine
 ############################################
 
 printLine
-printLine  "If RAC enviroment :: add database to cluster registry"
+printLine  "If RAC environment :: add database to cluster registry"
 
 ## RAC
 if [ ${RAC_ENV} = 'true' ]; then
@@ -782,9 +791,9 @@ fi
 
 printLine  "Start Oracle Create Catalog - Take round about 40min"
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/CreateDBCatalog.sql ${SYS_USER_PWD}  ${SYSTEM_USER_PWD}
-printLine "create Java enviroment"
+printLine "create Java environment"
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/JServer.sql         ${SYS_USER_PWD}
-printLine "create Oracle text enviroment"
+printLine "create Oracle text environment"
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/context.sql         ${SYS_USER_PWD}
 printLine "setup XML DB Java"
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/xdb_protocol.sql    ${SYS_USER_PWD}
@@ -799,8 +808,21 @@ if [ "${DB_EDITON}" = 'EE' ]; then
 	printLine "setup Spatial"
 	${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/spatial.sql         ${SYS_USER_PWD}
 fi
-printLine "setup emRepository"
-${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/emRepository.sql    ${SYS_USER_PWD} ${ORACLE_HOME} ${SYSMAN_USER_PWD}
+
+
+# Call datapatch if 12c 
+if [ "${DB_RELEASE}" = "12c" ]; then
+	
+	printLine "setup 12c DBConsole"
+	#https://www.pipperr.de/dokuwiki/doku.php?id=dba:oracle_12c_database_express
+	{ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/dbConsole12c.sql ${SYS_USER_PWD}
+	
+else
+	printLine "setup emRepository"
+	${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/emRepository.sql ${SYS_USER_PWD} ${ORACLE_HOME} ${SYSMAN_USER_PWD} 
+
+fi
+
 
 if [ ${RAC_ENV} = 'true' ]; then
   printLine "create Cluster DB Views"
@@ -851,7 +873,21 @@ else
 	# FIX IT - TESTING required!
 	TRACK_FILE_LOCATION="${SYSTEM_TAB_LOC}/${ORACLE_DBNAME}/db_track${ORACLE_DBNAME}.dmp"
 fi
+
+# Call datapatch if 12c 
+if [ "${DB_RELEASE}" = "12c" ]; then
+
+	${ORACLE_HOME}/OPatch/datapatch -skip_upgrade_check -db ${ORACLE_SID}
+	${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/call12cDataPatch.sql ${SYS_USER_PWD}
+
+else
+
+	${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/call11gDataPatch.sql ${SYS_USER_PWD}  
+
+fi
+
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/postDBCreation.sql ${SYS_USER_PWD} 
+
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/createSPFile.sql   ${SYS_USER_PWD} ${SPFILE_LOCATION}
 
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/gpi_setup.sql ${SYS_USER_PWD}  ${AUDIT_TAB_LOC}
@@ -865,7 +901,7 @@ if [ ${RAC_ENV} = 'true' ]; then
 	# if RAC add nodes add threads 
 	typeset -i RAC_COUNTER=1
 	for NODE in $VIPNODES
-  do
+    do
 		if [ $RAC_COUNTER = 2 ];
 		then 
 			${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/addThread1.sql ${SYS_USER_PWD} ${ORACLE_DBNAME} ${REDOLOG_DEST1} ${REDOLOG_DEST2}
@@ -912,15 +948,15 @@ fi
 if [ "${RAC_ENV}" = "false" ]; then
  if [ "${ASM_ENV}" = "false" ]; then
 	printError
-  printError " Please copy as root  => \" cp ${SCRIPTS}/startdatabase_single_instance.sh /etc/init.d/oracle\" as root"
-  printError " Enable Start/Stop with runlevel editor \"chkconfig oracle\" as root"	
+    printError " Please copy as root  => \" cp ${SCRIPTS}/startdatabase_single_instance.sh /etc/init.d/oracle\" as root"
+    printError " Enable Start/Stop with runlevel editor \"chkconfig oracle\" as root"	
 	printError
  fi
 fi
 
-# Configure the enviroment 
+# Configure the environment 
 printLineSuccess
-printLineSuccess " -- the .profile enviroment need to be adjusted please answer YES!"
+printLineSuccess " -- the .profile environment need to be adjusted please answer YES!"
 
 
 if [ "${RAC_ENV}" = "true" ]; then
