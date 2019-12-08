@@ -15,7 +15,10 @@
 # #####################################
 
 
-DIRECTORY=/opt/oracle/admin/*
+#DIRECTORY=/opt/oracle/admin/*
+DIRECTORY=/u01/app/12.2.0.1/grid/rdbms/*
+
+
 LOG_FILE=/tmp/aud_delete_logs_list_${USER}.log
 
 echo "Info - start to analyses directory :  ${DIRECTORY}  - start at  -- `date` -- "    > $LOG_FILE

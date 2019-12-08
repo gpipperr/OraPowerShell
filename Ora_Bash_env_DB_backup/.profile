@@ -52,6 +52,8 @@ else
  printf "\033[31m%s\033[0m\n"  "No SQL direcory found!"	
 fi	
 
+export ORACLE_PATH=${SQLPATH}
+
 export ORACLE_HOSTNAME=`hostname`
 
 export ADR_BASE=${ORACLE_BASE}
