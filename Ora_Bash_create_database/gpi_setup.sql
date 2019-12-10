@@ -187,7 +187,12 @@ declare
    v_count pls_integer;
    v_env varchar2(10):='SRV';
    v_srv_list varchar2(4000);
+   v_db_name varchar2(64);
 begin
+
+    select global_name into v_db_name from global_name;
+   
+    v_env:=v_env||'_'||v_db_name;
 
     v_service(1):=v_env||'_MAIN';
 	v_service(2):=v_env||'_USER';

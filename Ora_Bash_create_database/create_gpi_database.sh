@@ -1,6 +1,6 @@
 ################# Database creation script ##########################
 #
-# Part of the Gunther Pippèrr 
+# Part of the Gunther PippÃ¨rr 
 #  GPI Oracle Script Library
 #
 #  for more information see:   https://github.com/gpipperr/OraPowerShell
@@ -30,7 +30,11 @@ CONFFILE=${SCRIPTS}/default.conf
 # read default db configuration file 
 . ~/.profile
 
+
+# blank SQL Plus settings !!!
 unset SQLPATH
+unset ORACLE_PATH
+
 
 ###################################################################
 printLine  "-------------------------------------------------"
@@ -238,7 +242,7 @@ else
 fi
 
 
-printList   "DB Version" "20"  ":" 	"${DB_VERSION}"
+#printList   "DB Version" "20"  ":" 	"${DB_VERSION}"
 printList   "DB Edition" "20"  ":" 	"${DB_EDITON}"
 
 # DB Release
@@ -765,9 +769,10 @@ printLine
 
 # Basic DB
 printLine
-printLine  "Start Oracle DB Creation"
+printLine  "Start Oracle DB Creation with ********* ${ORACLE_DBNAME} ${REDOLOG_DEST1} ${REDOLOG_DEST2} ${SYSTEM_TAB_LOC} ${SYSAUX_TAB_LOC}  ${TEMP01_TAB_LOC} ${UNDO01_TAB_LOC} ${CHARACTER_SET}"
+
 ######
-${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/CreateDB.sql ${SYS_USER_PWD} ${ORACLE_DBNAME} ${REDOLOG_DEST1} ${REDOLOG_DEST2} ${SYSTEM_TAB_LOC} ${SYSAUX_TAB_LOC}  ${TEMP01_TAB_LOC} ${UNDO01_TAB_LOC} ${CHARACTER_SET}
+${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/CreateDB.sql ${SYS_USER_PWD} ${ORACLE_DBNAME} ${REDOLOG_DEST1} ${REDOLOG_DEST2} ${SYSTEM_TAB_LOC} ${SYSAUX_TAB_LOC}  ${TEMP01_TAB_LOC} ${UNDO01_TAB_LOC} ${CHARACTER_SET} ${SYSTEM_USER_PWD}
 
 printLine  "Start Oracle DB Files"
 # DB files
@@ -790,7 +795,7 @@ fi
 # Catalog and options
 
 printLine  "Start Oracle Create Catalog - Take round about 40min"
-${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/CreateDBCatalog.sql ${SYS_USER_PWD}  ${SYSTEM_USER_PWD}
+${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/CreateDBCatalog.sql ${SYS_USER_PWD} ${SYSTEM_USER_PWD}
 printLine "create Java environment"
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/JServer.sql         ${SYS_USER_PWD}
 printLine "create Oracle text environment"
@@ -810,18 +815,7 @@ if [ "${DB_EDITON}" = 'EE' ]; then
 fi
 
 
-# Call datapatch if 12c 
-if [ "${DB_RELEASE}" = "12c" ]; then
-	
-	printLine "setup 12c DBConsole"
-	#https://www.pipperr.de/dokuwiki/doku.php?id=dba:oracle_12c_database_express
-	{ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/dbConsole12c.sql ${SYS_USER_PWD}
-	
-else
-	printLine "setup emRepository"
-	${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/emRepository.sql ${SYS_USER_PWD} ${ORACLE_HOME} ${SYSMAN_USER_PWD} 
 
-fi
 
 
 if [ ${RAC_ENV} = 'true' ]; then
@@ -877,7 +871,7 @@ fi
 # Call datapatch if 12c 
 if [ "${DB_RELEASE}" = "12c" ]; then
 
-	${ORACLE_HOME}/OPatch/datapatch -skip_upgrade_check -db ${ORACLE_SID}
+	${ORACLE_HOME}/OPatch/datapatch -skip_upgrade_check -db ${ORACLE_SID}  > ${SCRIPTS}/datapatch.log
 	${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/call12cDataPatch.sql ${SYS_USER_PWD}
 
 else
@@ -890,7 +884,27 @@ ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/postDBCreation.sql ${SYS_USER_PWD}
 
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/createSPFile.sql   ${SYS_USER_PWD} ${SPFILE_LOCATION}
 
+
+
+# Call dbconsole if 12c 
+if [ "${DB_RELEASE}" = "12c" ]; then
+	printLine "setup 12c DBConsole"
+	
+	#https://www.pipperr.de/dokuwiki/doku.php?id=dba:oracle_12c_database_express
+	#
+	
+	{ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/dbConsole12c.sql ${SYS_USER_PWD}
+	
+else
+
+	printLine "setup emRepository"
+	${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/emRepository.sql ${SYS_USER_PWD} ${ORACLE_HOME} ${SYSMAN_USER_PWD} 
+
+fi
+
+
 ${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/gpi_setup.sql ${SYS_USER_PWD}  ${AUDIT_TAB_LOC}
+
 
 if [ "${DB_EDITON}" = 'EE' ]; then
 	${ORACLE_HOME}/bin/sqlplus /nolog @${SCRIPTS}/gpi_setup_ee.sql ${SYS_USER_PWD} ${TRACK_FILE_LOCATION}
@@ -978,7 +992,7 @@ printLineSuccess
 ###################################  FINISH ###################################
 
 printLineSuccess
-printLineSuccess  "-- Installation finished ! Please check logfiles under ${SCRIPTS}"
+printLineSuccess  "-- Installation finished ! Please check log Files under ${SCRIPTS}"
 printLineSuccess
 
 ###############################################################################

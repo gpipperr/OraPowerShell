@@ -7,6 +7,25 @@ define SYSAUX_TAB_LOC='&6'
 define TEMP_TAB_LOC='&7'
 define UNDO_TAB_LOC='&8'
 define CHARACTER_SET ='&9'
+define SYSTEM_USER_PWD ='&10'
+
+prompt ===== Create Database with this parameter ========
+
+prompt SYSUSER_PWD     =***************
+prompt ORACLE_DBNAME   = &&ORACLE_DBNAME
+prompt REDOLOG_DEST1   = &&REDOLOG_DEST1
+prompt REDOLOG_DEST2   = &&REDOLOG_DEST2
+prompt SYSTEM_TAB_LOC  = &&SYSTEM_TAB_LOC
+prompt SYSAUX_TAB_LOC  = &&SYSAUX_TAB_LOC
+prompt TEMP_TAB_LOC    = &&TEMP_TAB_LOC
+prompt UNDO_TAB_LOC    = &&UNDO_TAB_LOC
+prompt CHARACTER_SET   = &&CHARACTER_SET
+prompt SYSTEM_USER_PWD =***************
+
+
+prompt =================================================
+
+
 
 connect "SYS"/"&&SYSUSER_PWD" as SYSDBA
 
@@ -38,7 +57,7 @@ LOGFILE GROUP 1  ('&&REDOLOG_DEST1/&&ORACLE_DBNAME/redo_a_01.log', '&&REDOLOG_DE
 		GROUP 8  ('&&REDOLOG_DEST1/&&ORACLE_DBNAME/redo_a_08.log', '&&REDOLOG_DEST2/&&ORACLE_DBNAME/redo_b_08.log') SIZE 256M,
 		GROUP 9  ('&&REDOLOG_DEST1/&&ORACLE_DBNAME/redo_a_09.log', '&&REDOLOG_DEST2/&&ORACLE_DBNAME/redo_b_09.log') SIZE 256M,
 		GROUP 10 ('&&REDOLOG_DEST1/&&ORACLE_DBNAME/redo_a_10.log', '&&REDOLOG_DEST2/&&ORACLE_DBNAME/redo_b_10.log') SIZE 256M
-USER SYS IDENTIFIED BY "&&SYSUSER_PWD" USER SYSTEM IDENTIFIED BY "&&SYSUSER_PWD"
+USER SYS IDENTIFIED BY "&&SYSUSER_PWD" USER SYSTEM IDENTIFIED BY "&&SYSTEM_USER_PWD"
 /
 
 spool off

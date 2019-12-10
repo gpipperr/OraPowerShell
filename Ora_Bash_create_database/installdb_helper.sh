@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Part of the Gunther Pippèrr 
+# Part of the Gunther PippÃ¨rr 
 #  GPI Oracle Script Library
 #  for more information see:   http://orapowershell.codeplex.com
 #
