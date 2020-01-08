@@ -269,7 +269,7 @@ printLineSuccess ${datalocations}
 fi
 printLine	
 printLine "Define the Character Set of your database"
-printf    "  please enter the Charset of the database you like to install [%s]: " "${S_CHARACTER_SET}"
+printf    "   please enter the Charset of the database you like to install [%s]: " "${S_CHARACTER_SET}"
 read CHARACTER_SET
 
 if [ ! -n "${CHARACTER_SET}" ]; then
@@ -277,6 +277,65 @@ if [ ! -n "${CHARACTER_SET}" ]; then
 fi
 
 printLine	
+
+# calculate memory size
+#
+
+SYSTEM_MEMORY=`free -m | grep Mem | awk '{ print($2); }'`
+
+if [ "${SYSTEM_MEMORY}" -lt "16000" ]; then
+ let "MEMORY_TARGET=SYSTEM_MEMORY/100*40"
+elif [ "${SYSTEM_MEMORY}" -lt "24000" ]; then
+  MEMORY_TARGET="12000"
+elif [ "${SYSTEM_MEMORY}" -lt "32000" ]; then
+  MEMORY_TARGET="20000"
+else
+ MEMORY_TARGET="24000"
+fi
+
+# if Environment very small (example VM test env.) use min 800M
+if [ "${MEMORY_TARGET}" -lt "750" ]; then
+	MEMORY_TARGET="800"
+fi
+
+if [ ! -n "${S_SGA_TARGET}" ]; then
+	S_SGA_TARGET=${MEMORY_TARGET}
+fi
+
+printLine "Define the SGA_TARGET of the Instance"
+printLine "   suggested value :: ${MEMORY_TARGET}M ( total memory of the system ${SYSTEM_MEMORY} MB)"
+printf    "   please enter the value of the SGA_TARGET init.ora Parameter of the database you like to install [%s]: " "${S_SGA_TARGET}"
+read SGA_TARGET
+
+if [ ! -n "${SGA_TARGET}" ]; then
+	SGA_TARGET=${S_SGA_TARGET}
+fi
+
+if [[ "${SGA_TARGET: -1}" != "M" ]]; then
+   SGA_TARGET=${SGA_TARGET}M
+fi
+   
+# Check if the shared memory is configured properly
+# get only the first value
+SHARED_MEMORY=$(df -k | grep tmpfs | head -1 | awk '{print($2)/1024;}')
+#round
+SHARED_MEMORY=$(echo $SHARED_MEMORY | awk '{print int($1)}')
+
+#Check
+# read only the digits
+[[ ${SGA_TARGET} =~ ^([[:digit:]]*) ]] && T_SGA_TARGET=${BASH_REMATCH[1]}
+
+if [[ "${SHARED_MEMORY}" -lt "${T_SGA_TARGET}" ]]; then
+  printError
+  printError "Your current size of the shared memory (${SHARED_MEMORY} MB) is smaller than the allocated memory target (${T_SGA_TARGET} MB) for the Oracle DB instance."
+  printError "Possible solution : As root, increase the shared memory /dev/shm mountpoint size (also set the size in /etc/fstab), then remount (tmpfs)"
+  printError
+  exit 1
+
+fi
+
+printLine	
+
 printLine	 "Define the storage locations for the datafiles of your database"
 
 askDatafileLocation "Redo Log Destination 1" "${S_FILE_DATA_LOCATION}" "${S_REDOLOG_DEST1}" "${S_ASM_REDOLOG_DEST1}"
@@ -389,6 +448,8 @@ echo "S_DATABASE_HOSTNAME=${DBHOST_NAME}" 			 >   ${CONFFILE}
 echo "S_DATABASE_NAME=${ORACLE_DBNAME}" 		 	>>   ${CONFFILE}
 echo "S_CHARACTER_SET=${CHARACTER_SET}"				>>   ${CONFFILE}
 echo "S_ORACLE_BASE=${ORACLE_BASE}"  				>>  ${CONFFILE}
+echo "S_SGA_TARGET=${SGA_TARGET}"  			     	>>  ${CONFFILE}
+
 echo "S_ORACLE_HOME=${ORACLE_HOME}"  				>>  ${CONFFILE}
 echo "S_DB_EDITON=${DB_EDITON}"  			    	>>  ${CONFFILE}
 echo "S_DB_RELEASE=${DB_RELEASE}"  			    	>>  ${CONFFILE}
@@ -446,7 +507,7 @@ fi
 
 ##################################################################
 
-echo "S_SYS_USER_PWD=${SYS_USER_PWD}" 					 >  ${PWDFILE}
+echo "S_SYS_USER_PWD=${SYS_USER_PWD}" 			     >  ${PWDFILE}
 echo "S_SYSASM_USER_PWD=${SYSASM_USER_PWD}" 		>>  ${PWDFILE}
 echo "S_DBSNMP_USER_PWD=${DBSNMP_USER_PWD}" 		>>  ${PWDFILE}
 echo "S_SYSMAN_USER_PWD=${SYSMAN_USER_PWD}" 		>>  ${PWDFILE}
@@ -584,11 +645,11 @@ else
 fi
 
 printLine
-printList  "Main Character Set"     "22" ":"    ${CHARACTER_SET} 
+printList  "Main Character Set"     "22" ":"     ${CHARACTER_SET} 
 printLine
-printList  "Compatible Parameter"    "22" ":"   ${S_COMPATIBLE}
-printList  "Blocksize  Parameter"    "22" ":"   ${S_DB_BLOCK_SIZE}  
-
+printList  "Compatible Parameter"    "22" ":"    ${S_COMPATIBLE}
+printList  "Blocksize  Parameter"    "22" ":"    ${S_DB_BLOCK_SIZE}  
+printList  "SGA_TARGET Parameter"    "22" ":"    ${SGA_TARGET}  
 printLine
 printList  "System Tablespace"      "22" ":"	 ${SYSTEM_TAB_LOC} 
 printList  "Sysaux Tablespace"      "22" ":"	 ${SYSAUX_TAB_LOC} 
@@ -620,38 +681,7 @@ PATH=${ORACLE_HOME}/bin:$PATH; export PATH
 #############  create the init.ora #############
 
 
-# calculate memoray size
-#
-SYSTEM_MEMORY=`free -m | grep Mem | awk '{ print($2); }'`
 
-if [ "${SYSTEM_MEMORY}" -lt "16000" ]; then
- let "MEMORY_TARGET=SYSTEM_MEMORY/100*40"
-elif [ "${SYSTEM_MEMORY}" -lt "24000" ]; then
-  MEMORY_TARGET="12000"
-elif [ "${SYSTEM_MEMORY}" -lt "32000" ]; then
-  MEMORY_TARGET="20000"
-else
- MEMORY_TARGET="24000"
-fi
-
-# if Environment very small (example VM test env.) use min 800M
-if [ "${MEMORY_TARGET}" -lt "750" ]; then
-	MEMORY_TARGET="800"
-fi
-
-# Check if the shared memory is configured properly
-# get only the first value
-SHARED_MEMORY=$(df -k | grep tmpfs | head -1 | awk '{print($2)/1024;}')
-#round
-SHARED_MEMORY=$(echo $SHARED_MEMORY | awk '{print int($1)}')
-#Check
-if [[ "${SHARED_MEMORY}" -lt "${MEMORY_TARGET}" ]]; then
-  printError
-  printError "Your current size of the shared memory (${SHARED_MEMORY} MB) is smaller than the allocated memory target (${MEMORY_TARGET} MB) for the Oracle DB instance."
-  printError "Possible solution : As root, increase the shared memory /dev/shm mountpoint size (also set the size in /etc/fstab), then remount (tmpfs)"
-  printError
-  exit 1
-fi
 
 echo "log_archive_format=%t_%s_%r.dbf"  >  ${SCRIPTS}/init.ora
 echo "db_block_size=${S_DB_BLOCK_SIZE}"	>> ${SCRIPTS}/init.ora
@@ -672,7 +702,7 @@ echo "db_recovery_file_dest_size=${FLASH_RECO_SIZE}" 	>> ${SCRIPTS}/init.ora
 echo "compatible=${S_COMPATIBLE}" 						>> ${SCRIPTS}/init.ora
 echo "diagnostic_dest=\"${ORACLE_BASE}\"" 		        >> ${SCRIPTS}/init.ora
 
-echo "sga_target=${MEMORY_TARGET}M"				        >> ${SCRIPTS}/init.ora
+echo "sga_target=${SGA_TARGET}"				        >> ${SCRIPTS}/init.ora
 echo "processes=${S_PROCESSES}" 					    >> ${SCRIPTS}/init.ora
 echo "sessions=${S_SESSIONS}" 						    >> ${SCRIPTS}/init.ora
 
